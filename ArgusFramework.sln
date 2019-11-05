@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29318.209
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreTestSite", "tests\AspNetCoreTestSite\AspNetCoreTestSite.csproj", "{CAAEC7DB-9112-44E4-9692-E434FC45824F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Diagnostics", "src\Argus.Diagnostics\Argus.Diagnostics.csproj", "{4DAC5F6E-BEB3-4C91-AE19-9642487234EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{56160BAD-F64E-410B-88C3-B385A8200FBE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{06A25C01-C8FB-4AD6-88F4-21ABA07A9F78}"
+	ProjectSection(SolutionItems) = preProject
+		assets\Argus-Logo-Purple-64.png = assets\Argus-Logo-Purple-64.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D58909C-9232-496C-91D4-03A641EF2993}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DAC5F6E-BEB3-4C91-AE19-9642487234EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DAC5F6E-BEB3-4C91-AE19-9642487234EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DAC5F6E-BEB3-4C91-AE19-9642487234EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DAC5F6E-BEB3-4C91-AE19-9642487234EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CAAEC7DB-9112-44E4-9692-E434FC45824F} = {56160BAD-F64E-410B-88C3-B385A8200FBE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0D7AEAC5-150D-4C4D-90E8-3330DFD330CB}
+	EndGlobalSection
+EndGlobal
