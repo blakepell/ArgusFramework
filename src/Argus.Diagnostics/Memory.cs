@@ -43,9 +43,6 @@ namespace Argus.Diagnostics
         /// <returns></returns>
         private static MemoryInfo WindowsMemoryInfo()
         {
-            var mi = new MemoryInfo();
-            mi.ProcessUsed = Process.GetCurrentProcess().WorkingSet64 / 1024;
-
             var mem = new MEMORYSTATUSEX();
             mem.Init();
 
@@ -54,16 +51,21 @@ namespace Argus.Diagnostics
                 throw new Win32Exception("Could not obtain memory information due to internal error.");
             }
 
-            mi.SystemTotal = mem.ullTotalPhys;
-            mi.SystemFree = mem.ullAvailPhys;
-            mi.SystemAvailable = mem.ullAvailPhys;
+            var mi = new MemoryInfo
+            {
+                ProcessUsed = Process.GetCurrentProcess().WorkingSet64 / 1024,
+                SystemTotal = mem.ullTotalPhys,
+                SystemFree = mem.ullAvailPhys,
+                SystemAvailable = mem.ullAvailPhys,
+                VirtualTotal = mem.ullTotalVirtual,
+                VirtualAvailable = mem.ullAvailVirtual,
+                PageFileTotal = mem.ullTotalPageFile,
+                PageFileAvailable = mem.ullAvailPageFile,
+                MemoryLoad = mem.dwMemoryLoad,
+                ExtendedVirtualMemoryAvailable = mem.ullAvailExtendedVirtual
+            };
+
             mi.SystemUsed = mi.SystemTotal - mi.SystemFree;
-            mi.VirtualTotal = mem.ullTotalVirtual;
-            mi.VirtualAvailable = mem.ullAvailVirtual;
-            mi.PageFileTotal = mem.ullTotalPageFile;
-            mi.PageFileAvailable = mem.ullAvailPageFile;
-            mi.MemoryLoad = mem.dwMemoryLoad;
-            mi.ExtendedVirtualMemoryAvailable = mem.ullAvailExtendedVirtual;
 
             return mi;
         }
