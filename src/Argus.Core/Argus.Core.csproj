@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <RootNamespace>Argus</RootNamespace>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Blake Pell</Authors>
+    <Company>http://www.blakepell.com</Company>
+    <Product>Argus Framework</Product>
+    <Description>A general purpose utility library.</Description>
+    <Copyright>2003-2019</Copyright>
+    <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Version>2019.11.15.1</Version>
+    <AssemblyVersion>2019.11.15.1</AssemblyVersion>
+    <FileVersion>2019.11.15.1</FileVersion>
+    <PackageIconUrl>https://raw.githubusercontent.com/blakepell/ArgusFramework/master/Assets/Argus-Logo-Purple-64.png</PackageIconUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Network\WebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

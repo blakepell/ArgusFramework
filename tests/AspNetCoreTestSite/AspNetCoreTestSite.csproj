@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Argus.Diagnostics.System\Argus.Diagnostics.csproj" />
+    <ProjectReference Include="..\..\src\Argus.AspNetCore\Argus.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>
