@@ -4,20 +4,21 @@ namespace Argus.Data
 {
 
     /// <summary>
-    /// Parse out a two value delimated list.
+    /// Parse out a two value delimited list.
     /// </summary>
     /// <remarks>
     /// The value that should be parsed can be passed in via the constructor, set with the Reload method or
-    /// set with an = operator if the value you're setting it equal to is a string.
+    /// set with an = operator if the value you're setting it equal to is a string.  This by design will split
+    /// a string like it's a key pair and not more values.
     /// </remarks>
-    public class TwoValueDeliminatorParser
+    public class TwoValueDelimiterParser
     {
         //*********************************************************************************************************************
         //
-        //             Class:  TwoValueDeliminatorParser
+        //             Class:  TwoValueDelimiterParser
         //      Organization:  http://www.blakepell.com
-        //      Initial Date:  09/01/2007
-        //      Last Updated:  04/18/2016
+        //      Initial Date:  09/01/2005
+        //      Last Updated:  11/17/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -27,8 +28,7 @@ namespace Argus.Data
         /// Constructor
         /// </summary>
         /// <param name="delimitedText"></param>
-        /// <remarks></remarks>
-        public TwoValueDeliminatorParser(string delimitedText)
+        public TwoValueDelimiterParser(string delimitedText)
         {
             _queryValue = delimitedText;
         }
@@ -36,40 +36,32 @@ namespace Argus.Data
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <remarks></remarks>
-
-        public TwoValueDeliminatorParser()
+        public TwoValueDelimiterParser()
         {
         }
 
         /// <summary>
         /// Returns the date's short date value.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public override string ToString()
         {
             return _queryValue;
         }
 
         /// <summary>
-        /// Provides the ability to set a TwoValueDelimitatorParse equal to a String.
+        /// Provides the ability to set a TwoValueDelimiterParser equal to a String.
         /// </summary>
         /// <param name="str"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static implicit operator TwoValueDeliminatorParser(string str)
+        public static implicit operator TwoValueDelimiterParser(string str)
         {
-            return new TwoValueDeliminatorParser(str);
+            return new TwoValueDelimiterParser(str);
         }
 
         /// <summary>
-        /// Provides the ability to set a String equal to a TwoValueDelimitatorParse.
+        /// Provides the ability to set a String equal to a TwoValueDelimiterParser.
         /// </summary>
         /// <param name="dp"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static implicit operator string(TwoValueDeliminatorParser dp)
+        public static implicit operator string(TwoValueDelimiterParser dp)
         {
             return dp.ToString();
         }
@@ -80,35 +72,21 @@ namespace Argus.Data
         /// <param name="delimitedText"></param>
         /// <remarks>
         /// You can also use the = operator with a string to set this value.. e.g.
-        /// <code>
-        /// Dim buf As String = "Blake_Pell"
-        /// Dim delim As New TwoValueDeliminatorParser
-        /// delim = buf
-        /// </code>
         /// </remarks>
         public void Reload(string delimitedText)
         {
             _queryValue = delimitedText;
         }
 
-        private string _deliminator = "_";
         /// <summary>
         /// The deliminator to split the value on.
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
         /// <remarks>The default value is an underscore (e.g. '_') character.</remarks>
-        public string Deliminator
-        {
-            get { return _deliminator; }
-            set { _deliminator = value; }
-        }
+        public string Delimiter { get; set; } = "_";
 
         /// <summary>
         /// The left hand value.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public string Value1()
         {
             try
@@ -118,7 +96,7 @@ namespace Argus.Data
                     return "";
                 }
 
-                string[] buf = _queryValue.Split(Deliminator.ToCharArray());
+                string[] buf = _queryValue.Split(this.Delimiter.ToCharArray());
                 return buf[0];
             }
             catch
@@ -130,8 +108,6 @@ namespace Argus.Data
         /// <summary>
         /// The right hand value.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public string Value2()
         {
             try
@@ -141,7 +117,7 @@ namespace Argus.Data
                     return "";
                 }
 
-                string[] buf = _queryValue.Split(Deliminator.ToCharArray());
+                string[] buf = _queryValue.Split(this.Delimiter.ToCharArray());
                 return buf[1];
             }
             catch

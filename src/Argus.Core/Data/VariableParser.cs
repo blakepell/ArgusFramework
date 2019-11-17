@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
-using Argus.Extensions;
 
 namespace Argus.Data
 {
     /// <summary>
-    /// Searches a string and replaces any variables found within it with their literal value.  Variables are case sensitive.  This
-    /// can be used to script parameters that may need to change to the current environment.
+    ///     Searches a string and replaces any variables found within it with their literal value.  Variables are case sensitive.  This
+    ///     can be used to script parameters that may need to change to the current environment.
     /// </summary>
-    /// <remarks></remarks>
     public class VariableParser
     {
         //*********************************************************************************************************************
@@ -25,10 +21,8 @@ namespace Argus.Data
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public VariableParser()
         {
             this.VariableList.Add("@now(0)");
@@ -60,123 +54,145 @@ namespace Argus.Data
         }
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
-        /// <param name="dateOverride">The date override can be used to have the parser act like it is another day when replacing 
-        /// variables with their literal values.</param>
-        /// <remarks></remarks>
+        /// <param name="dateOverride">
+        ///     The date override can be used to have the parser act like it is another day when replacing
+        ///     variables with their literal values.
+        /// </param>
         public VariableParser(DateTime dateOverride) : this()
         {
             this.DateValue = dateOverride;
         }
 
         /// <summary>
-        /// Parses the text and returns a string with the variables replaced.
+        ///     A list of all of the supported variables.  This can be used to bind to a list or drop down box.
+        /// </summary>
+        public List<string> VariableList { get; set; } = new List<string>();
+
+        /// <summary>
+        ///     The date override can be used to have the parser act like it is another day when replacing variables with their literal values.
+        /// </summary>
+        public DateTime DateValue { get; set; } = DateTime.Now;
+
+        /// <summary>
+        ///     Parses the text and returns a string with the variables replaced.
         /// </summary>
         /// <param name="text"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public string Parse(string text)
         {
-
             text = text.Replace("@now()", "@now(0)");
+
             foreach (Match m in Regex.Matches(text, "@now\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
                 text = text.Replace(m.Value, this.DateValue.AddDays(Convert.ToDouble(m.Groups["Var1"].Value)).ToString());
             }
 
             text = text.Replace("@todayForFileSystem()", "@todayForFileSystem(0)");
+
             foreach (Match m in Regex.Matches(text, "@todayForFileSystem\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
                 text = text.Replace(m.Value, this.DateValue.AddDays(Convert.ToDouble(m.Groups["Var1"].Value)).ToString("yyyy-MM-dd"));
             }
 
             text = text.Replace("@getDate()", "@getDate(0)");
+
             foreach (Match m in Regex.Matches(text, "@getDate\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
                 text = text.Replace(m.Value, this.DateValue.AddDays(Convert.ToDouble(m.Groups["Var1"].Value)).ToString("MM/dd/yyyy"));
             }
 
             text = text.Replace("@timeStampSqlServerBeginOfDay()", "@timeStampSqlServerBeginOfDay(0)");
+
             foreach (Match m in Regex.Matches(text, "@timeStampSqlServerBeginOfDay\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
                 text = text.Replace(m.Value, this.DateValue.AddDays(Convert.ToDouble(m.Groups["Var1"].Value)).ToString("yyyy-MM-dd") + " 00:00:00");
             }
 
             text = text.Replace("@timeStampSqlServerEndOfDay()", "@timeStampSqlServerEndOfDay(0)");
+
             foreach (Match m in Regex.Matches(text, "@timeStampSqlServerEndOfDay\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
                 text = text.Replace(m.Value, this.DateValue.AddDays(Convert.ToDouble(m.Groups["Var1"].Value)).ToString("yyyy-MM-dd") + " 23:59:59");
             }
 
             text = text.Replace("@timeStampIbmDb2BeginOfDay()", "@timeStampIbmDb2BeginOfDay(0)");
+
             foreach (Match m in Regex.Matches(text, "@timeStampIbmDb2BeginOfDay\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
                 text = text.Replace(m.Value, this.DateValue.AddDays(Convert.ToDouble(m.Groups["Var1"].Value)).ToShortDateString() + "  12:00:00AM");
             }
 
             text = text.Replace("@timeStampIbmDb2EndOfDay()", "@timeStampIbmDb2EndOfDay(0)");
+
             foreach (Match m in Regex.Matches(text, "@timeStampIbmDb2EndOfDay\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
                 text = text.Replace(m.Value, this.DateValue.AddDays(Convert.ToDouble(m.Groups["Var1"].Value)).ToShortDateString() + "  11:59:59PM");
             }
 
             text = text.Replace("@monthBegin()", "@monthBegin(0)");
+
             foreach (Match m in Regex.Matches(text, "@monthBegin\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
-                text = text.Replace(m.Value, this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Month + "/01/" + this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Year.ToString());
+                text = text.Replace(m.Value, this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Month + "/01/" + this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Year);
             }
 
             text = text.Replace("@monthEnd()", "@monthEnd(0)");
+
             foreach (Match m in Regex.Matches(text, "@monthEnd\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
-                text = text.Replace(m.Value, this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Month + "/" + System.DateTime.DaysInMonth(this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Year, this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Month).ToString() + "/" + this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Year.ToString());
+                text = text.Replace(m.Value, this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Month + "/" + DateTime.DaysInMonth(this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Year, this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Month) + "/" + this.DateValue.AddMonths(Convert.ToInt32(m.Groups["Var1"].Value)).Year);
             }
 
             text = text.Replace("@calendarYearBegin()", "@calendarYearBegin(0)");
+
             foreach (Match m in Regex.Matches(text, "@calendarYearBegin\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
-                text = text.Replace(m.Value, "01/01/" + this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year.ToString());
+                text = text.Replace(m.Value, "01/01/" + this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year);
             }
 
             text = text.Replace("@calendarYearEnd()", "@calendarYearEnd(0)");
+
             foreach (Match m in Regex.Matches(text, "@calendarYearEnd\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
             {
-                text = text.Replace(m.Value, "12/31/" + this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year.ToString());
+                text = text.Replace(m.Value, "12/31/" + this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year);
             }
 
             if (this.DateValue.Month >= 7)
             {
                 // if month is July or later, the current fiscal year starts in the same year
                 text = text.Replace("@fiscalYearBegin()", "@fiscalYearBegin(0)");
+
                 foreach (Match m in Regex.Matches(text, "@fiscalYearBegin\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
                 {
-                    text = text.Replace(m.Value, "07/01/" + this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year.ToString());
+                    text = text.Replace(m.Value, "07/01/" + this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year);
                 }
 
                 // if month is July or later, the current fiscal year ends next year
                 text = text.Replace("@fiscalYearEnd()", "@fiscalYearEnd(0)");
+
                 foreach (Match m in Regex.Matches(text, "@fiscalYearEnd\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
                 {
-                    text = text.Replace(m.Value, "06/30/" + (this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year + 1).ToString());
+                    text = text.Replace(m.Value, "06/30/" + (this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year + 1));
                 }
             }
             else
             {
                 // if the month is before July, the current fiscal year starts the year before
                 text = text.Replace("@fiscalYearBegin()", "@fiscalYearBegin(0)");
+
                 foreach (Match m in Regex.Matches(text, "@fiscalYearBegin\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
                 {
-                    text = text.Replace(m.Value, "07/01/" + (this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year - 1).ToString());
+                    text = text.Replace(m.Value, "07/01/" + (this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year - 1));
                 }
 
                 // if the month is before July, the last fiscal year started 2 years ago
                 text = text.Replace("@fiscalYearEnd()", "@fiscalYearEnd(0)");
+
                 foreach (Match m in Regex.Matches(text, "@fiscalYearEnd\\(\\s*(?<Var1>[-0-9]+)\\s*\\)"))
                 {
-                    text = text.Replace(m.Value, "06/30/" + this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year.ToString());
+                    text = text.Replace(m.Value, "06/30/" + this.DateValue.AddYears(Convert.ToInt32(m.Groups["Var1"].Value)).Year);
                 }
-
             }
 
             text = text.Replace("@username()", Environment.UserName);
@@ -190,52 +206,23 @@ namespace Argus.Data
             text = text.Replace("@processors()", Environment.ProcessorCount.ToString());
             text = text.Replace("@systemDirectory()", Environment.SystemDirectory);
 
-            if (text.Contains("@guid()") == true)
+            if (text.Contains("@guid()"))
             {
                 text = text.Replace("@guid()", Guid.NewGuid().ToString());
             }
 
-            if (text.Contains("@randomNumber") == true)
+            if (text.Contains("@randomNumber"))
             {
                 // \s* is for optional white space
                 foreach (Match m in Regex.Matches(text, "@randomNumber\\(\\s*(?<Var1>[-0-9]+)\\s*,\\s*(?<Var2>[-0-9]+)\\)", RegexOptions.IgnorePatternWhitespace))
                 {
-                    Random rnd = new Random();
+                    var rnd = new Random();
                     int randomNumber = rnd.Next(Convert.ToInt32(m.Groups["Var1"].Value), Convert.ToInt32(m.Groups["Var2"].Value));
                     text = Regex.Replace(text, "@randomNumber\\(\\s*(?<Var1>[-0-9]+)\\s*,\\s*(?<Var2>[-0-9]+)\\)", randomNumber.ToString(), RegexOptions.IgnorePatternWhitespace);
                 }
-
             }
 
             return text;
         }
-
-        private List<string> _variableList = new List<string>();
-        /// <summary>
-        /// A list of all of the supported variables.  This can be used to bind to a list or drop down box.
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public List<string> VariableList
-        {
-            get { return _variableList; }
-            set { _variableList = value; }
-        }
-
-        private DateTime _dateValue = DateTime.Now;
-        /// <summary>
-        /// The date override can be used to have the parser act like it is another day when replacing variables with their literal values.  
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public DateTime DateValue
-        {
-            get { return _dateValue; }
-            set { _dateValue = value; }
-        }
-
     }
-
 }

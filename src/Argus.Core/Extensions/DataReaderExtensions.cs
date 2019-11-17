@@ -134,7 +134,7 @@ namespace Argus.Extensions
         {
             Argus.Data.CreateDelimitedFile cdf = new Argus.Data.CreateDelimitedFile(exportHeader, fieldDelimiter);
             string buf = cdf.ToString(dr);
-            return formatted ? Argus.Data.StringTransforms.FormatDeliminatedString(buf, "\t") : buf;
+            return formatted ? Argus.Data.StringTransforms.FormatDelimitedString(buf, "\t") : buf;
         }
 
         /// <summary>

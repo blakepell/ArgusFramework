@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace Argus.Data.Range
 {
@@ -14,36 +13,24 @@ namespace Argus.Data.Range
     //*********************************************************************************************************************
 
     /// <summary>
-    /// Range interface that specifies the properties and methods that range's should carry.
+    ///     Range interface that specifies the properties and methods that range's should carry.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <remarks></remarks>
     public interface IRange<T>
     {
-
         /// <summary>
-        /// The start element in the range
+        ///     The start element in the range
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-
         T Start { get; set; }
-        /// <summary>
-        /// The ending element in the range
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
 
+        /// <summary>
+        ///     The ending element in the range
+        /// </summary>
         T End { get; set; }
+
         /// <summary>
-        /// A list that includes all elements in the range.
+        ///     A list that includes all elements in the range.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
         List<T> ToList();
-
     }
-
 }

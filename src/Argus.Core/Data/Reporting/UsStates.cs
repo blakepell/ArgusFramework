@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Argus.Data.Reporting
 {
-
     /// <summary>
-    /// Utilities for US States
+    ///     Utilities for US States
     /// </summary>
-    /// <remarks></remarks>
     public class UsStates
     {
         //*********************************************************************************************************************
@@ -22,9 +19,8 @@ namespace Argus.Data.Reporting
         //*********************************************************************************************************************
 
         /// <summary>
-        /// An enumeration of the US States.
+        ///     An enumeration of the US States.
         /// </summary>
-        /// <remarks></remarks>
         public enum State
         {
             Alabama,
@@ -80,11 +76,9 @@ namespace Argus.Data.Reporting
         }
 
         /// <summary>
-        /// Returns a state's enum based off of the abbreviation passed in.
+        ///     Returns a state's enum based off of the abbreviation passed in.
         /// </summary>
         /// <param name="stateString"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static State StateFromString(string stateString)
         {
             switch (stateString.ToUpper().Trim())
@@ -242,72 +236,68 @@ namespace Argus.Data.Reporting
                 default:
                     throw new Exception($"Unknown state requested '{stateString}'");
             }
-
         }
-        
+
         /// <summary>
-        /// A key pair value of the state and it's postal code.  The post code is the Key and the state name is the Value.
+        ///     A key pair value of the state and it's postal code.  The post code is the Key and the state name is the Value.
         /// </summary>
-        /// <returns></returns>
         public static Dictionary<string, string> StateList()
         {
             var lst = new Dictionary<string, string>
             {
-                { "AL", "Alabama" },
-                { "AK", "Alaska" },
-                { "AZ", "Arizona" },
-                { "AR", "Arkansas" },
-                { "CA", "California" },
-                { "CO", "Colorado" },
-                { "CT", "Connecticut" },
-                { "DE", "Deleware" },
-                { "FL", "Florida" },
-                { "GA", "Georgia" },
-                { "HI", "Hawaii" },
-                { "ID", "Idaho" },
-                { "IL", "Illinois" },
-                { "IN", "Indiana" },
-                { "IA", "Iowa" },
-                { "KS", "Kansas" },
-                { "KY", "Kentucky" },
-                { "LA", "Louisiana" },
-                { "ME", "Maine" },
-                { "MD", "Maryland" },
-                { "MA", "Massachusetts" },
-                { "MI", "Michigan" },
-                { "MN", "Minnesota" },
-                { "MS", "Mississippi" },
-                { "MO", "Missouri" },
-                { "MT", "Montana" },
-                { "NE", "Nebraska" },
-                { "NV", "Nevada" },
-                { "NH", "New Hampshire" },
-                { "NJ", "New Jersey" },
-                { "NM", "New Mexico" },
-                { "NY", "New York" },
-                { "NC", "North Carolina" },
-                { "ND", "North Dakota" },
-                { "OH", "Ohio" },
-                { "OK", "Oklahoma" },
-                { "OR", "Oregon" },
-                { "PA", "Pennsylvania" },
-                { "RI", "Rhode Island" },
-                { "SC", "South Carolina" },
-                { "SD", "South Dakota" },
-                { "TN", "Tennessee" },
-                { "TX", "Texas" },
-                { "UT", "Utah" },
-                { "VT", "Vermont" },
-                { "VA", "Virginia" },
-                { "WA", "Washington" },
-                { "WV", "West Virginia" },
-                { "WI", "Wisconsin" },
-                { "WY", "Wyoming" }
+                {"AL", "Alabama"},
+                {"AK", "Alaska"},
+                {"AZ", "Arizona"},
+                {"AR", "Arkansas"},
+                {"CA", "California"},
+                {"CO", "Colorado"},
+                {"CT", "Connecticut"},
+                {"DE", "Delaware"},
+                {"FL", "Florida"},
+                {"GA", "Georgia"},
+                {"HI", "Hawaii"},
+                {"ID", "Idaho"},
+                {"IL", "Illinois"},
+                {"IN", "Indiana"},
+                {"IA", "Iowa"},
+                {"KS", "Kansas"},
+                {"KY", "Kentucky"},
+                {"LA", "Louisiana"},
+                {"ME", "Maine"},
+                {"MD", "Maryland"},
+                {"MA", "Massachusetts"},
+                {"MI", "Michigan"},
+                {"MN", "Minnesota"},
+                {"MS", "Mississippi"},
+                {"MO", "Missouri"},
+                {"MT", "Montana"},
+                {"NE", "Nebraska"},
+                {"NV", "Nevada"},
+                {"NH", "New Hampshire"},
+                {"NJ", "New Jersey"},
+                {"NM", "New Mexico"},
+                {"NY", "New York"},
+                {"NC", "North Carolina"},
+                {"ND", "North Dakota"},
+                {"OH", "Ohio"},
+                {"OK", "Oklahoma"},
+                {"OR", "Oregon"},
+                {"PA", "Pennsylvania"},
+                {"RI", "Rhode Island"},
+                {"SC", "South Carolina"},
+                {"SD", "South Dakota"},
+                {"TN", "Tennessee"},
+                {"TX", "Texas"},
+                {"UT", "Utah"},
+                {"VT", "Vermont"},
+                {"VA", "Virginia"},
+                {"WA", "Washington"},
+                {"WV", "West Virginia"},
+                {"WI", "Wisconsin"},
+                {"WY", "Wyoming"}
             };
 
             return lst;
         }
-
     }
-
 }

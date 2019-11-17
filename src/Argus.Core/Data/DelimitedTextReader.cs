@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
+using System.IO;
+using System.Text;
 
 namespace Argus.Data
 {
-
     /// <summary>
-    /// This class will read deliminted text either that is provided or from a file on the file system and render that
-    /// data through the IDataReader interface.  Optionally, CreateDataTable and ExecuteReader methods are included for backwards
-    /// compatibility.
+    ///     This class will read delimited text either that is provided or from a file on the file system and render that
+    ///     data through the IDataReader interface.  Optionally, CreateDataTable and ExecuteReader methods are included for backwards
+    ///     compatibility.
     /// </summary>
-    /// <remarks></remarks>
     public class DelimitedTextReader : IDataReader
     {
         //*********************************************************************************************************************
@@ -20,18 +17,20 @@ namespace Argus.Data
         //             Class:  DelimitedTextReader
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  05/24/2010
-        //      Last Updated:  04/11/2016
+        //      Last Updated:  11/17/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
 
+        // To detect redundant calls
+        private bool _disposedValue;
+
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="text">The delimited text to parse</param>
         /// <param name="delimiter">The character or characters that come between each record</param>
         /// <param name="containsHeaderRow">Whether or not the text contains a header row.</param>
-        /// <remarks></remarks>
         public DelimitedTextReader(string text, string delimiter, bool containsHeaderRow)
         {
             this.Text = text;
@@ -42,11 +41,10 @@ namespace Argus.Data
         }
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="text">The delimited text to parse</param>
         /// <param name="delimiter">The character or characters that come between each record</param>
-        /// <remarks></remarks>
         public DelimitedTextReader(string text, string delimiter)
         {
             this.Text = text;
@@ -56,12 +54,11 @@ namespace Argus.Data
         }
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="text">The delimited text to parse</param>
         /// <param name="delimiter">The character or characters that come between each record</param>
         /// <param name="lineTerminator">The line terminator to use.</param>
-        /// <remarks></remarks>
         public DelimitedTextReader(string text, string delimiter, string lineTerminator)
         {
             this.Text = text;
@@ -71,12 +68,10 @@ namespace Argus.Data
             this.DataReader = this.DataTable.CreateDataReader();
         }
 
-
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="text">The delimited text to parse</param>
-        /// <remarks></remarks>
         public DelimitedTextReader(string text)
         {
             this.Text = text;
@@ -85,208 +80,58 @@ namespace Argus.Data
         }
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="localFilePath">The path to the file on the local file system or mapped drive.</param>
         /// <param name="enc">The encoding to use when reading the file.</param>
         /// <param name="delimiter">The character or characters that come between each record</param>
         /// <param name="containsHeaderRow">Whether or not the text contains a header row.</param>
-        /// <remarks></remarks>
-        public DelimitedTextReader(string localFilePath, System.Text.Encoding enc, string delimiter, bool containsHeaderRow) : this(System.IO.File.ReadAllText(localFilePath, enc), delimiter, containsHeaderRow)
+        public DelimitedTextReader(string localFilePath, Encoding enc, string delimiter, bool containsHeaderRow) : this(File.ReadAllText(localFilePath, enc), delimiter, containsHeaderRow)
         {
         }
 
         /// <summary>
-        /// Returns a DataTable.  If the file has a header row and the ContainerHeaderRow is set to true then the column names
-        /// that will be called from the reader will by those names.  Otherwise you'll have to reference those value through Items
-        /// and input their index.  The data table can then be bound to other objects such as a DataGridView.
+        ///     The delimited text that should be parsed.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public DataTable CreateDataTable()
-        {
-
-            DataTable dt = new DataTable();
-            string[] lines = this.Text.Split(this.LineTerminator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-            bool columnsCreated = false;
-
-            foreach (string line in lines)
-            {
-                int fieldCount = 0;
-                string[] fields = line.Split(_delimiter.ToCharArray());
-                fieldCount = fields.GetUpperBound(0);
-                // field count has to be consistant
-
-                // Create the columns in the datatable if they don't exist
-                if (columnsCreated == false)
-                {
-                    for (int counter = 0; counter <= fieldCount; counter++)
-                    {
-                        if (_containsHeaderRow == false)
-                        {
-                            DataColumn newColumn = new DataColumn("Column" + counter);
-                            dt.Columns.Add(newColumn);
-                        }
-                        else {
-                            dt.Columns.Add(new DataColumn(fields[counter]));
-                        }
-                    }
-
-                    // If it doesn't contain a header row, we'll now need to show the info
-                    if (_containsHeaderRow == false)
-                    {
-                        dt.Rows.Add(fields);
-                    }
-
-                    columnsCreated = true;
-                }
-                else
-                {
-                    dt.Rows.Add(fields);
-                }
-
-            }
-
-            return dt;
-
-        }
+        public string Text { get; set; } = "";
 
         /// <summary>
-        /// Returns a DataTableReader.  If the file has a header row and the ContainerHeaderRow is set to true then the column names
-        /// that will be called from the reader will by those names.  Otherwise you'll have to reference those value through Items
-        /// and input their index.
+        ///     This indicates whether the file contains a header row or not.  If it does the class methods will put the first rows
+        ///     contents as the column headings.  Otherwise, the first row's contents will be part of the data set.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public DataTableReader ExecuteReader()
-        {
-            return CreateDataTable().CreateDataReader();
-        }
-
-        private string _text = "";
-        /// <summary>
-        /// The delimited text that should be parsed.
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public string Text
-        {
-            get { return _text; }
-            set { _text = value; }
-        }
-
-        private bool _containsHeaderRow = false;
-        /// <summary>
-        /// This indicates whether the file contains a header row or not.  If it does the class methods will put the first rows
-        /// contents as the column headings.  Otherwise, the first row's contents will be part of the data set.
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
         /// <remarks>The default value is false.</remarks>
-        public bool ContainsHeaderRow
-        {
-            get { return _containsHeaderRow; }
-            set { _containsHeaderRow = value; }
-        }
+        public bool ContainsHeaderRow { get; set; }
 
-        private string _delimiter = "\t";
         /// <summary>
-        /// The deliminter that the file is split up by.
+        ///     The delimiter that the file is split up by.
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
         /// <remarks>The default delimiter is a tab.</remarks>
-        public string Delimiter
-        {
-            get { return _delimiter; }
-            set { _delimiter = value; }
-        }
-
-        private string _lineTerminator = Environment.NewLine;
-        /// <summary>
-        /// The line terminator that is used to split records.  The default is carriage return and line feed (ascii 13 and 10).
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public string LineTerminator
-        {
-            get { return _lineTerminator; }
-            set { _lineTerminator = value; }
-        }
-
-        private IDataReader _dataReader;
-        private IDataReader DataReader
-        {
-            get { return _dataReader; }
-            set { _dataReader = value; }
-        }
-
-        private DataTable _dataTable;
-        private DataTable DataTable
-        {
-            get { return _dataTable; }
-            set { _dataTable = value; }
-        }
+        public string Delimiter { get; set; } = "\t";
 
         /// <summary>
-        /// Resets the underlaying DataReader and creates a new one that is at the first position.
+        ///     The line terminator that is used to split records.  The default is carriage return and line feed (ascii 13 and 10).
         /// </summary>
-        /// <remarks></remarks>
-        public void MoveFirst()
-        {
-            if (this.DataReader != null)
-            {
-                this.DataReader.Close();
-                this.DataReader = null;
-            }
+        public string LineTerminator { get; set; } = Environment.NewLine;
 
-            if (this.DataTable != null)
-            {
-                this.DataReader = this.DataTable.CreateDataReader();
-            }
-        }
+        private IDataReader DataReader { get; set; }
+        private DataTable DataTable { get; }
 
         /// <summary>
-        /// Closes the DataReader
+        ///     Closes the DataReader
         /// </summary>
-        /// <remarks></remarks>
         public void Close()
         {
             this.DataReader.Close();
         }
 
-        /// <summary>
-        /// The number of records in the DataReader.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public int RowCount()
-        {
-            if (this.DataTable == null)
-            {
-                return 0;
-            }
+        public int Depth => this.DataReader.Depth;
 
-            return this.DataTable.Rows.Count;
-        }
-
-        public int Depth
-        {
-            get { return this.DataReader.Depth; }
-        }
-
-        public System.Data.DataTable GetSchemaTable()
+        public DataTable GetSchemaTable()
         {
             return this.DataReader.GetSchemaTable();
         }
 
-        public bool IsClosed
-        {
-            get { return this.DataReader.IsClosed; }
-        }
+        public bool IsClosed => this.DataReader.IsClosed;
 
         public bool NextResult()
         {
@@ -298,15 +143,8 @@ namespace Argus.Data
             return this.DataReader.Read();
         }
 
-        public int RecordsAffected
-        {
-            get { return this.DataReader.RecordsAffected; }
-        }
-
-        public int FieldCount
-        {
-            get { return this.DataReader.FieldCount; }
-        }
+        public int RecordsAffected => this.DataReader.RecordsAffected;
+        public int FieldCount => this.DataReader.FieldCount;
 
         public bool GetBoolean(int i)
         {
@@ -333,7 +171,7 @@ namespace Argus.Data
             return this.DataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
         }
 
-        public System.Data.IDataReader GetData(int i)
+        public IDataReader GetData(int i)
         {
             throw new NotImplementedException();
         }
@@ -343,7 +181,7 @@ namespace Argus.Data
             return this.DataReader.GetDataTypeName(i);
         }
 
-        public System.DateTime GetDateTime(int i)
+        public DateTime GetDateTime(int i)
         {
             return this.DataReader.GetDateTime(i);
         }
@@ -358,7 +196,7 @@ namespace Argus.Data
             return this.DataReader.GetDouble(i);
         }
 
-        public System.Type GetFieldType(int i)
+        public Type GetFieldType(int i)
         {
             return this.DataReader.GetFieldType(i);
         }
@@ -368,7 +206,7 @@ namespace Argus.Data
             return this.DataReader.GetFloat(i);
         }
 
-        public System.Guid GetGuid(int i)
+        public Guid GetGuid(int i)
         {
             return this.DataReader.GetGuid(i);
         }
@@ -418,45 +256,131 @@ namespace Argus.Data
             return this.DataReader.IsDBNull(i);
         }
 
-        public object this[int i]
+        public object this[int i] => this.DataReader[i];
+        public object this[string name] => this.DataReader[name];
+
+        #region " IDisposable Support "
+
+        // This code added by Visual Basic to correctly implement the disposable pattern.
+        public void Dispose()
         {
-            get { return this.DataReader[i]; }
+            // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public object this[string name]
+        #endregion
+
+        /// <summary>
+        ///     Returns a DataTable.  If the file has a header row and the ContainerHeaderRow is set to true then the column names
+        ///     that will be called from the reader will by those names.  Otherwise you'll have to reference those value through Items
+        ///     and input their index.  The data table can then be bound to other objects such as a DataGridView.
+        /// </summary>
+        public DataTable CreateDataTable()
         {
-            get { return this.DataReader[name]; }
+            var dt = new DataTable();
+            var lines = this.Text.Split(this.LineTerminator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+            bool columnsCreated = false;
+
+            foreach (string line in lines)
+            {
+                int fieldCount = 0;
+                var fields = line.Split(this.Delimiter.ToCharArray());
+                fieldCount = fields.GetUpperBound(0);
+                // field count has to be consistant
+
+                // Create the columns in the datatable if they don't exist
+                if (columnsCreated == false)
+                {
+                    for (int counter = 0; counter <= fieldCount; counter++)
+                    {
+                        if (this.ContainsHeaderRow == false)
+                        {
+                            var newColumn = new DataColumn("Column" + counter);
+                            dt.Columns.Add(newColumn);
+                        }
+                        else
+                        {
+                            dt.Columns.Add(new DataColumn(fields[counter]));
+                        }
+                    }
+
+                    // If it doesn't contain a header row, we'll now need to show the info
+                    if (this.ContainsHeaderRow == false)
+                    {
+                        dt.Rows.Add(fields);
+                    }
+
+                    columnsCreated = true;
+                }
+                else
+                {
+                    dt.Rows.Add(fields);
+                }
+            }
+
+            return dt;
         }
 
-        // To detect redundant calls
-        private bool disposedValue = false;
+        /// <summary>
+        ///     Returns a DataTableReader.  If the file has a header row and the ContainerHeaderRow is set to true then the column names
+        ///     that will be called from the reader will by those names.  Otherwise you'll have to reference those value through Items
+        ///     and input their index.
+        /// </summary>
+        public DataTableReader ExecuteReader()
+        {
+            return this.CreateDataTable().CreateDataReader();
+        }
+
+        /// <summary>
+        ///     Resets the underlying DataReader and creates a new one that is at the first position.
+        /// </summary>
+        public void MoveFirst()
+        {
+            if (this.DataReader != null)
+            {
+                this.DataReader.Close();
+                this.DataReader = null;
+            }
+
+            if (this.DataTable != null)
+            {
+                this.DataReader = this.DataTable.CreateDataReader();
+            }
+        }
+
+        /// <summary>
+        ///     The number of records in the DataReader.
+        /// </summary>
+        public int RowCount()
+        {
+            if (this.DataTable == null)
+            {
+                return 0;
+            }
+
+            return this.DataTable.Rows.Count;
+        }
 
         // IDisposable
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     // TODO: free other state (managed objects).
-                    Argus.Data.DatabaseUtils.CleanupDbResources(null, _dataReader, null, null, _dataTable);
+                    this.DataReader?.Close();
+                    this.DataReader?.Dispose();
+                    this.DataTable?.Dispose();
                 }
 
                 // TODO: free your own state (unmanaged objects).
                 // TODO: set large fields to null.
             }
-            this.disposedValue = true;
-        }
 
-        #region " IDisposable Support "
-        // This code added by Visual Basic to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _disposedValue = true;
         }
-        #endregion
-
     }
 }

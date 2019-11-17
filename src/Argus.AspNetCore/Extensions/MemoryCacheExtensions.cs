@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using System;
+﻿using System;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Argus.Extensions
 {
-
     /// <summary>
-    /// Memory Cache Extensions
+    ///     Memory Cache Extensions
     /// </summary>
     public static class MemoryCacheExtensions
     {
@@ -19,15 +18,14 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Checks if an item is in the cache.  If it is, the item is returned.
-        ///
-        /// <para>
-        ///     If the item is not found in cache, the <paramref name="getItemFunc"/> function will be
-        ///     called to retrieve and store the item.
-        /// </para>
-        /// <para>
-        ///     By default, the only <see cref="MemoryCacheEntryOptions"/> set is `AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)`.
-        /// </para>
+        ///     Checks if an item is in the cache.  If it is, the item is returned.
+        ///     <para>
+        ///         If the item is not found in cache, the <paramref name="getItemFunc" /> function will be
+        ///         called to retrieve and store the item.
+        ///     </para>
+        ///     <para>
+        ///         By default, the only <see cref="MemoryCacheEntryOptions" /> set is `AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)`.
+        ///     </para>
         /// </summary>
         /// <param name="memoryCache"></param>
         /// <param name="cacheKey"></param>
@@ -43,12 +41,11 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Checks if an item is in the cache.  If it is, the item is returned.
-        ///
-        /// <para>
-        ///     If the item is not found in cache, the <paramref name="getItemFunc"/> function will be
-        ///     called to retrieve and store the item.
-        /// </para>
+        ///     Checks if an item is in the cache.  If it is, the item is returned.
+        ///     <para>
+        ///         If the item is not found in cache, the <paramref name="getItemFunc" /> function will be
+        ///         called to retrieve and store the item.
+        ///     </para>
         /// </summary>
         /// <param name="memoryCache"></param>
         /// <param name="cacheKey"></param>
@@ -71,6 +68,7 @@ namespace Argus.Extensions
             }
 
             memoryCache.Set(cacheKey, item, cacheOptions);
+
             return item;
         }
     }

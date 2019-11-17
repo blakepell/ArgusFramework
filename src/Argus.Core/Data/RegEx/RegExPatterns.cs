@@ -2,11 +2,9 @@
 
 namespace Argus.Data.RegEx
 {
-
     /// <summary>
-    /// Commonly used regular expression patterns.
+    ///     Commonly used regular expression patterns.
     /// </summary>
-    /// <remarks></remarks>
     public class RegExPatterns
     {
         //*********************************************************************************************************************
@@ -18,7 +16,6 @@ namespace Argus.Data.RegEx
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
-
         public const string Alpha = "^[a-zA-Z]*$";
         public const string AlphaUpperCase = "^[A-Z]*$";
         public const string AlphaLowerCase = "^[a-z]*$";
@@ -37,65 +34,54 @@ namespace Argus.Data.RegEx
         public const string ZipCodeUSWithFour = "\\d{5}[-]\\d{4}";
         public const string ZipCodeUSWithFourOptional = "\\d{5}([-]\\d{4})?";
         public const string PhoneUS = "\\d{3}[-]?\\d{3}[-]?\\d{4}";
-
         public const string IpAddress = "^([1-9]{1}\\d{1}|[1-9]{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d{1}|[1-9]{1}\\d{1}|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d{1}|[1-9]{1}\\d{1}|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d{1}|[1-9]{1}\\d{1}|1\\d\\d|2[0-4]\\d|25[0-5])$";
 
         /// <summary>
-        /// All HTML (or XML) tags in a set of text.  This is both opening and closing tags.
+        ///     All HTML (or XML) tags in a set of text.  This is both opening and closing tags.
         /// </summary>
-        /// <remarks></remarks>
         public const string HtmlTags = "<[^>]*>";
 
         /// <summary>
-        /// Uses backreferences and word boundaries to match repeated words seperated by whitespace 
-        /// without matching a word with the same ending as the next words beginning. 
+        ///     Uses backreferences and word boundaries to match repeated words seperated by whitespace
+        ///     without matching a word with the same ending as the next words beginning.
         /// </summary>
-        /// <remarks></remarks>    
         public const string RepeatedWords = "\\b(\\w+)\\s+\\1\\b";
 
         /// <summary>
-        /// Finds text that is in between quotes (including the quotes)
+        ///     Finds text that is in between quotes (including the quotes)
         /// </summary>
-        /// <remarks></remarks>
         public const string BetweenQuotes = "\"([^\"]*)\"";
 
         /// <summary>
-        /// Finds the text that is in between markers provided the two markers.
+        ///     Finds text that is in between single quotes
+        /// </summary>
+        public const string BetweenSingleQuotes = "'([^']*)'";
+
+        /// <summary>
+        ///     mm/dd/yyyy hh:MM:ss AM/PM
+        /// </summary>
+        public const string DateTimeFinder = "(?n:^(?=\\d)((?<month>(0?[13578])|1[02]|(0?[469]|11)(?!.31)|0?2(?(.29)(?=.29.((1[6-9]|[2-9]\\d)(0[48]|[2468][048]|[13579][26])|(16|[2468][048]|[3579][26])00))|(?!.3[01])))(?<sep>[-./])(?<day>0?[1-9]|[12]\\d|3[01])\\k<sep>(?<year>(1[6-9]|[2-9]\\d)\\d{2})(?(?=\\x20\\d)\\x20|$))?(?<time>((0?[1-9]|1[012])(:[0-5]\\d){0,2}(?i:\\x20[AP]M))|([01]\\d|2[0-3])(:[0-5]\\d){";
+
+        /// <summary>
+        ///     Finds dates in MM/DD/YYYY, MM-DD-YYYY, MM.DD.YYYY or MM DD YYYY format.  Three group variables are defined (case sensitive), these
+        ///     are 'month', 'day', and 'year'
+        /// </summary>
+        public const string DateFinderMMDDYYYY = "(?<month>\\d{1,2})[- /.](?<day>\\d{1,2})[- /.](?<year>\\d\\d\\d\\d)\\b";
+
+        /// <summary>
+        ///     Finds dates in YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYY MM DD format.  Three group variables are defined (case sensitive), these
+        ///     are 'month', 'day', and 'year'
+        /// </summary>
+        public const string DateFinderYYYYMMDD = "(?<year>\\d\\d\\d\\d)[- /.](?<month>\\d{1,2})[- /.](?<day>\\d{1,2})\\b";
+
+        /// <summary>
+        ///     Finds the text that is in between markers provided the two markers.
         /// </summary>
         /// <param name="beginMarker"></param>
         /// <param name="endMarker"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static object BetweenMarkers(string beginMarker, string endMarker)
         {
             return string.Format("{0}([^{0}^{1}]*){1}", Regex.Escape(beginMarker), Regex.Escape(endMarker));
         }
-
-        /// <summary>
-        /// Finds text that is in between single quotes
-        /// </summary>
-        /// <remarks></remarks>
-        public const string BetweenSingleQuotes = "'([^']*)'";
-
-        /// <summary>
-        /// mm/dd/yyyy hh:MM:ss AM/PM
-        /// </summary>
-        /// <remarks></remarks>
-        public const string DateTimeFinder = "(?n:^(?=\\d)((?<month>(0?[13578])|1[02]|(0?[469]|11)(?!.31)|0?2(?(.29)(?=.29.((1[6-9]|[2-9]\\d)(0[48]|[2468][048]|[13579][26])|(16|[2468][048]|[3579][26])00))|(?!.3[01])))(?<sep>[-./])(?<day>0?[1-9]|[12]\\d|3[01])\\k<sep>(?<year>(1[6-9]|[2-9]\\d)\\d{2})(?(?=\\x20\\d)\\x20|$))?(?<time>((0?[1-9]|1[012])(:[0-5]\\d){0,2}(?i:\\x20[AP]M))|([01]\\d|2[0-3])(:[0-5]\\d){";
-
-        /// <summary>
-        /// Finds dates in MM/DD/YYYY, MM-DD-YYYY, MM.DD.YYYY or MM DD YYYY format.  Three group variables are defined (case sensitive), these
-        /// are 'month', 'day', and 'year'
-        /// </summary>
-        /// <remarks></remarks>
-        public const string DateFinderMMDDYYYY = "(?<month>\\d{1,2})[- /.](?<day>\\d{1,2})[- /.](?<year>\\d\\d\\d\\d)\\b";
-
-        /// <summary>
-        /// Finds dates in YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYY MM DD format.  Three group variables are defined (case sensitive), these
-        /// are 'month', 'day', and 'year'
-        /// </summary>
-        /// <remarks></remarks>
-        public const string DateFinderYYYYMMDD = "(?<year>\\d\\d\\d\\d)[- /.](?<month>\\d{1,2})[- /.](?<day>\\d{1,2})\\b";
     }
-
 }

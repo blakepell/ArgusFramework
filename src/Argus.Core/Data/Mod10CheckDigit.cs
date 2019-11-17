@@ -6,9 +6,8 @@ using Argus.Extensions;
 namespace Argus.Data
 {
     /// <summary>
-    /// Shared methods for calculating and verifying MOD10 check digits.
+    ///     Shared methods for calculating and verifying MOD10 check digits.
     /// </summary>
-    /// <remarks></remarks>
     public class Mod10CheckDigit
     {
         //*********************************************************************************************************************
@@ -16,19 +15,19 @@ namespace Argus.Data
         //             Class:  Mod10CheckDigit
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  05/20/2013
-        //      Last Updated:  04/13/2016
+        //      Last Updated:  11/17/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns a check digit for a specified string.
+        ///     Returns a check digit for a specified string.
         /// </summary>
         /// <param name="txt">The string value to create a check digit for</param>
         /// <returns>An integer check digit</returns>
         public static int Calculate(string txt)
         {
-            List<string> baseList = new List<string>();
+            var baseList = new List<string>();
 
             txt = txt.ToUpper();
 
@@ -37,12 +36,12 @@ namespace Argus.Data
                 baseList.Add(GetValue(txt.Substring(x, 1)));
             }
 
-            List<string> calcList = new List<string>();
+            var calcList = new List<string>();
 
             // Get the new values
             for (int x = 0; x <= baseList.Count - 1; x++)
             {
-                if (x.IsEven() == true)
+                if (x.IsEven())
                 {
                     calcList.Add((Convert.ToInt32(baseList[x]) * 1).ToString());
                 }
@@ -51,7 +50,7 @@ namespace Argus.Data
                     calcList.Add((Convert.ToInt32(baseList[x]) * 2).ToString());
                 }
             }
-            
+
             // Pad any single digits
             for (int x = 0; x <= calcList.Count - 1; x++)
             {
@@ -62,7 +61,7 @@ namespace Argus.Data
             }
 
             // Bust these all up into single digits
-            List<int> digitList = new List<int>();
+            var digitList = new List<int>();
 
             for (int x = 0; x <= calcList.Count - 1; x++)
             {
@@ -78,27 +77,23 @@ namespace Argus.Data
             {
                 return 0;
             }
-            else
-            {
-                return 10 - lastDigit;
-            }
 
+            return 10 - lastDigit;
         }
 
         /// <summary>
-        /// Whether or not the specified value is correct (e.g. the check digit matches the rest of the provided value).  The inputted value would
-        /// be the string with the check digit (e.g., a full account number).
+        ///     Whether or not the specified value is correct (e.g. the check digit matches the rest of the provided value).  The inputted value would
+        ///     be the string with the check digit (e.g., a full account number).
         /// </summary>
         /// <param name="val">The value with the check digit to validate.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static bool IsValid(string val)
         {
-            if (string.IsNullOrWhiteSpace(val) == true)
+            if (string.IsNullOrWhiteSpace(val))
             {
                 return false;
             }
-            else if (val.Length == 1)
+
+            if (val.Length == 1)
             {
                 return false;
             }
@@ -112,15 +107,12 @@ namespace Argus.Data
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
-
         /// <summary>
-        /// Returns the lookup value as specified in the MOD-10 documentation.
+        ///     Returns the lookup value as specified in the MOD-10 documentation.
         /// </summary>
         public static string GetValue(string val)
         {
@@ -212,9 +204,6 @@ namespace Argus.Data
                 default:
                     throw new Exception($"Invalid input. '{val}' is an unsupported character.");
             }
-
         }
-
     }
-
 }

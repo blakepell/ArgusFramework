@@ -4,17 +4,16 @@ using System.Diagnostics;
 
 namespace Argus.Data
 {
-
     /// <summary>
-    /// Copies a table from one database to another.  The only requirement is that the table schema is identical.
+    ///     Copies a table from one database to another.  The only requirement is that the table schema is identical.
     /// </summary>
     /// <remarks>
-    /// This class allows for copying from one database table to another with the same schema (even
-    /// across database platforms as long as they have an ADO.Net provider).  This code was based off
-    /// of C# source from:  http://www.codeproject.com/KB/database/GenericCopyTableDataFcn.aspx
-    /// The additions to the original source include table deletion/truncation options, transaction
-    /// support, variable symbol toggling, last elapsed time tracking and the ability to toggle on
-    /// SQL Server specific data type checking if needed.
+    ///     This class allows for copying from one database table to another with the same schema (even
+    ///     across database platforms as long as they have an ADO.Net provider).  This code was based off
+    ///     of C# source from:  http://www.codeproject.com/KB/database/GenericCopyTableDataFcn.aspx
+    ///     The additions to the original source include table deletion/truncation options, transaction
+    ///     support, variable symbol toggling, last elapsed time tracking and the ability to toggle on
+    ///     SQL Server specific data type checking if needed.
     /// </remarks>
     public class CopyTable
     {
@@ -23,21 +22,87 @@ namespace Argus.Data
         //             Class:  CopyTable
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  08/21/2008
-        //      Last Updated:  04/10/2016
+        //      Last Updated:  11/17/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Constructor
+        ///     Enumeration for how deletions should be handled.
         /// </summary>
         /// <remarks></remarks>
-        public CopyTable()
+        public enum DeleteAction
         {
+            /// <summary>
+            /// Uses a SQL delete command to delete the table data.
+            /// </summary>
+            DeleteTableData,
+            /// <summary>
+            /// Uses a SQL truncate command to delete the table data.
+            /// </summary>
+            TruncateTableData,
+            /// <summary>
+            /// Performs no deletion action.
+            /// </summary>
+            NoAction
         }
+        
+        /// <summary>
+        ///     Whether or not to close and dispose of the connections after the CopyTable command has executed.  This is false
+        ///     by default meaning that the database connections will be closed and disposed of.  If you set this to true, they
+        ///     will be left open and you will be responsible for closing and cleaning them up.
+        /// </summary>
+        /// <value></value>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public bool LeaveConnectionsOpen { get; set; } = false;
 
         /// <summary>
-        /// Copies the data from a source table to a destination table with the same schema.
+        ///     Whether or not the destination connection is a Sql Server.  This allows us to have Sql Server specific checks in but
+        ///     not mess up other provider types
+        /// </summary>
+        /// <value></value>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public bool IsDestinationSqlServer { get; set; } = false;
+
+        /// <summary>
+        ///     The symbol to use in the prepare statement.  @ is the default in this class which works with SQL Server.  Other ADO.Net providers may require
+        ///     another symbol like a ?.
+        /// </summary>
+        /// <value></value>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public string VariableSymbol { get; set; } = "@";
+
+        /// <summary>
+        ///     What action to take with the destination table before the load begins.
+        /// </summary>
+        /// <value></value>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public DeleteAction DeleteDestinationTableAction { get; set; } = DeleteAction.NoAction;
+
+        /// <summary>
+        ///     Whether or not the code should use a database transaction.  The result of this will be that if there are any
+        ///     errors the entire load will be rolled back (including the delete statement).  The transaction insert performs
+        ///     much faster than individual inserts.
+        /// </summary>
+        /// <value></value>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public bool UseTransaction { get; set; } = false;
+
+        /// <summary>
+        ///     The time elapsed in milliseconds for the last database copy.
+        /// </summary>
+        /// <value></value>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public double TimeElapsed { get; private set; }
+
+        /// <summary>
+        ///     Copies the data from a source table to a destination table with the same schema.
         /// </summary>
         /// <param name="sourceConnection">The source connection.  This should at a minimum be initialized but it can either be opened or not at this point.</param>
         /// <param name="destinationConnection">The destination connection.  This should at a minimum be initialized but it can either be opened or not at this point.</param>
@@ -48,10 +113,10 @@ namespace Argus.Data
         {
             // If exceptions occur we'll let them be handled in the source code that is calling this
 
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
 
-            IDbCommand sourceCmd = sourceConnection.CreateCommand();
+            var sourceCmd = sourceConnection.CreateCommand();
             sourceCmd.CommandText = sourceSql;
 
             if (sourceConnection.State != ConnectionState.Open)
@@ -65,54 +130,57 @@ namespace Argus.Data
             }
 
             IDbTransaction destinationTransaction = null;
-            if (_useTransaction == true)
+
+            if (this.UseTransaction)
             {
                 destinationTransaction = destinationConnection.BeginTransaction();
             }
 
             // Whether or not we should perform some kind of delete action on the destination table first.  
-            switch (_deleteDestinationTableAction)
+            switch (this.DeleteDestinationTableAction)
             {
                 case DeleteAction.DeleteTableData:
+                {
+                    var cmdDelete = destinationConnection.CreateCommand();
+
+                    if (this.UseTransaction)
                     {
-                        IDbCommand cmdDelete = destinationConnection.CreateCommand();
-
-                        if (_useTransaction == true)
-                        {
-                            // Compiler warning here, it won't get here though without the transaction being initialized
-                            cmdDelete.Transaction = destinationTransaction;
-                        }
-
-                        cmdDelete.CommandText = string.Format("delete from {0}", destinationTableName);
-                        cmdDelete.ExecuteNonQuery();
-                        cmdDelete.Dispose();
-                        cmdDelete = null;
-                        break;
+                        // Compiler warning here, it won't get here though without the transaction being initialized
+                        cmdDelete.Transaction = destinationTransaction;
                     }
+
+                    cmdDelete.CommandText = $"delete from {destinationTableName}";
+                    cmdDelete.ExecuteNonQuery();
+                    cmdDelete.Dispose();
+                    cmdDelete = null;
+
+                    break;
+                }
                 case DeleteAction.TruncateTableData:
+                {
+                    var cmdDelete = destinationConnection.CreateCommand();
+
+                    if (this.UseTransaction)
                     {
-                        IDbCommand cmdDelete = destinationConnection.CreateCommand();
-
-                        if (_useTransaction == true)
-                        {
-                            // Compiler warning here, it won't get here though without the transaction being initialized
-                            cmdDelete.Transaction = destinationTransaction;
-                        }
-
-                        cmdDelete.CommandText = string.Format("truncate table {0}", destinationTableName);
-                        cmdDelete.ExecuteNonQuery();
-                        cmdDelete.Dispose();
-                        cmdDelete = null;
-                        break;
+                        // Compiler warning here, it won't get here though without the transaction being initialized
+                        cmdDelete.Transaction = destinationTransaction;
                     }
+
+                    cmdDelete.CommandText = $"truncate table {destinationTableName}";
+                    cmdDelete.ExecuteNonQuery();
+                    cmdDelete.Dispose();
+                    cmdDelete = null;
+
+                    break;
+                }
             }
 
-            IDataReader dr = sourceCmd.ExecuteReader();
-            DataTable schemaTable = dr.GetSchemaTable();
+            var dr = sourceCmd.ExecuteReader();
+            var schemaTable = dr.GetSchemaTable();
 
-            IDbCommand insertCmd = destinationConnection.CreateCommand();
+            var insertCmd = destinationConnection.CreateCommand();
 
-            if (_useTransaction == true)
+            if (this.UseTransaction)
             {
                 insertCmd.Transaction = destinationTransaction;
             }
@@ -129,29 +197,28 @@ namespace Argus.Data
                     columnsSql += ", ";
                 }
 
-                paramsSql += _variableSymbol + row["ColumnName"].ToString().Replace(" ", "");
-                columnsSql += string.Format("[{0}]", row["ColumnName"].ToString());
+                paramsSql += this.VariableSymbol + row["ColumnName"].ToString().Replace(" ", "");
+                columnsSql += $"[{row["ColumnName"]}]";
 
-                IDbDataParameter param = insertCmd.CreateParameter();
-                param.ParameterName = _variableSymbol + row["ColumnName"].ToString().Replace(" ", "");
+                var param = insertCmd.CreateParameter();
+                param.ParameterName = this.VariableSymbol + row["ColumnName"].ToString().Replace(" ", "");
                 param.SourceColumn = row["ColumnName"].ToString();
 
-                if (row["DataType"] is System.DateTime)
+                if (row["DataType"] is DateTime)
                 {
                     param.DbType = DbType.DateTime;
                 }
 
                 insertCmd.Parameters.Add(param);
-
             }
 
-            insertCmd.CommandText = string.Format("insert into [{0}] ( {1} ) values ( {2} )", destinationTableName, columnsSql, paramsSql);
+            insertCmd.CommandText = $"insert into [{destinationTableName}] ( {columnsSql} ) values ( {paramsSql} )";
 
             while (dr.Read())
             {
                 foreach (IDbDataParameter param in insertCmd.Parameters)
                 {
-                    object col = dr[param.SourceColumn];
+                    var col = dr[param.SourceColumn];
 
                     // Special check for SQL Server and datetimes less than 1753
                     if (param.DbType == DbType.DateTime)
@@ -161,31 +228,30 @@ namespace Argus.Data
                             if (Convert.ToDateTime(col).Year < 1753)
                             {
                                 param.Value = DBNull.Value;
+
                                 continue;
                             }
                         }
                     }
 
                     param.Value = col;
-
                 }
 
                 insertCmd.ExecuteNonQuery();
-
             }
 
             dr.Close();
             dr = null;
 
-            if (_useTransaction == true)
+            if (this.UseTransaction)
             {
                 // Compiler warning here, it won't get here though without the transaction being initialized
-                destinationTransaction.Commit();
-                destinationTransaction.Dispose();
+                destinationTransaction?.Commit();
+                destinationTransaction?.Dispose();
             }
 
             // Cleanup
-            if (_leaveConnectionsOpen == false)
+            if (this.LeaveConnectionsOpen == false)
             {
                 sourceConnection.Close();
                 sourceConnection.Dispose();
@@ -194,12 +260,11 @@ namespace Argus.Data
             }
 
             sw.Stop();
-            _timeElapsed = sw.ElapsedMilliseconds;
-
+            this.TimeElapsed = sw.ElapsedMilliseconds;
         }
 
         /// <summary>
-        /// Copies the data from a source IDataReader to a destination table with the same schema.  This assumes that the IDataReader is open and not read.
+        ///     Copies the data from a source IDataReader to a destination table with the same schema.  This assumes that the IDataReader is open and not read.
         /// </summary>
         /// <param name="destinationConnection">The destination connection.  This should at a minimum be initialized but it can either be opened or not at this point.</param>
         /// <param name="destinationTableName">The name of the destination table, the schema of which should match the source table.</param>
@@ -207,7 +272,7 @@ namespace Argus.Data
         public void ExecuteCopyTable(IDataReader dr, IDbConnection destinationConnection, string destinationTableName)
         {
             // If exceptions occur we'll let them be handled in the source code that is calling this
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
 
             if (destinationConnection.State != ConnectionState.Open)
@@ -216,53 +281,55 @@ namespace Argus.Data
             }
 
             IDbTransaction destinationTransaction = null;
-            if (_useTransaction == true)
+
+            if (this.UseTransaction)
             {
                 destinationTransaction = destinationConnection.BeginTransaction();
             }
 
             // Whether or not we should perform some kind of delete action on the destination table first.  
-            switch (_deleteDestinationTableAction)
+            switch (this.DeleteDestinationTableAction)
             {
                 case DeleteAction.DeleteTableData:
+                {
+                    var cmdDelete = destinationConnection.CreateCommand();
+
+                    if (this.UseTransaction)
                     {
-                        IDbCommand cmdDelete = destinationConnection.CreateCommand();
-
-                        if (_useTransaction == true)
-                        {
-                            // Compiler warning here, it won't get here though without the transaction being initialized
-                            cmdDelete.Transaction = destinationTransaction;
-                        }
-
-                        cmdDelete.CommandText = string.Format("delete from {0}", destinationTableName);
-                        cmdDelete.ExecuteNonQuery();
-                        cmdDelete.Dispose();
-                        cmdDelete = null;
-                        break;
+                        // Compiler warning here, it won't get here though without the transaction being initialized
+                        cmdDelete.Transaction = destinationTransaction;
                     }
+
+                    cmdDelete.CommandText = $"delete from {destinationTableName}";
+                    cmdDelete.ExecuteNonQuery();
+                    cmdDelete.Dispose();
+                    cmdDelete = null;
+
+                    break;
+                }
                 case DeleteAction.TruncateTableData:
+                {
+                    var cmdDelete = destinationConnection.CreateCommand();
+
+                    if (this.UseTransaction)
                     {
-                        IDbCommand cmdDelete = destinationConnection.CreateCommand();
-
-                        if (_useTransaction == true)
-                        {
-                            // Compiler warning here, it won't get here though without the transaction being initialized
-                            cmdDelete.Transaction = destinationTransaction;
-                        }
-
-                        cmdDelete.CommandText = string.Format("truncate table {0}", destinationTableName);
-                        cmdDelete.ExecuteNonQuery();
-                        cmdDelete.Dispose();
-                        cmdDelete = null;
-                        break;
+                        // Compiler warning here, it won't get here though without the transaction being initialized
+                        cmdDelete.Transaction = destinationTransaction;
                     }
+
+                    cmdDelete.CommandText = $"truncate table {destinationTableName}";
+                    cmdDelete.ExecuteNonQuery();
+                    cmdDelete.Dispose();
+                    cmdDelete = null;
+
+                    break;
+                }
             }
 
-            DataTable schemaTable = dr.GetSchemaTable();
+            var schemaTable = dr.GetSchemaTable();
+            var insertCmd = destinationConnection.CreateCommand();
 
-            IDbCommand insertCmd = destinationConnection.CreateCommand();
-
-            if (_useTransaction == true)
+            if (this.UseTransaction)
             {
                 insertCmd.Transaction = destinationTransaction;
             }
@@ -279,29 +346,28 @@ namespace Argus.Data
                     columnsSql += ", ";
                 }
 
-                paramsSql += _variableSymbol + row["ColumnName"].ToString().Replace(" ", "");
-                columnsSql += string.Format("[{0}]", row["ColumnName"].ToString());
+                paramsSql += this.VariableSymbol + row["ColumnName"].ToString().Replace(" ", "");
+                columnsSql += $"[{row["ColumnName"]}]";
 
-                IDbDataParameter param = insertCmd.CreateParameter();
-                param.ParameterName = _variableSymbol + row["ColumnName"].ToString().Replace(" ", "");
+                var param = insertCmd.CreateParameter();
+                param.ParameterName = this.VariableSymbol + row["ColumnName"].ToString().Replace(" ", "");
                 param.SourceColumn = row["ColumnName"].ToString();
 
-                if (row["DataType"] is System.DateTime)
+                if (row["DataType"] is DateTime)
                 {
                     param.DbType = DbType.DateTime;
                 }
 
                 insertCmd.Parameters.Add(param);
-
             }
 
-            insertCmd.CommandText = string.Format("insert into [{0}] ( {1} ) values ( {2} )", destinationTableName, columnsSql, paramsSql);
+            insertCmd.CommandText = $"insert into [{destinationTableName}] ( {columnsSql} ) values ( {paramsSql} )";
 
             while (dr.Read())
             {
                 foreach (IDbDataParameter param in insertCmd.Parameters)
                 {
-                    object col = dr[param.SourceColumn];
+                    var col = dr[param.SourceColumn];
 
                     // Special check for SQL Server and datetimes less than 1753
                     if (param.DbType == DbType.DateTime)
@@ -311,135 +377,37 @@ namespace Argus.Data
                             if (Convert.ToDateTime(col).Year < 1753)
                             {
                                 param.Value = DBNull.Value;
+
                                 continue;
                             }
                         }
                     }
 
                     param.Value = col;
-
                 }
 
                 insertCmd.ExecuteNonQuery();
-
             }
 
             dr.Close();
             dr = null;
 
-            if (_useTransaction == true)
+            if (this.UseTransaction)
             {
                 // Compiler warning here, it won't get here though without the transaction being initialized
-                destinationTransaction.Commit();
-                destinationTransaction.Dispose();
+                destinationTransaction?.Commit();
+                destinationTransaction?.Dispose();
             }
 
             // Cleanup
-            if (_leaveConnectionsOpen == false)
+            if (this.LeaveConnectionsOpen == false)
             {
                 destinationConnection.Close();
                 destinationConnection.Dispose();
             }
 
             sw.Stop();
-            _timeElapsed = sw.ElapsedMilliseconds;
-
+            this.TimeElapsed = sw.ElapsedMilliseconds;
         }
-
-        private bool _leaveConnectionsOpen = false;
-        /// <summary>
-        /// Whether or not to close and dispose of the connections after the CopyTable command has executed.  This is false
-        /// by default meaning that the database connections will be closed and disposed of.  If you set this to true, they
-        /// will be left open and you will be responsible for closing and cleaning them up.
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public bool LeaveConnectionsOpen
-        {
-            get { return _leaveConnectionsOpen; }
-            set { _leaveConnectionsOpen = value; }
-        }
-
-        private bool _isDestinationSqlServer = false;
-        /// <summary>
-        /// Whether or not the destination connection is a Sql Server.  This allows us to have Sql Server specific checks in but
-        /// not mess up other provider types
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public bool IsDestinationSqlServer
-        {
-            get { return _isDestinationSqlServer; }
-            set { _isDestinationSqlServer = value; }
-        }
-
-        private string _variableSymbol = "@";
-        /// <summary>
-        /// The symbol to use in the prepare statement.  @ is the default in this class which works with SQL Server.  Other ADO.Net providers may require
-        /// another symbol like a ?.
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public string VariableSymbol
-        {
-            get { return _variableSymbol; }
-            set { _variableSymbol = value; }
-        }
-
-        /// <summary>
-        /// Enumeration for how deletions should be handled.
-        /// </summary>
-        /// <remarks></remarks>
-        public enum DeleteAction
-        {
-            DeleteTableData,
-            TruncateTableData,
-            NoAction
-        }
-
-        private DeleteAction _deleteDestinationTableAction = DeleteAction.NoAction;
-        /// <summary>
-        /// What action to take with the destination table before the load begins.
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public DeleteAction DeleteDestinationTableAction
-        {
-            get { return _deleteDestinationTableAction; }
-            set { _deleteDestinationTableAction = value; }
-        }
-
-        private bool _useTransaction = false;
-        /// <summary>
-        /// Whether or not the code should use a database transaction.  The result of this will be that if there are any
-        /// errors the entire load will be rolled back (including the delete statement).  The transaction insert performs
-        /// much faster than individual inserts.
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public bool UseTransaction
-        {
-            get { return _useTransaction; }
-            set { _useTransaction = value; }
-        }
-
-        private double _timeElapsed = 0;
-        /// <summary>
-        /// The time elapsed in milleseconds for the last database copy.
-        /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public double TimeElapsed
-        {
-            get { return _timeElapsed; }
-        }
-
     }
-
 }
