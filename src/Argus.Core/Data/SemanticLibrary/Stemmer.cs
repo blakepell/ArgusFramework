@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Argus.Data.SemanticLibrary
+﻿namespace Argus.Data.SemanticLibrary
 {
     /*
 	   Porter stemmer in CSharp, based on the Java port. The original paper is in
@@ -55,7 +51,6 @@ namespace Argus.Data.SemanticLibrary
 	   Cheers Leif
 	
 	*/
-
     /**
 	  * Stemmer, implementing the Porter Stemming Algorithm
 	  *
@@ -71,25 +66,23 @@ namespace Argus.Data.SemanticLibrary
 
     public class Stemmer
     {
-        private IPorterStemmer porter;
         public Stemmer()
         {
-            this.porter = new PorterStemmer();
+            this.Porter = new PorterStemmer();
         }
 
-        public IPorterStemmer Porter
-        {
-            get { return porter; }
-        }
+        public IPorterStemmer Porter { get; }
     }
 
     internal class PorterStemmer : IPorterStemmer
     {
+        private static readonly int INC = 200;
         private char[] b;
-        private int i,     /* offset into b */
-            i_end, /* offset to end of stemmed word */
-            j, k;
-        private static int INC = 200;
+
+        private int i, /* offset into b */
+                    i_end, /* offset to end of stemmed word */
+                    j,
+                    k;
         /* unit of size whereby b is increased */
 
         public PorterStemmer()
@@ -102,9 +95,10 @@ namespace Argus.Data.SemanticLibrary
         /* Implementation of the .NET interface - added as part of realease 4 (Leif) */
         public string stemTerm(string s)
         {
-            setTerm(s);
-            stem();
-            return getTerm();
+            this.setTerm(s);
+            this.stem();
+
+            return this.getTerm();
         }
 
         /*
@@ -118,28 +112,26 @@ namespace Argus.Data.SemanticLibrary
 			(Leif)
 		*/
 
-
-
-        void setTerm(string s)
+        private void setTerm(string s)
         {
             i = s.Length;
-            char[] new_b = new char[i];
+            var new_b = new char[i];
+
             for (int c = 0; c < i; c++)
+            {
                 new_b[c] = s[c];
+            }
 
             b = new_b;
-
         }
 
         public string getTerm()
         {
-            return new String(b, 0, i_end);
+            return new string(b, 0, i_end);
         }
-
 
         /* Old interface to the class - left for posterity. However, it is not
 		 * used when accessing the class via .NET (Leif)*/
-
         /**
 		 * Add a character to the word being stemmed.  When you are finished
 		 * adding characters, you can call stem(void) to stem the word.
@@ -149,14 +141,18 @@ namespace Argus.Data.SemanticLibrary
         {
             if (i == b.Length)
             {
-                char[] new_b = new char[i + INC];
+                var new_b = new char[i + INC];
+
                 for (int c = 0; c < i; c++)
+                {
                     new_b[c] = b[c];
+                }
+
                 b = new_b;
             }
+
             b[i++] = ch;
         }
-
 
         /** Adds wLen characters to the word being stemmed contained in a portion
 		 * of a char[] array. This is like repeated calls of add(char ch), but
@@ -167,13 +163,20 @@ namespace Argus.Data.SemanticLibrary
         {
             if (i + wLen >= b.Length)
             {
-                char[] new_b = new char[i + wLen + INC];
+                var new_b = new char[i + wLen + INC];
+
                 for (int c = 0; c < i; c++)
+                {
                     new_b[c] = b[c];
+                }
+
                 b = new_b;
             }
+
             for (int c = 0; c < wLen; c++)
+            {
                 b[i++] = w[c];
+            }
         }
 
         /**
@@ -183,7 +186,7 @@ namespace Argus.Data.SemanticLibrary
 		 */
         public override string ToString()
         {
-            return new String(b, 0, i_end);
+            return new string(b, 0, i_end);
         }
 
         /**
@@ -209,8 +212,12 @@ namespace Argus.Data.SemanticLibrary
         {
             switch (b[i])
             {
-                case 'a': case 'e': case 'i': case 'o': case 'u': return false;
-                case 'y': return (i == 0) ? true : !cons(i - 1);
+                case 'a':
+                case 'e':
+                case 'i':
+                case 'o':
+                case 'u': return false;
+                case 'y': return i == 0 ? true : !this.cons(i - 1);
                 default: return true;
             }
         }
@@ -229,28 +236,59 @@ namespace Argus.Data.SemanticLibrary
         {
             int n = 0;
             int i = 0;
+
             while (true)
             {
-                if (i > j) return n;
-                if (!cons(i)) break; i++;
+                if (i > j)
+                {
+                    return n;
+                }
+
+                if (!this.cons(i))
+                {
+                    break;
+                }
+
+                i++;
             }
+
             i++;
+
             while (true)
             {
                 while (true)
                 {
-                    if (i > j) return n;
-                    if (cons(i)) break;
+                    if (i > j)
+                    {
+                        return n;
+                    }
+
+                    if (this.cons(i))
+                    {
+                        break;
+                    }
+
                     i++;
                 }
+
                 i++;
                 n++;
+
                 while (true)
                 {
-                    if (i > j) return n;
-                    if (!cons(i)) break;
+                    if (i > j)
+                    {
+                        return n;
+                    }
+
+                    if (!this.cons(i))
+                    {
+                        break;
+                    }
+
                     i++;
                 }
+
                 i++;
             }
         }
@@ -259,9 +297,15 @@ namespace Argus.Data.SemanticLibrary
         private bool vowelinstem()
         {
             int i;
+
             for (i = 0; i <= j; i++)
-                if (!cons(i))
+            {
+                if (!this.cons(i))
+                {
                     return true;
+                }
+            }
+
             return false;
         }
 
@@ -269,10 +313,16 @@ namespace Argus.Data.SemanticLibrary
         private bool doublec(int j)
         {
             if (j < 1)
+            {
                 return false;
+            }
+
             if (b[j] != b[j - 1])
+            {
                 return false;
-            return cons(j);
+            }
+
+            return this.cons(j);
         }
 
         /* cvc(i) is true <=> i-2,i-1,i has the form consonant - vowel - consonant
@@ -285,45 +335,69 @@ namespace Argus.Data.SemanticLibrary
 		*/
         private bool cvc(int i)
         {
-            if (i < 2 || !cons(i) || cons(i - 1) || !cons(i - 2))
+            if (i < 2 || !this.cons(i) || this.cons(i - 1) || !this.cons(i - 2))
+            {
                 return false;
+            }
+
             int ch = b[i];
+
             if (ch == 'w' || ch == 'x' || ch == 'y')
+            {
                 return false;
+            }
+
             return true;
         }
 
-        private bool ends(String s)
+        private bool ends(string s)
         {
             int l = s.Length;
             int o = k - l + 1;
+
             if (o < 0)
+            {
                 return false;
-            char[] sc = s.ToCharArray();
+            }
+
+            var sc = s.ToCharArray();
+
             for (int i = 0; i < l; i++)
+            {
                 if (b[o + i] != sc[i])
+                {
                     return false;
+                }
+            }
+
             j = k - l;
+
             return true;
         }
 
         /* setto(s) sets (j+1),...k to the characters in the string s, readjusting
 		   k. */
-        private void setto(String s)
+        private void setto(string s)
         {
             int l = s.Length;
             int o = j + 1;
-            char[] sc = s.ToCharArray();
+            var sc = s.ToCharArray();
+
             for (int i = 0; i < l; i++)
+            {
                 b[o + i] = sc[i];
+            }
+
             k = j + l;
         }
 
         /* r(s) is used further down. */
-        private void r(String s)
+        private void r(string s)
         {
-            if (m() > 0)
-                setto(s);
+            if (this.m() > 0)
+            {
+                this.setto(s);
+            }
         }
 
         /* step1() gets rid of plurals and -ed or -ing. e.g.
@@ -351,43 +425,67 @@ namespace Argus.Data.SemanticLibrary
         {
             if (b[k] == 's')
             {
-                if (ends("sses"))
+                if (this.ends("sses"))
+                {
                     k -= 2;
-                else if (ends("ies"))
-                    setto("i");
+                }
+                else if (this.ends("ies"))
+                {
+                    this.setto("i");
+                }
                 else if (b[k - 1] != 's')
+                {
                     k--;
+                }
             }
-            if (ends("eed"))
+
+            if (this.ends("eed"))
             {
-                if (m() > 0)
+                if (this.m() > 0)
+                {
                     k--;
+                }
             }
-            else if ((ends("ed") || ends("ing")) && vowelinstem())
+            else if ((this.ends("ed") || this.ends("ing")) && this.vowelinstem())
             {
                 k = j;
-                if (ends("at"))
-                    setto("ate");
-                else if (ends("bl"))
-                    setto("ble");
-                else if (ends("iz"))
-                    setto("ize");
-                else if (doublec(k))
+
+                if (this.ends("at"))
+                {
+                    this.setto("ate");
+                }
+                else if (this.ends("bl"))
+                {
+                    this.setto("ble");
+                }
+                else if (this.ends("iz"))
+                {
+                    this.setto("ize");
+                }
+                else if (this.doublec(k))
                 {
                     k--;
                     int ch = b[k];
+
                     if (ch == 'l' || ch == 's' || ch == 'z')
+                    {
                         k++;
+                    }
                 }
-                else if (m() == 1 && cvc(k)) setto("e");
+                else if (this.m() == 1 && this.cvc(k))
+                {
+                    this.setto("e");
+                }
             }
         }
 
         /* step2() turns terminal y to i when there is another vowel in the stem. */
         private void step2()
         {
-            if (ends("y") && vowelinstem())
+            if (this.ends("y") && this.vowelinstem())
+            {
                 b[k] = 'i';
+            }
         }
 
         /* step3() maps double suffices to single ones. so -ization ( = -ize plus
@@ -396,49 +494,159 @@ namespace Argus.Data.SemanticLibrary
         private void step3()
         {
             if (k == 0)
+            {
                 return;
+            }
 
             /* For Bug 1 */
             switch (b[k - 1])
             {
                 case 'a':
-                    if (ends("ational")) { r("ate"); break; }
-                    if (ends("tional")) { r("tion"); break; }
+                    if (this.ends("ational"))
+                    {
+                        this.r("ate");
+
+                        break;
+                    }
+
+                    if (this.ends("tional"))
+                    {
+                        this.r("tion");
+                    }
+
                     break;
                 case 'c':
-                    if (ends("enci")) { r("ence"); break; }
-                    if (ends("anci")) { r("ance"); break; }
+                    if (this.ends("enci"))
+                    {
+                        this.r("ence");
+
+                        break;
+                    }
+
+                    if (this.ends("anci"))
+                    {
+                        this.r("ance");
+                    }
+
                     break;
                 case 'e':
-                    if (ends("izer")) { r("ize"); break; }
+                    if (this.ends("izer"))
+                    {
+                        this.r("ize");
+                    }
+
                     break;
                 case 'l':
-                    if (ends("bli")) { r("ble"); break; }
-                    if (ends("alli")) { r("al"); break; }
-                    if (ends("entli")) { r("ent"); break; }
-                    if (ends("eli")) { r("e"); break; }
-                    if (ends("ousli")) { r("ous"); break; }
+                    if (this.ends("bli"))
+                    {
+                        this.r("ble");
+
+                        break;
+                    }
+
+                    if (this.ends("alli"))
+                    {
+                        this.r("al");
+
+                        break;
+                    }
+
+                    if (this.ends("entli"))
+                    {
+                        this.r("ent");
+
+                        break;
+                    }
+
+                    if (this.ends("eli"))
+                    {
+                        this.r("e");
+
+                        break;
+                    }
+
+                    if (this.ends("ousli"))
+                    {
+                        this.r("ous");
+                    }
+
                     break;
                 case 'o':
-                    if (ends("ization")) { r("ize"); break; }
-                    if (ends("ation")) { r("ate"); break; }
-                    if (ends("ator")) { r("ate"); break; }
+                    if (this.ends("ization"))
+                    {
+                        this.r("ize");
+
+                        break;
+                    }
+
+                    if (this.ends("ation"))
+                    {
+                        this.r("ate");
+
+                        break;
+                    }
+
+                    if (this.ends("ator"))
+                    {
+                        this.r("ate");
+                    }
+
                     break;
                 case 's':
-                    if (ends("alism")) { r("al"); break; }
-                    if (ends("iveness")) { r("ive"); break; }
-                    if (ends("fulness")) { r("ful"); break; }
-                    if (ends("ousness")) { r("ous"); break; }
+                    if (this.ends("alism"))
+                    {
+                        this.r("al");
+
+                        break;
+                    }
+
+                    if (this.ends("iveness"))
+                    {
+                        this.r("ive");
+
+                        break;
+                    }
+
+                    if (this.ends("fulness"))
+                    {
+                        this.r("ful");
+
+                        break;
+                    }
+
+                    if (this.ends("ousness"))
+                    {
+                        this.r("ous");
+                    }
+
                     break;
                 case 't':
-                    if (ends("aliti")) { r("al"); break; }
-                    if (ends("iviti")) { r("ive"); break; }
-                    if (ends("biliti")) { r("ble"); break; }
+                    if (this.ends("aliti"))
+                    {
+                        this.r("al");
+
+                        break;
+                    }
+
+                    if (this.ends("iviti"))
+                    {
+                        this.r("ive");
+
+                        break;
+                    }
+
+                    if (this.ends("biliti"))
+                    {
+                        this.r("ble");
+                    }
+
                     break;
                 case 'g':
-                    if (ends("logi")) { r("log"); break; }
-                    break;
-                default:
+                    if (this.ends("logi"))
+                    {
+                        this.r("log");
+                    }
+
                     break;
             }
         }
@@ -449,19 +657,53 @@ namespace Argus.Data.SemanticLibrary
             switch (b[k])
             {
                 case 'e':
-                    if (ends("icate")) { r("ic"); break; }
-                    if (ends("ative")) { r(""); break; }
-                    if (ends("alize")) { r("al"); break; }
+                    if (this.ends("icate"))
+                    {
+                        this.r("ic");
+
+                        break;
+                    }
+
+                    if (this.ends("ative"))
+                    {
+                        this.r("");
+
+                        break;
+                    }
+
+                    if (this.ends("alize"))
+                    {
+                        this.r("al");
+                    }
+
                     break;
                 case 'i':
-                    if (ends("iciti")) { r("ic"); break; }
+                    if (this.ends("iciti"))
+                    {
+                        this.r("ic");
+                    }
+
                     break;
                 case 'l':
-                    if (ends("ical")) { r("ic"); break; }
-                    if (ends("ful")) { r(""); break; }
+                    if (this.ends("ical"))
+                    {
+                        this.r("ic");
+
+                        break;
+                    }
+
+                    if (this.ends("ful"))
+                    {
+                        this.r("");
+                    }
+
                     break;
                 case 's':
-                    if (ends("ness")) { r(""); break; }
+                    if (this.ends("ness"))
+                    {
+                        this.r("");
+                    }
+
                     break;
             }
         }
@@ -470,50 +712,143 @@ namespace Argus.Data.SemanticLibrary
         private void step5()
         {
             if (k == 0)
+            {
                 return;
+            }
 
             /* for Bug 1 */
             switch (b[k - 1])
             {
                 case 'a':
-                    if (ends("al")) break; return;
+                    if (this.ends("al"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 'c':
-                    if (ends("ance")) break;
-                    if (ends("ence")) break; return;
+                    if (this.ends("ance"))
+                    {
+                        break;
+                    }
+
+                    if (this.ends("ence"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 'e':
-                    if (ends("er")) break; return;
+                    if (this.ends("er"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 'i':
-                    if (ends("ic")) break; return;
+                    if (this.ends("ic"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 'l':
-                    if (ends("able")) break;
-                    if (ends("ible")) break; return;
+                    if (this.ends("able"))
+                    {
+                        break;
+                    }
+
+                    if (this.ends("ible"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 'n':
-                    if (ends("ant")) break;
-                    if (ends("ement")) break;
-                    if (ends("ment")) break;
+                    if (this.ends("ant"))
+                    {
+                        break;
+                    }
+
+                    if (this.ends("ement"))
+                    {
+                        break;
+                    }
+
+                    if (this.ends("ment"))
+                    {
+                        break;
+                    }
+
                     /* element etc. not stripped before the m */
-                    if (ends("ent")) break; return;
+                    if (this.ends("ent"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 'o':
-                    if (ends("ion") && j >= 0 && (b[j] == 's' || b[j] == 't')) break;
+                    if (this.ends("ion") && j >= 0 && (b[j] == 's' || b[j] == 't'))
+                    {
+                        break;
+                    }
+
                     /* j >= 0 fixes Bug 2 */
-                    if (ends("ou")) break; return;
+                    if (this.ends("ou"))
+                    {
+                        break;
+                    }
+
+                    return;
                 /* takes care of -ous */
                 case 's':
-                    if (ends("ism")) break; return;
+                    if (this.ends("ism"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 't':
-                    if (ends("ate")) break;
-                    if (ends("iti")) break; return;
+                    if (this.ends("ate"))
+                    {
+                        break;
+                    }
+
+                    if (this.ends("iti"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 'u':
-                    if (ends("ous")) break; return;
+                    if (this.ends("ous"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 'v':
-                    if (ends("ive")) break; return;
+                    if (this.ends("ive"))
+                    {
+                        break;
+                    }
+
+                    return;
                 case 'z':
-                    if (ends("ize")) break; return;
+                    if (this.ends("ize"))
+                    {
+                        break;
+                    }
+
+                    return;
                 default:
                     return;
             }
-            if (m() > 1)
+
+            if (this.m() > 1)
+            {
                 k = j;
+            }
         }
 
         /* step6() removes a final -e if m() > 1. */
@@ -523,12 +858,18 @@ namespace Argus.Data.SemanticLibrary
 
             if (b[k] == 'e')
             {
-                int a = m();
-                if (a > 1 || a == 1 && !cvc(k - 1))
+                int a = this.m();
+
+                if (a > 1 || a == 1 && !this.cvc(k - 1))
+                {
                     k--;
+                }
             }
-            if (b[k] == 'l' && doublec(k) && m() > 1)
+
+            if (b[k] == 'l' && this.doublec(k) && this.m() > 1)
+            {
                 k--;
+            }
         }
 
         /** Stem the word placed into the Stemmer buffer through calls to add().
@@ -539,19 +880,19 @@ namespace Argus.Data.SemanticLibrary
         public void stem()
         {
             k = i - 1;
+
             if (k > 1)
             {
-                step1();
-                step2();
-                step3();
-                step4();
-                step5();
-                step6();
+                this.step1();
+                this.step2();
+                this.step3();
+                this.step4();
+                this.step5();
+                this.step6();
             }
+
             i_end = k + 1;
             i = 0;
         }
-
-
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Argus.Data.SemanticLibrary
 {
@@ -28,15 +25,21 @@ namespace Argus.Data.SemanticLibrary
 
     public class Sentence
     {
-        public List<Word> Words { get; set; }
+        public Sentence()
+        {
+            this.Words = new List<Word>();
+        }
 
-        public Sentence() { Words = new List<Word>(); }
+        public List<Word> Words { get; set; }
     }
 
     public class Paragraph
     {
-        public List<Sentence> Sentences { get; set; }
+        public Paragraph()
+        {
+            this.Sentences = new List<Sentence>();
+        }
 
-        public Paragraph() { Sentences = new List<Sentence>(); }
+        public List<Sentence> Sentences { get; set; }
     }
 }
