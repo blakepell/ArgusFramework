@@ -3,9 +3,8 @@ using System.Text;
 
 namespace Argus.Extensions
 {
-
     /// <summary>
-    /// Extensions for Exceptions.
+    ///     Extensions for Exceptions.
     /// </summary>
     public static class ExceptionExtensions
     {
@@ -20,14 +19,12 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the Exception's method and StackTrace.  If an InnerException exists, it also returns the information on it.
+        ///     Returns the Exception's method and StackTrace.  If an InnerException exists, it also returns the information on it.
         /// </summary>
         /// <param name="ex"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static string ToFormattedString(this Exception ex)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine(ex.Message);
             sb.AppendLine(ex.StackTrace);
 
@@ -38,9 +35,6 @@ namespace Argus.Extensions
             }
 
             return sb.ToString();
-
         }
-
     }
-
 }

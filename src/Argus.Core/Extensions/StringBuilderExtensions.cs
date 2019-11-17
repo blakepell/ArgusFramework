@@ -3,9 +3,8 @@ using System.Text;
 
 namespace Argus.Extensions
 {
-
     /// <summary>
-    /// StringBuilder extension methods.
+    ///     StringBuilder extension methods.
     /// </summary>
     public static class StringBuilderExtensions
     {
@@ -20,28 +19,26 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Calls the StringBuilder AppendFormat method and then also calls AppendLine to add the default line terminator to the end
-        /// of the string
+        ///     Calls the StringBuilder AppendFormat method and then also calls AppendLine to add the default line terminator to the end
+        ///     of the string
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="format"></param>
         /// <param name="arguments"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static StringBuilder AppendLineFormat(this StringBuilder sb, string format, params object[] arguments)
         {
             sb.AppendFormat(format, arguments);
             sb.AppendLine();
+
             return sb;
         }
 
         /// <summary>
-        /// Appends the provided value if the condition is true.
+        ///     Appends the provided value if the condition is true.
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="condition"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static StringBuilder AppendIf(this StringBuilder sb, bool condition, string value)
         {
             if (condition)
@@ -53,13 +50,12 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Appends the provided formatted text if the condition is true.
+        ///     Appends the provided formatted text if the condition is true.
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="condition"></param>
         /// <param name="format"></param>
         /// <param name="arguments"></param>
-        /// <returns></returns>
         public static StringBuilder AppendFormatIf(this StringBuilder sb, bool condition, string format, params object[] arguments)
         {
             if (condition)
@@ -71,11 +67,10 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Appends a line if the condition is true.
+        ///     Appends a line if the condition is true.
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="condition"></param>
-        /// <returns></returns>
         public static StringBuilder AppendLineIf(this StringBuilder sb, bool condition)
         {
             if (condition)
@@ -87,10 +82,10 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Converts a StringBuilder to uppercase.
+        ///     Converts a StringBuilder to uppercase.
         /// </summary>
-        /// <param name="sb">A <see cref="System.Text.StringBuilder"/> to convert to uppercase.</param>
-        /// <returns>The <see cref="System.Text.StringBuilder"/> converted to uppercase.</returns>
+        /// <param name="sb">A <see cref="StringBuilder" /> to convert to uppercase.</param>
+        /// <returns>The <see cref="StringBuilder" /> converted to uppercase.</returns>
         public static StringBuilder ToUpper(this StringBuilder sb)
         {
             if (sb == null)
@@ -107,10 +102,10 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.Text.StringBuilder"/> converted to lowercase.  This will alter the
+        ///     Returns a <see cref="StringBuilder" /> converted to lowercase.  This will alter the
         /// </summary>
-        /// <param name="sb">A <see cref="System.Text.StringBuilder"/> to convert to lowercase.</param>
-        /// <returns>The <see cref="System.Text.StringBuilder"/> converted to lowercase.</returns>
+        /// <param name="sb">A <see cref="StringBuilder" /> to convert to lowercase.</param>
+        /// <returns>The <see cref="StringBuilder" /> converted to lowercase.</returns>
         public static StringBuilder ToLower(this StringBuilder sb)
         {
             if (sb == null)
@@ -127,15 +122,15 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Determines whether this instance of <see cref="System.Text.StringBuilder"/> ends with the specified string.
+        ///     Determines whether this instance of <see cref="StringBuilder" /> ends with the specified string.
         /// </summary>
-        /// <param name="sb">A <see cref="System.Text.StringBuilder"/> to compare.</param>
+        /// <param name="sb">A <see cref="StringBuilder" /> to compare.</param>
         /// <param name="value">The string to compare to the substring at the end of this instance.</param>
         /// <param name="ignoreCase">true to ignore case during the comparison; otherwise, false.</param>
         /// <returns>
-        /// true if the <paramref name="value"/> parameter matches the beginning of this string; otherwise, false.
+        ///     true if the <paramref name="value" /> parameter matches the beginning of this string; otherwise, false.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="value"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="value" /> is null.</exception>
         public static bool EndsWith(this StringBuilder sb, string value, bool ignoreCase = false)
         {
             if (sb == null)
@@ -144,7 +139,7 @@ namespace Argus.Extensions
             }
 
             int length = value.Length;
-            int maxSBIndex = sb.Length - 1;
+            int maxSbIndex = sb.Length - 1;
             int maxValueIndex = length - 1;
 
             if (length > sb.Length)
@@ -156,7 +151,7 @@ namespace Argus.Extensions
             {
                 for (int i = 0; i < length; i++)
                 {
-                    if (sb[maxSBIndex - i] != value[maxValueIndex - i])
+                    if (sb[maxSbIndex - i] != value[maxValueIndex - i])
                     {
                         return false;
                     }
@@ -166,7 +161,7 @@ namespace Argus.Extensions
             {
                 for (int j = length - 1; j >= 0; j--)
                 {
-                    if (char.ToLower(sb[maxSBIndex - j]) != char.ToLower(value[maxValueIndex - j]))
+                    if (char.ToLower(sb[maxSbIndex - j]) != char.ToLower(value[maxValueIndex - j]))
                     {
                         return false;
                     }
@@ -177,15 +172,15 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Determines whether this instance of <see cref="System.Text.StringBuilder"/> starts with the specified string.
+        ///     Determines whether this instance of <see cref="StringBuilder" /> starts with the specified string.
         /// </summary>
-        /// <param name="sb">A <see cref="System.Text.StringBuilder"/> to compare.</param>
+        /// <param name="sb">A <see cref="StringBuilder" /> to compare.</param>
         /// <param name="value">The string to compare.</param>
         /// <param name="ignoreCase">true to ignore case during the comparison; otherwise, false.</param>
         /// <returns>
-        /// true if the <paramref name="value"/> parameter matches the beginning of this string; otherwise, false.
+        ///     true if the <paramref name="value" /> parameter matches the beginning of this string; otherwise, false.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="value"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="value" /> is null.</exception>
         public static bool StartsWith(this StringBuilder sb, string value, bool ignoreCase = false)
         {
             if (sb == null)
@@ -225,9 +220,9 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Removes all occurences of specified characters from <see cref="System.Text.StringBuilder"/>.
+        ///     Removes all occurrences of specified characters from <see cref="StringBuilder" />.
         /// </summary>
-        /// <param name="sb">A <see cref="System.Text.StringBuilder"/> to remove from.</param>
+        /// <param name="sb">A <see cref="StringBuilder" /> to remove from.</param>
         /// <param name="removeChars">A Unicode characters to remove.</param>
         public static StringBuilder Remove(this StringBuilder sb, params char[] removeChars)
         {
@@ -252,14 +247,14 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Removes the range of characters from the specified index to the end of <see cref="System.Text.StringBuilder"/>.
+        ///     Removes the range of characters from the specified index to the end of <see cref="StringBuilder" />.
         /// </summary>
-        /// <param name="sb">A <see cref="System.Text.StringBuilder"/> to remove from.</param>
+        /// <param name="sb">A <see cref="StringBuilder" /> to remove from.</param>
         /// <param name="startIndex">The zero-based position to begin deleting characters.</param>
         /// <returns>A reference to this instance after the excise operation has completed.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">
-        /// If <paramref name="startIndex"/> is less than zero, or <paramref name="startIndex"/> is greater
-        /// than the length - 1 of this instance.
+        ///     If <paramref name="startIndex" /> is less than zero, or <paramref name="startIndex" /> is greater
+        ///     than the length - 1 of this instance.
         /// </exception>
         public static StringBuilder Remove(this StringBuilder sb, int startIndex)
         {
@@ -272,7 +267,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Trims the white space off the start and end of a StringBuilder.
+        ///     Trims the white space off the start and end of a StringBuilder.
         /// </summary>
         /// <param name="sb"></param>
         public static StringBuilder Trim(this StringBuilder sb)
@@ -285,7 +280,7 @@ namespace Argus.Extensions
             int length = 0;
             int num2 = sb.Length;
 
-            while ((sb[length] == ' ') && (length < num2))
+            while (sb[length] == ' ' && length < num2)
             {
                 length++;
             }
@@ -298,24 +293,23 @@ namespace Argus.Extensions
 
             length = num2 - 1;
 
-            while ((sb[length] == ' ') && (length > -1))
+            while (sb[length] == ' ' && length > -1)
             {
                 length--;
             }
 
-            if (length < (num2 - 1))
+            if (length < num2 - 1)
             {
-                sb.Remove(length + 1, (num2 - length) - 1);
+                sb.Remove(length + 1, num2 - length - 1);
             }
 
             return sb;
         }
 
         /// <summary>
-        /// Trims white space off the end of a StringBuilder.
+        ///     Trims white space off the end of a StringBuilder.
         /// </summary>
         /// <param name="sb"></param>
-        /// <returns></returns>
         public static StringBuilder TrimEnd(this StringBuilder sb)
         {
             if (sb == null || sb.Length == 0)
@@ -342,11 +336,10 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Trims a specified set of characters off the end of a StringBuilder.
+        ///     Trims a specified set of characters off the end of a StringBuilder.
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="trimChars"></param>
-        /// <returns></returns>
         public static StringBuilder TrimEnd(this StringBuilder sb, params char[] trimChars)
         {
             if (sb == null || sb.Length == 0)
@@ -358,7 +351,7 @@ namespace Argus.Extensions
 
             for (; i >= 0; i--)
             {
-                if (!trimChars.Any(ch => ch == sb[i]))
+                if (trimChars.All(ch => ch != sb[i]))
                 {
                     break;
                 }
@@ -373,10 +366,9 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Trims white space off the start of a StringBuilder.
+        ///     Trims white space off the start of a StringBuilder.
         /// </summary>
         /// <param name="sb"></param>
-        /// <returns></returns>
         public static StringBuilder TrimStart(this StringBuilder sb)
         {
             if (sb == null || sb.Length == 0)
@@ -387,7 +379,7 @@ namespace Argus.Extensions
             int length = 0;
             int num2 = sb.Length;
 
-            while ((char.IsWhiteSpace(sb[length])) && (length < num2))
+            while (char.IsWhiteSpace(sb[length]) && length < num2)
             {
                 length++;
             }
@@ -401,11 +393,10 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Trims a specified set of characters off the start of a StringBuilder.
+        ///     Trims a specified set of characters off the start of a StringBuilder.
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="trimChars"></param>
-        /// <returns></returns>
         public static StringBuilder TrimStart(this StringBuilder sb, params char[] trimChars)
         {
             if (sb == null || sb.Length == 0)
@@ -416,7 +407,7 @@ namespace Argus.Extensions
             int length = 0;
             int num2 = sb.Length;
 
-            while (trimChars.Any(ch => ch == sb[length]) && (length < num2))
+            while (trimChars.Any(ch => ch == sb[length]) && length < num2)
             {
                 length++;
             }
@@ -430,10 +421,9 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Whether or not the StringBuilder contains a number anywhere in it's contents.
+        ///     Whether or not the StringBuilder contains a number anywhere in it's contents.
         /// </summary>
         /// <param name="sb"></param>
-        /// <returns></returns>
         public static bool ContainsNumber(this StringBuilder sb)
         {
             for (int i = 0; i < sb.Length; i++)
@@ -446,7 +436,5 @@ namespace Argus.Extensions
 
             return false;
         }
-
     }
-
 }

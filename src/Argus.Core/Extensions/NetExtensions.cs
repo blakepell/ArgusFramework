@@ -1,38 +1,30 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.IO;
 
 namespace Argus.Extensions
 {
-
     /// <summary>
-    /// Extensions to items Network related.
+    ///     Extensions to items Network related.
     /// </summary>
     public static class NetExtensions
     {
-
         //*********************************************************************************************************************
         //
         //            Module:  NetExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  09/29/2011
-        //      Last Updated:  09/29/2011
+        //      Last Updated:  11/17/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the filename from the local path of the System.Uri.
+        ///     Returns the filename from the local path of the System.Uri.
         /// </summary>
         /// <param name="uri"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static object FileName(this System.Uri uri)
+        public static object FileName(this Uri uri)
         {
-            return System.IO.Path.GetFileName(uri.LocalPath);
+            return Path.GetFileName(uri.LocalPath);
         }
-
     }
-
 }

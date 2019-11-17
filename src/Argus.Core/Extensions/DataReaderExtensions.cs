@@ -3,11 +3,12 @@ using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Argus.Data;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for all classes that implement the IDataReader interface.
+    ///     Extension methods for all classes that implement the IDataReader interface.
     /// </summary>
     public static class DataReaderExtensions
     {
@@ -16,14 +17,14 @@ namespace Argus.Extensions
         //            Module:  DataReaderExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/26/2010
-        //      Last Updated:  08/23/2016
+        //      Last Updated:  11/17/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the specified value from a data reader and performs IsNull checks and additional checks to make sure
-        /// that the data reader is valid.
+        ///     Returns the specified value from a data reader and performs IsNull checks and additional checks to make sure
+        ///     that the data reader is valid.
         /// </summary>
         /// <param name="dr"></param>
         /// <param name="field">The database field to return.</param>
@@ -58,16 +59,16 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns the specified value from a data reader and performs IsNull checks and additional checks to make sure
-        /// that the data reader is valid.
+        ///     Returns the specified value from a data reader and performs IsNull checks and additional checks to make sure
+        ///     that the data reader is valid.
         /// </summary>
         /// <param name="dr"></param>
         /// <param name="field">The database field to return.</param>
         /// <param name="defaultValue">A default value to return if the data value is null (or blank if specified)</param>
         /// <param name="defaultIncludesBlanks">Whether or not to return the default value specified if the data field is blank.</param>
-        /// <returns>String representation of the data type.
+        /// <returns>
+        ///     String representation of the data type.
         /// </returns>
-        /// <remarks></remarks>
         public static string GetValue(this IDataReader dr, string field, string defaultValue, bool defaultIncludesBlanks)
         {
             if (dr == null || dr.IsClosed)
@@ -89,58 +90,60 @@ namespace Argus.Extensions
                         return defaultValue;
                     }
 
-                    if (string.IsNullOrEmpty(dr[field].ToString()) == true && defaultIncludesBlanks == true)
+                    if (string.IsNullOrEmpty(dr[field].ToString()) && defaultIncludesBlanks)
                     {
                         return defaultValue;
                     }
-                    else
-                    {
-                        return dr[field].ToString();
-                    }
+
+                    return dr[field].ToString();
                 }
                 catch
                 {
                     return defaultValue;
                 }
             }
-            catch 
+            catch
             {
                 return "(Invalid Field: " + field + ")";
             }
         }
 
         /// <summary>
-        /// Returns a delimited string with the contents created from the IDataReader.  This means that the DataReader will be
-        /// unusable after because it will have already been read through (DataReader's being forward only).
+        ///     Returns a delimited string with the contents created from the IDataReader.  This means that the DataReader will be
+        ///     unusable after because it will have already been read through (DataReader's being forward only).
         /// </summary>
         /// <param name="dr"></param>
         /// <param name="fieldDelimiter"></param>
         public static string ToString(this IDataReader dr, string fieldDelimiter)
         {
-            Argus.Data.CreateDelimitedFile cdf = new Argus.Data.CreateDelimitedFile(false, fieldDelimiter);
+            var cdf = new CreateDelimitedFile(false, fieldDelimiter);
+
             return cdf.ToString(dr);
         }
 
         /// <summary>
-        /// Returns a character formatted string for display purposes from the contents of the IDataReader.  This means that the DataReader will be
-        /// unusable after because it will have already been read through (DataReader's being forward only).
+        ///     Returns a character formatted string for display purposes from the contents of the IDataReader.  This means that the DataReader will be
+        ///     unusable after because it will have already been read through (DataReader's being forward only).
         /// </summary>
         /// <param name="dr"></param>
-        /// <param name="formatted">Whether or not the string should be formatted and lined up with spaces.  Setting this value as false will
-        /// return just a delimited file.</param>
+        /// <param name="formatted">
+        ///     Whether or not the string should be formatted and lined up with spaces.  Setting this value as false will
+        ///     return just a delimited file.
+        /// </param>
         /// <param name="fieldDelimiter"></param>
         /// <param name="exportHeader"></param>
         public static string ToString(this IDataReader dr, bool formatted, string fieldDelimiter, bool exportHeader)
         {
-            Argus.Data.CreateDelimitedFile cdf = new Argus.Data.CreateDelimitedFile(exportHeader, fieldDelimiter);
+            var cdf = new CreateDelimitedFile(exportHeader, fieldDelimiter);
             string buf = cdf.ToString(dr);
-            return formatted ? Argus.Data.StringTransforms.FormatDelimitedString(buf, "\t") : buf;
+
+            return formatted ? StringTransforms.FormatDelimitedString(buf, "\t") : buf;
         }
 
         /// <summary>
-        /// Returns the number of records in the IDataReader.  This should be used with EXTREME CAUTION for performance purposes.  To get the count
-        /// it loops through all records in the IDataReader rendering it unsable after (it will need to be repopulated).  This is because the DataReader
-        /// is forward only and doesn't fetch all of the data at one time.
+        ///     Returns the number of records in the IDataReader.  This should be used with EXTREME CAUTION for performance purposes.  To get the count
+        ///     it loops through all records in the IDataReader rendering it unusable after (it will need to be repopulated).  This is because the DataReader
+        ///     is forward only and doesn't fetch all of the data at one time.
         /// </summary>
         /// <param name="dr"></param>
         public static int RecordCount(this IDataReader dr)
@@ -156,35 +159,37 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a DataTable with the contents of the IDataReader.  The source DataReader will be closed after the
-        /// DataTable is loaded.
+        ///     Returns a DataTable with the contents of the IDataReader.  The source DataReader will be closed after the
+        ///     DataTable is loaded.
         /// </summary>
         /// <param name="dr"></param>
         public static DataTable ToDataTable(this IDataReader dr)
         {
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Load(dr);
             dr.Close();
+
             return dt;
         }
 
         /// <summary>
-        /// Returns a DataTable with the contents of the IDataReader.  The source DataReader will be closed after the
-        /// DataTable is loaded.
+        ///     Returns a DataTable with the contents of the IDataReader.  The source DataReader will be closed after the
+        ///     DataTable is loaded.
         /// </summary>
         /// <param name="dr"></param>
         /// <param name="tableName"></param>
         public static DataTable ToDataTable(this IDataReader dr, string tableName)
         {
-            DataTable dt = new DataTable(tableName);
+            var dt = new DataTable(tableName);
             dt.Load(dr);
             dr.Close();
+
             return dt;
         }
 
         /// <summary>
-        /// Returns an HTML table with the contents of the IDataReader.  The header rows will be contained in TH tags.  If a css class is
-        /// left blank it will not be included in the specified tag.
+        ///     Returns an HTML table with the contents of the IDataReader.  The header rows will be contained in TH tags.  If a css class is
+        ///     left blank it will not be included in the specified tag.
         /// </summary>
         /// <param name="dr"></param>
         /// <param name="tableCssClass">The CSS class for the 'table' tag.</param>
@@ -193,20 +198,23 @@ namespace Argus.Extensions
         /// <param name="tableDataCssClass">The CSS class for the 'td' tag.</param>
         public static string ToHtmlTable(this IDataReader dr, string tableCssClass, string tableHeaderCssClass, string tableRowCssClass, string tableDataCssClass)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.AppendFormat("<table border=\"0\" class=\"{0}\">", tableCssClass);
 
             sb.AppendFormat("<tr class=\"{0}\">", tableRowCssClass);
+
             for (int x = 0; x <= dr.FieldCount - 1; x++)
             {
                 sb.AppendFormat("<th class=\"{0}\">{1}</th>", tableHeaderCssClass, dr.GetName(x));
             }
+
             sb.Append("</tr>");
 
             while (dr.Read())
             {
                 sb.AppendFormat("<tr class=\"{0}\">", tableRowCssClass);
+
                 for (int x = 0; x <= dr.FieldCount - 1; x++)
                 {
                     if (dr[x] != null)
@@ -218,8 +226,10 @@ namespace Argus.Extensions
                         sb.AppendFormat("<td class=\"{0}\"></td>", tableDataCssClass);
                     }
                 }
+
                 sb.Append("</tr>");
             }
+
             sb.Append("</table>");
 
             // Get rid of the empty CSS classes
@@ -227,20 +237,21 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// This extension takes the current row the IDataReader is on and outputs a string array of it's values.  This expects that the DataReader is open
-        /// and on the row needing to be outputed.
+        ///     This extension takes the current row the IDataReader is on and outputs a string array of it's values.  This expects that the DataReader is open
+        ///     and on the row needing to be outputed.
         /// </summary>
         /// <param name="dr"></param>
         public static string[] ToStringArray(this IDataReader dr)
         {
-            string[] values = new string[dr.FieldCount - 1];
+            var values = new string[dr.FieldCount - 1];
             dr.GetValues(values);
+
             return values;
         }
 
         /// <summary>
-        /// Extension method to write the contents of a IDataReader out to a comma separated value file.  This extension
-        /// will write the file line by line to keep the memory footprint low.
+        ///     Extension method to write the contents of a IDataReader out to a comma separated value file.  This extension
+        ///     will write the file line by line to keep the memory footprint low.
         /// </summary>
         /// <param name="dr">IDataReader that has been executed by not iterated through yet.</param>
         /// <param name="fileName">The full fill path that the CSV should be written to.</param>
@@ -252,8 +263,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Extension method to write the contents of a IDataReader out to a comma separated value file.  This extension
-        /// will write the file line by line to keep the memory footprint low.
+        ///     Extension method to write the contents of a IDataReader out to a comma separated value file.  This extension
+        ///     will write the file line by line to keep the memory footprint low.
         /// </summary>
         /// <param name="dr">IDataReader that has been executed by not iterated through yet.</param>
         /// <param name="fileName">The full fill path that the CSV should be written to.</param>
@@ -262,12 +273,12 @@ namespace Argus.Extensions
         /// <param name="convertDateTimeToShortDate">Whether or not to convert all DateTime fields to a short date time without the timestamp.</param>
         public static void ToCsvFile(this IDataReader dr, string fileName, bool includeHeaderRow, bool includeQuotes, bool convertDateTimeToShortDate)
         {
-            using (StreamWriter writer = new StreamWriter(fileName, false))
+            using (var writer = new StreamWriter(fileName, false))
             {
                 // Write the header row if requested
                 if (includeHeaderRow)
                 {
-                    string[] headerRow = new string[dr.FieldCount];
+                    var headerRow = new string[dr.FieldCount];
 
                     for (int i = 0; i <= dr.FieldCount - 1; i++)
                     {
@@ -288,7 +299,7 @@ namespace Argus.Extensions
                 // The rest of the rows
                 while (dr.Read())
                 {
-                    string[] row = new string[dr.FieldCount];
+                    var row = new string[dr.FieldCount];
 
                     for (int i = 0; i <= dr.FieldCount - 1; i++)
                     {
@@ -298,7 +309,7 @@ namespace Argus.Extensions
                         {
                             // If the caller wants to convert all the date times to a short date then check the type and
                             // convert if it's a DateTime, otherwise just dump the string.
-                            if (convertDateTimeToShortDate && dr[i].GetType() == typeof(System.DateTime))
+                            if (convertDateTimeToShortDate && dr[i].GetType() == typeof(DateTime))
                             {
                                 value = DateTime.Parse(dr[i].ToString()).ToShortDateString();
                             }
@@ -327,11 +338,10 @@ namespace Argus.Extensions
                     writer.Flush();
                 }
             }
-
         }
 
         /// <summary>
-        /// Extension method to write the contents of a IDataReader out to a comma separated value string.
+        ///     Extension method to write the contents of a IDataReader out to a comma separated value string.
         /// </summary>
         /// <param name="dr">IDataReader that has been executed by not iterated through yet.</param>
         /// <param name="includeHeaderRow">Whether or not to include the header row with column names.</param>
@@ -342,7 +352,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Extension method to write the contents of a IDataReader out to a comma separated value string.
+        ///     Extension method to write the contents of a IDataReader out to a comma separated value string.
         /// </summary>
         /// <param name="dr">IDataReader that has been executed by not iterated through yet.</param>
         /// <param name="includeHeaderRow">Whether or not to include the header row with column names.</param>
@@ -350,12 +360,12 @@ namespace Argus.Extensions
         /// <param name="convertDateTimeToShortDate">Whether or not to convert all DateTime values to a short date time.</param>
         public static string ToCsvString(this IDataReader dr, bool includeHeaderRow, bool includeQuotes, bool convertDateTimeToShortDate)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // Write the header row if requested
             if (includeHeaderRow)
             {
-                string[] headerRow = new string[dr.FieldCount];
+                var headerRow = new string[dr.FieldCount];
 
                 for (int i = 0; i <= dr.FieldCount - 1; i++)
                 {
@@ -376,7 +386,7 @@ namespace Argus.Extensions
             // The rest of the rows
             while (dr.Read())
             {
-                string[] row = new string[dr.FieldCount];
+                var row = new string[dr.FieldCount];
 
                 for (int i = 0; i <= dr.FieldCount - 1; i++)
                 {
@@ -386,7 +396,7 @@ namespace Argus.Extensions
                     {
                         // If the caller wants to convert all the date times to a short date then check the type and
                         // convert if it's a DateTime, otherwise just dump the string.
-                        if (convertDateTimeToShortDate && dr[i].GetType() == typeof(System.DateTime))
+                        if (convertDateTimeToShortDate && dr[i].GetType() == typeof(DateTime))
                         {
                             value = DateTime.Parse(dr[i].ToString()).ToShortDateString();
                         }
@@ -419,8 +429,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Extension method to write the contents of a IDataReader out to a tab separated value file.  This extension
-        /// will write the file line by line to keep the memory footprint low.
+        ///     Extension method to write the contents of a IDataReader out to a tab separated value file.  This extension
+        ///     will write the file line by line to keep the memory footprint low.
         /// </summary>
         /// <param name="dr">IDataReader that has been executed by not iterated through yet.</param>
         /// <param name="fileName">The full fill path that the CSV should be written to.</param>
@@ -431,8 +441,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Extension method to write the contents of a IDataReader out to a tab separated value file.  This extension
-        /// will write the file line by line to keep the memory footprint low.
+        ///     Extension method to write the contents of a IDataReader out to a tab separated value file.  This extension
+        ///     will write the file line by line to keep the memory footprint low.
         /// </summary>
         /// <param name="dr">IDataReader that has been executed by not iterated through yet.</param>
         /// <param name="fileName">The full fill path that the CSV should be written to.</param>
@@ -440,12 +450,12 @@ namespace Argus.Extensions
         /// <param name="convertDateTimeToShortDate">Whether or not to convert all DateTime values to a short date time.</param>
         public static void ToTabFile(this IDataReader dr, string fileName, bool includeHeaderRow, bool convertDateTimeToShortDate)
         {
-            using (StreamWriter writer = new StreamWriter(fileName, false))
+            using (var writer = new StreamWriter(fileName, false))
             {
                 // Write the header row if requested
                 if (includeHeaderRow)
                 {
-                    string[] headerRow = new string[dr.FieldCount];
+                    var headerRow = new string[dr.FieldCount];
 
                     for (int i = 0; i <= dr.FieldCount - 1; i++)
                     {
@@ -459,7 +469,7 @@ namespace Argus.Extensions
                 // The rest of the rows
                 while (dr.Read())
                 {
-                    string[] row = new string[dr.FieldCount];
+                    var row = new string[dr.FieldCount];
 
                     for (int i = 0; i <= dr.FieldCount - 1; i++)
                     {
@@ -469,7 +479,7 @@ namespace Argus.Extensions
                         {
                             // If the caller wants to convert all the date times to a short date then check the type and
                             // convert if it's a DateTime, otherwise just dump the string.
-                            if (convertDateTimeToShortDate && dr[i].GetType() == typeof(System.DateTime))
+                            if (convertDateTimeToShortDate && dr[i].GetType() == typeof(DateTime))
                             {
                                 value = DateTime.Parse(dr[i].ToString()).ToShortDateString();
                             }
@@ -491,11 +501,10 @@ namespace Argus.Extensions
                     writer.Flush();
                 }
             }
-
         }
 
         /// <summary>
-        /// Extension method to write the contents of a IDataReader out to a tab separated value string.
+        ///     Extension method to write the contents of a IDataReader out to a tab separated value string.
         /// </summary>
         /// <param name="dr">IDataReader that has been executed by not iterated through yet.</param>
         /// <param name="includeHeaderRow">Whether or not to include the header row with column names.</param>
@@ -505,19 +514,19 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Extension method to write the contents of a IDataReader out to a tab separated value string.
+        ///     Extension method to write the contents of a IDataReader out to a tab separated value string.
         /// </summary>
         /// <param name="dr">IDataReader that has been executed by not iterated through yet.</param>
         /// <param name="includeHeaderRow">Whether or not to include the header row with column names.</param>
         /// <param name="convertDateTimeToShortDate">Whether or not to convert all DateTime values to a short date time.</param>
         public static string ToTabString(this IDataReader dr, bool includeHeaderRow, bool convertDateTimeToShortDate)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // Write the header row if requested
             if (includeHeaderRow)
             {
-                string[] headerRow = new string[dr.FieldCount];
+                var headerRow = new string[dr.FieldCount];
 
                 for (int i = 0; i <= dr.FieldCount - 1; i++)
                 {
@@ -531,7 +540,7 @@ namespace Argus.Extensions
             // The rest of the rows
             while (dr.Read())
             {
-                string[] row = new string[dr.FieldCount];
+                var row = new string[dr.FieldCount];
 
                 for (int i = 0; i <= dr.FieldCount - 1; i++)
                 {
@@ -541,7 +550,7 @@ namespace Argus.Extensions
                     {
                         // If the caller wants to convert all the date times to a short date then check the type and
                         // convert if it's a DateTime, otherwise just dump the string.
-                        if (convertDateTimeToShortDate && dr[i].GetType() == typeof(System.DateTime))
+                        if (convertDateTimeToShortDate && dr[i].GetType() == typeof(DateTime))
                         {
                             value = DateTime.Parse(dr[i].ToString()).ToShortDateString();
                         }
@@ -566,7 +575,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Return the current row in the reader as an object
+        ///     Return the current row in the reader as an object
         /// </summary>
         /// <param name="dr">The IDataReader, open and on the row that should be mapped into a model.</param>
         /// <param name="model">The model the current data row should be mapped into.</param>
@@ -574,17 +583,17 @@ namespace Argus.Extensions
         public static T ToModel<T>(this IDataReader dr, T model)
         {
             // Create a new instance of T so the values are all the default.
-            model = (T)Activator.CreateInstance(model.GetType());
+            model = (T) Activator.CreateInstance(model.GetType());
 
             // Get all the properties in our Object
-            PropertyInfo[] props = model.GetType().GetProperties();
+            var props = model.GetType().GetProperties();
 
             // For each property get the data from the reader to the object
             for (int i = 0; i < props.Length; i++)
             {
                 if (ColumnExists(dr, props[i].Name) && dr[props[i].Name] != DBNull.Value)
                 {
-                    model.GetType().InvokeMember(props[i].Name, BindingFlags.SetProperty, null, model, new object[] { dr[props[i].Name] });
+                    model.GetType().InvokeMember(props[i].Name, BindingFlags.SetProperty, null, model, new[] {dr[props[i].Name]});
                 }
             }
 
@@ -592,24 +601,24 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Return the current row in the reader as an object
+        ///     Return the current row in the reader as an object
         /// </summary>
         /// <param name="dr">The IDataReader, open and on the row that should be mapped into a model.</param>
         /// <returns>Object</returns>
         public static T ToModel<T>(this IDataReader dr)
         {
             // Create a new instance of T so the values are all the default.
-            T model = (T)Activator.CreateInstance(typeof(T));
+            var model = (T) Activator.CreateInstance(typeof(T));
 
             // Get all the properties in our Object
-            PropertyInfo[] props = model.GetType().GetProperties();
+            var props = model.GetType().GetProperties();
 
             // For each property get the data from the reader to the object
             for (int i = 0; i < props.Length; i++)
             {
                 if (ColumnExists(dr, props[i].Name) && dr[props[i].Name] != DBNull.Value)
                 {
-                    model.GetType().InvokeMember(props[i].Name, BindingFlags.SetProperty, null, model, new object[] { dr[props[i].Name] });
+                    model.GetType().InvokeMember(props[i].Name, BindingFlags.SetProperty, null, model, new[] {dr[props[i].Name]});
                 }
             }
 
@@ -617,16 +626,20 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Check if an SqlDataReader contains a field
+        ///     Check if an SqlDataReader contains a field
         /// </summary>
         /// <param name="dr">The IDataReader</param>
         /// <param name="columnName">The column name that should be checked for existence.</param>
-        /// <returns></returns>
         public static bool ColumnExists(this IDataReader dr, string columnName)
         {
-            dr.GetSchemaTable().DefaultView.RowFilter = $"ColumnName= '{columnName}'";
-            return (dr.GetSchemaTable().DefaultView.Count > 0);
-        }
+            if (dr == null)
+            {
+                return false;
+            }
 
+            dr.GetSchemaTable().DefaultView.RowFilter = $"ColumnName= '{columnName}'";
+
+            return dr.GetSchemaTable().DefaultView.Count > 0;
+        }
     }
 }

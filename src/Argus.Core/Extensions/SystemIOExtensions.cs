@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
+using Argus.Data;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extensions for methods in classes of the System.IO namespace.
+    ///     Extensions for methods in classes of the System.IO namespace.
     /// </summary>
     public static class SystemIOExtensions
     {
@@ -21,13 +19,12 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the file size formatted, such as 10 KB, 120 MB, 1.2 GB, 1.4 TB, etc.  This supports sizes up to and including Terabytes.
+        ///     Returns the file size formatted, such as 10 KB, 120 MB, 1.2 GB, 1.4 TB, etc.  This supports sizes up to and including Terabytes.
         /// </summary>
         /// <param name="fi"></param>
         public static string FormattedFileSize(this FileInfo fi)
         {
-            return Argus.Data.Formatting.FormattedFileSize(fi.Length);
+            return Formatting.FormattedFileSize(fi.Length);
         }
-
     }
 }

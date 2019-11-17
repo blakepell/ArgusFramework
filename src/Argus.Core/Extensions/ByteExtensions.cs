@@ -2,11 +2,9 @@
 
 namespace Argus.Extensions
 {
-
     /// <summary>
-    /// Extension methods for Byte arrays.
+    ///     Extension methods for Byte arrays.
     /// </summary>
-    /// <remarks></remarks>
     public static class ByteExtensions
     {
         //*********************************************************************************************************************
@@ -20,15 +18,12 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Converts a byte array to it's string representation that is encoded with base-64 digits.
+        ///     Converts a byte array to it's string representation that is encoded with base-64 digits.
         /// </summary>
         /// <param name="bytes"></param>
-        /// <returns></returns>
         public static string ToBase64String(this byte[] bytes)
         {
             return Convert.ToBase64String(bytes);
         }
-
     }
-
 }

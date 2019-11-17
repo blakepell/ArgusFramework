@@ -4,11 +4,8 @@ using System.Linq;
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Enum Extensions
+    ///     Enum Extensions
     /// </summary>
-    /// <remarks>
-    /// This should be moved into the IUF Enterprise Library in the future.
-    /// </remarks>
     public static class EnumExtensions
     {
         //*********************************************************************************************************************
@@ -22,10 +19,9 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Get's an attribute from an Enum.  This can be used to iterate over the items in an enum.
-        ///
-        /// Example:
-        /// <code>
+        ///     Get's an attribute from an Enum.  This can be used to iterate over the items in an enum.
+        ///     Example:
+        ///     <code>
         /// foreach (MenuAttribute.MenuGroup group in Enum.GetValues(typeof(MenuAttribute.MenuGroup))) {}
         /// </code>
         /// </summary>
@@ -35,13 +31,12 @@ namespace Argus.Extensions
             where TAttribute : Attribute
         {
             var type = value.GetType();
-            var name = Enum.GetName(type, value);
+            string name = Enum.GetName(type, value);
 
             return type.GetField(name)
-                .GetCustomAttributes(false)
-                .OfType<TAttribute>()
-                .SingleOrDefault();
+                       .GetCustomAttributes(false)
+                       .OfType<TAttribute>()
+                       .SingleOrDefault();
         }
-
     }
 }

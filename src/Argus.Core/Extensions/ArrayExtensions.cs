@@ -2,14 +2,11 @@
 
 namespace Argus.Extensions
 {
-
     /// <summary>
-    /// Extension methods for general arrays.
+    ///     Extension methods for general arrays.
     /// </summary>
-    /// <remarks></remarks>
     public static class ArrayExtensions
     {
-
         //*********************************************************************************************************************
         //
         //            Module:  ArrayExtensions
@@ -21,15 +18,14 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Remove element from array at given index
+        ///     Remove element from array at given index
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <param name="index"></param>
-        /// <returns></returns>
         public static T[] RemoveAt<T>(this T[] source, int index)
         {
-            T[] destination = new T[source.Length - 1];
+            var destination = new T[source.Length - 1];
 
             if (index > 0)
             {
@@ -44,6 +40,68 @@ namespace Argus.Extensions
             return destination;
         }
 
-    }
+        /// <summary>
+        ///     Searches through a string array and determines if any item contains the search string.
+        /// </summary>
+        public static bool AnyContains(this string[] list, string search)
+        {
+            if (list == null)
+            {
+                return false;
+            }
 
+            foreach (string item in list)
+            {
+                if (item.ToLower().Contains(search))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        ///     Searches through a string array and determines if any item starts with the search string.
+        /// </summary>
+        public static bool AnyStartsWith(this string[] list, string search)
+        {
+            if (list == null)
+            {
+                return false;
+            }
+
+            foreach (string item in list)
+            {
+                if (item.ToLower().StartsWith(search))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        ///     Searches through a string array and determines if any item matches the search string.
+        /// </summary>
+        public static bool AnyStartsEquals(this string[] list, string search)
+        {
+            if (list == null)
+            {
+                return false;
+            }
+
+            foreach (string item in list)
+            {
+                if (item.ToLower().Equals(search))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+    }
 }
