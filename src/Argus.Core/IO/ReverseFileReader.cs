@@ -74,12 +74,12 @@ namespace Argus.IO
         public bool StartOfFile => _stream.Position == 0;
 
         /// <summary>
-        ///     Whether the underlaying stream is at the end.
+        ///     Whether the underlying stream is at the end.
         /// </summary>
         public bool EndOfFile => _stream.Position == _stream.Length;
 
         /// <summary>
-        ///     Closes and disposes of resources.  The underlaying Stream whether passed in
+        ///     Closes and disposes of resources.  The underlying Stream whether passed in
         ///     or created here is Disposed of.
         /// </summary>
         public void Dispose()

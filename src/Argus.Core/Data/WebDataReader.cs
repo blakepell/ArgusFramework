@@ -301,7 +301,7 @@ namespace Argus.Data
         #endregion
 
         /// <summary>
-        ///     Resets the underlaying DataReader and creates a new one that is at the first position.
+        ///     Resets the underlying DataReader and creates a new one that is at the first position.
         /// </summary>
         public void MoveFirst()
         {

@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.AspNetCore", "src\Arg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Core", "src\Argus.Core\Argus.Core.csproj", "{384F26B8-3A06-4690-B90A-BEB4746C69C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Argus.Graphics", "src\Argus.Graphics\Argus.Graphics.csproj", "{8DE43A75-49FC-4347-B05B-25D0521F5221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Graphics", "src\Argus.Graphics\Argus.Graphics.csproj", "{8DE43A75-49FC-4347-B05B-25D0521F5221}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Office", "src\Argus.Office\Argus.Office.csproj", "{1E22C275-4F9B-403C-BFB8-41E6218B8F4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{8DE43A75-49FC-4347-B05B-25D0521F5221}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DE43A75-49FC-4347-B05B-25D0521F5221}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DE43A75-49FC-4347-B05B-25D0521F5221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E22C275-4F9B-403C-BFB8-41E6218B8F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E22C275-4F9B-403C-BFB8-41E6218B8F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E22C275-4F9B-403C-BFB8-41E6218B8F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E22C275-4F9B-403C-BFB8-41E6218B8F4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
