@@ -5,7 +5,7 @@
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <PackageId>Argus.AspNetCore</PackageId>
     <Title>Argus.AspNetCore</Title>
-    <Version>2019.11.15.1</Version>
+    <Version>2019.11.17.1</Version>
     <Authors>Blake Pell</Authors>
     <Company>http://www.blakepell.com</Company>
     <Product>Argus.AspNetCore</Product>
