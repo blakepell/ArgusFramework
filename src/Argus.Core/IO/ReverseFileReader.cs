@@ -14,7 +14,7 @@ namespace Argus.IO
         //             Class:  ReverseFileReader
         //      Organization:  http://www.blakepell.com  
         //      Initial Date:  11/29/2010
-        //     Last Modified:  04/06/2019
+        //     Last Modified:  11/17/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************      
@@ -205,15 +205,37 @@ namespace Argus.IO
             return System.Math.Round((((decimal)position / _stream.Length) * 100), 2);
         }
 
+        private bool _disposed = false;
+
         /// <summary>
         /// Closes and disposes of resources.  The underlaying Stream whether passed in
         /// or created here is Disposed of.
         /// </summary>
         public void Dispose()
         {
-            _stream.Close();
-            _stream.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Protected implementation of Dispose pattern
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                _stream?.Close();
+                _stream?.Dispose();
+                _stream = null;
+            }
+
+            _disposed = true;
+        }
     }
 }

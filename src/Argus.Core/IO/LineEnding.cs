@@ -11,7 +11,7 @@
     //*********************************************************************************************************************      
 
     /// <summary>
-    /// Line endings the ReverseFileReader supports.
+    /// Line endings for the ReverseFileReader supports.
     /// </summary>
     public enum LineEnding
     {

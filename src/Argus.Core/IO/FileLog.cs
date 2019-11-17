@@ -15,7 +15,7 @@ namespace Argus.IO
         //             Class:  FileLog
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  11/29/2010
-        //     Last Modified:  03/29/2019
+        //     Last Modified:  11/17/2019
         //     Programmer(s):  Blake Pell
         //
         //*********************************************************************************************************************      
@@ -24,7 +24,6 @@ namespace Argus.IO
         /// Constructor
         /// </summary>
         /// <param name="logFile">The file to append to.</param>
-        /// <remarks></remarks>
         public FileLog(string logFile) : this(logFile, FileMode.Append, Encoding.ASCII, true)
         {
 
@@ -70,7 +69,6 @@ namespace Argus.IO
         /// Adds an entry to a log file on the file system.
         /// </summary>
         /// <param name="msg"></param>
-        /// <remarks></remarks>
         public void AddEntry(string msg)
         {
             msg = FormatLogMessage(msg);
@@ -90,7 +88,6 @@ namespace Argus.IO
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="logFile"></param>
-        /// <remarks></remarks>
         public static void AddEntry(string msg, string logFile)
         {
             msg = FormatLogMessage(msg);
@@ -104,10 +101,9 @@ namespace Argus.IO
         /// <param name="logFile">The log file to truncate if the size threshold is met.</param>
         /// <param name="thresholdInKiloBytes"></param>
         /// <returns>True if the file is truncated, False if it is not.</returns>
-        /// <remarks></remarks>
         public static bool TruncateLog(string logFile, int thresholdInKiloBytes)
         {
-            FileInfo fi = new FileInfo(logFile);
+            var fi = new FileInfo(logFile);
 
             if ((fi.Length / 1024) > thresholdInKiloBytes)
             {
@@ -127,8 +123,6 @@ namespace Argus.IO
         /// Formats a log message in a consistent format.
         /// </summary>
         /// <param name="msg">The message to log.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static string FormatLogMessage(string msg)
         {
             return FormatLogMessage(msg, false);
@@ -139,8 +133,6 @@ namespace Argus.IO
         /// </summary>
         /// <param name="msg">The message to log.</param>
         /// <param name="escapeTab">Whether or not to escape a tab character so it is visible in the log.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static string FormatLogMessage(string msg, bool escapeTab)
         {
             // In case data is logged it is clear what a tab character is in it.
@@ -155,7 +147,6 @@ namespace Argus.IO
         /// <summary>
         /// Closes the underlaying FileStream and disposes of it.
         /// </summary>
-        /// <remarks></remarks>
         public void Close()
         {
             if (FileStream == null)
@@ -175,9 +166,6 @@ namespace Argus.IO
         /// <summary>
         /// The file to write to.
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public string LogFile { get; set; } = "";
 
         /// <summary>

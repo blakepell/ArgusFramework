@@ -26,7 +26,7 @@ namespace Argus.IO
         //             Class:  FileSystemSearch
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  12/10/2006
-        //      Last Updated:  09/05/2013
+        //      Last Updated:  11/17/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -38,7 +38,6 @@ namespace Argus.IO
         /// Constructor
         /// </summary>
         /// <param name="baseDirectory"></param>
-        /// <remarks></remarks>
         public FileSystemSearch(string baseDirectory)
         {
             this.BaseDirectory = baseDirectory;
@@ -76,17 +75,16 @@ namespace Argus.IO
         public List<DirectoryInfo> GetAllDirectoriesDirectoryInfo()
         {
 
-            List<string> dirs = GetAllDirectories();
-            List<DirectoryInfo> dirsFi = new List<DirectoryInfo>();
+            var dirs = GetAllDirectories();
+            var dirsFi = new List<DirectoryInfo>();
 
             foreach (string buf in dirs)
             {
-                DirectoryInfo di = new DirectoryInfo(buf);
+                var di = new DirectoryInfo(buf);
                 dirsFi.Add(di);
             }
 
             return dirsFi;
-
         }
 
         /// <summary>
@@ -101,12 +99,12 @@ namespace Argus.IO
         public List<FileInfo> GetAllFilesFileInfo()
         {
 
-            List<string> files = GetAllFiles();
-            List<FileInfo> filesFi = new List<FileInfo>();
+            var files = GetAllFiles();
+            var filesFi = new List<FileInfo>();
 
             foreach (string buf in files)
             {
-                FileInfo fi = new FileInfo(buf);
+                var fi = new FileInfo(buf);
                 filesFi.Add(fi);
             }
 
@@ -137,16 +135,16 @@ namespace Argus.IO
 
             foreach (string dirName in _directoryList)
             {
-                DirectoryInfo di = new DirectoryInfo(dirName);
+                var di = new DirectoryInfo(dirName);
 
                 try
                 {
-                    foreach (FileInfo Fi in di.GetFiles())
+                    foreach (var Fi in di.GetFiles())
                     {
                         _fileList.Add(Fi.FullName);
                     }
                 }
-                catch (System.UnauthorizedAccessException ex)
+                catch (UnauthorizedAccessException ex)
                 {
                     // This is expensive but necceary if we don't want this to bomb everytime we come upon a folder
                     // that we don't have permission to.
@@ -167,12 +165,11 @@ namespace Argus.IO
         /// Internal procedure used for recursing through directories.
         /// </summary>
         /// <param name="path"></param>
-        /// <remarks></remarks>
         private void GetDirectories(string path)
         {
             try
             {
-                string[] arrDir = System.IO.Directory.GetDirectories(path);
+                string[] arrDir = Directory.GetDirectories(path);
 
                 if (_directoryList.Contains(path) == false)
                 {
@@ -188,7 +185,7 @@ namespace Argus.IO
                     GetDirectories(subDir);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 // The user probably doesn't have access to this directory hence the error, eat it, the error I mean.
                 // Figure out a way to catch this error though so it doesn't take all the time creating the exception.
@@ -212,9 +209,6 @@ namespace Argus.IO
         /// <summary>
         /// The number of directorys that were found in the search.
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public int DirectoryCount
         {
             get { return _directoryList.Count; }
@@ -223,22 +217,17 @@ namespace Argus.IO
         /// <summary>
         /// The number of files that were found in the search.
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public int FileCount
         {
             get { return _fileList.Count; }
         }
 
         private string _baseDirectory;
+
         /// <summary>
         /// The base directory that you want to start the search at.  The searcher will recurse through all sub directories
         /// of this folder.
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public string BaseDirectory
         {
             get { return _baseDirectory; }
@@ -265,12 +254,13 @@ namespace Argus.IO
                 }
 
                 Clear();
-                DirectoryInfo di = new DirectoryInfo(value);
-                // will throw exception if the directory doesn't exist            
+
+                // This will throw exception if the directory doesn't exist 
+                var di = new DirectoryInfo(value);    
+
                 _baseDirectory = value;
             }
         }
 
     }
-
 }

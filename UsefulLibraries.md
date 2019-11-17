@@ -10,6 +10,8 @@ Name | URL | Nuget
 --- | --- | ---
 ImageSharp|https://github.com/SixLabors/ImageSharp|`Install-Package SixLabors.ImageSharp`
 ImageSharp|https://github.com/SixLabors/ImageSharp|`Install-Package SixLabors.ImageSharp.Drawing`
+SharpZipLib|https://github.com/icsharpcode/SharpZipLib|`Install-Package SharpZipLib`
+SharpCompress|https://github.com/adamhathcock/sharpcompress|N/A
 
 #### WPF
 
