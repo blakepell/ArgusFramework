@@ -378,7 +378,7 @@ namespace Argus.Extensions
         /// <param name="d"></param>
         /// <returns></returns>
         public static bool IsMonthEnd(this DateTime d)
-        {
+        {                        
             // Get rid of the time if it was passed in.
             var tempDate = new DateTime(d.Year, d.Month, d.Day);
 
@@ -389,5 +389,6 @@ namespace Argus.Extensions
             // Compare the month end calculated to the date passed in
             return (tempDate == actualMonthEnd);
         }
+
     }
 }

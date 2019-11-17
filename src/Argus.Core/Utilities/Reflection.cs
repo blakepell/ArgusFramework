@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Reflection;
 using System.ComponentModel;
@@ -22,7 +20,7 @@ namespace Argus.Utilities
         //             Class:  Reflection
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  07/01/2010
-        //      Last Updated:  09/29/2016
+        //      Last Updated:  11/16/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -32,11 +30,9 @@ namespace Argus.Utilities
         /// </summary>
         /// <param name="t"></param>
         /// <param name="propertyName"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static bool IsBrowsable(Type t, string propertyName)
-        {
-            AttributeCollection attributes = TypeDescriptor.GetProperties(t)[propertyName].Attributes;
+        {                        
+            var attributes = TypeDescriptor.GetProperties(t)[propertyName].Attributes;
 
             // Only show the properties that can be set and whether it's browsable or not.                        
             if (attributes[typeof(BrowsableAttribute)].Equals(BrowsableAttribute.Yes))
@@ -51,13 +47,11 @@ namespace Argus.Utilities
         /// Determines whether a property of a specific type is Browsable.
         /// </summary>
         /// <param name="typeName"></param>
-        /// <param name="platform"></param>
         /// <param name="propertyName"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static bool IsBrowsable(string typeName, Platforms platform, string propertyName)
+        public static bool IsBrowsable(string typeName, string propertyName)
         {
-            return IsBrowsable(GetAppropriateType(platform, typeName), propertyName);
+            var t = Type.GetType(typeName);
+            return IsBrowsable(t, propertyName);
         }
 
         /// <summary>
@@ -65,13 +59,11 @@ namespace Argus.Utilities
         /// </summary>
         /// <param name="t"></param>
         /// <param name="propertyName"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static bool IsBrowsableAndWritable(Type t, string propertyName)
         {
-            PropertyInfo pi = t.GetProperty(propertyName);
+            var pi = t.GetProperty(propertyName);
 
-            AttributeCollection attributes = TypeDescriptor.GetProperties(t)[propertyName].Attributes;
+            var attributes = TypeDescriptor.GetProperties(t)[propertyName].Attributes;
 
             // Only show the properties that can be set and whether it's browsable or not.                        
             if (attributes[typeof(BrowsableAttribute)].Equals(BrowsableAttribute.Yes) & pi.CanWrite)
@@ -88,31 +80,26 @@ namespace Argus.Utilities
         /// Determines whether a property of a specific type is Browsable and can be written to.
         /// </summary>
         /// <param name="typeName"></param>
-        /// <param name="platform"></param>
         /// <param name="propertyName"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static bool IsBrowsableAndWritable(string typeName, Platforms platform, string propertyName)
+        public static bool IsBrowsableAndWritable(string typeName, string propertyName)
         {
-            return IsBrowsableAndWritable(GetAppropriateType(platform, typeName), propertyName);
+            var t = Type.GetType(typeName);
+            return IsBrowsableAndWritable(t, propertyName);
         }
 
         /// <summary>
         /// Gets browsable properties from a type that you can also write to.
         /// </summary>
         /// <param name="t"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static List<System.Reflection.PropertyInfo> GetBrowsableWritableProperties(Type t)
+        public static List<PropertyInfo> GetBrowsableWritableProperties(Type t)
         {
-            List<System.Reflection.PropertyInfo> pList = new List<System.Reflection.PropertyInfo>();
+            var pList = new List<PropertyInfo>();
+            var piList = t.GetProperties();
 
-            System.Reflection.PropertyInfo[] piList = t.GetProperties();
-
-            foreach (System.Reflection.PropertyInfo pi in piList)
+            foreach (var pi in piList)
             {
                 // Checks to see if the value of the BrowsableAttribute is Yes.
-                System.ComponentModel.AttributeCollection attributes = TypeDescriptor.GetProperties(t)[pi.Name].Attributes;
+                var attributes = TypeDescriptor.GetProperties(t)[pi.Name].Attributes;
 
                 // Only show the properties that can be set and whether it's browsable or not.                        
                 if (pi.CanWrite & attributes[typeof(BrowsableAttribute)].Equals(BrowsableAttribute.Yes))
@@ -128,27 +115,23 @@ namespace Argus.Utilities
         /// Gets browsable properties from a type that you can also write to.
         /// </summary>
         /// <param name="typeName"></param>
-        /// <param name="platform"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static List<System.Reflection.PropertyInfo> GetBrowsableWritableProperties(string typeName, Platforms platform)
+        public static List<PropertyInfo> GetBrowsableWritableProperties(string typeName)
         {
-            return GetBrowsableWritableProperties(GetAppropriateType(platform, typeName));
+            var t = Type.GetType(typeName);
+            return GetBrowsableWritableProperties(t);
         }
 
         /// <summary>
         /// Gets just browsable properties from a type whether they are read only or writable.
         /// </summary>
         /// <param name="t"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static List<System.Reflection.PropertyInfo> GetBrowsableProperties(Type t)
-        {
-            List<System.Reflection.PropertyInfo> pList = new List<System.Reflection.PropertyInfo>();
+        public static List<PropertyInfo> GetBrowsableProperties(Type t)
+        {            
+            var pList = new List<PropertyInfo>();
 
-            System.Reflection.PropertyInfo[] piList = t.GetProperties();
+            PropertyInfo[] piList = t.GetProperties();
 
-            foreach (System.Reflection.PropertyInfo pi in piList)
+            foreach (var pi in piList)
             {
                 // Only show the properties that can be set and whether it's browsable or not.                        
                 if (pi.CanWrite)
@@ -164,59 +147,18 @@ namespace Argus.Utilities
         /// Gets just browsable properties from a type whether they are read only or writable.
         /// </summary>
         /// <param name="typeName"></param>
-        /// <param name="platform"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static List<System.Reflection.PropertyInfo> GetBrowsableProperties(string typeName, Platforms platform)
+        public static List<PropertyInfo> GetBrowsableProperties(string typeName)
         {
-            return GetBrowsableProperties(GetAppropriateType(platform, typeName));
-        }
-
-        /// <summary>
-        /// Platforms
-        /// </summary>
-        /// <remarks></remarks>
-        public enum Platforms
-        {
-            /// <summary>
-            /// A client application (Console, WinForms, Wpf)
-            /// </summary>
-            /// <remarks></remarks>
-            Client,
-            /// <summary>
-            /// A ASP.NET Web application
-            /// </summary>
-            /// <remarks></remarks>
-            Web
-        }
-
-        /// <summary>
-        /// Returns a type for the specified typeName.  The platform input will determine whether the function uses System.Type.GetType
-        /// or System.Web.Compliation.BuildManager.GetType (which can read from classes in the ASP.Net's App_Code directory).
-        /// </summary>
-        /// <param name="platform"></param>
-        /// <param name="typeName"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static Type GetAppropriateType(Platforms platform, string typeName)
-        {
-            switch (platform)
-            {
-                case Platforms.Client:
-                    return System.Type.GetType(typeName);
-                default:
-                    return null;
-            }
+            var t = Type.GetType(typeName);
+            return GetBrowsableProperties(t);
         }
 
         /// <summary>
         /// Returns System.Type classes for all of the types found in the calling assembly.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static List<Type> GetTypesInAssembly(AssemblyTypes assemblyType)
         {
-            List<Type> list = new List<Type>();
+            var list = new List<Type>();
             Assembly asm = null;
 
             switch (assemblyType)
@@ -237,7 +179,7 @@ namespace Argus.Utilities
                 return new List<Type>();
             }
 
-            foreach (Type t in asm.GetTypes())
+            foreach (var t in asm.GetTypes())
             {
                 list.Add(t);
             }
@@ -248,12 +190,11 @@ namespace Argus.Utilities
         /// <summary>
         /// Returns System.Type classes for all of the types found in the calling assembly filtered by the namespaceFilter parameter.
         /// </summary>
-        /// <param name="namespaceFilter"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <param name="assemblyType"></param>
+        /// <param name="namespaceFilter"></param>        
         public static List<Type> GetTypesInAssembly(AssemblyTypes assemblyType, string namespaceFilter)
         {
-            List<Type> list = new List<Type>();
+            var list = new List<Type>();
             Assembly asm = null;
 
             switch (assemblyType)
@@ -273,8 +214,8 @@ namespace Argus.Utilities
             {
                 return new List<Type>();
             }
-
-            foreach (Type t in asm.GetTypes())
+            
+            foreach (var t in asm.GetTypes())
             {
                 if (t.Namespace == namespaceFilter)
                 {
@@ -286,13 +227,22 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// The assembly types supported through Argus.Utilities.Reflection
+        /// The assembly types supported through via this library.
         /// </summary>
-        /// <remarks></remarks>
         public enum AssemblyTypes
         {
+            /// <summary>
+            /// The Assembly of the method that invoked the currently executing method.
+            /// </summary>
             CallingAssembly,
+            /// <summary>
+            /// The process executable in the default application domain. In other application 
+            /// domains, this is the first executable that was executed by ExecuteAssembly(String).
+            /// </summary>
             EntryAssembly,
+            /// <summary>
+            /// The assembly that contains the code that is currently executing.
+            /// </summary>
             ExecutingAssembly,
         }
 
@@ -301,10 +251,9 @@ namespace Argus.Utilities
         /// </summary>
         /// <param name="name">The name of the file of the embedded resource.  This should include the root namespace preceding the file name.</param>
         /// <returns>A string with the contents of the embedded resource.</returns>
-        /// <remarks></remarks>
         public static string GetEmbeddedResource(string name)
         {
-            return GetEmbeddedResource(System.Reflection.Assembly.GetExecutingAssembly(), name);
+            return GetEmbeddedResource(Assembly.GetExecutingAssembly(), name);
         }
 
         /// <summary>
@@ -313,37 +262,28 @@ namespace Argus.Utilities
         /// <param name="assembly">The System.Reflection.Assembly object you want to get the embedded resource from.</param>
         /// <param name="name">The name of the file of the embedded resource.  This should include the root namespace preceding the file name.</param>
         /// <returns>A string with the contents of the embedded resource.</returns>
-        /// <remarks></remarks>
-        public static string GetEmbeddedResource(System.Reflection.Assembly assembly, string name)
+        public static string GetEmbeddedResource(Assembly assembly, string name)
         {
-            string buf = "";
-            using (System.IO.Stream s = assembly.GetManifestResourceStream(name))
+            using (var s = assembly.GetManifestResourceStream(name))
             {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+                using (var sr = new System.IO.StreamReader(s))
                 {
-                    buf = sr.ReadToEnd();
-                    sr.Close();
+                    return sr.ReadToEnd();
                 }
-
-                s?.Close();
             }
-            return buf;
         }
 
         /// <summary>
         /// Returns a CacheKey that is comprised off of the calling methods reflected namespace, class and
         /// method name plus the arguments that are passed in.
         /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
         /// <param name="args">Arguments unique to the cache item</param>
         /// <returns>String cache key used to cache and item.</returns>
         public static string GetCacheKey(params object[] args)
         {
-            StackTrace stack = new StackTrace();
-            MethodBase method = stack.GetFrame(1).GetMethod();
-            StringBuilder cacheKey = new StringBuilder();
+            var stack = new StackTrace();
+            var method = stack.GetFrame(1).GetMethod();
+            var cacheKey = new StringBuilder();
 
             // Append the calling namespace, class and method
             cacheKey.AppendFormat("{0}.{1}", method.ReflectedType?.FullName, method.Name);
@@ -366,8 +306,7 @@ namespace Argus.Utilities
             }
 
             return cacheKey.ToString();
+
         }
-
     }
-
 }

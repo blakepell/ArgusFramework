@@ -905,20 +905,37 @@ namespace Argus.Extensions
         /// <remarks></remarks>
         public static string ToBase64(this string buf)
         {
-            var b = Encoding.UTF8.GetBytes(buf);
-            return Convert.ToBase64String(b);
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(buf));
+        }
+
+        /// <summary>
+        /// Converts a string into a Base64 string.
+        /// </summary>
+        /// <param name="buf"></param>
+        /// <param name="enc">The encoding to use for the Base64 conversion.</param>
+        public static string ToBase64(this string buf, Encoding enc)
+        {            
+            return Convert.ToBase64String(enc.GetBytes(buf));
         }
 
         /// <summary>
         /// Converts the string from a Base64 string to a string.  UTF8 is used by default for the encoding as supported by the portable class library.
         /// </summary>
         /// <param name="buf"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static string FromBase64(this string buf)
         {
             var b = Convert.FromBase64String(buf);
             return Encoding.UTF8.GetString(b, 0, b.Length);
+        }
+
+        /// <summary>
+        /// Converts a Base64 string into a string.
+        /// </summary>
+        /// <param name="buf"></param>
+        /// <param name="enc">The encoding to use for the Base64 conversion.</param>
+        public static string FromBase64(this string buf, Encoding enc)
+        {
+            return enc.GetString(Convert.FromBase64String(buf));
         }
 
         /// <summary>
@@ -1100,18 +1117,31 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Converts a string into a MemoryStream returned as a Stream.
+        /// Converts a string into a MemoryStream using the specified encoding.
         /// </summary>
         /// <param name="str"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static MemoryStream ToMemoryStream(this string str)
-        {
-            byte[] b = Encoding.UTF8.GetBytes(str);
-            MemoryStream ms = new MemoryStream(b);
-            return ms;
+        /// <param name="enc">The encoding to use with the string.</param>
+        public static MemoryStream ToMemoryStream(this string str, Encoding enc)
+        {            
+            return new MemoryStream(enc.GetBytes(str));
         }
 
+        /// <summary>
+        /// Converts a string into a MemoryStream.
+        /// </summary>
+        /// <param name="buf"></param>
+        public static MemoryStream ToMemoryString(this string buf)
+        {
+            var ms = new MemoryStream();
+
+            using (var sw = new StreamWriter(ms))
+            {
+                sw.Write(buf);
+                sw.Flush();
+            }
+
+            return ms;
+        }
 
         /// <summary>
         /// Determines if the string is a guid format (via Guid.TryParse).

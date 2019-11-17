@@ -34,7 +34,7 @@ namespace Argus.Utilities
             using (var ms = new MemoryStream())
             {
                 var xs = new XmlSerializer(obj.GetType());
-                xs.Serialize(ms, obj);
+                xs.Serialize(ms, obj);                
                 ms.Flush();
                 return Encoding.UTF8.GetString(ms.ToArray(), 0, (int)ms.Position);
             }

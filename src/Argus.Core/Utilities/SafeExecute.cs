@@ -6,7 +6,8 @@ namespace Argus.Utilities
     /// Safe methods that can execute lambda expressions and supress any exceptions that might occur.
     /// </summary>
     /// <remarks>
-    /// I am aware of the ramifications of this and also that in general nearly all exceptions should be handled.
+    /// I am aware of the ramifications of this and also that in general nearly all exceptions should
+    /// be handled when at all possible.  Credit to Rick Strahl on this code.
     /// </remarks>
     public static class SafeExecute
     {

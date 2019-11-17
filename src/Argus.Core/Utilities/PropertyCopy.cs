@@ -131,15 +131,18 @@ namespace Argus.Utilities
 
         private static Func<TSource, TTarget> BuildCreator()
         {
-            ParameterExpression sourceParameter = Expression.Parameter(typeof(TSource), "source");
+            var sourceParameter = Expression.Parameter(typeof(TSource), "source");
             var bindings = new List<MemberBinding>();
-            foreach (PropertyInfo sourceProperty in typeof(TSource).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+
+            foreach (var sourceProperty in typeof(TSource).GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 if (!sourceProperty.CanRead)
                 {
                     continue;
                 }
-                PropertyInfo targetProperty = typeof(TTarget).GetProperty(sourceProperty.Name);
+
+                var targetProperty = typeof(TTarget).GetProperty(sourceProperty.Name);
+
                 if (targetProperty == null)
                 {
                     throw new ArgumentException("Property " + sourceProperty.Name + " is not present and accessible in " + typeof(TTarget).FullName);
@@ -156,10 +159,12 @@ namespace Argus.Utilities
                 {
                     throw new ArgumentException("Property " + sourceProperty.Name + " has an incompatible type in " + typeof(TTarget).FullName);
                 }
+
                 bindings.Add(Expression.Bind(targetProperty, Expression.Property(sourceParameter, sourceProperty)));
                 sourceProperties.Add(sourceProperty);
                 targetProperties.Add(targetProperty);
             }
+
             Expression initializer = Expression.MemberInit(Expression.New(typeof(TTarget)), bindings);
             return Expression.Lambda<Func<TSource, TTarget>>(initializer, sourceParameter).Compile();
         }

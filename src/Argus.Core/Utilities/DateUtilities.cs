@@ -1,5 +1,4 @@
 ﻿using System;
-using Argus.Extensions;
 
 namespace Argus.Utilities
 {
@@ -24,8 +23,7 @@ namespace Argus.Utilities
         /// Returns a random date between the minimum value allowed in .Net and the maximum value allowed.  This uses
         /// DateTime.MinValue and DateTime.MaxValue.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>A random DateTime between DateTime.MinValue and DateTime.MaxValue.</returns>
         public static DateTime GetRandomDate()
         {
             return GetRandomDate(DateTime.MinValue, DateTime.MaxValue);
@@ -36,11 +34,9 @@ namespace Argus.Utilities
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static DateTime GetRandomDate(DateTime startDate, DateTime endDate)
         {
-            Random rand = new Random();
+            var rand = new Random();
 
             int year = rand.Next(startDate.Year, endDate.Year);
             int month = rand.Next(startDate.Month, endDate.Month);
@@ -53,8 +49,6 @@ namespace Argus.Utilities
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static DateTime GetRandomDate(string startDate, string endDate)
         {
             return GetRandomDate(Convert.ToDateTime(startDate), Convert.ToDateTime((endDate)));
@@ -64,7 +58,6 @@ namespace Argus.Utilities
         /// Returns whether a string is a valid DateTime.
         /// </summary>
         /// <param name="strDate"></param>
-        /// <returns></returns>
         public static bool IsValidDateTime(string strDate)
         {
             DateTime tempDate;

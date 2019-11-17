@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace Argus.Utilities
+namespace Argus.Diagnostics
 {
 
     /// <summary>
-    /// A portable replacement for the .Net Stopwatch class that is not provided in all versions of the Framework.  
+    /// A portable replacement for the .NET Stopwatch class that is not provided in all versions of the framework.  
     /// </summary>
-    /// <remarks></remarks>
     public class Stopwatch
     {
         //*********************************************************************************************************************
@@ -22,8 +21,6 @@ namespace Argus.Utilities
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <remarks></remarks>
-
         public Stopwatch()
         {
         }
@@ -31,33 +28,30 @@ namespace Argus.Utilities
         /// <summary>
         /// Starts the Stopwatch.
         /// </summary>
-        /// <remarks></remarks>
         public void Start()
         {
             if (!IsRunning)
             {
                 _startTimestamp = DateTime.UtcNow.Ticks;
-                IsRunning = true;
+                this.IsRunning = true;
             }
         }
 
         /// <summary>
         /// Stops the Stopwatch.
         /// </summary>
-        /// <remarks></remarks>
         public void Stop()
         {
             if (IsRunning)
             {
                 _elapsedTicks += ElapsedTicksSinceLastStart;
-                IsRunning = false;
+                this.IsRunning = false;
             }
         }
 
         /// <summary>
         /// Resets and then starts the Stopwatch.
         /// </summary>
-        /// <remarks></remarks>
         public void Restart()
         {
             this.Reset();
@@ -67,42 +61,33 @@ namespace Argus.Utilities
         /// <summary>
         /// Resets and stops the Stopwatch
         /// </summary>
-        /// <remarks></remarks>
         public void Reset()
         {
             _startTimestamp = 0;
             _elapsedTicks = 0;
-            IsRunning = false;
+            this.IsRunning = false;
         }
 
         /// <summary>
         /// The time elapsed as a TimeSpan that the Stopwatch was in the running state.
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public TimeSpan Elapsed
         {
-            get { return new TimeSpan(ElapsedTicks); }
+            get { return new TimeSpan(this.ElapsedTicks); }
         }
 
         /// <summary>
         /// The time elapsed in milleseconds that the Stopwatch was in the running state.
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public long ElapsedMilliseconds
         {
-            get { return ElapsedTicks / TimeSpan.TicksPerMillisecond; }
+            get { return this.ElapsedTicks / TimeSpan.TicksPerMillisecond; }
         }
 
         /// <summary>
         /// The time elaposed in Ticks that the Stopwatch was in the running state.
         /// </summary>
         /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public long ElapsedTicks
         {
             get
@@ -111,7 +96,7 @@ namespace Argus.Utilities
 
                 if (IsRunning)
                 {
-                    et += ElapsedTicksSinceLastStart;
+                    et += this.ElapsedTicksSinceLastStart;
                 }
 
                 return et;
@@ -131,19 +116,15 @@ namespace Argus.Utilities
         /// <summary>
         /// Whether the Stopwatch is currently running or not.
         /// </summary>
-        public bool IsRunning { get; set; }
+        public bool IsRunning { get; set; } = false;
 
         /// <summary>
         /// The elaposed ticks since the Stopwatch was last started.
         /// </summary>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
         private long ElapsedTicksSinceLastStart
         {
             get { return DateTime.UtcNow.Ticks - _startTimestamp; }
         }
 
     }
-
 }
