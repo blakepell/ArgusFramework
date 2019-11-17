@@ -1,4 +1,4 @@
-using Argus.Diagnostics.AspNetCore;
+using Argus.AspNetCore.Environment;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
