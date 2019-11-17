@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for Image objects.
+    ///     Extension methods for Image objects.
     /// </summary>
     public static class ImageExtensions
     {
-
         //*********************************************************************************************************************
         //
         //            Module:  ImageExtensions
@@ -25,7 +18,7 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Determins if a Bitmap is a single color.
+        ///     Determines if a Bitmap is a single color.
         /// </summary>
         /// <param name="bm"></param>
         public static bool IsSingleColor(this Bitmap bm)
@@ -53,7 +46,5 @@ namespace Argus.Extensions
 
             return true;
         }
-
     }
-
 }

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace Argus.Utilities
 {
-
     /// <summary>
-    /// Utilities for use when dealing with reflection and runtime getting, setting and displaying of properties
-    /// of an object.
+    ///     Utilities for use when dealing with reflection and runtime getting, setting and displaying of properties
+    ///     of an object.
     /// </summary>
-    /// <remarks></remarks>
     public class Reflection
     {
         //*********************************************************************************************************************
@@ -26,12 +25,34 @@ namespace Argus.Utilities
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Determines whether a property of a specific type is Browsable.
+        ///     The assembly types supported through via this library.
+        /// </summary>
+        public enum AssemblyTypes
+        {
+            /// <summary>
+            ///     The Assembly of the method that invoked the currently executing method.
+            /// </summary>
+            CallingAssembly,
+
+            /// <summary>
+            ///     The process executable in the default application domain. In other application
+            ///     domains, this is the first executable that was executed by ExecuteAssembly(String).
+            /// </summary>
+            EntryAssembly,
+
+            /// <summary>
+            ///     The assembly that contains the code that is currently executing.
+            /// </summary>
+            ExecutingAssembly
+        }
+
+        /// <summary>
+        ///     Determines whether a property of a specific type is browsable.
         /// </summary>
         /// <param name="t"></param>
         /// <param name="propertyName"></param>
         public static bool IsBrowsable(Type t, string propertyName)
-        {                        
+        {
             var attributes = TypeDescriptor.GetProperties(t)[propertyName].Attributes;
 
             // Only show the properties that can be set and whether it's browsable or not.                        
@@ -44,18 +65,19 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// Determines whether a property of a specific type is Browsable.
+        ///     Determines whether a property of a specific type is Browsable.
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="propertyName"></param>
         public static bool IsBrowsable(string typeName, string propertyName)
         {
             var t = Type.GetType(typeName);
+
             return IsBrowsable(t, propertyName);
         }
 
         /// <summary>
-        /// Determines whether a property of a specific type is Browsable and can be written to.
+        ///     Determines whether a property of a specific type is Browsable and can be written to.
         /// </summary>
         /// <param name="t"></param>
         /// <param name="propertyName"></param>
@@ -70,25 +92,24 @@ namespace Argus.Utilities
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         /// <summary>
-        /// Determines whether a property of a specific type is Browsable and can be written to.
+        ///     Determines whether a property of a specific type is Browsable and can be written to.
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="propertyName"></param>
         public static bool IsBrowsableAndWritable(string typeName, string propertyName)
         {
             var t = Type.GetType(typeName);
+
             return IsBrowsableAndWritable(t, propertyName);
         }
 
         /// <summary>
-        /// Gets browsable properties from a type that you can also write to.
+        ///     Gets browsable properties from a type that you can also write to.
         /// </summary>
         /// <param name="t"></param>
         public static List<PropertyInfo> GetBrowsableWritableProperties(Type t)
@@ -112,24 +133,25 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// Gets browsable properties from a type that you can also write to.
+        ///     Gets browsable properties from a type that you can also write to.
         /// </summary>
         /// <param name="typeName"></param>
         public static List<PropertyInfo> GetBrowsableWritableProperties(string typeName)
         {
             var t = Type.GetType(typeName);
+
             return GetBrowsableWritableProperties(t);
         }
 
         /// <summary>
-        /// Gets just browsable properties from a type whether they are read only or writable.
+        ///     Gets just browsable properties from a type whether they are read only or writable.
         /// </summary>
         /// <param name="t"></param>
         public static List<PropertyInfo> GetBrowsableProperties(Type t)
-        {            
+        {
             var pList = new List<PropertyInfo>();
 
-            PropertyInfo[] piList = t.GetProperties();
+            var piList = t.GetProperties();
 
             foreach (var pi in piList)
             {
@@ -144,17 +166,18 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// Gets just browsable properties from a type whether they are read only or writable.
+        ///     Gets just browsable properties from a type whether they are read only or writable.
         /// </summary>
         /// <param name="typeName"></param>
         public static List<PropertyInfo> GetBrowsableProperties(string typeName)
         {
             var t = Type.GetType(typeName);
+
             return GetBrowsableProperties(t);
         }
 
         /// <summary>
-        /// Returns System.Type classes for all of the types found in the calling assembly.
+        ///     Returns System.Type classes for all of the types found in the calling assembly.
         /// </summary>
         public static List<Type> GetTypesInAssembly(AssemblyTypes assemblyType)
         {
@@ -165,12 +188,15 @@ namespace Argus.Utilities
             {
                 case AssemblyTypes.CallingAssembly:
                     asm = Assembly.GetCallingAssembly();
+
                     break;
                 case AssemblyTypes.EntryAssembly:
                     asm = Assembly.GetEntryAssembly();
+
                     break;
                 case AssemblyTypes.ExecutingAssembly:
                     asm = Assembly.GetExecutingAssembly();
+
                     break;
             }
 
@@ -188,10 +214,10 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// Returns System.Type classes for all of the types found in the calling assembly filtered by the namespaceFilter parameter.
+        ///     Returns System.Type classes for all of the types found in the calling assembly filtered by the namespaceFilter parameter.
         /// </summary>
         /// <param name="assemblyType"></param>
-        /// <param name="namespaceFilter"></param>        
+        /// <param name="namespaceFilter"></param>
         public static List<Type> GetTypesInAssembly(AssemblyTypes assemblyType, string namespaceFilter)
         {
             var list = new List<Type>();
@@ -201,12 +227,15 @@ namespace Argus.Utilities
             {
                 case AssemblyTypes.CallingAssembly:
                     asm = Assembly.GetCallingAssembly();
+
                     break;
                 case AssemblyTypes.EntryAssembly:
                     asm = Assembly.GetEntryAssembly();
+
                     break;
                 case AssemblyTypes.ExecutingAssembly:
                     asm = Assembly.GetExecutingAssembly();
+
                     break;
             }
 
@@ -214,7 +243,7 @@ namespace Argus.Utilities
             {
                 return new List<Type>();
             }
-            
+
             foreach (var t in asm.GetTypes())
             {
                 if (t.Namespace == namespaceFilter)
@@ -227,27 +256,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// The assembly types supported through via this library.
-        /// </summary>
-        public enum AssemblyTypes
-        {
-            /// <summary>
-            /// The Assembly of the method that invoked the currently executing method.
-            /// </summary>
-            CallingAssembly,
-            /// <summary>
-            /// The process executable in the default application domain. In other application 
-            /// domains, this is the first executable that was executed by ExecuteAssembly(String).
-            /// </summary>
-            EntryAssembly,
-            /// <summary>
-            /// The assembly that contains the code that is currently executing.
-            /// </summary>
-            ExecutingAssembly,
-        }
-
-        /// <summary>
-        /// Returns a string containing the contents of the specified embedded resource from the executing assembly.
+        ///     Returns a string containing the contents of the specified embedded resource from the executing assembly.
         /// </summary>
         /// <param name="name">The name of the file of the embedded resource.  This should include the root namespace preceding the file name.</param>
         /// <returns>A string with the contents of the embedded resource.</returns>
@@ -257,7 +266,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// Returns a string containing the contents of the specified embedded resource from the provided assembly.
+        ///     Returns a string containing the contents of the specified embedded resource from the provided assembly.
         /// </summary>
         /// <param name="assembly">The System.Reflection.Assembly object you want to get the embedded resource from.</param>
         /// <param name="name">The name of the file of the embedded resource.  This should include the root namespace preceding the file name.</param>
@@ -266,7 +275,7 @@ namespace Argus.Utilities
         {
             using (var s = assembly.GetManifestResourceStream(name))
             {
-                using (var sr = new System.IO.StreamReader(s))
+                using (var sr = new StreamReader(s))
                 {
                     return sr.ReadToEnd();
                 }
@@ -274,8 +283,8 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// Returns a CacheKey that is comprised off of the calling methods reflected namespace, class and
-        /// method name plus the arguments that are passed in.
+        ///     Returns a CacheKey that is comprised off of the calling methods reflected namespace, class and
+        ///     method name plus the arguments that are passed in.
         /// </summary>
         /// <param name="args">Arguments unique to the cache item</param>
         /// <returns>String cache key used to cache and item.</returns>
@@ -289,7 +298,7 @@ namespace Argus.Utilities
             cacheKey.AppendFormat("{0}.{1}", method.ReflectedType?.FullName, method.Name);
 
             // Append the args, handle incoming types and clean them up
-            foreach (object item in args)
+            foreach (var item in args)
             {
                 if (item is string)
                 {
@@ -297,16 +306,15 @@ namespace Argus.Utilities
                 }
                 else if (item is DateTime)
                 {
-                    cacheKey.AppendFormat("-{0}", ((DateTime)item).ToShortDateString());
+                    cacheKey.AppendFormat("-{0}", ((DateTime) item).ToShortDateString());
                 }
                 else
                 {
-                    cacheKey.AppendFormat("-{0}", item.ToString());
+                    cacheKey.AppendFormat("-{0}", item);
                 }
             }
 
             return cacheKey.ToString();
-
         }
     }
 }

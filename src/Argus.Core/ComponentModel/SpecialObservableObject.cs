@@ -1,52 +1,57 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace Argus.ComponentModel
 {
-
     /// <summary>
-    /// A collection which is observable.
+    ///     A collection which is observable.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class SpecialObservableCollection<T> : ObservableCollection<T>
     {
+        /// <summary>
+        ///     Delegate for when a list item changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void ListItemChangedEventHandler(object sender, PropertyChangedEventArgs e);
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         public SpecialObservableCollection()
         {
-            this.CollectionChanged += OnCollectionChanged;
+            this.CollectionChanged += this.OnCollectionChanged;
         }
 
-        void OnCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            AddOrRemoveListToPropertyChanged(e.NewItems, true);
-            AddOrRemoveListToPropertyChanged(e.OldItems, false);
+            this.AddOrRemoveListToPropertyChanged(e.NewItems, true);
+            this.AddOrRemoveListToPropertyChanged(e.OldItems, false);
         }
 
-        private void AddOrRemoveListToPropertyChanged(IList list, bool add)
+        private void AddOrRemoveListToPropertyChanged(IEnumerable list, bool add)
         {
             if (list == null)
             {
                 return;
             }
 
-            foreach (object item in list)
+            foreach (var item in list)
             {
-                var o = item as INotifyPropertyChanged;
-                if (o != null)
+                if (item is INotifyPropertyChanged o)
                 {
                     if (add)
                     {
-                        o.PropertyChanged += ListItemPropertyChanged;
+                        o.PropertyChanged += this.ListItemPropertyChanged;
                     }
 
                     if (!add)
                     {
-                        o.PropertyChanged -= ListItemPropertyChanged;
+                        o.PropertyChanged -= this.ListItemPropertyChanged;
                     }
                 }
                 else
@@ -56,19 +61,16 @@ namespace Argus.ComponentModel
             }
         }
 
-        void ListItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ListItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            OnListItemChanged(this, e);
+            this.OnListItemChanged(this, e);
         }
-
-        public delegate void ListItemChangedEventHandler(object sender, PropertyChangedEventArgs e);
 
         public event ListItemChangedEventHandler ListItemChanged;
 
         private void OnListItemChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (ListItemChanged != null) { this.ListItemChanged(this, e); }
+            this.ListItemChanged?.Invoke(this, e);
         }
-
     }
 }

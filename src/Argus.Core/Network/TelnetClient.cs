@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Argus.Network
 {
     /// <summary>
-    /// A telnet client to send a receive messages from a server.
+    ///     A telnet client to send a receive messages from a server.
     /// </summary>
     /// <example>
     ///     var cancellationSource = new CancellationTokenSource();
@@ -21,36 +21,35 @@ namespace Argus.Network
     ///     telnet.Connect();
     /// </example>
     /// <remarks>
-    /// Based off of: https://github.com/Spksh/TentacleSoftware.Telnet
+    ///     Based off of: https://github.com/Spksh/TentacleSoftware.Telnet
     /// </remarks>
     public class TelnetClient : IDisposable
     {
-        private readonly int _port;
         private readonly string _host;
+        private readonly CancellationTokenSource _internalCancellation;
+        private readonly int _port;
         private readonly TimeSpan _sendRate;
         private readonly SemaphoreSlim _sendRateLimit;
-        private readonly CancellationTokenSource _internalCancellation;
-
+        private bool _disposed;
         private TcpClient _tcpClient;
         private StreamReader _tcpReader;
         private StreamWriter _tcpWriter;
 
         /// <summary>
-        /// An event that fires when a message with data is received.
-        /// </summary>
-        public EventHandler<string> MessageReceived;
-
-        /// <summary>
-        /// An event that fires when the connection closes.
+        ///     An event that fires when the connection closes.
         /// </summary>
         public EventHandler ConnectionClosed;
 
         /// <summary>
-        /// Simple telnet client
+        ///     An event that fires when a message with data is received.
+        /// </summary>
+        public EventHandler<string> MessageReceived;
+
+        /// <summary>
+        ///     Simple telnet client
         /// </summary>
         /// <param name="host">Destination Hostname or IP</param>
         /// <param name="port">Destination TCP port number</param>
-        /// <param name="waitForLine">Whether the StreamReader should wait for a line with a line feed or read to the end.</param>
         /// <param name="sendRate">Minimum time span between sends. This is a throttle to prevent flooding the server.</param>
         /// <param name="token"></param>
         public TelnetClient(string host, int port, TimeSpan sendRate, CancellationToken token)
@@ -65,9 +64,17 @@ namespace Argus.Network
         }
 
         /// <summary>
-        /// Connect and wait for incoming messages. 
-        /// When this task completes you are connected. 
-        /// You cannot call this method twice; if you need to reconnect, dispose of this instance and create a new one.
+        ///     Disposes of the allocated resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        ///     Connect and wait for incoming messages.
+        ///     When this task completes you are connected.
+        ///     You cannot call this method twice; if you need to reconnect, dispose of this instance and create a new one.
         /// </summary>
         /// <returns></returns>
         public async Task Connect()
@@ -81,16 +88,16 @@ namespace Argus.Network
             await _tcpClient.ConnectAsync(_host, _port);
 
             _tcpReader = new StreamReader(_tcpClient.GetStream());
-            _tcpWriter = new StreamWriter(_tcpClient.GetStream()) { AutoFlush = true };
+            _tcpWriter = new StreamWriter(_tcpClient.GetStream()) {AutoFlush = true};
 
             // Fire-and-forget looping task that waits for messages to arrive
-            WaitForMessage();
+            this.WaitForMessage();
         }
 
         /// <summary>
-        /// Connect via SOCKS4 proxy. See http://en.wikipedia.org/wiki/SOCKS#SOCKS4.
-        /// When this task completes you are connected. 
-        /// You cannot call this method twice; if you need to reconnect, dispose of this instance and create a new one.
+        ///     Connect via SOCKS4 proxy. See http://en.wikipedia.org/wiki/SOCKS#SOCKS4.
+        ///     When this task completes you are connected.
+        ///     You cannot call this method twice; if you need to reconnect, dispose of this instance and create a new one.
         /// </summary>
         /// <param name="socks4ProxyHost"></param>
         /// <param name="socks4ProxyPort"></param>
@@ -108,15 +115,15 @@ namespace Argus.Network
 
             // Simple implementation of http://en.wikipedia.org/wiki/SOCKS#SOCKS4
             // Similar to http://biko.codeplex.com/
-            byte[] hostAddress = Dns.GetHostAddresses(_host).First().GetAddressBytes();
-            byte[] hostPort = new byte[2]; // 16-bit number
+            var hostAddress = Dns.GetHostAddresses(_host).First().GetAddressBytes();
+            var hostPort = new byte[2]; // 16-bit number
             hostPort[0] = Convert.ToByte(_port / 256);
             hostPort[1] = Convert.ToByte(_port % 256);
-            byte[] proxyUserId = Encoding.ASCII.GetBytes(socks4ProxyUser ?? string.Empty); // Can't pass in null
+            var proxyUserId = Encoding.ASCII.GetBytes(socks4ProxyUser ?? string.Empty); // Can't pass in null
 
             // Request
             // - We build a "please connect me" packet to send to the proxy
-            byte[] proxyRequest = new byte[9 + proxyUserId.Length];
+            var proxyRequest = new byte[9 + proxyUserId.Length];
 
             proxyRequest[0] = 4; // SOCKS4;
             proxyRequest[1] = 0x01; // Connect (we don't support Bind);
@@ -136,7 +143,7 @@ namespace Argus.Network
             // - First byte is null
             // - Second byte is our result code (we want 0x5a Request granted)
             // - Last 6 bytes should be ignored
-            byte[] proxyResponse = new byte[8];
+            var proxyResponse = new byte[8];
 
             // Wait for proxy response
             await _tcpClient.GetStream().ReadAsync(proxyResponse, 0, proxyResponse.Length, _internalCancellation.Token);
@@ -157,10 +164,10 @@ namespace Argus.Network
             }
 
             _tcpReader = new StreamReader(_tcpClient.GetStream());
-            _tcpWriter = new StreamWriter(_tcpClient.GetStream()) { AutoFlush = true };
+            _tcpWriter = new StreamWriter(_tcpClient.GetStream()) {AutoFlush = true};
 
             // Fire-and-forget looping task that waits for messages to arrive
-            WaitForMessage();
+            this.WaitForMessage();
         }
 
         public async Task Send(string message)
@@ -181,23 +188,25 @@ namespace Argus.Network
             {
                 // We're waiting to release our semaphore, and someone cancelled the task on us (I'm looking at you, WaitForMessages...)
                 // This happens if we've just sent something and then disconnect immediately
-                Trace.TraceInformation($"{nameof(Send)} aborted: {nameof(_internalCancellation.IsCancellationRequested)} == true");
+                Trace.TraceInformation($"{nameof(this.Send)} aborted: {nameof(_internalCancellation.IsCancellationRequested)} == true");
             }
             catch (ObjectDisposedException)
             {
                 // This happens during ReadLineAsync() when we call Disconnect() and close the underlying stream
                 // This is an expected exception during disconnection if we're in the middle of a send
-                Trace.TraceInformation($"{nameof(Send)} failed: {nameof(_tcpWriter)} or {nameof(_tcpWriter.BaseStream)} disposed");
+                Trace.TraceInformation($"{nameof(this.Send)} failed: {nameof(_tcpWriter)} or {nameof(_tcpWriter.BaseStream)} disposed");
             }
             catch (IOException)
             {
                 // This happens when we start WriteLineAsync() if the socket is disconnected unexpectedly
-                Trace.TraceError($"{nameof(Send)} failed: Socket disconnected unexpectedly");
+                Trace.TraceError($"{nameof(this.Send)} failed: Socket disconnected unexpectedly");
+
                 throw;
             }
             catch (Exception error)
             {
-                Trace.TraceError($"{nameof(Send)} failed: {error}");
+                Trace.TraceError($"{nameof(this.Send)} failed: {error}");
+
                 throw;
             }
             finally
@@ -215,7 +224,8 @@ namespace Argus.Network
                 {
                     if (_internalCancellation.IsCancellationRequested)
                     {
-                        Trace.TraceInformation($"{nameof(WaitForMessage)} aborted: {nameof(_internalCancellation.IsCancellationRequested)} == true");
+                        Trace.TraceInformation($"{nameof(this.WaitForMessage)} aborted: {nameof(_internalCancellation.IsCancellationRequested)} == true");
+
                         break;
                     }
 
@@ -225,7 +235,8 @@ namespace Argus.Network
                     {
                         if (!_tcpClient.Connected)
                         {
-                            Trace.TraceInformation($"{nameof(WaitForMessage)} aborted: {nameof(_tcpClient)} is not connected");
+                            Trace.TraceInformation($"{nameof(this.WaitForMessage)} aborted: {nameof(_tcpClient)} is not connected");
+
                             break;
                         }
 
@@ -237,7 +248,8 @@ namespace Argus.Network
 
                         if (message == null)
                         {
-                            Trace.TraceInformation($"{nameof(WaitForMessage)} aborted: {nameof(_tcpReader)} reached end of stream");
+                            Trace.TraceInformation($"{nameof(this.WaitForMessage)} aborted: {nameof(_tcpReader)} reached end of stream");
+
                             break;
                         }
                     }
@@ -245,35 +257,38 @@ namespace Argus.Network
                     {
                         // This happens during ReadLineAsync() when we call Disconnect() and close the underlying stream
                         // This is an expected exception during disconnection
-                        Trace.TraceInformation($"{nameof(WaitForMessage)} aborted: {nameof(_tcpReader)} or {nameof(_tcpReader.BaseStream)} disposed. This is expected after calling Disconnect()");
+                        Trace.TraceInformation($"{nameof(this.WaitForMessage)} aborted: {nameof(_tcpReader)} or {nameof(_tcpReader.BaseStream)} disposed. This is expected after calling Disconnect()");
+
                         break;
                     }
                     catch (IOException)
                     {
                         // This happens when we start ReadLineAsync() if the socket is disconnected unexpectedly
-                        Trace.TraceError($"{nameof(WaitForMessage)} aborted: Socket disconnected unexpectedly");
+                        Trace.TraceError($"{nameof(this.WaitForMessage)} aborted: Socket disconnected unexpectedly");
+
                         break;
                     }
                     catch (Exception error)
                     {
-                        Trace.TraceError($"{nameof(WaitForMessage)} aborted: {error}");
+                        Trace.TraceError($"{nameof(this.WaitForMessage)} aborted: {error}");
+
                         break;
                     }
 
-                    Trace.TraceInformation($"{nameof(WaitForMessage)} received: {message} [{message.Length}]");
+                    Trace.TraceInformation($"{nameof(this.WaitForMessage)} received: {message} [{message.Length}]");
 
-                    OnMessageReceived(message);
+                    this.OnMessageReceived(message);
                 }
             }
             finally
             {
-                Trace.TraceInformation($"{nameof(WaitForMessage)} completed: Calling {nameof(Disconnect)}");
-                Disconnect();
+                Trace.TraceInformation($"{nameof(this.WaitForMessage)} completed: Calling {nameof(this.Disconnect)}");
+                this.Disconnect();
             }
         }
 
         /// <summary>
-        /// Disconnecting will leave TelnetClient in an unusable state.
+        ///     Disconnecting will leave TelnetClient in an unusable state.
         /// </summary>
         public void Disconnect()
         {
@@ -291,11 +306,11 @@ namespace Argus.Network
             }
             catch (Exception error)
             {
-                Trace.TraceError($"{nameof(Disconnect)} error: {error}");
+                Trace.TraceError($"{nameof(this.Disconnect)} error: {error}");
             }
             finally
             {
-                OnConnectionClosed();
+                this.OnConnectionClosed();
             }
         }
 
@@ -309,18 +324,8 @@ namespace Argus.Network
             ConnectionClosed?.Invoke(this, new EventArgs());
         }
 
-        private bool _disposed = false;
-
         /// <summary>
-        /// Disposes of the allocated resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        /// <summary>
-        /// Disposes of the allocated resources.
+        ///     Disposes of the allocated resources.
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
@@ -332,7 +337,7 @@ namespace Argus.Network
 
             if (disposing)
             {
-                Disconnect();
+                this.Disconnect();
             }
 
             _disposed = true;

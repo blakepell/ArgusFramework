@@ -6,7 +6,7 @@ using System.Linq;
 namespace Argus.IO
 {
     /// <summary>
-    /// Utility methods for dealing with common file system operations.
+    ///     Utility methods for dealing with common file system operations.
     /// </summary>
     public class FileSystemUtilities
     {
@@ -21,7 +21,80 @@ namespace Argus.IO
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Creates the full directory tree of a specified path.  This method will create all parent directories necessary.
+        ///     Date types supported for the SafeFileType extension method.
+        /// </summary>
+        public enum DateType
+        {
+            /// <summary>
+            ///     The creation time for the file.
+            /// </summary>
+            CreationTime,
+
+            /// <summary>
+            ///     The UTC creation time for the file.
+            /// </summary>
+            CreationTimeUtc,
+
+            /// <summary>
+            ///     The last write time for the file.
+            /// </summary>
+            LastWriteTime,
+
+            /// <summary>
+            ///     The UTC last write time for the file.
+            /// </summary>
+            LastWriteTimeUtc,
+
+            /// <summary>
+            ///     The last access time for the file.
+            /// </summary>
+            LastAccessTime,
+
+            /// <summary>
+            ///     The UTC last access time for the file.
+            /// </summary>
+            LastAccessTimeUtc
+        }
+
+        /// <summary>
+        ///     The supported sort orders.
+        /// </summary>
+        public enum SortOrder
+        {
+            /// <summary>
+            ///     Ascending sort from first to last.
+            /// </summary>
+            Ascending,
+
+            /// <summary>
+            ///     Descending sort from last to first.
+            /// </summary>
+            Descending
+        }
+
+        /// <summary>
+        ///     The supported file sorts.
+        /// </summary>
+        public enum SortType
+        {
+            /// <summary>
+            ///     The last time the file was written to.
+            /// </summary>
+            LastWriteTime,
+
+            /// <summary>
+            ///     The last time the file was accessed.
+            /// </summary>
+            LastAccessTime,
+
+            /// <summary>
+            ///     The time the file was originally created.
+            /// </summary>
+            CreationTime
+        }
+
+        /// <summary>
+        ///     Creates the full directory tree of a specified path.  This method will create all parent directories necessary.
         /// </summary>
         /// <param name="di"></param>
         public static void CreateDirectory(DirectoryInfo di)
@@ -38,7 +111,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Creates the full directory tree of a specified path.  This method will create all parent directories necessary.
+        ///     Creates the full directory tree of a specified path.  This method will create all parent directories necessary.
         /// </summary>
         /// <param name="path"></param>
         public static void CreateDirectory(string path)
@@ -48,8 +121,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Extracts the file name off of a path.  This function first looks for a \ character and if it's not found will then
-        /// look for a front slash as the seperator.
+        ///     Extracts the file name off of a path.  This function first looks for a \ character and if it's not found will then
+        ///     look for a front slash as the separator.
         /// </summary>
         /// <param name="fullPath"></param>
         public static string ExtractFileName(string fullPath)
@@ -65,20 +138,18 @@ namespace Argus.IO
             {
                 return fullPath;
             }
-            else
-            {
-                return fullPath.Substring(lastSlash + 1);
-            }
+
+            return fullPath.Substring(lastSlash + 1);
         }
 
         /// <summary>
-        /// Checks to see if a file exists before deleting it.  This will catch and eat any excpetions for cases when you want
-        /// a silent delete.
+        ///     Checks to see if a file exists before deleting it.  This will catch and eat any exceptions for cases when you want
+        ///     a silent delete.
         /// </summary>
         /// <param name="filePath"></param>
         public static void SafeFileDelete(string filePath)
         {
-            if (File.Exists(filePath) == true)
+            if (File.Exists(filePath))
             {
                 try
                 {
@@ -92,13 +163,13 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Checks to see if a directory exists before deleting it.  This will catch and eat any excpetions for cases when you want
-        /// a silent delete.
+        ///     Checks to see if a directory exists before deleting it.  This will catch and eat any exceptions for cases when you want
+        ///     a silent delete.
         /// </summary>
         /// <param name="dirPath"></param>
         public static void SafeDirectoryDelete(string dirPath)
         {
-            if (Directory.Exists(dirPath) == true)
+            if (Directory.Exists(dirPath))
             {
                 try
                 {
@@ -112,42 +183,41 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Deletes files in a path by a specified pattern (e.g. *.txt)
+        ///     Deletes files in a path by a specified pattern (e.g. *.txt)
         /// </summary>
         /// <param name="path"></param>
         /// <param name="pattern"></param>
         public static void DeleteFilesByPattern(string path, string pattern)
         {
-            string[] files = Directory.GetFiles(path, pattern);
+            var files = Directory.GetFiles(path, pattern);
 
             foreach (string f in files)
             {
                 File.Delete(f);
             }
-
         }
 
-
         /// <summary>
-        /// Gets all files in a directory and orders them in ascending or decending order by modified date or
-        /// created date.
+        ///     Gets all files in a directory and orders them in ascending or descending order by modified date or
+        ///     created date.
         /// </summary>
         /// <param name="dir">The directory to return files for.</param>
         /// <param name="st">Which attribute the directory should be sorted by.</param>
-        /// <param name="so">The sort order.  Decending will sort newest to oldest.  Ascending will sort oldest to newest.</param>
+        /// <param name="so">The sort order.  Descending will sort newest to oldest.  Ascending will sort oldest to newest.</param>
         /// <returns>A generic string list.</returns>
         public static List<string> GetFilesByModifiedDate(string dir, SortType st, SortOrder so)
         {
             dir = dir.TrimEnd('\\');
             var di = new DirectoryInfo(dir);
             var files = di.GetFileSystemInfos();
-            var orderedFiles = Enumerable.Empty<FileSystemInfo>(); ;
+            var orderedFiles = Enumerable.Empty<FileSystemInfo>();
+            ;
             var returnList = new List<string>();
 
             switch (st)
             {
                 case SortType.LastWriteTime:
-                    if (so == SortOrder.Decending)
+                    if (so == SortOrder.Descending)
                     {
                         orderedFiles = files.OrderBy(f => f.LastWriteTime).Reverse();
                     }
@@ -155,9 +225,10 @@ namespace Argus.IO
                     {
                         orderedFiles = files.OrderBy(f => f.LastWriteTime);
                     }
+
                     break;
                 case SortType.LastAccessTime:
-                    if (so == SortOrder.Decending)
+                    if (so == SortOrder.Descending)
                     {
                         orderedFiles = files.OrderBy(f => f.LastAccessTime).Reverse();
                     }
@@ -165,9 +236,10 @@ namespace Argus.IO
                     {
                         orderedFiles = files.OrderBy(f => f.LastAccessTime);
                     }
+
                     break;
                 case SortType.CreationTime:
-                    if (so == SortOrder.Decending)
+                    if (so == SortOrder.Descending)
                     {
                         orderedFiles = files.OrderBy(f => f.CreationTime).Reverse();
                     }
@@ -175,9 +247,11 @@ namespace Argus.IO
                     {
                         orderedFiles = files.OrderBy(f => f.CreationTime);
                     }
+
                     break;
                 default:
                     orderedFiles = files.OrderBy(f => f.LastWriteTime).Reverse();
+
                     break;
             }
 
@@ -190,12 +264,12 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Gets all files in a directory and orders them in ascending or decending order by modified date or
-        /// created date.
+        ///     Gets all files in a directory and orders them in ascending or descending order by modified date or
+        ///     created date.
         /// </summary>
         /// <param name="dir">The directory to return files for.</param>
         /// <param name="st">Which attribute the directory should be sorted by.</param>
-        /// <param name="so">The sort order.  Decending will sort newest to oldest.  Ascending will sort oldest to newest.</param>
+        /// <param name="so">The sort order.  Descending will sort newest to oldest.  Ascending will sort oldest to newest.</param>
         /// <returns>A generic string list.</returns>
         public static IEnumerable<FileSystemInfo> GetFilesSystemInfosByModifiedDate(string dir, SortType st, SortOrder so)
         {
@@ -207,7 +281,7 @@ namespace Argus.IO
             switch (st)
             {
                 case SortType.LastWriteTime:
-                    if (so == SortOrder.Decending)
+                    if (so == SortOrder.Descending)
                     {
                         orderedFiles = files.OrderBy(f => f.LastWriteTime).Reverse();
                     }
@@ -215,9 +289,10 @@ namespace Argus.IO
                     {
                         orderedFiles = files.OrderBy(f => f.LastWriteTime);
                     }
+
                     break;
                 case SortType.LastAccessTime:
-                    if (so == SortOrder.Decending)
+                    if (so == SortOrder.Descending)
                     {
                         orderedFiles = files.OrderBy(f => f.LastAccessTime).Reverse();
                     }
@@ -225,9 +300,10 @@ namespace Argus.IO
                     {
                         orderedFiles = files.OrderBy(f => f.LastAccessTime);
                     }
+
                     break;
                 case SortType.CreationTime:
-                    if (so == SortOrder.Decending)
+                    if (so == SortOrder.Descending)
                     {
                         orderedFiles = files.OrderBy(f => f.CreationTime).Reverse();
                     }
@@ -235,9 +311,11 @@ namespace Argus.IO
                     {
                         orderedFiles = files.OrderBy(f => f.CreationTime);
                     }
+
                     break;
                 default:
                     orderedFiles = files.OrderBy(f => f.LastWriteTime).Reverse();
+
                     break;
             }
 
@@ -245,42 +323,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// The supported sort orders.
-        /// </summary>
-        public enum SortOrder
-        {
-            /// <summary>
-            /// Ascending sort from first to last.
-            /// </summary>
-            Ascending,
-            /// <summary>
-            /// Decending sort from last to first.
-            /// </summary>
-            Decending
-        }
-
-        /// <summary>
-        /// The supported file sorts.
-        /// </summary>
-        public enum SortType
-        {
-            /// <summary>
-            /// The last time the file was written to.
-            /// </summary>
-            LastWriteTime,
-            /// <summary>
-            /// The last time the file was accessed.
-            /// </summary>
-            LastAccessTime,
-            /// <summary>
-            /// The time the file was originally created.
-            /// </summary>
-            CreationTime
-        }
-
-        /// <summary>
-        /// Keeps the X specified newest files in a directory.  The rest of the files are deleted over the specified threshold.  This overload
-        /// uses the LastWriteTime to determine what files to keep.
+        ///     Keeps the X specified newest files in a directory.  The rest of the files are deleted over the specified threshold.  This overload
+        ///     uses the LastWriteTime to determine what files to keep.
         /// </summary>
         /// <param name="dir">The directory to truncate files in.  This does not recurse through child directories.</param>
         /// <param name="numberToKeep">The number of files to keep.</param>
@@ -290,7 +334,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Keeps the X specified newest files in a directory.  The rest of the files are deleted over the specified threshold.
+        ///     Keeps the X specified newest files in a directory.  The rest of the files are deleted over the specified threshold.
         /// </summary>
         /// <param name="dir">The directory to truncate files in.  This does not recurse through child directories.</param>
         /// <param name="numberToKeep">The number of files to keep.</param>
@@ -300,21 +344,26 @@ namespace Argus.IO
             dir = dir.Trim('\\');
             var di = new DirectoryInfo(dir);
             var files = di.GetFileSystemInfos();
-            IEnumerable<FileSystemInfo> orderedFiles = Enumerable.Empty<FileSystemInfo>(); ;
+            var orderedFiles = Enumerable.Empty<FileSystemInfo>();
+            ;
 
             switch (dateToUse)
             {
                 case SortType.CreationTime:
                     orderedFiles = files.OrderBy(f => f.CreationTime).Reverse();
+
                     break;
                 case SortType.LastAccessTime:
                     orderedFiles = files.OrderBy(f => f.LastAccessTime).Reverse();
+
                     break;
                 case SortType.LastWriteTime:
                     orderedFiles = files.OrderBy(f => f.LastWriteTime).Reverse();
+
                     break;
                 default:
                     orderedFiles = files.OrderBy(f => f.LastWriteTime).Reverse();
+
                     break;
             }
 
@@ -332,7 +381,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Removes any illegal characters from the filename.
+        ///     Removes any illegal characters from the filename.
         /// </summary>
         /// <param name="filename"></param>
         public static string CleanupFilename(string filename)
@@ -341,16 +390,19 @@ namespace Argus.IO
             {
                 filename = filename.Replace(c.ToString(), "");
             }
+
             return filename;
         }
 
         /// <summary>
-        /// Reads a specified line from a text file.  Each call to this opens and loops until the specific line is found (since lines are variable length an index cannot be used).
+        ///     Reads a specified line from a text file.  Each call to this opens and loops until the specific line is found (since lines are variable length an index cannot be used).
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="lineNumber"></param>
-        /// <remarks>This should be used in cases when a specific line is needed but you want to disregard the rest of the file (e.g. don't use this to loop through a file as it opens
-        /// and finds the specific line going through all previous lines).</remarks>
+        /// <remarks>
+        ///     This should be used in cases when a specific line is needed but you want to disregard the rest of the file (e.g. don't use this to loop through a file as it opens
+        ///     and finds the specific line going through all previous lines).
+        /// </remarks>
         public static string ReadSpecificLine(string filePath, int lineNumber)
         {
             using (var sr = new StreamReader(filePath))
@@ -361,7 +413,8 @@ namespace Argus.IO
                     if (sr.ReadLine() == null)
                     {
                         sr.Close();
-                        throw new ArgumentOutOfRangeException(string.Format("The line number {0} is out of range.", lineNumber));
+
+                        throw new ArgumentOutOfRangeException($"The line number {lineNumber} is out of range.");
                     }
                 }
 
@@ -370,50 +423,18 @@ namespace Argus.IO
 
                 if (line == null)
                 {
-                    throw new ArgumentOutOfRangeException(string.Format("The line number {0} is out of range.", lineNumber));
+                    throw new ArgumentOutOfRangeException($"The line number {lineNumber} is out of range.");
                 }
 
                 sr.Close();
 
                 return line;
             }
-
         }
 
         /// <summary>
-        /// Date types supported for the SafeFileType extension method.
-        /// </summary>
-        public enum DateType
-        {
-            /// <summary>
-            /// The creation time for the file.
-            /// </summary>
-            CreationTime,
-            /// <summary>
-            /// The UTC creation time for the file.
-            /// </summary>
-            CreationTimeUtc,
-            /// <summary>
-            /// The last write time for the file.
-            /// </summary>
-            LastWriteTime,
-            /// <summary>
-            /// The UTC last write time for the file.
-            /// </summary>
-            LastWriteTimeUtc,
-            /// <summary>
-            /// The last access time for the file.
-            /// </summary>
-            LastAccessTime,
-            /// <summary>
-            /// The UTC last access time for the file.
-            /// </summary>
-            LastAccessTimeUtc
-        }
-
-        /// <summary>
-        /// Returns the requested file time with all exceptions handled, a null will be returned
-        /// when no file time is accessible for any reason.
+        ///     Returns the requested file time with all exceptions handled, a null will be returned
+        ///     when no file time is accessible for any reason.
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="dt"></param>
@@ -446,13 +467,11 @@ namespace Argus.IO
                     default:
                         return null;
                 }
-
             }
             catch
             {
                 return null;
             }
-
         }
     }
 }

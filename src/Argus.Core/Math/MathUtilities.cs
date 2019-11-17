@@ -1,7 +1,7 @@
 ﻿namespace Argus.Math
 {
     /// <summary>
-    /// Various math related utilities.
+    ///     Various math related utilities.
     /// </summary>
     public static class MathUtilities
     {
@@ -15,8 +15,8 @@
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the value if it falls in the range of the max and min.  Otherwise it returns
-        /// the upper or lower boundary depending on which one the value has crossed.
+        ///     Returns the value if it falls in the range of the max and min.  Otherwise it returns
+        ///     the upper or lower boundary depending on which one the value has crossed.
         /// </summary>
         public static int Clamp(int value, int min, int max)
         {
@@ -32,6 +32,5 @@
 
             return value;
         }
-
     }
 }

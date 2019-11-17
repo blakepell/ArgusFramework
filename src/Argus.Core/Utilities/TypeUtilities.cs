@@ -2,9 +2,8 @@
 
 namespace Argus.Utilities
 {
-
     /// <summary>
-    /// Utilities for working with and identifying common types.
+    ///     Utilities for working with and identifying common types.
     /// </summary>
     public class TypeUtilities
     {
@@ -19,7 +18,7 @@ namespace Argus.Utilities
         //*********************************************************************************************************************
 
         /// <summary>
-        /// The System.String type
+        ///     The System.String type
         /// </summary>
         public static Type StringType()
         {
@@ -27,8 +26,8 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// The System.Integer type (which returns System.Int32).  Even though .Net shows Integer as a type, System.Integer
-        /// does not exist, it maps to this.
+        ///     The System.Integer type (which returns System.Int32).  Even though .Net shows Integer as a type, System.Integer
+        ///     does not exist, it maps to this.
         /// </summary>
         public static Type IntegerType()
         {
@@ -36,7 +35,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// The System.Int16 Type
+        ///     The System.Int16 Type
         /// </summary>
         public static Type Int16Type()
         {
@@ -44,7 +43,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// The System.Int32 type
+        ///     The System.Int32 type
         /// </summary>
         public static Type Int32Type()
         {
@@ -52,7 +51,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// The System.Int64 type
+        ///     The System.Int64 type
         /// </summary>
         public static Type Int64Type()
         {
@@ -60,7 +59,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// The System.DateTime type
+        ///     The System.DateTime type
         /// </summary>
         public static Type DateTimeType()
         {
@@ -68,7 +67,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// The System.Boolean type
+        ///     The System.Boolean type
         /// </summary>
         public static Type BooleanType()
         {
@@ -76,7 +75,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// Returns System.Double type
+        ///     Returns System.Double type
         /// </summary>
         public static Type DoubleType()
         {
@@ -84,7 +83,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// Returns System.Single type
+        ///     Returns System.Single type
         /// </summary>
         public static Type SingleType()
         {
@@ -92,12 +91,11 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        /// Returns System.Decimal type
+        ///     Returns System.Decimal type
         /// </summary>
         public static Type DecimalType()
         {
             return Type.GetType("System.Decimal");
         }
-
     }
 }

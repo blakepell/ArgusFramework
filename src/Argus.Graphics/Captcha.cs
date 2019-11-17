@@ -1,16 +1,14 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Text;
 
 namespace Argus.Graphics
 {
-
     /// <summary>
-    /// A simple captcha implementation that can be used 
+    ///     A simple captcha implementation that can be used
     /// </summary>
-    /// <remarks></remarks>
     public class Captcha : IDisposable
     {
         //*********************************************************************************************************************
@@ -23,19 +21,45 @@ namespace Argus.Graphics
         //
         //*********************************************************************************************************************
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <remarks></remarks>
+        private bool _disposed;
 
+        /// <summary>
+        ///     Random number generator.
+        /// </summary>
+        private readonly Random _random = new Random();
+
+        /// <summary>
+        ///     Constructor
+        /// </summary>
         public Captcha()
         {
-            this.Font = new Font("Courier New", FontSize + _random.Next(14, 18), FontStyle.Bold);
+            this.Font = new Font("Courier New", this.FontSize + _random.Next(14, 18), FontStyle.Bold);
         }
 
         /// <summary>
-        /// Creates the skewed image with text and puts it into a memory stream which can be written out
-        /// to display as the caller requires. 
+        ///     The font size to use on the image.
+        /// </summary>
+        /// <remarks>The default font size is 10</remarks>
+        public int FontSize { get; set; } = 10;
+
+        /// <summary>
+        ///     The font to use on the image.
+        /// </summary>
+        /// <remarks>The default font is Courier New.</remarks>
+        public Font Font { get; set; }
+
+        /// <summary>
+        ///     Disposes of any used resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        ///     Creates the skewed image with text and puts it into a memory stream which can be written out
+        ///     to display as the caller requires.
         /// </summary>
         /// <param name="memoryStream"></param>
         /// <returns>The text that was displayed on the image that was placed into the MemoryStream.</returns>
@@ -43,11 +67,11 @@ namespace Argus.Graphics
         {
             // The will set the Text property to a random set of text that will fit in our Image.  It's
             // a property so the Caller will have the ability to get it's value out for validation.
-            string text = GetRandomText();
+            string text = this.GetRandomText();
 
             using (var bitmap = new Bitmap(200, 50, PixelFormat.Format32bppArgb))
             {
-                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bitmap))
+                using (var g = System.Drawing.Graphics.FromImage(bitmap))
                 {
                     var rect = new Rectangle(0, 0, 200, 70);
                     int counter = 0;
@@ -56,11 +80,11 @@ namespace Argus.Graphics
 
                     for (int i = 0; i <= text.Length - 1; i++)
                     {
-                        g.DrawString(text[i].ToString(), Font, GetRandomBrush(), new PointF(10 + counter, 10));
+                        g.DrawString(text[i].ToString(), this.Font, this.GetRandomBrush(), new PointF(10 + counter, 10));
                         counter += 20;
                     }
 
-                    DrawRandomLines(g);
+                    this.DrawRandomLines(g);
                     bitmap.Save(memoryStream, ImageFormat.Jpeg);
                 }
             }
@@ -69,19 +93,19 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Draws random lines via a graphics object.
+        ///     Draws random lines via a graphics object.
         /// </summary>
         /// <param name="g"></param>
         private void DrawRandomLines(System.Drawing.Graphics g)
         {
             for (int i = 0; i <= 10; i++)
             {
-                g.DrawLine(new Pen(Color.Gray, 1), GetRandomPoint(), GetRandomPoint2());
+                g.DrawLine(new Pen(Color.Gray, 1), this.GetRandomPoint(), this.GetRandomPoint2());
             }
         }
 
         /// <summary>
-        /// Gets a random point within the top half of the image boundaries
+        ///     Gets a random point within the top half of the image boundaries
         /// </summary>
         private Point GetRandomPoint()
         {
@@ -89,7 +113,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Gets a random point within the bottom half of the image boundaries
+        ///     Gets a random point within the bottom half of the image boundaries
         /// </summary>
         private Point GetRandomPoint2()
         {
@@ -97,7 +121,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Gets a random brush color
+        ///     Gets a random brush color
         /// </summary>
         private Brush GetRandomBrush()
         {
@@ -119,7 +143,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Gets random text.
+        ///     Gets random text.
         /// </summary>
         private string GetRandomText()
         {
@@ -134,19 +158,8 @@ namespace Argus.Graphics
             return randomText.ToString();
         }
 
-        private bool _disposed = false;
-
         /// <summary>
-        /// Disposes of any used resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Protected implementation of Dispose pattern
+        ///     Protected implementation of Dispose pattern
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
@@ -167,23 +180,5 @@ namespace Argus.Graphics
 
             _disposed = true;
         }
-
-        /// <summary>
-        /// Random number generator.
-        /// </summary>
-        private Random _random = new Random();
-
-        /// <summary>
-        /// The font size to use on the image.
-        /// </summary>
-        /// <remarks>The default font size is 10</remarks>
-        public int FontSize { get; set; } = 10;
-
-        /// <summary>
-        /// The font to use on the image.
-        /// </summary>
-        /// <remarks>The default font is Courier New.</remarks>
-        public Font Font { get; set; }
-
     }
 }

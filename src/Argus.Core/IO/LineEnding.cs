@@ -11,22 +11,23 @@
     //*********************************************************************************************************************      
 
     /// <summary>
-    /// Line endings for the ReverseFileReader supports.
+    ///     Line endings for the ReverseFileReader supports.
     /// </summary>
     public enum LineEnding
     {
         /// <summary>
-        /// Carriage Return (character 13) and Line Feed (character 10)
+        ///     Carriage Return (character 13) and Line Feed (character 10)
         /// </summary>
         CrLf,
+
         /// <summary>
-        /// Line feed (character 10)
+        ///     Line feed (character 10)
         /// </summary>
         Lf,
+
         /// <summary>
-        /// Carriage return (character 13)
+        ///     Carriage return (character 13)
         /// </summary>
         Cr
-    };
-
+    }
 }

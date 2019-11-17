@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for the System.Drawing.Icon class.
+    ///     Extension methods for the System.Drawing.Icon class.
     /// </summary>
-    /// <remarks>
     public static class IconExtensions
     {
         //*********************************************************************************************************************
@@ -21,11 +21,11 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the bit depth of the icon
+        ///     Returns the bit depth of the icon
         /// </summary>
         /// <param name="icon"></param>
         public static int GetIconBitDepth(this Icon icon)
-        {            
+        {
             if (icon == null)
             {
                 throw new ArgumentNullException("The Icon provided cannot be null.");
@@ -33,16 +33,16 @@ namespace Argus.Extensions
 
             // Save the data from the icon to a MemoryStream, convert it to a byte array and use the
             // BitConverter on it to return the BitDepth.
-            using (var ms = new System.IO.MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 icon.Save(ms);
+
                 return Convert.ToInt32(BitConverter.ToInt16(ms.ToArray(), 12));
             }
-
         }
 
         /// <summary>
-        /// Returns the dimensions formatted like 16x16 for display purposes.
+        ///     Returns the dimensions formatted like 16x16 for display purposes.
         /// </summary>
         /// <param name="icon"></param>
         public static string FormattedDimensions(this Icon icon)
@@ -56,8 +56,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// This will convert the icon to a bitmap and then save it as an icon.  If coupled with the ExtractAssociatedIcon
-        /// this will allow you to save the extracted Icon at a higher color resolution than 8 colors.
+        ///     This will convert the icon to a bitmap and then save it as an icon.  If coupled with the ExtractAssociatedIcon
+        ///     this will allow you to save the extracted Icon at a higher color resolution than 8 colors.
         /// </summary>
         /// <param name="icon"></param>
         /// <param name="saveFileName"></param>

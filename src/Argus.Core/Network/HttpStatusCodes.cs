@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Argus.Network
+﻿namespace Argus.Network
 {
-
     /// <summary>
-    /// Methods to description and work with HTTP status codes.
+    ///     Methods to description and work with HTTP status codes.
     /// </summary>
     /// <remarks>
-    /// 1xx (Informational): The request was received, continuing process
-    /// 2xx (Successful): The request was successfully received, understood, and accepted
-    /// 3xx (Redirection): Further action needs to be taken in order to complete the request
-    /// 4xx (Client Error): The request contains bad syntax or cannot be fulfilled
-    /// 5xx (Server Error): The server failed to fulfill an apparently valid request
+    ///     1xx (Informational): The request was received, continuing process
+    ///     2xx (Successful): The request was successfully received, understood, and accepted
+    ///     3xx (Redirection): Further action needs to be taken in order to complete the request
+    ///     4xx (Client Error): The request contains bad syntax or cannot be fulfilled
+    ///     5xx (Server Error): The server failed to fulfill an apparently valid request
     /// </remarks>
     public static class HttpStatusCodes
     {
-
         //*********************************************************************************************************************
         //
         //             Class:  HttpStatusCodes
@@ -29,7 +23,7 @@ namespace Argus.Network
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the description of a HTTP status code.
+        ///     Returns the description of a HTTP status code.
         /// </summary>
         /// <param name="statusCode"></param>
         public static string StatusDescription(int statusCode)
@@ -168,6 +162,5 @@ namespace Argus.Network
                     return "Unknown";
             }
         }
-
     }
 }

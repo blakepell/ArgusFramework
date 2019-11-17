@@ -1,14 +1,13 @@
-﻿using System;
+﻿using System.IO;
 using Argus.Extensions;
 
 namespace Argus.IO
 {
-
     /// <summary>
-    /// Class to extract information about a file extension and/or parse lists to return lists containing specific categories of files.
+    ///     Class to extract information about a file extension and/or parse lists to return lists containing specific categories of files.
     /// </summary>
     /// <remarks>
-    /// Additional file path parsing methods are included in the System.IO.Path class of the .Net Framework.
+    ///     Additional file path parsing methods are included in the System.IO.Path class of the .Net Framework.
     /// </remarks>
     public class FileExtensionUtilities
     {
@@ -23,29 +22,27 @@ namespace Argus.IO
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the file extension, minus the period in lower case.  The file path can be either a location URL or a web hyper reference.  Reference
-        /// System.IO.Path for managed .Net Framework file methods.
+        ///     Returns the file extension, minus the period in lower case.  The file path can be either a location URL or a web hyper reference.  Reference
+        ///     System.IO.Path for managed .Net Framework file methods.
         /// </summary>
         /// <param name="filePath"></param>
         public static string GetFileExtension(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath) == true)
+            if (string.IsNullOrEmpty(filePath))
             {
                 return "";
             }
-            else
-            {
-                return System.IO.Path.GetExtension(filePath).Trim(".").ToLower();
-            }
+
+            return Path.GetExtension(filePath).Trim(".").ToLower();
         }
 
         /// <summary>
-        /// Whether or not the path points to a valid image file determined by the extension.
+        ///     Whether or not the path points to a valid image file determined by the extension.
         /// </summary>
         /// <param name="filePath"></param>
         public static bool IsImage(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath) == true)
+            if (string.IsNullOrEmpty(filePath))
             {
                 return false;
             }
@@ -69,12 +66,12 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Whether or not the path poitns to a valid video file deteremined by the extension.
+        ///     Whether or not the path poitns to a valid video file deteremined by the extension.
         /// </summary>
         /// <param name="filepath"></param>
         public static bool IsVideo(string filepath)
         {
-            if (string.IsNullOrEmpty(filepath) == true)
+            if (string.IsNullOrEmpty(filepath))
             {
                 return false;
             }
@@ -104,12 +101,12 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Whether or not the path poitns to a valid audio file deteremined by the extension.
+        ///     Whether or not the path poitns to a valid audio file deteremined by the extension.
         /// </summary>
         /// <param name="filePath"></param>
         public static bool IsAudio(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath) == true)
+            if (string.IsNullOrEmpty(filePath))
             {
                 return false;
             }
@@ -134,6 +131,5 @@ namespace Argus.IO
                     return false;
             }
         }
-
     }
 }

@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace Argus.Utilities
 {
     /// <summary>
-    /// Helps with serializing an object to XML and back again.
+    ///     Helps with serializing an object to XML and back again.
     /// </summary>
     public static class XmlSerialization
     {
@@ -15,13 +15,13 @@ namespace Argus.Utilities
         //            Module:  XmlSerialization
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/27/2009
-        //      Last Updated:  04/04/2019
+        //      Last Updated:  11/17/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Converts an object to xml
+        ///     Converts an object to xml
         /// </summary>
         /// <param name="obj">Object to convert</param>
         public static string ObjectToXml(object obj)
@@ -34,14 +34,15 @@ namespace Argus.Utilities
             using (var ms = new MemoryStream())
             {
                 var xs = new XmlSerializer(obj.GetType());
-                xs.Serialize(ms, obj);                
+                xs.Serialize(ms, obj);
                 ms.Flush();
-                return Encoding.UTF8.GetString(ms.ToArray(), 0, (int)ms.Position);
+
+                return Encoding.UTF8.GetString(ms.ToArray(), 0, (int) ms.Position);
             }
         }
 
         /// <summary>
-        /// Converts an xml string to an object
+        ///     Converts an xml string to an object
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="xml">XML string</param>
@@ -55,9 +56,9 @@ namespace Argus.Utilities
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {
                 var xs = new XmlSerializer(typeof(T));
-                return (T)xs.Deserialize(stream);
+
+                return (T) xs.Deserialize(stream);
             }
         }
-
     }
 }

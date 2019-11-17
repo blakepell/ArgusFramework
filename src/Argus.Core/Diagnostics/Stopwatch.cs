@@ -2,9 +2,8 @@
 
 namespace Argus.Diagnostics
 {
-
     /// <summary>
-    /// A portable replacement for the .NET Stopwatch class that is not provided in all versions of the framework.  
+    ///     A portable replacement for the .NET Stopwatch class that is not provided in all versions of the framework.
     /// </summary>
     public class Stopwatch
     {
@@ -19,73 +18,27 @@ namespace Argus.Diagnostics
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Constructor
+        ///     The elapsed number of ticks.
         /// </summary>
-        public Stopwatch()
-        {
-        }
+        private long _elapsedTicks;
 
         /// <summary>
-        /// Starts the Stopwatch.
+        ///     The time the Stopwatch started.
         /// </summary>
-        public void Start()
-        {
-            if (!IsRunning)
-            {
-                _startTimestamp = DateTime.UtcNow.Ticks;
-                this.IsRunning = true;
-            }
-        }
+        private long _startTimestamp;
 
         /// <summary>
-        /// Stops the Stopwatch.
+        ///     The time elapsed as a TimeSpan that the Stopwatch was in the running state.
         /// </summary>
-        public void Stop()
-        {
-            if (IsRunning)
-            {
-                _elapsedTicks += ElapsedTicksSinceLastStart;
-                this.IsRunning = false;
-            }
-        }
+        public TimeSpan Elapsed => new TimeSpan(this.ElapsedTicks);
 
         /// <summary>
-        /// Resets and then starts the Stopwatch.
+        ///     The time elapsed in milliseconds that the Stopwatch was in the running state.
         /// </summary>
-        public void Restart()
-        {
-            this.Reset();
-            this.Start();
-        }
+        public long ElapsedMilliseconds => this.ElapsedTicks / TimeSpan.TicksPerMillisecond;
 
         /// <summary>
-        /// Resets and stops the Stopwatch
-        /// </summary>
-        public void Reset()
-        {
-            _startTimestamp = 0;
-            _elapsedTicks = 0;
-            this.IsRunning = false;
-        }
-
-        /// <summary>
-        /// The time elapsed as a TimeSpan that the Stopwatch was in the running state.
-        /// </summary>
-        public TimeSpan Elapsed
-        {
-            get { return new TimeSpan(this.ElapsedTicks); }
-        }
-
-        /// <summary>
-        /// The time elapsed in milleseconds that the Stopwatch was in the running state.
-        /// </summary>
-        public long ElapsedMilliseconds
-        {
-            get { return this.ElapsedTicks / TimeSpan.TicksPerMillisecond; }
-        }
-
-        /// <summary>
-        /// The time elaposed in Ticks that the Stopwatch was in the running state.
+        ///     The time elapsed in Ticks that the Stopwatch was in the running state.
         /// </summary>
         /// <value></value>
         public long ElapsedTicks
@@ -94,7 +47,7 @@ namespace Argus.Diagnostics
             {
                 long et = _elapsedTicks;
 
-                if (IsRunning)
+                if (this.IsRunning)
                 {
                     et += this.ElapsedTicksSinceLastStart;
                 }
@@ -104,27 +57,56 @@ namespace Argus.Diagnostics
         }
 
         /// <summary>
-        /// The elapsed number of ticks.
+        ///     Whether the Stopwatch is currently running or not.
         /// </summary>
-        private long _elapsedTicks = 0;
-        
-        /// <summary>
-        /// The time the Stopwatch started.
-        /// </summary>
-        private long _startTimestamp = 0;
+        public bool IsRunning { get; set; }
 
         /// <summary>
-        /// Whether the Stopwatch is currently running or not.
+        ///     The elapsed ticks since the Stopwatch was last started.
         /// </summary>
-        public bool IsRunning { get; set; } = false;
+        private long ElapsedTicksSinceLastStart => DateTime.UtcNow.Ticks - _startTimestamp;
 
         /// <summary>
-        /// The elaposed ticks since the Stopwatch was last started.
+        ///     Starts the Stopwatch.
         /// </summary>
-        private long ElapsedTicksSinceLastStart
+        public void Start()
         {
-            get { return DateTime.UtcNow.Ticks - _startTimestamp; }
+            if (!this.IsRunning)
+            {
+                _startTimestamp = DateTime.UtcNow.Ticks;
+                this.IsRunning = true;
+            }
         }
 
+        /// <summary>
+        ///     Stops the Stopwatch.
+        /// </summary>
+        public void Stop()
+        {
+            if (this.IsRunning)
+            {
+                _elapsedTicks += this.ElapsedTicksSinceLastStart;
+                this.IsRunning = false;
+            }
+        }
+
+        /// <summary>
+        ///     Resets and then starts the Stopwatch.
+        /// </summary>
+        public void Restart()
+        {
+            this.Reset();
+            this.Start();
+        }
+
+        /// <summary>
+        ///     Resets and stops the Stopwatch
+        /// </summary>
+        public void Reset()
+        {
+            _startTimestamp = 0;
+            _elapsedTicks = 0;
+            this.IsRunning = false;
+        }
     }
 }

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace Argus.Graphics
 {
-
     /// <summary>
-    /// Various image utilities
+    ///     Various image utilities
     /// </summary>
-    /// <remarks></remarks>
     public class ImageUtilities
     {
         //*********************************************************************************************************************
@@ -23,11 +21,10 @@ namespace Argus.Graphics
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Extracts operating system's associated icon (in the highest resolution possible) for a given file and returns it as an Image object.
+        ///     Extracts operating system's associated icon (in the highest resolution possible) for a given file and returns it as an Image object.
         /// </summary>
         /// <param name="filePath"></param>
-        /// <returns>Returns a <see cref="Image"/> of the associated icon.</returns>
-        /// <remarks></remarks>
+        /// <returns>Returns a <see cref="Image" /> of the associated icon.</returns>
         public static Image ExtractAssociatedIconHiRes(string filePath)
         {
             using (var ico = Icon.ExtractAssociatedIcon(filePath))
@@ -37,16 +34,15 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Adds a border around a bitmap.  The new bitmap will be larger than the original because of the border that is added.
+        ///     Adds a border around a bitmap.  The new bitmap will be larger than the original because of the border that is added.
         /// </summary>
         /// <param name="bm"></param>
         /// <param name="borderColor"></param>
         /// <param name="borderWidthInPixels"></param>
-        /// <returns>Returns a <see cref="Bitmap"/> of the original image with a border added of the specified pixel width.</returns>
+        /// <returns>Returns a <see cref="Bitmap" /> of the original image with a border added of the specified pixel width.</returns>
         public static Bitmap AddBorder(Bitmap bm, Color borderColor, int borderWidthInPixels)
         {
-
-            var newBitmap = new Bitmap(bm.Width + (borderWidthInPixels * 2), bm.Height + (borderWidthInPixels * 2));
+            var newBitmap = new Bitmap(bm.Width + borderWidthInPixels * 2, bm.Height + borderWidthInPixels * 2);
 
             // Draw the top border
             for (int i = 0; i <= newBitmap.Width - 1; i++)
@@ -60,7 +56,7 @@ namespace Argus.Graphics
             // Draw the bottom border
             for (int i = 0; i <= newBitmap.Width - 1; i++)
             {
-                for (int y = newBitmap.Height - 1; y >= (newBitmap.Height - 1) - borderWidthInPixels; y += -1)
+                for (int y = newBitmap.Height - 1; y >= newBitmap.Height - 1 - borderWidthInPixels; y += -1)
                 {
                     newBitmap.SetPixel(i, y, borderColor);
                 }
@@ -76,7 +72,7 @@ namespace Argus.Graphics
             }
 
             // Draw the right border.
-            for (int i = newBitmap.Width - 1; i >= (newBitmap.Width - 1) - borderWidthInPixels; i += -1)
+            for (int i = newBitmap.Width - 1; i >= newBitmap.Width - 1 - borderWidthInPixels; i += -1)
             {
                 for (int y = 0; y <= newBitmap.Height - 1; y++)
                 {
@@ -85,7 +81,7 @@ namespace Argus.Graphics
             }
 
             // Insert the old image into the bitmap
-            using (System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(newBitmap))
+            using (var gr = System.Drawing.Graphics.FromImage(newBitmap))
             {
                 gr.DrawImage(bm, borderWidthInPixels, borderWidthInPixels, bm.Width, bm.Height);
             }
@@ -94,19 +90,20 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Gets the codec info for the specified ImageFormat.
+        ///     Gets the codec info for the specified ImageFormat.
         /// </summary>
         /// <param name="format"></param>
         /// <returns>Returns a <see cref="ImageCodecInfo" /> if found, otherwise a null will be returned.</returns>
         /// <remarks>
-        /// This method was from the MSDN public library located at:
-        /// <seealso>https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.encoder.quality?redirectedfrom=MSDN&view=netframework-4.8</seealso>
+        ///     This method was from the MSDN public library located at:
+        ///     <seealso>https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.encoder.quality?redirectedfrom=MSDN&view=netframework-4.8</seealso>
         /// </remarks>
         public static ImageCodecInfo GetEncoderInfo(ImageFormat format)
         {
             var encoders = ImageCodecInfo.GetImageEncoders();
 
             int i = 0;
+
             while (i < encoders.Length)
             {
                 if (encoders[i].FormatID == format.Guid)
@@ -121,10 +118,10 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Converts a Bitmap to grayscale.
+        ///     Converts a Bitmap to greyscale.
         /// </summary>
         /// <param name="bm"></param>
-        public static void ConvertToGrayscale(Bitmap bm)
+        public static void ConvertToGreyscale(Bitmap bm)
         {
             for (int y = 0; y <= bm.Height - 1; y++)
             {
@@ -138,7 +135,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Converts a Bitmap to sepia tone.
+        ///     Converts a Bitmap to sepia tone.
         /// </summary>
         /// <param name="bm"></param>
         public static void ConvertToSepia(Bitmap bm)
@@ -148,9 +145,9 @@ namespace Argus.Graphics
                 for (int x = 0; x <= bm.Width - 1; x++)
                 {
                     var c = bm.GetPixel(x, y);
-                    int red = Convert.ToInt32((c.R * 0.393) + (c.G * 0.769) + (c.B * 0.189));
-                    int green = Convert.ToInt32((c.R * 0.349) + (c.G * 0.686) + (c.B * 0.168));
-                    int blue = Convert.ToInt32((c.R * 0.272) + (c.G * 0.534) + (c.B * 0.131));
+                    int red = Convert.ToInt32(c.R * 0.393 + c.G * 0.769 + c.B * 0.189);
+                    int green = Convert.ToInt32(c.R * 0.349 + c.G * 0.686 + c.B * 0.168);
+                    int blue = Convert.ToInt32(c.R * 0.272 + c.G * 0.534 + c.B * 0.131);
 
                     if (red > 255)
                     {
@@ -173,7 +170,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Converts a Bitmap to black and white.
+        ///     Converts a Bitmap to black and white.
         /// </summary>
         /// <param name="bm"></param>
         public static void ConvertToBlackWhite(Bitmap bm)
@@ -182,9 +179,9 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Converts a Bitmap to black and white.  A tolerance property will determine when to use black or white.  For example, if a pixels
-        /// brightness is greater than .5 then White will be used, otherwise black.  Adjusting this will change the black/white balance of the
-        /// photo.
+        ///     Converts a Bitmap to black and white.  A tolerance property will determine when to use black or white.  For example, if a pixels
+        ///     brightness is greater than .5 then White will be used, otherwise black.  Adjusting this will change the black/white balance of the
+        ///     photo.
         /// </summary>
         /// <param name="bm"></param>
         /// <param name="tolerance"></param>
@@ -211,7 +208,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Inverts the color of each pixel in a Bitmap
+        ///     Inverts the color of each pixel in a Bitmap
         /// </summary>
         /// <param name="bm"></param>
         public static void ConvertToInverted(Bitmap bm)
@@ -220,7 +217,7 @@ namespace Argus.Graphics
             {
                 for (int x = 0; x <= bm.Width - 1; x++)
                 {
-                    Color c = bm.GetPixel(x, y);
+                    var c = bm.GetPixel(x, y);
                     c = Color.FromArgb(255, 255 - c.R, 255 - c.G, 255 - c.B);
                     bm.SetPixel(x, y, c);
                 }
@@ -228,8 +225,8 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Converts a TIFF file into a JPEG or multiple JPEGs depending on how many frames exist in the TIFF.  An array of the files created
-        /// will be returned.
+        ///     Converts a TIFF file into a JPEG or multiple JPEGs depending on how many frames exist in the TIFF.  An array of the files created
+        ///     will be returned.
         /// </summary>
         /// <param name="fileName"></param>
         public static string[] ConvertTiffToJpeg(string fileName)
@@ -240,15 +237,16 @@ namespace Argus.Graphics
 
                 // Gets the number of pages from the tiff image (if multipage) 
                 int frameNum = imageFile.GetFrameCount(frameDimensions);
-                string[] jpegPaths = new string[frameNum];
+                var jpegPaths = new string[frameNum];
 
                 for (int frame = 0; frame <= frameNum - 1; frame++)
                 {
                     // Selects one frame at a time and save as jpeg. 
                     imageFile.SelectActiveFrame(frameDimensions, frame);
+
                     using (var bmp = new Bitmap(imageFile))
                     {
-                        jpegPaths[frame] = String.Format("{0}\\{1}{2}.jpg", Path.GetDirectoryName(fileName), Path.GetFileNameWithoutExtension(fileName), frame);
+                        jpegPaths[frame] = $"{Path.GetDirectoryName(fileName)}\\{Path.GetFileNameWithoutExtension(fileName)}{frame}.jpg";
                         bmp.Save(jpegPaths[frame], ImageFormat.Jpeg);
                     }
                 }
@@ -258,9 +256,9 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Loads an <see cref="Image"/> from a byte array.
+        ///     Loads an <see cref="Image" /> from a byte array.
         /// </summary>
-        /// <param name="b">A byte array containing information for the <see cref="Image"/>.</param>
+        /// <param name="b">A byte array containing information for the <see cref="Image" />.</param>
         public static Image ImageFromByteArray(byte[] b)
         {
             using (var ms = new MemoryStream(b))
@@ -270,9 +268,9 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        /// Loads an <see cref="Bitmap"/> from a byte array.
+        ///     Loads an <see cref="Bitmap" /> from a byte array.
         /// </summary>
-        /// <param name="b">A byte array containing information for the <see cref="Bitmap"/>.</param>
+        /// <param name="b">A byte array containing information for the <see cref="Bitmap" />.</param>
         public static Bitmap BitmapFromByteArray(byte[] b)
         {
             using (var ms = new MemoryStream(b))
@@ -280,7 +278,5 @@ namespace Argus.Graphics
                 return new Bitmap(ms);
             }
         }
-
     }
-
 }

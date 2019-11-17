@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Collections.Specialized;
-using System.Text;
-using System.Net.Mail;
-using Argus.Extensions;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Text;
+using Argus.Extensions;
 
 namespace Argus.Network
 {
     /// <summary>
-    /// This class will allow a client to send e-mail via a specified mail system.
+    ///     This class will allow a client to send e-mail via a specified mail system.
     /// </summary>
     public class Mail
     {
@@ -20,26 +21,46 @@ namespace Argus.Network
         //             Class:  Mail
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  09/28/2005
-        //      Last Updated:  06/03/2017
+        //      Last Updated:  11/17/2019
         //     Programmer(s):  Blake Pell, bpell@indiana.edu
         //
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Constructor
+        ///     The fields that can be populated via PopulateAddressString
+        /// </summary>
+        public enum PopulateTypes
+        {
+            /// <summary>
+            ///     The recipients of the email message.
+            /// </summary>
+            To,
+
+            /// <summary>
+            ///     The blind carbon copy recipients of the email message.
+            /// </summary>
+            Bcc,
+
+            /// <summary>
+            ///     The carbon copy recipients of the email message.
+            /// </summary>
+            Cc
+        }
+
+        /// <summary>
+        ///     Constructor
         /// </summary>
         public Mail()
         {
         }
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="mailTo"></param>
         /// <param name="mailSubject"></param>
         /// <param name="mailBody"></param>
         /// <param name="isBodyHtml"></param>
-        /// <remarks></remarks>
         public Mail(string mailTo, string mailSubject, string mailBody, bool isBodyHtml)
         {
             this.To = mailTo;
@@ -49,7 +70,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="mailTo"></param>
         /// <param name="mailSubject"></param>
@@ -57,7 +78,6 @@ namespace Argus.Network
         /// <param name="isBodyHtml"></param>
         /// <param name="networkUsername"></param>
         /// <param name="networkPassword"></param>
-        /// <remarks></remarks>
         public Mail(string mailTo, string mailSubject, string mailBody, bool isBodyHtml, string networkUsername, string networkPassword)
         {
             this.To = mailTo;
@@ -69,7 +89,92 @@ namespace Argus.Network
         }
 
         /// <summary>
-        /// Sends a mail message.  An exception will be thrown on a failure.
+        ///     Who the mail should be sent to.  This should be a string of e-mail addresses separated by commas or semi-colons
+        /// </summary>
+        public string To { get; set; } = "";
+
+        /// <summary>
+        ///     Who to blind carbon copy.  This should be a string of e-mail addresses separated by commas or semi-colons.
+        /// </summary>
+        public string Bcc { get; set; } = "";
+
+        /// <summary>
+        ///     Who the mail should be sent from.
+        /// </summary>
+        public string From { get; set; } = "";
+
+        /// <summary>
+        ///     The e-mail address or addresses to carbon copy separated by a semi-colon or comma.
+        /// </summary>
+        public string Cc { get; set; } = "";
+
+        /// <summary>
+        ///     The e-mail address that a recipient should reply to.
+        /// </summary>
+        public string ReplyTo { get; set; } = "";
+
+        /// <summary>
+        ///     The subject of the e-mail message.
+        /// </summary>
+        public string Subject { get; set; } = "";
+
+        /// <summary>
+        ///     The body of the e-mail message.
+        /// </summary>
+        public string Body { get; set; } = "";
+
+        /// <summary>
+        ///     Whether the body of the e-mail is HTML or not.  If set to true the text of the body will be interpreted as HTML.
+        /// </summary>
+        public bool IsBodyHtml { get; set; }
+
+        /// <summary>
+        ///     A list of mail attachments.
+        /// </summary>
+        public List<Attachment> Attachments { get; set; } = new List<Attachment>();
+
+        /// <summary>
+        ///     The priority of the e-mail message.
+        /// </summary>
+        public MailPriority Priority { get; set; } = MailPriority.Normal;
+
+        /// <summary>
+        ///     The mail server that should be used.
+        /// </summary>
+        public string MailServer { get; set; } = "";
+
+        /// <summary>
+        ///     The username that will be used to authenticate to the mail server.
+        /// </summary>
+        public string NetworkUsername { get; set; } = "";
+
+        /// <summary>
+        ///     The password that will be used to authenticate to the mail server.
+        /// </summary>
+        public string NetworkPassword { get; set; } = "";
+
+        /// <summary>
+        ///     The domain that will be authenticated to when connecting to the mail server.
+        /// </summary>
+        public string NetworkDomain { get; set; } = "";
+
+        /// <summary>
+        ///     Whether or not SSL encryption is enabled on the mail message.  The default value for this property is True.
+        /// </summary>
+        public bool EnableSsl { get; set; } = true;
+
+        /// <summary>
+        ///     The port to connect on.  The default is set at 0 which won't be used.  Any other value will be passed on to the wrapped object.
+        /// </summary>
+        public int Port { get; set; } = 0;
+
+        /// <summary>
+        ///     The display name that should go with the email address.
+        /// </summary>
+        public string FromDisplayName { get; set; } = "";
+
+        /// <summary>
+        ///     Sends a mail message.  An exception will be thrown on a failure.
         /// </summary>
         public void SendMail()
         {
@@ -105,7 +210,7 @@ namespace Argus.Network
                 {
                     var address = new EmailAddress(buf.Trim());
 
-                    if (address.IsValid() == true)
+                    if (address.IsValid())
                     {
                         mail.To.Add(new MailAddress(buf.Trim()));
                     }
@@ -113,15 +218,15 @@ namespace Argus.Network
             }
             else
             {
-                mail.To.Add(new MailAddress(To.Trim()));
+                mail.To.Add(new MailAddress(this.To.Trim()));
             }
 
-            if (this.CC.Contains(",") || this.CC.Contains(";"))
+            if (this.Cc.Contains(",") || this.Cc.Contains(";"))
             {
                 // Convert multiple delimters to a single one
-                this.CC = this.CC.Replace(",", ";");
+                this.Cc = this.Cc.Replace(",", ";");
 
-                foreach (string buf in this.CC.Split(';'))
+                foreach (string buf in this.Cc.Split(';'))
                 {
                     var address = new EmailAddress(buf.Trim());
 
@@ -133,23 +238,23 @@ namespace Argus.Network
             }
             else
             {
-                if (!string.IsNullOrEmpty(this.CC))
+                if (!string.IsNullOrEmpty(this.Cc))
                 {
-                    var address = new EmailAddress(this.CC.Trim());
+                    var address = new EmailAddress(this.Cc.Trim());
 
                     if (address.IsValid())
                     {
-                        mail.CC.Add(new MailAddress(this.CC.Trim()));
+                        mail.CC.Add(new MailAddress(this.Cc.Trim()));
                     }
                 }
             }
 
-            if (this.BCC.Contains(",") || this.BCC.Contains(";"))
+            if (this.Bcc.Contains(",") || this.Bcc.Contains(";"))
             {
                 // Convert multiple delimters to a single one
-                this.BCC = this.BCC.Replace(",", ";");
+                this.Bcc = this.Bcc.Replace(",", ";");
 
-                foreach (string buf in this.BCC.Split(';'))
+                foreach (string buf in this.Bcc.Split(';'))
                 {
                     var address = new EmailAddress(buf.Trim());
 
@@ -158,25 +263,24 @@ namespace Argus.Network
                         mail.Bcc.Add(new MailAddress(buf.Trim()));
                     }
                 }
-
             }
             else
             {
-                if (!string.IsNullOrEmpty(this.BCC))
+                if (!string.IsNullOrEmpty(this.Bcc))
                 {
-                    var address = new EmailAddress(this.BCC.Trim());
+                    var address = new EmailAddress(this.Bcc.Trim());
 
-                    if (address.IsValid() == true)
+                    if (address.IsValid())
                     {
-                        mail.Bcc.Add(new MailAddress(this.BCC.Trim()));
+                        mail.Bcc.Add(new MailAddress(this.Bcc.Trim()));
                     }
                 }
             }
 
-            mail.Body = Body;
-            mail.IsBodyHtml = IsBodyHtml;
+            mail.Body = this.Body;
+            mail.IsBodyHtml = this.IsBodyHtml;
 
-            foreach (var doc in Attachments)
+            foreach (var doc in this.Attachments)
             {
                 mail.Attachments.Add(doc);
             }
@@ -204,34 +308,14 @@ namespace Argus.Network
                     smtp.Port = this.Port;
                 }
 
-                smtp.Host = MailServer;
+                smtp.Host = this.MailServer;
                 smtp.Send(mail);
             }
         }
 
         /// <summary>
-        /// The fields that can be populated via PopulateAddressString
-        /// </summary>
-        /// <remarks></remarks>
-        public enum PopulateTypes
-        {
-            /// <summary>
-            /// The recipients of the email message.
-            /// </summary>
-            To,
-            /// <summary>
-            /// The blind carbon copy recipients of the email message.
-            /// </summary>
-            BCC,
-            /// <summary>
-            /// The carbon copy recipients of the email message.
-            /// </summary>
-            CC
-        }
-
-        /// <summary>
-        /// This will take a list of email addresses, format them and put them into the selected field.  This will overwrite any values currently
-        /// in that field.
+        ///     This will take a list of email addresses, format them and put them into the selected field.  This will overwrite any values currently
+        ///     in that field.
         /// </summary>
         /// <param name="fieldToPopulate"></param>
         /// <param name="values"></param>
@@ -247,23 +331,26 @@ namespace Argus.Network
             switch (fieldToPopulate)
             {
                 case PopulateTypes.To:
-                    To = sb.ToString().Trim(";");
+                    this.To = sb.ToString().Trim(";");
+
                     break;
-                case PopulateTypes.BCC:
-                    BCC = sb.ToString().Trim(";");
+                case PopulateTypes.Bcc:
+                    this.Bcc = sb.ToString().Trim(";");
+
                     break;
-                case PopulateTypes.CC:
-                    CC = sb.ToString().Trim(";");
+                case PopulateTypes.Cc:
+                    this.Cc = sb.ToString().Trim(";");
+
                     break;
             }
         }
 
         /// <summary>
-        /// This will take a list of email addresses, format them and put them into the selected field.  If the selected entry is a username
-        /// and not an email address, this will attempt to cross reference a user table given the required database connection and sql statement.
-        /// The SQL statement must return to fields, "username" and "email".. e.g. select username, email from web_users.  If an email address isn't
-        /// found for a username, it will be excluded from the send list.  The database connection must already be initialized and open, this sub
-        /// also won't close it so you must close and dispose of it on your own.
+        ///     This will take a list of email addresses, format them and put them into the selected field.  If the selected entry is a username
+        ///     and not an email address, this will attempt to cross reference a user table given the required database connection and sql statement.
+        ///     The SQL statement must return to fields, "username" and "email".. e.g. select username, email from web_users.  If an email address isn't
+        ///     found for a username, it will be excluded from the send list.  The database connection must already be initialized and open, this sub
+        ///     also won't close it so you must close and dispose of it on your own.
         /// </summary>
         /// <param name="fieldToPopulate"></param>
         /// <param name="values"></param>
@@ -295,7 +382,7 @@ namespace Argus.Network
 
             foreach (string buf in values)
             {
-                if (buf.Contains("@") == true)
+                if (buf.Contains("@"))
                 {
                     // It's an e-mail, straight add it.
                     sb.AppendFormat("{0};", buf);
@@ -315,45 +402,47 @@ namespace Argus.Network
             switch (fieldToPopulate)
             {
                 case PopulateTypes.To:
-                    To = sb.ToString().Trim(";");
+                    this.To = sb.ToString().Trim(";");
+
                     break;
-                case PopulateTypes.BCC:
-                    BCC = sb.ToString().Trim(";");
+                case PopulateTypes.Bcc:
+                    this.Bcc = sb.ToString().Trim(";");
+
                     break;
-                case PopulateTypes.CC:
-                    CC = sb.ToString().Trim(";");
+                case PopulateTypes.Cc:
+                    this.Cc = sb.ToString().Trim(";");
+
                     break;
             }
 
             // Cleanup the database object we created.
             dr.Close();
             command.Dispose();
-
         }
 
         /// <summary>
-        /// This will take a list of email addresses, format them and put them into the selected field.  If the selected entry is a username
-        /// and not an email address, this will attempt to cross reference a user table given the required database connection and sql statement.
-        /// The SQL statement must return to fields, "username" and "email".. e.g. select username, email from web_users.  If an email address isn't
-        /// found for a username, it will be excluded from the send list.  The database connection must already be initialized and open, this sub
-        /// also won't close it so you must close and dispose of it on your own.
+        ///     This will take a list of email addresses, format them and put them into the selected field.  If the selected entry is a username
+        ///     and not an email address, this will attempt to cross reference a user table given the required database connection and sql statement.
+        ///     The SQL statement must return to fields, "username" and "email".. e.g. select username, email from web_users.  If an email address isn't
+        ///     found for a username, it will be excluded from the send list.  The database connection must already be initialized and open, this sub
+        ///     also won't close it so you must close and dispose of it on your own.
         /// </summary>
         /// <param name="fieldToPopulate"></param>
         /// <param name="values"></param>
         public void PopulateAddressString(PopulateTypes fieldToPopulate, string[] values, IDbConnection conn, string sql)
         {
-            PopulateAddressString(fieldToPopulate, values.ToList(), conn, sql);
+            this.PopulateAddressString(fieldToPopulate, values.ToList(), conn, sql);
         }
 
         /// <summary>
-        /// Adds a new attachment to the attachment list from a file path.
+        ///     Adds a new attachment to the attachment list from a file path.
         /// </summary>
         /// <param name="filePath"></param>
         public void AddAttachment(string filePath)
         {
-            if (System.IO.File.Exists(filePath) == false)
+            if (File.Exists(filePath) == false)
             {
-                throw new System.IO.FileNotFoundException();
+                throw new FileNotFoundException();
             }
 
             var attach = new Attachment(filePath);
@@ -361,21 +450,21 @@ namespace Argus.Network
         }
 
         /// <summary>
-        /// Returns a string formatted representation of the current mail message.
+        ///     Returns a string formatted representation of the current mail message.
         /// </summary>
         public override string ToString()
         {
             var sb = new StringBuilder();
             sb.AppendFormat("To: {0}{1}", this.To, "\r\n");
 
-            if (string.IsNullOrWhiteSpace(this.CC) == false)
+            if (string.IsNullOrWhiteSpace(this.Cc) == false)
             {
-                sb.AppendFormat("Cc: {0}{1}", this.CC, "\r\n");
+                sb.AppendFormat("Cc: {0}{1}", this.Cc, "\r\n");
             }
 
-            if (string.IsNullOrWhiteSpace(this.BCC) == false)
+            if (string.IsNullOrWhiteSpace(this.Bcc) == false)
             {
-                sb.AppendFormat("Bcc: {0}{1}", this.BCC, "\r\n");
+                sb.AppendFormat("Bcc: {0}{1}", this.Bcc, "\r\n");
             }
 
             sb.AppendFormat("From: {0}{1}", this.From, "\r\n");
@@ -391,10 +480,12 @@ namespace Argus.Network
             {
                 sb.AppendFormat("Attachments:  {0}{1}", this.Attachments.Count, "\r\n");
                 sb.Append("Attachment List: ");
+
                 foreach (var attach in this.Attachments)
                 {
                     sb.AppendFormat("{0},", attach.Name);
                 }
+
                 sb.Append("\r\n");
             }
 
@@ -403,91 +494,5 @@ namespace Argus.Network
 
             return sb.ToString();
         }
-
-        /// <summary>
-        /// Who the mail should be sent to.  This should be a string of e-mail addresses seperated by commas or semi-colons
-        /// </summary>
-        public string To { get; set; } = "";
-
-        /// <summary>
-        /// Who to blind carbon copy.  This should be a string of e-mail addresses seperated by commas or semi-colons.
-        /// </summary>
-        public string BCC { get; set; } = "";
-
-        /// <summary>
-        /// Who the mail should be sent from.
-        /// </summary>
-        public string From { get; set; } = "";
-
-        /// <summary>
-        /// The e-mail address or addresses to carbon copy seperated by a semi-colon or comma.
-        /// </summary>
-        public string CC { get; set; } = "";
-
-        /// <summary>
-        /// The e-mail address that a recipient should reply to.
-        /// </summary>
-        public string ReplyTo { get; set; } = "";
-
-        /// <summary>
-        /// The subject of the e-mail message.
-        /// </summary>
-        public string Subject { get; set; } = "";
-
-        /// <summary>
-        /// The body of the e-mail message.
-        /// </summary>
-        public string Body { get; set; } = "";
-
-        /// <summary>
-        /// Whether the body of the e-mail is HTML or not.  If set to true the text of the body will be interpreted as HTML.
-        /// </summary>
-        public bool IsBodyHtml { get; set; } = false;
-
-        /// <summary>
-        /// A list of mail attachments.
-        /// </summary>
-        public List<Attachment> Attachments { get; set; } = new List<Attachment>();
-
-        /// <summary>
-        /// The priority of the e-mail message.
-        /// </summary>
-        public MailPriority Priority { get; set; } = MailPriority.Normal;
-
-        /// <summary>
-        /// The mail server that should be used.
-        /// </summary>
-        public string MailServer { get; set; } = "";
-
-        /// <summary>
-        /// The username that will be used to authenticate to the mail server.
-        /// </summary>
-        public string NetworkUsername { get; set; } = "";
-
-        /// <summary>
-        /// The password that will be used to authenticate to the mail server.
-        /// </summary>
-        public string NetworkPassword { get; set; } = "";
-
-        /// <summary>
-        /// The domain that will be authenticated to when connecting to the mail server.
-        /// </summary>
-        public string NetworkDomain { get; set; } = "";
-
-        /// <summary>
-        /// Whether or not SSL encryption is enabled on the mail message.  The default value for this property is True.
-        /// </summary>
-        public bool EnableSsl { get; set; } = true;
-
-        /// <summary>
-        /// The port to connect on.  The default is set at 0 which won't be used.  Any other value will be passed on to the wrapped object.
-        /// </summary>
-        public int Port { get; set; } = 0;
-
-        /// <summary>
-        /// The display name that should go with the email address.
-        /// </summary>
-        public string FromDisplayName { get; set; } = "";
-
     }
 }
