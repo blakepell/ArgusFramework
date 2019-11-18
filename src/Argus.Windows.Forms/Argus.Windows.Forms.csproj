@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+	<OutputType>Library</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Version>2019.11.18.1</Version>
+    <Authors>Blake Pell</Authors>
+    <Company>http://www.blakepell.com</Company>
+    <Product>Argus Framework - Windows Forms (WinForms) Shared Components Library</Product>
+    <Description>Argus Framework - Windows Forums (WinForms) Shared Components Library</Description>
+    <Copyright>2003-2019</Copyright>
+    <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/blakepell/ArgusFramework/master/Assets/Argus-Logo-Purple-64.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Argus.Core\Argus.Core.csproj" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CommonForms\" />
+  </ItemGroup>
+
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+
+</Project>
