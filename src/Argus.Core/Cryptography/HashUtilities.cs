@@ -38,6 +38,42 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
+        ///     Shared function to output the hash from the specified hash algorithm.
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="crypt"></param>
+        private static string CreateHash(byte[] b, HashAlgorithm crypt)
+        {
+            var hash = new StringBuilder();
+            var crypto = crypt.ComputeHash(b);
+
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+
+            return hash.ToString();
+        }
+
+        /// <summary>
+        ///     Shared function to output the hash from the specified hash algorithm.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="crypt"></param>
+        public static string CreateHash(System.IO.Stream s, HashAlgorithm crypt)
+        {
+            var hash = new StringBuilder();
+            var crypto = crypt.ComputeHash(s);
+
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+
+            return hash.ToString();
+        }
+
+        /// <summary>
         ///     Returns a SHA1 hash for the inputted string.  The default overload uses ASCII encoding.
         /// </summary>
         /// <param name="str"></param>
@@ -56,6 +92,28 @@ namespace Argus.Cryptography
             var crypt = new SHA1Managed();
 
             return CreateHash(str, crypt, enc);
+        }
+
+        /// <summary>
+        ///     Returns a SHA1 hash for the inputted string.
+        /// </summary>
+        /// <param name="b"></param>
+        public static string Sha1Hash(byte[] b)
+        {
+            var crypt = new SHA1Managed();
+
+            return CreateHash(b, crypt);
+        }
+
+        /// <summary>
+        ///     Returns a SHA1 hash for the inputted string.
+        /// </summary>
+        /// <param name="s"></param>
+        public static string Sha1Hash(System.IO.Stream s)
+        {
+            var crypt = new SHA1Managed();
+
+            return CreateHash(s, crypt);
         }
 
         /// <summary>
@@ -80,6 +138,28 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
+        ///     Returns a SHA384 hash for the inputted string.
+        /// </summary>
+        /// <param name="b"></param>
+        public static string Sha384Hash(byte[] b)
+        {
+            var crypt = new SHA384Managed();
+
+            return CreateHash(b, crypt);
+        }
+
+        /// <summary>
+        ///     Returns a SHA384 hash for the inputted string.
+        /// </summary>
+        /// <param name="s"></param>
+        public static string Sha384Hash(System.IO.Stream s)
+        {
+            var crypt = new SHA384Managed();
+
+            return CreateHash(s, crypt);
+        }
+
+        /// <summary>
         ///     Returns a SHA256 hash for the inputted string.  The default overload uses ASCII encoding.
         /// </summary>
         /// <param name="str"></param>
@@ -98,6 +178,28 @@ namespace Argus.Cryptography
             var crypt = new SHA256Managed();
 
             return CreateHash(str, crypt, enc);
+        }
+
+        /// <summary>
+        ///     Returns a SHA256 hash for the inputted string.
+        /// </summary>
+        /// <param name="b"></param>
+        public static string Sha256Hash(byte[] b)
+        {
+            var crypt = new SHA256Managed();
+
+            return CreateHash(b, crypt);
+        }
+
+        /// <summary>
+        ///     Returns a SHA256 hash for the inputted string.
+        /// </summary>
+        /// <param name="s"></param>
+        public static string Sha256Hash(System.IO.Stream s)
+        {
+            var crypt = new SHA256Managed();
+
+            return CreateHash(s, crypt);
         }
 
         /// <summary>
@@ -122,12 +224,34 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
+        ///     Returns a SHA512 hash for the inputted string.
+        /// </summary>
+        /// <param name="b"></param>
+        public static string Sha512Hash(byte[] b)
+        {
+            var crypt = new SHA512Managed();
+
+            return CreateHash(b, crypt);
+        }
+
+        /// <summary>
+        ///     Returns a SHA512 hash for the inputted string.
+        /// </summary>
+        /// <param name="s"></param>
+        public static string Sha512Hash(System.IO.Stream s)
+        {
+            var crypt = new SHA512Managed();
+
+            return CreateHash(s, crypt);
+        }
+
+        /// <summary>
         ///     Returns a MD5 hash for the inputted string.  The default overload uses ASCII encoding.
         /// </summary>
         /// <param name="str"></param>
-        public static string Md5Hash(string str)
+        public static string MD5Hash(string str)
         {
-            return Md5Hash(str, Encoding.ASCII);
+            return MD5Hash(str, Encoding.ASCII);
         }
 
         /// <summary>
@@ -135,11 +259,34 @@ namespace Argus.Cryptography
         /// </summary>
         /// <param name="str"></param>
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
-        public static string Md5Hash(string str, Encoding enc)
+        public static string MD5Hash(string str, Encoding enc)
         {
             var crypt = new MD5CryptoServiceProvider();
 
             return CreateHash(str, crypt, enc);
         }
+
+        /// <summary>
+        ///     Returns a MD5 hash for the inputted string.
+        /// </summary>
+        /// <param name="b"></param>
+        public static string MD5Hash(byte[] b)
+        {
+            var crypt = new MD5CryptoServiceProvider();
+
+            return CreateHash(b, crypt);
+        }
+
+        /// <summary>
+        ///     Returns a MD5 hash for the inputted string.
+        /// </summary>
+        /// <param name="s"></param>
+        public static string MD5Hash(System.IO.Stream s)
+        {
+            var crypt = new MD5CryptoServiceProvider();
+
+            return CreateHash(s, crypt);
+        }
+
     }
 }

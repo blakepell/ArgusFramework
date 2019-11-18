@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppTestApp", "tests\WpfA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Windows.Forms", "src\Argus.Windows.Forms\Argus.Windows.Forms.csproj", "{F541DFF3-D399-4F33-8639-6ED30D3A5D75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Argus.Windows", "src\Argus.Windows\Argus.Windows.csproj", "{D3FABC46-D372-4DCD-8BA0-F2C8972D221C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{F541DFF3-D399-4F33-8639-6ED30D3A5D75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F541DFF3-D399-4F33-8639-6ED30D3A5D75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F541DFF3-D399-4F33-8639-6ED30D3A5D75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3FABC46-D372-4DCD-8BA0-F2C8972D221C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3FABC46-D372-4DCD-8BA0-F2C8972D221C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3FABC46-D372-4DCD-8BA0-F2C8972D221C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3FABC46-D372-4DCD-8BA0-F2C8972D221C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

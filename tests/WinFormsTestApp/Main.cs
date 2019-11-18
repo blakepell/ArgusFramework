@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Argus.Extensions;
 
 namespace WinFormsTestApp
 {
@@ -16,5 +17,11 @@ namespace WinFormsTestApp
         {
             InitializeComponent();
         }
+
+        private void ButtonDoSomething_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

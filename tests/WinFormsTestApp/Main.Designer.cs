@@ -50,6 +50,7 @@
             this.ButtonDoSomething.TabIndex = 1;
             this.ButtonDoSomething.Text = "Do Something";
             this.ButtonDoSomething.UseVisualStyleBackColor = true;
+            this.ButtonDoSomething.Click += new System.EventHandler(this.ButtonDoSomething_Click);
             // 
             // Main
             // 
