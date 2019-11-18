@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Argus.Extensions
 {
@@ -12,7 +13,7 @@ namespace Argus.Extensions
         //            Module:  ByteExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  11/05/2013
-        //      Last Updated:  04/03/2016
+        //      Last Updated:  11/18/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -25,5 +26,16 @@ namespace Argus.Extensions
         {
             return Convert.ToBase64String(bytes);
         }
+
+        /// <summary>
+        ///     Converts a byte array into a string with the specified encoding.
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="enc"></param>
+        public static string ToString(this byte[] bytes, Encoding enc)
+        {
+            return enc.GetString(bytes);
+        }
+
     }
 }

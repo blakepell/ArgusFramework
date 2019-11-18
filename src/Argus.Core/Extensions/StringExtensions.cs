@@ -20,7 +20,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  11/17/2019
+        //      Last Updated:  11/18/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -1524,6 +1524,16 @@ namespace Argus.Extensions
             }
 
             return false;
+        }
+
+        /// <summary>
+        ///     Returns a <see cref="byte" /> array in the specified encoding.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="enc"></param>
+        private static byte[] ToBytes(this string value, Encoding enc)
+        {
+            return enc.GetBytes(value);
         }
 
     }

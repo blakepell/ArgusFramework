@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -228,5 +229,23 @@ namespace Argus.Extensions
         {
             return list.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur).Length;
         }
+
+        /// <summary>
+        /// Converts an <see cref="IEnumerable{T}"/> into an <see cref="ObservableCollection{T}"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ie"></param>
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> ie)
+        {
+            var c = new ObservableCollection<T>();
+
+            foreach (var item in ie)
+            {
+                c.Add(item);
+            }
+
+            return c;
+        }
+
     }
 }
