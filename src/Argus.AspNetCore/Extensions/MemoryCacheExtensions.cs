@@ -4,7 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Memory Cache Extensions
+    /// Extension methods for <see cref="IMemoryCache"/>.
     /// </summary>
     public static class MemoryCacheExtensions
     {
