@@ -8,17 +8,17 @@
     <Version>2019.11.17.1</Version>
     <Authors>Blake Pell</Authors>
     <Company>http://www.blakepell.com</Company>
-    <Product>Argus.AspNetCore</Product>
+    <Product>Argus Framework - ASP.NET Core Library</Product>
     <Copyright>Copyright ©  2019</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>ASP.Net Utility Library</Description>
+    <Description>Argus Framework - ASP.NET Core Library</Description>
     <PackageTags>aspnetcore</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RootNamespace>Argus.AspNetCore</RootNamespace>
     <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageReleaseNotes>- Initial release, see the GitHub project for usage examples.</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <PackageIconUrl>https://github.com/blakepell/ArgusFramework/blob/master/Assets/Argus-Logo-Purple-64.png</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
