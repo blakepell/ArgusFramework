@@ -24,7 +24,7 @@ namespace Argus.Cryptography
         /// <param name="str"></param>
         /// <param name="crypt"></param>
         /// <param name="enc"></param>
-        private static string CreateHash(string str, HashAlgorithm crypt, Encoding enc)
+        public static string CreateHash(string str, HashAlgorithm crypt, Encoding enc)
         {
             var hash = new StringBuilder();
             var crypto = crypt.ComputeHash(enc.GetBytes(str));
@@ -42,7 +42,7 @@ namespace Argus.Cryptography
         /// </summary>
         /// <param name="b"></param>
         /// <param name="crypt"></param>
-        private static string CreateHash(byte[] b, HashAlgorithm crypt)
+        public static string CreateHash(byte[] b, HashAlgorithm crypt)
         {
             var hash = new StringBuilder();
             var crypto = crypt.ComputeHash(b);

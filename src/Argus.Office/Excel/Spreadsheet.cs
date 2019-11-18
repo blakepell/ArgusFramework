@@ -19,7 +19,7 @@ namespace Argus.Office.Excel
     {
         //*********************************************************************************************************************
         //
-        //             Class:  ExcelSpreadsheet
+        //             Class:  Spreadsheet
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  04/27/2016
         //      Last Updated:  11/17/2019

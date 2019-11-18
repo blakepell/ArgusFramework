@@ -1,5 +1,7 @@
 ﻿using System.IO;
 using Argus.Data;
+using Argus.Cryptography;
+using System;
 
 namespace Argus.Extensions
 {
@@ -13,7 +15,7 @@ namespace Argus.Extensions
         //            Module:  SystemIOExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  04/06/2009
-        //      Last Updated:  08/09/2017
+        //      Last Updated:  11/18/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -26,5 +28,51 @@ namespace Argus.Extensions
         {
             return Formatting.FormattedFileSize(fi.Length);
         }
+
+        /// <summary>
+        /// Returns a cryptographic SHA256 hash for the bytes in a given file.
+        /// </summary>
+        /// <param name="fi"></param>
+        public static string CreateSha256Hash(this FileInfo fi)
+        {
+            return HashUtilities.Sha256Hash(ReadFile(fi));
+        }
+
+        /// <summary>
+        /// Returns a cryptographic SHA512 hash for the bytes in a given file.
+        /// </summary>
+        /// <param name="fi"></param>
+        public static string CreateSha512Hash(this FileInfo fi)
+        {
+            return HashUtilities.Sha512Hash(ReadFile(fi));
+        }
+
+        /// <summary>
+        /// Returns a cryptographic MD5 hash for the bytes in a given file.
+        /// </summary>
+        /// <param name="fi"></param>
+        public static string CreateMD5(this FileInfo fi)
+        {
+            return HashUtilities.MD5Hash(ReadFile(fi));
+        }
+
+        /// <summary>
+        /// This opens up a string that is able to read a locked file if the file is locked but shareable.
+        /// </summary>
+        /// <param name="fi"></param>
+        private static byte[] ReadFile(FileInfo fi)
+        {
+            byte[] fileContents = null;
+
+            using (var fs = File.Open(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                int fileLength = Convert.ToInt32(fs.Length);
+                fileContents = new byte[(fileLength)];
+                fs.Read(fileContents, 0, fileLength);
+            }
+
+            return fileContents;
+        }
+
     }
 }
