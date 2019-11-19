@@ -14,7 +14,7 @@ namespace Argus.Cryptography
         //
         //             Class:  Encryption
         //      Organization:  http://www.blakepell.com
-        //      Initial Date:  03/26/2008
+        //      Initial Date:  09/28/2005
         //      Last Updated:  11/18/2019
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
