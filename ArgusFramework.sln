@@ -33,11 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Windows.Wpf", "src\Ar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsTestApp", "tests\WinFormsTestApp\WinFormsTestApp.csproj", "{797578C6-37F9-46F8-A2FE-EE2418B6F1B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppTestApp", "tests\WpfAppTestApp\WpfAppTestApp.csproj", "{06B7E4DB-B178-43BE-BFFD-6B0BD6F63028}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfAppTestApp", "tests\WpfAppTestApp\WpfAppTestApp.csproj", "{06B7E4DB-B178-43BE-BFFD-6B0BD6F63028}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Windows.Forms", "src\Argus.Windows.Forms\Argus.Windows.Forms.csproj", "{F541DFF3-D399-4F33-8639-6ED30D3A5D75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Argus.Windows", "src\Argus.Windows\Argus.Windows.csproj", "{D3FABC46-D372-4DCD-8BA0-F2C8972D221C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Windows", "src\Argus.Windows\Argus.Windows.csproj", "{D3FABC46-D372-4DCD-8BA0-F2C8972D221C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
