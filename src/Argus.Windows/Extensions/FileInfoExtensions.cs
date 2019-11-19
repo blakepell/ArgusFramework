@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Security.AccessControl;
+﻿using System.IO;
 using System.Security.Principal;
-using System.Text;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="FileInfoExtensions"/>
+    ///     Extension methods for <see cref="FileInfoExtensions" />
     /// </summary>
     public static class FileInfoExtensions
     {
@@ -23,7 +19,7 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the owner of the file.
+        ///     Returns the owner of the file.
         /// </summary>
         /// <param name="fi"></param>
         public static string GetOwner(this FileInfo fi)
@@ -38,6 +34,5 @@ namespace Argus.Extensions
 
             return ir.Value;
         }
-
     }
 }

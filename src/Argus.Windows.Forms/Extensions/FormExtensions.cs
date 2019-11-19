@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="System.Windows.Forms.Form"/>.
+    ///     Extension methods for <see cref="System.Windows.Forms.Form" />.
     /// </summary>
     public static class FormExtensions
     {
@@ -23,11 +21,12 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Pauses via a Task.Delay.
+        ///     Pauses via a Task.Delay.
         /// </summary>
-        /// <param name="milleseconds"></param>
+        /// <param name="form"></param>
+        /// <param name="milliseconds"></param>
         /// <remarks>This does not technically require the form but makes it convenient to access it via the IDE.</remarks>
-        public static async Task PauseAsync(this Form form, int milleseconds)
+        public static async Task PauseAsync(this Form form, int milliseconds)
         {
             await Task.Delay(2000);
         }
@@ -35,37 +34,30 @@ namespace Argus.Extensions
         #region "Flash Form"
 
         [DllImport("user32.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        private static extern int FlashWindowEx(ref FLASHWINFO pfwi);
 
-        /// <summary>
-        /// Windows API Call to make a window Flash
-        /// </summary>
-        /// <param name="pfwi"></param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        private static extern Int32 FlashWindowEx(ref FLASHWINFO pfwi);
+        private const int FLASHW_CAPTION = 0x1;
+        private const int FLASHW_TRAY = 0x2;
+        private const int FLASHW_ALL = FLASHW_CAPTION | FLASHW_TRAY;
 
-        private const Int32 FLASHW_CAPTION = 0x1;
-        private const Int32 FLASHW_TRAY = 0x2;
-
-        private const Int32 FLASHW_ALL = (FLASHW_CAPTION | FLASHW_TRAY);
         public struct FLASHWINFO
         {
-            public Int32 cbSize;
+            public int cbSize;
             public IntPtr hwnd;
-            public Int32 dwFlags;
-            public Int32 uCount;
-            public Int32 dwTimeout;
+            public int dwFlags;
+            public int uCount;
+            public int dwTimeout;
         }
 
         /// <summary>
-        /// Causes the form to flash both the caption bar and the tray.
+        ///     Causes the form to flash both the caption bar and the tray.
         /// </summary>
         /// <param name="frm"></param>
         /// <remarks>
         /// </remarks>
         public static void FlashForm(this Form frm)
         {
-            FLASHWINFO flash = new FLASHWINFO();
+            var flash = new FLASHWINFO();
             flash.cbSize = Marshal.SizeOf(flash);
             ///// size of structure in bytes
             flash.hwnd = frm.Handle;
@@ -81,6 +73,5 @@ namespace Argus.Extensions
         }
 
         #endregion
-
     }
 }

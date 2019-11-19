@@ -1,12 +1,12 @@
-﻿using System.Text;
-using System.Security.Cryptography;
-using System;
+﻿using System;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Argus.Cryptography
 {
     /// <summary>
-    /// Encrypts and decrypts strings and byte arrays.
+    ///     Encrypts and decrypts strings and byte arrays.
     /// </summary>
     public class Encryption
     {
@@ -20,11 +20,11 @@ namespace Argus.Cryptography
         //
         //*********************************************************************************************************************
 
-        private static string _salt = "aselrias38490a32";        
-        private static string _vector = "8947az34awl34kjq";
+        private static readonly string _salt = "aselrias38490a32";
+        private static readonly string _vector = "8947az34awl34kjq";
 
         /// <summary>
-        /// Encrypts a string via AES.
+        ///     Encrypts a string via AES.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="password"></param>
@@ -34,7 +34,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        /// Encrypts a string with the provider T.
+        ///     Encrypts a string with the provider T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
@@ -45,7 +45,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        /// Encrypts a string with the provider T.
+        ///     Encrypts a string with the provider T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
@@ -56,16 +56,16 @@ namespace Argus.Cryptography
             var saltBytes = Encoding.ASCII.GetBytes(_salt);
             byte[] encrypted;
 
-            using (T cipher = new T())
+            using (var cipher = new T())
             {
-                var _passwordBytes = new PasswordDeriveBytes(password, saltBytes, "SHA512", 2);
-                var keyBytes = _passwordBytes.GetBytes(256 / 8);
+                var passwordBytes = new PasswordDeriveBytes(password, saltBytes, "SHA512", 2);
+                var keyBytes = passwordBytes.GetBytes(256 / 8);
 
                 cipher.Mode = CipherMode.CBC;
                 cipher.GenerateIV();
 
                 using (var encryptor = cipher.CreateEncryptor(keyBytes, vectorBytes))
-                {                    
+                {
                     using (var to = new MemoryStream())
                     {
                         using (var writer = new CryptoStream(to, encryptor, CryptoStreamMode.Write))
@@ -79,21 +79,22 @@ namespace Argus.Cryptography
 
                 cipher.Clear();
             }
+
             return Convert.ToBase64String(encrypted);
         }
 
         /// <summary>
-        /// Decrypts an AES encrypted string.
+        ///     Decrypts an AES encrypted string.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="password"></param>
         public static string Decrypt(string value, string password)
         {
-            return Decrypt<AesManaged>(value, password);        
+            return Decrypt<AesManaged>(value, password);
         }
 
         /// <summary>
-        /// Decrypts a string with the provider T.
+        ///     Decrypts a string with the provider T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
@@ -104,7 +105,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        /// Decrypts a string with the provider T.
+        ///     Decrypts a string with the provider T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
@@ -117,10 +118,10 @@ namespace Argus.Cryptography
 
             int decryptedByteCount = 0;
 
-            using (T cipher = new T())
+            using (var cipher = new T())
             {
-                var _passwordBytes = new PasswordDeriveBytes(password, saltBytes, "SHA512", 2);
-                var keyBytes = _passwordBytes.GetBytes(256 / 8);
+                var passwordBytes = new PasswordDeriveBytes(password, saltBytes, "SHA512", 2);
+                var keyBytes = passwordBytes.GetBytes(256 / 8);
 
                 cipher.Mode = CipherMode.CBC;
                 cipher.GenerateIV();
@@ -149,7 +150,5 @@ namespace Argus.Cryptography
 
             return Encoding.UTF8.GetString(decrypted, 0, decryptedByteCount);
         }
-
     }
-
 }

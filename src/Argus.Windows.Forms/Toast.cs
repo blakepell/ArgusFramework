@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace Argus.Windows.Forms
 {
     /// <summary>
-    /// The ability to send toast notifications through the NotifyIcon Windows Forms class.
+    ///     The ability to send toast notifications through the NotifyIcon Windows Forms class.
     /// </summary>
     public class Toast : IDisposable
     {
@@ -21,19 +21,25 @@ namespace Argus.Windows.Forms
             _notifyIcon.BalloonTipClosed += (s, e) => _notifyIcon.Visible = false;
         }
 
+        public void Dispose()
+        {
+            _notifyIcon?.Icon?.Dispose();
+            _notifyIcon?.Dispose();
+        }
+
         public void ShowNotification(string msg)
-        {            
-            ShowNotification(Assembly.GetExecutingAssembly().GetName().Name, msg, ToolTipIcon.Info, 3000);
+        {
+            this.ShowNotification(Assembly.GetExecutingAssembly().GetName().Name, msg, ToolTipIcon.Info, 3000);
         }
 
         public void ShowNotification(string title, string msg)
         {
-            ShowNotification(title, msg, ToolTipIcon.Info);
+            this.ShowNotification(title, msg, ToolTipIcon.Info);
         }
 
         public void ShowNotification(string title, string msg, ToolTipIcon iconType)
         {
-            ShowNotification(title, msg, iconType, 3000);
+            this.ShowNotification(title, msg, iconType, 3000);
         }
 
         public void ShowNotification(string title, string msg, ToolTipIcon iconType, int millesecondsTimeout)
@@ -41,12 +47,5 @@ namespace Argus.Windows.Forms
             _notifyIcon.Visible = true;
             _notifyIcon.ShowBalloonTip(millesecondsTimeout, title, msg, iconType);
         }
-
-        public void Dispose()
-        {
-            _notifyIcon?.Icon?.Dispose();
-            _notifyIcon?.Dispose();
-        }
-
     }
 }

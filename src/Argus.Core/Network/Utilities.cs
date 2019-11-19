@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Runtime.InteropServices;
 
 namespace Argus.Network
 {
     /// <summary>
-    /// Network utilities for Windows.
+    ///     Network utilities for Windows.
     /// </summary>
     public static class Utilities
     {
@@ -21,7 +19,7 @@ namespace Argus.Network
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns multiple IP's if they exist.  This is for the workstation/server that this is being run from.
+        ///     Returns multiple IPs if they exist.  This is for the workstation/server that this is being run from.
         /// </summary>
         public static List<IPAddress> GetLocalIpAddresses()
         {
@@ -37,7 +35,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        /// Returns a string value of all ip addresses that are resolved seperated by commas.
+        ///     Returns a string value of all ip addresses that are resolved separated by commas.
         /// </summary>
         /// <param name="ipAddress"></param>
         public static List<string> Resolve(string ipAddress)
@@ -54,7 +52,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        /// Downloads a file from the Internet (http, https)
+        ///     Downloads a file from the Internet (http, https)
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <param name="localFileName"></param>
@@ -70,7 +68,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        /// Downloads a file from the Internet with provided authentication credentials (http, https, ftp)
+        ///     Downloads a file from the Internet with provided authentication credentials (http, https, ftp)
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <param name="localFileName"></param>
@@ -87,6 +85,5 @@ namespace Argus.Network
                 wc.DownloadFile(remoteUrl, localFileName);
             }
         }
-
     }
 }

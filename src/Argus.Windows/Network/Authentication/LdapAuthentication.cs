@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.DirectoryServices;
+﻿using System.DirectoryServices;
 
 namespace Argus.Network.Authentication
 {
     /// <summary>
-    /// Shared methods for validating and managing user credentials against an LDAP provider.
+    ///     Shared methods for validating and managing user credentials against an LDAP provider.
     /// </summary>
     public class LdapAuthentication
     {
-
         //*********************************************************************************************************************
         //
         //             Class:  AdsAuthentication
@@ -24,7 +18,7 @@ namespace Argus.Network.Authentication
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Validates user credentials via the managed Active Directory objects by trying to run a simple query against the AD.
+        ///     Validates user credentials via the managed Active Directory objects by trying to run a simple query against the AD.
         /// </summary>
         /// <param name="domain"></param>
         /// <param name="username"></param>
@@ -40,24 +34,15 @@ namespace Argus.Network.Authentication
                     try
                     {
                         var results = searcher.FindOne();
-                        return (results != null);
+
+                        return results != null;
                     }
                     catch
                     {
                         return false;
                     }
-                    finally
-                    {
-                        entry.Close();
-                        entry.Dispose();
-                        searcher.Dispose();
-                    }
-
                 }
             }
-
         }
-
     }
-
 }

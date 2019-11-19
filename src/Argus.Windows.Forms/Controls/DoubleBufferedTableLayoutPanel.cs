@@ -3,7 +3,7 @@
 namespace Argus.Windows.Forms.Controls
 {
     /// <summary>
-    /// A TableLayoutPanel that is double buffered for rendering performance.
+    ///     A TableLayoutPanel that is double buffered for rendering performance.
     /// </summary>
     public class DoubleBufferedTableLayoutPanel : TableLayoutPanel
     {
@@ -17,16 +17,18 @@ namespace Argus.Windows.Forms.Controls
         //
         //*********************************************************************************************************************
 
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public DoubleBufferedTableLayoutPanel()
-        {           
+        {
             this.SetStyle(
                 ControlStyles.UserPaint |
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer,
                 true);
 
-            UpdateStyles();
+            this.UpdateStyles();
         }
     }
 }

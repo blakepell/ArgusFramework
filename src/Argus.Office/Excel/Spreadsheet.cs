@@ -572,7 +572,6 @@ namespace Argus.Office.Excel
         ///     returns either the found mapped value or the passed in key if it is not found.
         /// </summary>
         /// <param name="key"></param>
-        /// <returns></returns>
         private string ColumnHeaderLookup(string key)
         {
             if (this.ColumnHeaderMap != null)

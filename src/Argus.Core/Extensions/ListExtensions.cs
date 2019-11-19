@@ -21,7 +21,6 @@ namespace Argus.Extensions
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
-
         private static readonly Random _shuffleRng = new Random();
 
         /// <summary>
@@ -231,7 +230,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Converts an <see cref="IEnumerable{T}"/> into an <see cref="ObservableCollection{T}"/>.
+        ///     Converts an <see cref="IEnumerable{T}" /> into an <see cref="ObservableCollection{T}" />.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ie"></param>
@@ -246,6 +245,5 @@ namespace Argus.Extensions
 
             return c;
         }
-
     }
 }

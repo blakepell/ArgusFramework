@@ -36,6 +36,5 @@ namespace Argus.Extensions
         {
             return enc.GetString(bytes);
         }
-
     }
 }

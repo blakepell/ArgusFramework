@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interop;
 
 namespace Argus.Extensions
@@ -21,6 +20,122 @@ namespace Argus.Extensions
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
+
+        /// <summary>
+        ///     Determines whether the calling thread is the thread associated with the given <see cref="T:System.Windows.Window" />.
+        /// </summary>
+        /// <param name="window">The <see cref="T:System.Windows.Window" /> to be checked.</param>
+        /// <returns><see langword="true" /> if the calling thread is the thread associated with this <see cref="T:System.Windows.Window" />; otherwise, <see langword="false" />.</returns>
+        public static bool CheckAccess(this Window window)
+        {
+            if (window == null)
+            {
+                throw new ArgumentNullException(nameof(window));
+            }
+
+            return window.Dispatcher?.CheckAccess() != false;
+        }
+
+        /// <summary>
+        ///     Executes the specified <see cref="T:System.Action" /> synchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
+        /// </summary>
+        /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
+        /// <param name="callback">A delegate to invoke through the window thread.</param>
+        public static void Invoke(this Window window, Action callback)
+        {
+            if (window == null)
+            {
+                throw new ArgumentNullException(nameof(window));
+            }
+
+            if (callback == null)
+            {
+                throw new ArgumentNullException(nameof(callback));
+            }
+
+            if (CheckAccess(window))
+            {
+                callback();
+            }
+            else
+            {
+                window.Dispatcher.Invoke(callback);
+            }
+        }
+
+        /// <summary>
+        ///     Executes the specified <see cref="T:System.Func`1" /> synchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
+        /// </summary>
+        /// <typeparam name="TResult">The return value type of the specified delegate.</typeparam>
+        /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
+        /// <param name="callback">A delegate to invoke through the window thread.</param>
+        /// <returns>The result of the given callback.</returns>
+        public static TResult Invoke<TResult>(this Window window, Func<TResult> callback)
+        {
+            if (window == null)
+            {
+                throw new ArgumentNullException(nameof(window));
+            }
+
+            if (callback == null)
+            {
+                throw new ArgumentNullException(nameof(callback));
+            }
+
+            if (CheckAccess(window))
+            {
+                return callback();
+            }
+
+            return window.Dispatcher.Invoke(callback);
+        }
+
+        /// <summary>
+        ///     Executes the specified <see cref="T:System.Action" /> asynchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
+        /// </summary>
+        /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
+        /// <param name="callback">A delegate to invoke through the window thread.</param>
+        /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> created by this method.</returns>
+        public static Task InvokeAsync(this Window window, Action callback)
+        {
+            if (window == null)
+            {
+                throw new ArgumentNullException(nameof(window));
+            }
+
+            if (callback == null)
+            {
+                throw new ArgumentNullException(nameof(callback));
+            }
+
+            var operation = window.Dispatcher.InvokeAsync(callback);
+
+            return operation.Task;
+        }
+
+        /// <summary>
+        ///     Executes the specified <see cref="T:System.Func`1" /> asynchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
+        /// </summary>
+        /// <typeparam name="TResult">The return value type of the specified delegate.</typeparam>
+        /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
+        /// <param name="callback">A delegate to invoke through the window thread.</param>
+        /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> created by this method.</returns>
+        public static Task<TResult> InvokeAsync<TResult>(this Window window, Func<TResult> callback)
+        {
+            if (window == null)
+            {
+                throw new ArgumentNullException(nameof(window));
+            }
+
+            if (callback == null)
+            {
+                throw new ArgumentNullException(nameof(callback));
+            }
+
+            var operation = window.Dispatcher.InvokeAsync(callback);
+
+            return operation.Task;
+        }
 
         #region "Remove Icon"
 
@@ -69,92 +184,5 @@ namespace Argus.Extensions
         }
 
         #endregion
-
-        /// <summary>
-        /// Determines whether the calling thread is the thread associated with the given <see cref="T:System.Windows.Window" />.
-        /// </summary>
-        /// <param name="window">The <see cref="T:System.Windows.Window" /> to be checked.</param>
-        /// <returns><see langword="true" /> if the calling thread is the thread associated with this <see cref="T:System.Windows.Window" />; otherwise, <see langword="false" />.</returns>
-        public static bool CheckAccess(this Window window)
-        {
-            if (window == null) throw new ArgumentNullException(nameof(window));
-
-            return window.Dispatcher?.CheckAccess() != false;
-        }
-
-        /// <summary>
-        /// Executes the specified <see cref="T:System.Action" /> synchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
-        /// </summary>
-        /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
-        /// <param name="callback">A delegate to invoke through the window thread.</param>
-        public static void Invoke(this Window window, Action callback)
-        {
-            if (window == null) throw new ArgumentNullException(nameof(window));
-            if (callback == null) throw new ArgumentNullException(nameof(callback));
-
-            if (CheckAccess(window))
-            {
-                callback();
-            }
-            else
-            {
-                window.Dispatcher.Invoke(callback);
-            }
-        }
-
-        /// <summary>
-        /// Executes the specified <see cref="T:System.Func`1" /> synchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
-        /// </summary>
-        /// <typeparam name="TResult">The return value type of the specified delegate.</typeparam>
-        /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
-        /// <param name="callback">A delegate to invoke through the window thread.</param>
-        /// <returns>The result of the given callback.</returns>
-        public static TResult Invoke<TResult>(this Window window, Func<TResult> callback)
-        {
-            if (window == null) throw new ArgumentNullException(nameof(window));
-            if (callback == null) throw new ArgumentNullException(nameof(callback));
-
-            if (CheckAccess(window))
-            {
-                return callback();
-            }
-            else
-            {
-                return window.Dispatcher.Invoke<TResult>(callback);
-            }
-        }
-
-        /// <summary>
-        /// Executes the specified <see cref="T:System.Action" /> asynchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
-        /// </summary>
-        /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
-        /// <param name="callback">A delegate to invoke through the window thread.</param>
-        /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> created by this method.</returns>
-        public static Task InvokeAsync(this Window window, Action callback)
-        {
-            if (window == null) throw new ArgumentNullException(nameof(window));
-            if (callback == null) throw new ArgumentNullException(nameof(callback));
-
-            var operation = window.Dispatcher.InvokeAsync(callback);
-
-            return operation.Task;
-        }
-
-        /// <summary>
-        /// Executes the specified <see cref="T:System.Func`1" /> asynchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
-        /// </summary>
-        /// <typeparam name="TResult">The return value type of the specified delegate.</typeparam>
-        /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
-        /// <param name="callback">A delegate to invoke through the window thread.</param>
-        /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> created by this method.</returns>
-        public static Task<TResult> InvokeAsync<TResult>(this Window window, Func<TResult> callback)
-        {
-            if (window == null) throw new ArgumentNullException(nameof(window));
-            if (callback == null) throw new ArgumentNullException(nameof(callback));
-
-            var operation = window.Dispatcher.InvokeAsync<TResult>(callback);
-
-            return operation.Task;
-        }
     }
 }

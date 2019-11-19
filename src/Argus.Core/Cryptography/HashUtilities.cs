@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Argus.Cryptography
@@ -60,7 +61,7 @@ namespace Argus.Cryptography
         /// </summary>
         /// <param name="s"></param>
         /// <param name="crypt"></param>
-        public static string CreateHash(System.IO.Stream s, HashAlgorithm crypt)
+        public static string CreateHash(Stream s, HashAlgorithm crypt)
         {
             var hash = new StringBuilder();
             var crypto = crypt.ComputeHash(s);
@@ -109,7 +110,7 @@ namespace Argus.Cryptography
         ///     Returns a SHA1 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
-        public static string Sha1Hash(System.IO.Stream s)
+        public static string Sha1Hash(Stream s)
         {
             var crypt = new SHA1Managed();
 
@@ -152,7 +153,7 @@ namespace Argus.Cryptography
         ///     Returns a SHA384 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
-        public static string Sha384Hash(System.IO.Stream s)
+        public static string Sha384Hash(Stream s)
         {
             var crypt = new SHA384Managed();
 
@@ -195,7 +196,7 @@ namespace Argus.Cryptography
         ///     Returns a SHA256 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
-        public static string Sha256Hash(System.IO.Stream s)
+        public static string Sha256Hash(Stream s)
         {
             var crypt = new SHA256Managed();
 
@@ -238,7 +239,7 @@ namespace Argus.Cryptography
         ///     Returns a SHA512 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
-        public static string Sha512Hash(System.IO.Stream s)
+        public static string Sha512Hash(Stream s)
         {
             var crypt = new SHA512Managed();
 
@@ -281,12 +282,11 @@ namespace Argus.Cryptography
         ///     Returns a MD5 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
-        public static string MD5Hash(System.IO.Stream s)
+        public static string MD5Hash(Stream s)
         {
             var crypt = new MD5CryptoServiceProvider();
 
             return CreateHash(s, crypt);
         }
-
     }
 }

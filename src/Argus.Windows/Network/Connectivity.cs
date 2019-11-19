@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Argus.Network
 {
     /// <summary>
-    /// Class to deal with network connectivity.
+    ///     Class to deal with network connectivity.
     /// </summary>
     public static class Connectivity
     {
@@ -23,11 +21,11 @@ namespace Argus.Network
         #region IsInternetAvailable
 
         [DllImport("wininet.dll")]
-        private extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
+        private static extern bool InternetGetConnectedState(out int Description, int ReservedValue);
 
         /// <summary>
-        /// Determines via the Windows API InternetGetConnectedState whether the Internet is connected or not.  This will check
-        /// for more than the availability of a network.
+        ///     Determines via the Windows API InternetGetConnectedState whether the Internet is connected or not.  This will check
+        ///     for more than the availability of a network.
         /// </summary>
         /// <remarks>This will return a NotSupportedException on non Windows systems.</remarks>
         /// <exception cref="PlatformNotSupportedException"></exception>
@@ -44,6 +42,5 @@ namespace Argus.Network
         }
 
         #endregion
-
     }
 }

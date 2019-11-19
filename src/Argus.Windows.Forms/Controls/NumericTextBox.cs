@@ -3,18 +3,16 @@ using System.Windows.Forms;
 
 namespace Argus.Windows.Forms.Controls
 {
-
     /// <summary>
-    /// Text box that only accepts numeric values.
+    ///     Text box that only accepts numeric values.
     /// </summary>
     /// <remarks>
-    /// The style ES_NUMBER only allows numeric characters enforced by Windows.  We however have to handle
-    /// those characters that are pasted in therefore we will make it require the same criteria.  This does
-    /// not handle decimal points.
+    ///     The style ES_NUMBER only allows numeric characters enforced by Windows.  We however have to handle
+    ///     those characters that are pasted in therefore we will make it require the same criteria.  This does
+    ///     not handle decimal points.
     /// </remarks>
     public class NumericTextBox : TextBox
     {
-
         //*********************************************************************************************************************
         //
         //             Class:  NumericTextBox
@@ -24,7 +22,7 @@ namespace Argus.Windows.Forms.Controls
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
-
+        
         private const int ES_NUMBER = 0x2000;
 
         protected override CreateParams CreateParams
@@ -33,6 +31,7 @@ namespace Argus.Windows.Forms.Controls
             {
                 var @params = base.CreateParams;
                 @params.Style = @params.Style | ES_NUMBER;
+
                 return @params;
             }
         }
@@ -48,40 +47,34 @@ namespace Argus.Windows.Forms.Controls
                 {
                     return base.ProcessCmdKey(ref msg, keyData);
                 }
-                else
+
+                string text = Convert.ToString(data.GetData(DataFormats.StringFormat, true));
+
+                if (text == string.Empty)
                 {
-                    string text = Convert.ToString(data.GetData(DataFormats.StringFormat, true));
+                    return base.ProcessCmdKey(ref msg, keyData);
+                }
 
-                    if (text == string.Empty)
+                foreach (char ch in text)
+                {
+                    if (!char.IsNumber(ch))
                     {
-                        return base.ProcessCmdKey(ref msg, keyData);
-                    }
-                    else
-                    {
-                        foreach (char ch in text.ToCharArray())
-                        {
-                            if (!char.IsNumber(ch))
-                            {
-                                return true;
-                            }
-                        }
-
-                        return base.ProcessCmdKey(ref msg, keyData);
+                        return true;
                     }
                 }
+
+                return base.ProcessCmdKey(ref msg, keyData);
             }
-            else if (keyData == (Keys.Control | Keys.A))
+
+            if (keyData == (Keys.Control | Keys.A))
             {
                 // Process the select all
                 this.SelectAll();
-                return base.ProcessCmdKey(ref msg, keyData);
-            }
-            else
-            {
+
                 return base.ProcessCmdKey(ref msg, keyData);
             }
 
+            return base.ProcessCmdKey(ref msg, keyData);
         }
-
     }
 }

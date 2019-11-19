@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Media.Imaging;
+using System.IO;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Argus.Windows.Wpf.Extensions
 {
@@ -19,15 +18,15 @@ namespace Argus.Windows.Wpf.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Loads an image file into the Image control.  
+        ///     Loads an image file into the Image control.
         /// </summary>
         /// <param name="img"></param>
         /// <param name="filePath"></param>
         public static void LoadFile(this Image img, string filePath)
         {
-            if (System.IO.File.Exists(filePath) == false)
+            if (File.Exists(filePath) == false)
             {
-                throw new System.IO.FileNotFoundException();
+                throw new FileNotFoundException();
             }
 
             var bi = new BitmapImage();
@@ -42,7 +41,7 @@ namespace Argus.Windows.Wpf.Extensions
         }
 
         /// <summary>
-        /// Loads an image file into the Image control.  
+        ///     Loads an image file into the Image control.
         /// </summary>
         /// <param name="img"></param>
         /// <param name="filePath"></param>
@@ -50,9 +49,9 @@ namespace Argus.Windows.Wpf.Extensions
         /// <param name="decodePixelHeight"></param>
         public static void LoadFile(this Image img, string filePath, int decodePixelWidth, int decodePixelHeight)
         {
-            if (System.IO.File.Exists(filePath) == false)
+            if (File.Exists(filePath) == false)
             {
-                throw new System.IO.FileNotFoundException();
+                throw new FileNotFoundException();
             }
 
             var bi = new BitmapImage();
@@ -67,6 +66,5 @@ namespace Argus.Windows.Wpf.Extensions
             // Set the image's Source
             img.Source = bi;
         }
-
     }
 }

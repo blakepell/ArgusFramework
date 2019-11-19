@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="System.Windows.Forms.RichTextBox"/>.
+    ///     Extension methods for <see cref="System.Windows.Forms.RichTextBox" />.
     /// </summary>
     public static class RichTextBoxExtensions
     {
@@ -22,10 +19,9 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Scrolls and places the caret at the end of the RichTextBox.
+        ///     Scrolls and places the caret at the end of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
-        /// <remarks></remarks>
         public static void ScrollToEnd(this RichTextBox rtb)
         {
             rtb.SelectionStart = rtb.TextLength;
@@ -33,10 +29,9 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Scrolls and places the caret at the beginning of the RichTextBox.
+        ///     Scrolls and places the caret at the beginning of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
-        /// <remarks></remarks>
         public static void ScrollToBeginning(this RichTextBox rtb)
         {
             rtb.DeselectAll();
@@ -45,11 +40,10 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Appends text at the current cursor position.
+        ///     Appends text at the current cursor position.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="text"></param>
-        /// <remarks></remarks>
         public static void AppendAtCursor(this RichTextBox rtb, string text)
         {
             rtb.SelectionLength = 0;
@@ -57,36 +51,34 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Hightlights a word in the RichTextBox with the specified foreground and background colors.
+        ///     Hightlights a word in the RichTextBox with the specified foreground and background colors.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="word"></param>
         /// <param name="foregroundColor"></param>
         /// <param name="backgroundColor"></param>
-        /// <remarks></remarks>
         public static void HighlightWord(this RichTextBox rtb, string word, Color foregroundColor, Color backgroundColor)
         {
             int len = rtb.TextLength;
-            int lastindex = rtb.Text.LastIndexOf(word);
+            int lastIndex = rtb.Text.LastIndexOf(word);
             int index = 0;
 
-            while (index < lastindex)
+            while (index < lastIndex)
             {
                 rtb.Find(word, index, len, RichTextBoxFinds.None);
                 rtb.SelectionColor = foregroundColor;
                 rtb.SelectionBackColor = backgroundColor;
-                rtb.SelectionFont = new Font(rtb.SelectionFont, System.Drawing.FontStyle.Bold);
+                rtb.SelectionFont = new Font(rtb.SelectionFont, FontStyle.Bold);
                 index = rtb.Text.IndexOf(word, index) + 1;
             }
         }
 
         /// <summary>
-        /// Appends colored text to the current text of the RichTextBox.
+        ///     Appends colored text to the current text of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="text"></param>
         /// <param name="foregroundColor"></param>
-        /// <remarks></remarks>
         public static void AppendText(this RichTextBox rtb, string text, Color foregroundColor)
         {
             rtb.SelectionStart = rtb.TextLength;
@@ -99,13 +91,12 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Appends colored text to the current text of the RichTextBox.
+        ///     Appends colored text to the current text of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="text"></param>
         /// <param name="foregroundColor"></param>
         /// <param name="backgroundColor"></param>
-        /// <remarks></remarks>
         public static void AppendText(this RichTextBox rtb, string text, Color foregroundColor, Color backgroundColor)
         {
             rtb.SelectionStart = rtb.TextLength;
@@ -119,14 +110,13 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Appends colored text to the current text of the RichTextBox.
+        ///     Appends colored text to the current text of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="text"></param>
         /// <param name="foregroundColor"></param>
         /// <param name="backgroundColor"></param>
         /// <param name="font"></param>
-        /// <remarks></remarks>
         public static void AppendText(this RichTextBox rtb, string text, Color foregroundColor, Color backgroundColor, Font font)
         {
             rtb.SelectionStart = rtb.TextLength;
@@ -142,6 +132,5 @@ namespace Argus.Extensions
             // Sometimes required so the next appended text doesn't use the same font passed in here.
             rtb.SelectionFont = rtb.Font;
         }
-
     }
 }

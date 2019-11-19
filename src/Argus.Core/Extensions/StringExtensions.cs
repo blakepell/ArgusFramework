@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Argus.Cryptography;
 
 namespace Argus.Extensions
 {
@@ -214,13 +214,13 @@ namespace Argus.Extensions
         {
             if (includeLineTerminators)
             {
-                char[] chars = { ' ', '\t', '\r', '\n' };
+                char[] chars = {' ', '\t', '\r', '\n'};
 
                 return buf.Trim(chars);
             }
             else
             {
-                char[] chars = { ' ', '\t' };
+                char[] chars = {' ', '\t'};
 
                 return buf.Trim(chars);
             }
@@ -235,13 +235,13 @@ namespace Argus.Extensions
         {
             if (includeLineTerminators)
             {
-                char[] chars = { ' ', '\t', '\r', '\n' };
+                char[] chars = {' ', '\t', '\r', '\n'};
 
                 return buf.TrimStart(chars);
             }
             else
             {
-                char[] chars = { ' ', '\t' };
+                char[] chars = {' ', '\t'};
 
                 return buf.TrimStart(chars);
             }
@@ -256,13 +256,13 @@ namespace Argus.Extensions
         {
             if (includeLineTerminators)
             {
-                char[] chars = { ' ', '\t', '\r', '\n' };
+                char[] chars = {' ', '\t', '\r', '\n'};
 
                 return buf.TrimEnd(chars);
             }
             else
             {
-                char[] chars = { ' ', '\t' };
+                char[] chars = {' ', '\t'};
 
                 return buf.TrimEnd(chars);
             }
@@ -308,8 +308,8 @@ namespace Argus.Extensions
         /// </param>
         public static string TrimEachLineWhitespace(this string buf, bool includeLineTerminators)
         {
-            char[] charsWithLineTerminators = { ' ', '\t', '\r', '\n' };
-            char[] charsWithoutLineTerminators = { ' ', '\t' };
+            char[] charsWithLineTerminators = {' ', '\t', '\r', '\n'};
+            char[] charsWithoutLineTerminators = {' ', '\t'};
             var sb = new StringBuilder();
 
             var lines = buf.Split('\n');
@@ -1150,13 +1150,13 @@ namespace Argus.Extensions
         /// <returns>A new string with characters corresponding to invalid XML ASCII codes removed.</returns>
         public static string ToValidXmlAsciiCharacters(this string input)
         {
-            var validCodes = new[] { 0, 9, 10, 13, 32 };
+            var validCodes = new[] {0, 9, 10, 13, 32};
 
             for (int i = 0; i <= 32; i++)
             {
                 if (!validCodes.Contains(i))
                 {
-                    input = input.Replace(Convert.ToString((char)i), "");
+                    input = input.Replace(Convert.ToString((char) i), "");
                 }
             }
 
@@ -1483,7 +1483,7 @@ namespace Argus.Extensions
         /// </summary>
         public static string RemoveWord(this string value, int wordNumber)
         {
-            var strArray = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var strArray = value.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
             string newString = string.Empty;
             int count = 0;
@@ -1538,25 +1538,23 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Encrypts a string with AES encryption.
+        ///     Encrypts a string with AES encryption.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="key"></param>
-        /// <returns></returns>
         public static string Encrypt(this string str, string key)
         {
-            return Argus.Cryptography.Encryption.Encrypt(str, key);
+            return Encryption.Encrypt(str, key);
         }
 
         /// <summary>
-        /// Decrypts a string with AES encryption.
+        ///     Decrypts a string with AES encryption.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="key"></param>
         public static string Decrypt(this string str, string key)
         {
-            return Argus.Cryptography.Encryption.Decrypt(str, key);
+            return Encryption.Decrypt(str, key);
         }
-
     }
 }

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Security.AccessControl;
+﻿using System.IO;
 using System.Security.Principal;
-using System.Text;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="DirectoryInfoExtensions"/>
+    ///     Extension methods for <see cref="DirectoryInfoExtensions" />
     /// </summary>
     public static class DirectoryInfoExtensions
     {
@@ -23,7 +19,7 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Returns the owner of the directory.
+        ///     Returns the owner of the directory.
         /// </summary>
         /// <param name="di"></param>
         public static string GetOwner(this DirectoryInfo di)
@@ -33,11 +29,10 @@ namespace Argus.Extensions
                 return "";
             }
 
-            var ds = di.GetAccessControl();            
+            var ds = di.GetAccessControl();
             var ir = ds.GetOwner(typeof(NTAccount));
-            
+
             return ir.Value;
         }
-
     }
 }

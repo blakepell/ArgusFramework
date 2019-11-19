@@ -2,13 +2,11 @@
 
 namespace Argus.Windows.Forms.Controls
 {
-
     /// <summary>
-    /// A panel that is double buffered for rendering performance.
+    ///     A panel that is double buffered for rendering performance.
     /// </summary>
     public class DoubleBufferedPanel : Panel
     {
-
         //*********************************************************************************************************************
         //
         //             Class:  DoubleBufferedPanel
@@ -19,6 +17,9 @@ namespace Argus.Windows.Forms.Controls
         //
         //*********************************************************************************************************************
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public DoubleBufferedPanel()
         {
             this.SetStyle(
@@ -27,7 +28,7 @@ namespace Argus.Windows.Forms.Controls
                 ControlStyles.OptimizedDoubleBuffer,
                 true);
 
-            UpdateStyles();
+            this.UpdateStyles();
         }
     }
 }

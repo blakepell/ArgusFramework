@@ -1,7 +1,7 @@
-﻿using System.IO;
-using Argus.Data;
+﻿using System;
+using System.IO;
 using Argus.Cryptography;
-using System;
+using Argus.Data;
 
 namespace Argus.Extensions
 {
@@ -30,7 +30,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a cryptographic SHA256 hash for the bytes in a given file.
+        ///     Returns a cryptographic SHA256 hash for the bytes in a given file.
         /// </summary>
         /// <param name="fi"></param>
         public static string CreateSha256Hash(this FileInfo fi)
@@ -39,7 +39,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a cryptographic SHA512 hash for the bytes in a given file.
+        ///     Returns a cryptographic SHA512 hash for the bytes in a given file.
         /// </summary>
         /// <param name="fi"></param>
         public static string CreateSha512Hash(this FileInfo fi)
@@ -48,7 +48,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a cryptographic MD5 hash for the bytes in a given file.
+        ///     Returns a cryptographic MD5 hash for the bytes in a given file.
         /// </summary>
         /// <param name="fi"></param>
         public static string CreateMD5(this FileInfo fi)
@@ -57,7 +57,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// This opens up a string that is able to read a locked file if the file is locked but shareable.
+        ///     This opens up a string that is able to read a locked file if the file is locked but shareable.
         /// </summary>
         /// <param name="fi"></param>
         private static byte[] ReadFile(FileInfo fi)
@@ -67,12 +67,11 @@ namespace Argus.Extensions
             using (var fs = File.Open(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 int fileLength = Convert.ToInt32(fs.Length);
-                fileContents = new byte[(fileLength)];
+                fileContents = new byte[fileLength];
                 fs.Read(fileContents, 0, fileLength);
             }
 
             return fileContents;
         }
-
     }
 }

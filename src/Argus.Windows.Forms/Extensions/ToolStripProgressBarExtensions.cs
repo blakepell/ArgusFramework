@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="System.Windows.Forms.ToolStripProgressBar"/>.
+    ///     Extension methods for <see cref="System.Windows.Forms.ToolStripProgressBar" />.
     /// </summary>
     public static class ToolStripProgressBarExtensions
     {
@@ -21,7 +18,7 @@ namespace Argus.Extensions
         //*********************************************************************************************************************
 
         /// <summary>
-        /// Sets the progress bar value, without using Windows Aero animation.
+        ///     Sets the progress bar value, without using Windows Aero animation.
         /// </summary>
         /// <remarks>This is kind of a hack, but it works.</remarks>
         public static void SetProgressNoAnimation(this ToolStripProgressBar pb, int value)
@@ -43,6 +40,5 @@ namespace Argus.Extensions
             // Move to correct value
             pb.Value = value;
         }
-
     }
 }
