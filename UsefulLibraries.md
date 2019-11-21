@@ -12,6 +12,7 @@ ImageSharp|https://github.com/SixLabors/ImageSharp|`Install-Package SixLabors.Im
 ImageSharp|https://github.com/SixLabors/ImageSharp|`Install-Package SixLabors.ImageSharp.Drawing`
 SharpZipLib|https://github.com/icsharpcode/SharpZipLib|`Install-Package SharpZipLib`
 SharpCompress|https://github.com/adamhathcock/sharpcompress|N/A
+AnimatedGif|https://github.com/mrousavy/AnimatedGif|`Install-Package AnimatedGif`
 
 #### WPF
 
