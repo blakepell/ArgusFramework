@@ -1,0 +1,1 @@
+nuget pack ./Argus.Windows.Uwp.nuspec -Prop Configuration=Release
