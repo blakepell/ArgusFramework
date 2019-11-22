@@ -88,6 +88,10 @@
       <Project>{8de43a75-49fc-4347-b05b-25d0521f5221}</Project>
       <Name>Argus.Graphics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Argus.Windows\Argus.Windows.csproj">
+      <Project>{d3fabc46-d372-4dcd-8ba0-f2c8972d221c}</Project>
+      <Name>Argus.Windows</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
