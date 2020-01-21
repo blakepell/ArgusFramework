@@ -8,6 +8,7 @@ Provided here is a list libraries or repositories that I have found value in tha
 
 Name | URL | Nuget
 --- | --- | ---
+AvalonEdit|https://github.com/icsharpcode/AvalonEdit|`Install-Package AvalonEdit`
 ImageSharp|https://github.com/SixLabors/ImageSharp|`Install-Package SixLabors.ImageSharp`
 ImageSharp|https://github.com/SixLabors/ImageSharp|`Install-Package SixLabors.ImageSharp.Drawing`
 SharpZipLib|https://github.com/icsharpcode/SharpZipLib|`Install-Package SharpZipLib`
