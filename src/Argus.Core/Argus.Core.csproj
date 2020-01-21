@@ -20,6 +20,8 @@
     <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
     <PackageTags>argus</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes />
   </PropertyGroup>
 
   <ItemGroup>
