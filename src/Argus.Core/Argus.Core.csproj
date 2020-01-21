@@ -13,10 +13,13 @@
     <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>2019.11.17.1</Version>
-    <AssemblyVersion>2019.11.17.1</AssemblyVersion>
-    <FileVersion>2019.11.17.1</FileVersion>
-    <PackageIconUrl>https://raw.githubusercontent.com/blakepell/ArgusFramework/master/Assets/Argus-Logo-Purple-64.png</PackageIconUrl>
+    <Version>2020.1.21.1</Version>
+    <AssemblyVersion>2020.1.21.1</AssemblyVersion>
+    <FileVersion>2020.1.21.1</FileVersion>
+    <PackageIconUrl></PackageIconUrl>
+    <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
+    <PackageTags>argus</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +30,13 @@
     <Compile Update="Network\WebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\Argus-Logo-Purple-64.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
