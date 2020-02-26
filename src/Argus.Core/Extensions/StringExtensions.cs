@@ -147,6 +147,55 @@ namespace Argus.Extensions
         }
 
         /// <summary>
+        ///     Reports the zero based index of the first occurence of a matching string.
+        /// </summary>
+        /// <param name="str">The string to search.</param>
+        /// <param name="value">The string to search for.</param>
+        /// <param name="startIndex"></param>
+        /// <returns>
+        ///     Returns the zero based index or a -1 if the string isn't found or the startIndex greater than the length of the string.
+        /// </returns>
+        public static int SafeIndexOf(this string str, string value, int startIndex)
+        {
+            if (str == null)
+            {
+                return -1;
+            }
+
+            if (startIndex > str.Length - 1)
+            {
+                return -1;
+            }
+
+            return str.IndexOf(value, startIndex, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        ///     Reports the zero based index of the first occurence of a matching string.
+        /// </summary>
+        /// <param name="str">The string to search.</param>
+        /// <param name="value">The string to search for.</param>
+        /// <param name="startIndex"></param>
+        /// <param name="length">The number of positions to examine.</param>
+        /// <returns>
+        ///     Returns the zero based index or a -1 if the string isn't found or the startIndex greater than the length of the string.
+        /// </returns>
+        public static int SafeIndexOf(this string str, string value, int startIndex, int length)
+        {
+            if (str == null)
+            {
+                return -1;
+            }
+
+            if (startIndex > str.Length - 1 || (startIndex + length) > str.Length - 1)
+            {
+                return -1;
+            }
+
+            return str.IndexOf(value, startIndex, length, StringComparison.Ordinal);
+        }
+
+        /// <summary>
         ///     Simulates the same functionality provide by the traditional 1 based index Mid function.
         /// </summary>
         /// <param name="str"></param>
