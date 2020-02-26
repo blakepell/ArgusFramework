@@ -21,7 +21,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  11/18/2019
+        //      Last Updated:  02/26/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -807,36 +807,46 @@ namespace Argus.Extensions
         ///     An extension method that replaces the first occurrence of a specified string.
         /// </summary>
         /// <param name="str"></param>
-        /// <param name="searchTxt"></param>
-        /// <param name="replaceTxt"></param>
-        public static string ReplaceFirst(this string str, string searchTxt, string replaceTxt)
+        /// <param name="searchText"></param>
+        /// <param name="replaceText"></param>
+        public static string ReplaceFirst(this string str, string searchText, string replaceText)
         {
-            int pos = str.IndexOf(searchTxt);
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                return "";
+            }
+
+            int pos = str.IndexOf(searchText, StringComparison.Ordinal);
 
             if (pos < 0)
             {
                 return str;
             }
 
-            return str.Substring(0, pos) + replaceTxt + str.Substring(pos + searchTxt.Length);
+            return str.Substring(0, pos) + replaceText + str.Substring(pos + searchText.Length);
         }
 
         /// <summary>
         ///     An extension method that replaces the last occurrence of a specified string.
         /// </summary>
         /// <param name="str"></param>
-        /// <param name="searchTxt"></param>
-        /// <param name="replaceTxt"></param>
-        public static string ReplaceLast(this string str, string searchTxt, string replaceTxt)
+        /// <param name="searchText"></param>
+        /// <param name="replaceText"></param>
+        public static string ReplaceLast(this string str, string searchText, string replaceText)
         {
-            int pos = str.LastIndexOf(searchTxt);
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                return "";
+            }
+
+            int pos = str.LastIndexOf(searchText, StringComparison.Ordinal);
 
             if (pos < 0)
             {
                 return str;
             }
 
-            return str.Substring(0, pos) + replaceTxt + str.Substring(pos + searchTxt.Length);
+            return str.Substring(0, pos) + replaceText + str.Substring(pos + searchText.Length);
         }
 
         /// <summary>
