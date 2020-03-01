@@ -10,10 +10,10 @@ namespace Argus.Extensions
     {
         //*********************************************************************************************************************
         //
-        //             Class:  MemoryClasses
+        //             Class:  MemoryExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  02/12/2020
-        //      Last Updated:  02/29/2020
+        //      Last Updated:  03/01/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -54,6 +54,30 @@ namespace Argus.Extensions
             }
 
             return startIndex + indexInSlice;
+        }
+
+        /// <summary>
+        ///     Split the next part of this span with the given separator. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="span">A reference to the span</param>
+        /// <param name="seperator">A seperator that delimits the values</param>
+        /// <returns>The first splitted value</returns>
+        public static ReadOnlySpan<T> SplitNext<T>(this ref ReadOnlySpan<T> span, T seperator) where T : IEquatable<T>
+        {
+            int pos = span.IndexOf(seperator);
+            if (pos > -1)
+            {
+                var part = span.Slice(0, pos);
+                span = span.Slice(pos + 1);
+                return part;
+            }
+            else
+            {
+                var part = span;
+                span = span.Slice(span.Length);
+                return part;
+            }
         }
 
     }
