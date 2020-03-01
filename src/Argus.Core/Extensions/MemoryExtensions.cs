@@ -14,7 +14,6 @@ namespace Argus.Extensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  02/12/2020
         //      Last Updated:  03/01/2020
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
 
@@ -80,6 +79,77 @@ namespace Argus.Extensions
             }
         }
 
+        /// <summary>
+        /// Whether a span is null or empty.
+        /// </summary>
+        /// <param name="value"></param>
+        public static bool IsNullOrEmpty(this ReadOnlySpan<char> value)
+        {
+            if (value == null || value.IsEmpty)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Whether a span is null, empty or white space.
+        /// </summary>
+        /// <param name="value"></param>
+        public static bool IsNullEmptyOrWhiteSpace(this ReadOnlySpan<char> value)
+        {
+            return value.IsNullOrEmpty() || value.IsWhiteSpace();
+        }
+
+        /// <summary>
+        /// Trimes Whitespace off of a ReadOnlySpan.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="startAt"></param>
+        public static void TrimWhitespace(this ref ReadOnlySpan<char> content, int startAt = 0)
+        {
+            content.WhitespaceIndexes(out int startIndex, out int endIndex, startAt);
+
+            if (startIndex != startAt || endIndex != content.Length - 1)
+            {
+                content = content.Slice(startIndex, endIndex - startIndex + 1);
+            }
+        }
+
+        /// <summary>
+        /// Supporting extension for TrimWhitespace.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="endIndex"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        private static void WhitespaceIndexes(this ref ReadOnlySpan<char> content, out int startIndex, out int endIndex, int start = 0, int? end = null)
+        {
+            int contentStartsAt = start;
+
+            for (; contentStartsAt < content.Length; ++contentStartsAt)
+            {
+                if (!char.IsWhiteSpace(content[contentStartsAt]))
+                {
+                    break;
+                }
+            }
+
+            int contentEndsAt = end ?? content.Length - 1;
+
+            for (; contentEndsAt > contentStartsAt; --contentEndsAt)
+            {
+                if (!char.IsWhiteSpace(content[contentEndsAt]))
+                {
+                    break;
+                }
+            }
+
+            startIndex = contentStartsAt;
+            endIndex = contentEndsAt;
+        }
     }
 }
 #endif
