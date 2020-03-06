@@ -1,21 +1,27 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using System;
-using System.Threading;
 
 namespace BenchmarkConsoleProject
 {
-    class Program
+    [MemoryDiagnoser]
+    public class Program
     {
         [Benchmark]
-        public void Slow() => Thread.Sleep(100);
+        public void One()
+        {
+
+        }
 
         [Benchmark]
-        public void Fast() => Thread.Sleep(25);
+        public void Two()
+        {
+
+        }
 
         static void Main(string[] args)
         {
-            Console.WriteLine("BenchmarkDotNet - Hello World!");
+            Console.WriteLine("Benchmark Starting");
             var summary = BenchmarkRunner.Run<Program>();
         }
     }
