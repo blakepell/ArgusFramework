@@ -1,28 +1,30 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
 
 namespace BenchmarkConsoleProject
 {
     [MemoryDiagnoser]
     public class Program
     {
-        [Benchmark]
-        public void One()
-        {
-
-        }
-
-        [Benchmark]
-        public void Two()
-        {
-
-        }
-
         static void Main(string[] args)
         {
-            Console.WriteLine("Benchmark Starting");
+            Console.WriteLine("Benchmark");
             var summary = BenchmarkRunner.Run<Program>();
         }
+
+        [Benchmark]
+        public void TestOne()
+        {
+        }
+
+        [Benchmark]
+        public void TestTwo()
+        {
+        }
+
     }
 }
