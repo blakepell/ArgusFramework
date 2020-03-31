@@ -67,7 +67,7 @@ namespace Argus.AspNetCore.Environment
                     Platform = System.Environment.OSVersion.VersionString,
                     ProcessorCount = System.Environment.ProcessorCount,
                     ServerTime = DateTime.Now,
-                    MemoryInfo = Memory.CurrentSystemMemory()
+                    MemoryInfo = Diagnostics.Memory.CurrentSystemMemory()
                 };
 
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
