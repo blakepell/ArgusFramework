@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Version>2019.11.17.1</Version>
+    <Version>2020.3.31.1</Version>
     <Authors>Blake Pell</Authors>
     <Company>http://www.blakepell.com</Company>
     <Product>Argus Framework - WPF Shared Components Library</Product>
     <Description>Argus Framework - WPF Shared Components Library</Description>
-    <Copyright>2003-2019</Copyright>
+    <Copyright>2003-2020</Copyright>
     <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/blakepell/ArgusFramework/master/Assets/Argus-Logo-Purple-64.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
 </Project>

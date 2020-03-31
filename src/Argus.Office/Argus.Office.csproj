@@ -2,24 +2,24 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    <Version>2019.9.19.2</Version>
+    <Version>2020.3.31.1</Version>
     <Authors>Blake Pell</Authors>
     <Company>https://www.blakepell.com</Company>
     <Description>Argus Framework - Functionality around creating Office documents via the OpenXml SDK.</Description>
-    <Copyright>2003-2019</Copyright>
+    <Copyright>2003-2020</Copyright>
     <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>2019.11.17.1</Version>
-    <AssemblyVersion>2019.11.17.1</AssemblyVersion>
-    <FileVersion>2019.11.17.1</FileVersion>
+    <Version>2020.3.31.1</Version>
+    <AssemblyVersion>2020.3.31.1</AssemblyVersion>
+    <FileVersion>2020.3.31.1</FileVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/blakepell/ArgusFramework/master/Assets/Argus-Logo-Purple-64.png</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Argus Framework - Office File Format Library</Product>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.10.1" />
   </ItemGroup>
 
   <ItemGroup>
