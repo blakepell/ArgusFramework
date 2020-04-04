@@ -1618,7 +1618,8 @@ namespace Argus.Extensions
 
 #if NETSTANDARD2_0
         /// <summary>
-        /// Returns a strinb between two markers.
+        /// Returns a string between the first occurance of two markers with assumption that the end marker
+        /// falls after the begin marker.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="beginMarker"></param>
@@ -1627,14 +1628,21 @@ namespace Argus.Extensions
         {
             int pos1 = str.IndexOf(beginMarker) + beginMarker.Length;
             int pos2 = str.Substring(pos1).IndexOf(endMarker);
+
+            // Nope, we got nothing.
+            if (pos2 <= pos1)
+            {
+                return "";
+            }
+
             return str.Substring(pos1, pos2);
-        }        
+        }
 #endif
 
 #if NETSTANDARD2_1
 
         /// <summary>
-        /// Returns a strinb between two markers.
+        /// Returns a string between the first occurance of two markers.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="beginMarker"></param>
@@ -1646,7 +1654,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a string between two markers.
+        /// Returns a string between the first occurance two markers.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="beginMarker"></param>
@@ -1655,6 +1663,13 @@ namespace Argus.Extensions
         {
             int pos1 = span.IndexOf(beginMarker) + beginMarker.Length;
             int pos2 = span.Slice(pos1).IndexOf(endMarker);
+
+            // Nope, we got nothing.
+            if (pos2 <= pos1)
+            {
+                return "";
+            }
+
             return span.Slice(pos1, pos2).ToString();
         }
 #endif
