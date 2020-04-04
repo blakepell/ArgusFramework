@@ -21,7 +21,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  02/26/2020
+        //      Last Updated:  04/04/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -1615,5 +1615,49 @@ namespace Argus.Extensions
         {
             return Encryption.Decrypt(str, key);
         }
+
+#if NETSTANDARD2_0
+        /// <summary>
+        /// Returns a strinb between two markers.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="beginMarker"></param>
+        /// <param name="endMarker"></param>
+        private static string Between(this string str, string beginMarker, string endMarker)
+        {
+            int pos1 = str.IndexOf(beginMarker) + beginMarker.Length;
+            int pos2 = str.Substring(pos1).IndexOf(endMarker);
+            return str.Substring(pos1, pos2);
+        }        
+#endif
+
+#if NETSTANDARD2_1
+
+        /// <summary>
+        /// Returns a strinb between two markers.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="beginMarker"></param>
+        /// <param name="endMarker"></param>
+        /// <returns></returns>
+        private static string Between(this string str, string beginMarker, string endMarker)
+        {
+            return Between(str.AsSpan(), beginMarker.AsSpan(), endMarker.AsSpan());
+        }
+
+        /// <summary>
+        /// Returns a string between two markers.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="beginMarker"></param>
+        /// <param name="endMarker"></param>
+        private static string Between(this ReadOnlySpan<char> span, ReadOnlySpan<char> beginMarker, ReadOnlySpan<char> endMarker)
+        {
+            int pos1 = span.IndexOf(beginMarker) + beginMarker.Length;
+            int pos2 = span.Slice(pos1).IndexOf(endMarker);
+            return span.Slice(pos1, pos2).ToString();
+        }
+#endif
+
     }
 }
