@@ -21,7 +21,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  04/04/2020
+        //      Last Updated:  04/08/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -780,6 +780,51 @@ namespace Argus.Extensions
         public static bool IsMatch(this string str, string regExPattern)
         {
             return new Regex(regExPattern).IsMatch(str);
+        }
+
+        /// <summary>
+        ///     Indicates whether the string is a valid regular expression pattern.
+        /// </summary>
+        /// <param name="pattern"></param>
+        public static bool IsValidRegex(this string pattern)
+        {
+            if (string.IsNullOrEmpty(pattern))
+            {
+                return false;
+            }
+
+            try
+            {
+                Regex.Match("", pattern);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Indicates whether the string is a valid regular expression pattern.  If the pattern is
+        ///     not valid the exceptionText out parameter will be populated with the syntax error.
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <param name="exceptionText"></param>
+        public static bool IsValidRegex(this string pattern, out string exceptionText)
+        {
+            try
+            {
+                Regex.Match("", pattern);
+            }
+            catch (Exception ex)
+            {
+                exceptionText = ex.Message;
+                return false;
+            }
+
+            exceptionText = "";
+            return true;
         }
 
         /// <summary>
