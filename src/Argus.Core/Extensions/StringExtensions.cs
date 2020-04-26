@@ -21,7 +21,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  04/08/2020
+        //      Last Updated:  04/26/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -1612,6 +1612,41 @@ namespace Argus.Extensions
             }
 
             return newString;
+        }
+
+        /// <summary>
+        /// Returns the word count in the current string accounting for whitespace.
+        /// </summary>
+        /// <param name="text"></param>
+        public static int WordCount(this string text)
+        {
+            int wordCount = 0;
+            int index = 0;
+
+            // Skip whitespace until first word.
+            while (index < text.Length && char.IsWhiteSpace(text[index]))
+            {
+                index++;
+            }
+
+            while (index < text.Length)
+            {
+                // Check if current char is part of a word.
+                while (index < text.Length && !char.IsWhiteSpace(text[index]))
+                {
+                    index++;
+                }
+
+                wordCount++;
+
+                // Skip whitespace until next word.
+                while (index < text.Length && char.IsWhiteSpace(text[index]))
+                {
+                    index++;
+                }
+            }
+
+            return wordCount;
         }
 
         /// <summary>
