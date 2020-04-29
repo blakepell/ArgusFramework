@@ -6,7 +6,7 @@ using System.Text;
 namespace Argus.Cryptography
 {
     /// <summary>
-    ///     Encrypts and decrypts strings and byte arrays.
+    /// Encrypts and decrypts strings and byte arrays.
     /// </summary>
     public class Encryption
     {
@@ -15,45 +15,109 @@ namespace Argus.Cryptography
         //             Class:  Encryption
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  09/28/2005
-        //      Last Updated:  11/18/2019
+        //      Last Updated:  04/29/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
 
-        private static readonly string _salt = "aselrias38490a32";
-        private static readonly string _vector = "8947az34awl34kjq";
+        /// <summary>
+        /// A sixteen character salt.  This is populated by default with a value but can
+        /// be changed by the caller.
+        /// </summary>
+        public string Salt { get; set; } = "59dcb39baddd44d6";
 
         /// <summary>
-        ///     Encrypts a string via AES.
+        /// A sixteen character vector.  This is populated by default with a value but can
+        /// be changed by the caller.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="password"></param>
-        public static string Encrypt(string value, string password)
+        public string Vector { get; set; } = "2Y84dfd6b8d7z1b6";
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Encryption()
         {
-            return Encrypt<AesManaged>(value, password);
+
         }
 
         /// <summary>
-        ///     Encrypts a string with the provider T.
+        /// Constructor
+        /// </summary>
+        /// <param name="salt">A 16 digit salt value.</param>
+        public Encryption(string salt)
+        {
+            if (salt.Length != 16)
+            {
+                throw new Exception("Salt must be 16 digits long.");
+            }
+
+            this.Salt = salt;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="salt">A 16 digit salt value.</param>
+        /// <param name="vector">A 16 digit vector value.</param>
+        public Encryption(string salt, string vector)
+        {
+            if (salt.Length != 16)
+            {
+                throw new Exception("The salt value must be 16 digits long.");
+            }
+
+            if (vector.Length != 16)
+            {
+                throw new Exception("The vector value must be 16 digits long.");
+            }
+
+            this.Salt = salt;
+            this.Vector = vector;
+        }
+
+        /// <summary>
+        /// Encrypts a string to an encrypted Base64 encoded string via AES.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="password"></param>
+        /// <returns>An encrypted Base64 encoded string.</returns>
+        public string EncryptToString(string value, string password)
+        {
+            return EncryptToString<AesManaged>(value, password);
+        }
+
+        /// <summary>
+        /// Encrypts a string with the provider T to an encrypted Base64 encoded string.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <param name="password"></param>
-        public static string Encrypt<T>(string value, string password) where T : SymmetricAlgorithm, new()
+        public string EncryptToString<T>(string value, string password) where T : SymmetricAlgorithm, new()
         {
-            return Encrypt<T>(Encoding.UTF8.GetBytes(value), password);
+            return EncryptToString<T>(Encoding.UTF8.GetBytes(value), password);
         }
 
         /// <summary>
-        ///     Encrypts a string with the provider T.
+        /// Encrypts a byte array to a Base64 string via AES.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="password"></param>
+        /// <returns>An encrypted Base64 encoded string.</returns>
+        public string EncryptToString(byte[] value, string password)
+        {
+            return EncryptToString<AesManaged>(value, password);
+        }
+
+        /// <summary>
+        /// Encrypts a byte array to an encrypted Base64 encoded string with the provider T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <param name="password"></param>
-        public static string Encrypt<T>(byte[] value, string password) where T : SymmetricAlgorithm, new()
+        public string EncryptToString<T>(byte[] value, string password) where T : SymmetricAlgorithm, new()
         {
-            var vectorBytes = Encoding.ASCII.GetBytes(_vector);
-            var saltBytes = Encoding.ASCII.GetBytes(_salt);
+            var vectorBytes = Encoding.ASCII.GetBytes(this.Vector);
+            var saltBytes = Encoding.ASCII.GetBytes(this.Salt);
             byte[] encrypted;
 
             using (var cipher = new T())
@@ -84,36 +148,85 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Decrypts an AES encrypted string.
+        /// Encrypts a byte array to an encrypted byte array with AES.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="password"></param>
-        public static string Decrypt(string value, string password)
+        public byte[] EncryptToBytes(byte[] value, string password)
         {
-            return Decrypt<AesManaged>(value, password);
+            return EncryptToBytes<AesManaged>(value, password);
         }
 
         /// <summary>
-        ///     Decrypts a string with the provider T.
+        /// Encrypts a byte array to an encrypted byte array with the provider T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <param name="password"></param>
-        public static string Decrypt<T>(string value, string password) where T : SymmetricAlgorithm, new()
+        public byte[] EncryptToBytes<T>(byte[] value, string password) where T : SymmetricAlgorithm, new()
         {
-            return Decrypt<T>(Convert.FromBase64String(value), password);
+            var vectorBytes = Encoding.ASCII.GetBytes(this.Vector);
+            var saltBytes = Encoding.ASCII.GetBytes(this.Salt);
+            byte[] encrypted;
+
+            using (var cipher = new T())
+            {
+                var passwordBytes = new PasswordDeriveBytes(password, saltBytes, "SHA512", 2);
+                var keyBytes = passwordBytes.GetBytes(256 / 8);
+
+                cipher.Mode = CipherMode.CBC;
+                cipher.GenerateIV();
+
+                using (var encryptor = cipher.CreateEncryptor(keyBytes, vectorBytes))
+                {
+                    using (var to = new MemoryStream())
+                    {
+                        using (var writer = new CryptoStream(to, encryptor, CryptoStreamMode.Write))
+                        {
+                            writer.Write(value, 0, value.Length);
+                            writer.FlushFinalBlock();
+                            encrypted = to.ToArray();
+                        }
+                    }
+                }
+
+                cipher.Clear();
+            }
+
+            return encrypted;
         }
 
         /// <summary>
-        ///     Decrypts a string with the provider T.
+        /// Decrypts an AES encrypted string.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="password"></param>
+        public string DecryptToString(string value, string password)
+        {
+            return DecryptToString<AesManaged>(value, password);
+        }
+
+        /// <summary>
+        /// Decrypts a string with the provider T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <param name="password"></param>
-        public static string Decrypt<T>(byte[] value, string password) where T : SymmetricAlgorithm, new()
+        public string DecryptToString<T>(string value, string password) where T : SymmetricAlgorithm, new()
         {
-            var vectorBytes = Encoding.ASCII.GetBytes(_vector);
-            var saltBytes = Encoding.ASCII.GetBytes(_salt);
+            return DecryptToString<T>(Convert.FromBase64String(value), password);
+        }
+
+        /// <summary>
+        /// Decrypts a string with the provider T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="password"></param>
+        public string DecryptToString<T>(byte[] value, string password) where T : SymmetricAlgorithm, new()
+        {
+            var vectorBytes = Encoding.ASCII.GetBytes(this.Vector);
+            var saltBytes = Encoding.ASCII.GetBytes(this.Salt);
             byte[] decrypted;
 
             int decryptedByteCount = 0;
@@ -150,5 +263,74 @@ namespace Argus.Cryptography
 
             return Encoding.UTF8.GetString(decrypted, 0, decryptedByteCount);
         }
+
+        /// <summary>
+        /// Decrypts a byte array with AES.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="password"></param>
+        public byte[] DecryptToBytes(byte[] value, string password)
+        {
+            return DecryptToBytes<AesManaged>(value, password);
+        }
+
+        /// <summary>
+        /// Decrypts a string with the provider T provided a Base64 encoded string.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="password"></param>
+        public byte[] DecryptToBytes<T>(string value, string password) where T : SymmetricAlgorithm, new()
+        {
+            return DecryptToBytes<T>(Convert.FromBase64String(value), password);
+        }
+
+        /// <summary>
+        /// Decrypts a byte array with the provider T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="password"></param>
+        public byte[] DecryptToBytes<T>(byte[] value, string password) where T : SymmetricAlgorithm, new()
+        {
+            var vectorBytes = Encoding.ASCII.GetBytes(this.Vector);
+            var saltBytes = Encoding.ASCII.GetBytes(this.Salt);
+            byte[] decrypted;
+
+            int decryptedByteCount = 0;
+
+            using (var cipher = new T())
+            {
+                var passwordBytes = new PasswordDeriveBytes(password, saltBytes, "SHA512", 2);
+                var keyBytes = passwordBytes.GetBytes(256 / 8);
+
+                cipher.Mode = CipherMode.CBC;
+                cipher.GenerateIV();
+
+                try
+                {
+                    using (var decryptor = cipher.CreateDecryptor(keyBytes, vectorBytes))
+                    {
+                        using (var from = new MemoryStream(value))
+                        {
+                            using (var reader = new CryptoStream(from, decryptor, CryptoStreamMode.Read))
+                            {
+                                decrypted = new byte[value.Length];
+                                decryptedByteCount = reader.Read(decrypted, 0, decrypted.Length);
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    return new byte[0];
+                }
+
+                cipher.Clear();
+            }
+
+            return decrypted;
+        }
+
     }
 }

@@ -5,22 +5,22 @@ using System.Text;
 namespace Argus.Cryptography
 {
     /// <summary>
-    ///     Various hashing methods and utilities.
+    /// Various hashing methods and utilities.
     /// </summary>
-    public class HashUtilities
+    public static class HashUtilities
     {
         //*********************************************************************************************************************
         //
         //             Class:  HashUtilities
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  06/12/2018
-        //      Last Updated:  12/07/2018
+        //      Last Updated:  04/28/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
 
         /// <summary>
-        ///     Shared function to output the hash from the specified hash algorithm.
+        /// Shared function to output the hash from the specified hash algorithm.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="crypt"></param>
@@ -28,9 +28,8 @@ namespace Argus.Cryptography
         public static string CreateHash(string str, HashAlgorithm crypt, Encoding enc)
         {
             var hash = new StringBuilder();
-            var crypto = crypt.ComputeHash(enc.GetBytes(str));
 
-            foreach (byte theByte in crypto)
+            foreach (byte theByte in crypt.ComputeHash(enc.GetBytes(str)))
             {
                 hash.Append(theByte.ToString("x2"));
             }
@@ -39,16 +38,15 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Shared function to output the hash from the specified hash algorithm.
+        /// Shared function to output the hash from the specified hash algorithm.
         /// </summary>
         /// <param name="b"></param>
         /// <param name="crypt"></param>
         public static string CreateHash(byte[] b, HashAlgorithm crypt)
         {
             var hash = new StringBuilder();
-            var crypto = crypt.ComputeHash(b);
 
-            foreach (byte theByte in crypto)
+            foreach (byte theByte in crypt.ComputeHash(b))
             {
                 hash.Append(theByte.ToString("x2"));
             }
@@ -57,16 +55,15 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Shared function to output the hash from the specified hash algorithm.
+        /// Shared function to output the hash from the specified hash algorithm.
         /// </summary>
         /// <param name="s"></param>
         /// <param name="crypt"></param>
         public static string CreateHash(Stream s, HashAlgorithm crypt)
         {
             var hash = new StringBuilder();
-            var crypto = crypt.ComputeHash(s);
 
-            foreach (byte theByte in crypto)
+            foreach (byte theByte in crypt.ComputeHash(s))
             {
                 hash.Append(theByte.ToString("x2"));
             }
@@ -75,7 +72,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA1 hash for the inputted string.  The default overload uses ASCII encoding.
+        /// Returns a SHA1 hash for the provided string.  The default overload uses ASCII encoding.
         /// </summary>
         /// <param name="str"></param>
         public static string Sha1Hash(string str)
@@ -84,7 +81,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA1 hash for the inputted string.
+        /// Returns a SHA1 hash for the inputted string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
@@ -96,7 +93,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA1 hash for the inputted string.
+        /// Returns a SHA1 hash for the inputted string.
         /// </summary>
         /// <param name="b"></param>
         public static string Sha1Hash(byte[] b)
@@ -107,7 +104,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA1 hash for the inputted string.
+        /// Returns a SHA1 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
         public static string Sha1Hash(Stream s)
@@ -118,7 +115,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA384 hash for the inputted string.  The default overload uses ASCII encoding.
+        /// Returns a SHA384 hash for the inputted string.  The default overload uses ASCII encoding.
         /// </summary>
         /// <param name="str"></param>
         public static string Sha384Hash(string str)
@@ -127,7 +124,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA384 hash for the inputted string.
+        /// Returns a SHA384 hash for the inputted string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
@@ -139,7 +136,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA384 hash for the inputted string.
+        /// Returns a SHA384 hash for the inputted string.
         /// </summary>
         /// <param name="b"></param>
         public static string Sha384Hash(byte[] b)
@@ -150,7 +147,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA384 hash for the inputted string.
+        /// Returns a SHA384 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
         public static string Sha384Hash(Stream s)
@@ -161,7 +158,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA256 hash for the inputted string.  The default overload uses ASCII encoding.
+        /// Returns a SHA256 hash for the inputted string.  The default overload uses ASCII encoding.
         /// </summary>
         /// <param name="str"></param>
         public static string Sha256Hash(string str)
@@ -170,7 +167,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA256 hash for the inputted string.
+        /// Returns a SHA256 hash for the inputted string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
@@ -182,7 +179,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA256 hash for the inputted string.
+        /// Returns a SHA256 hash for the inputted string.
         /// </summary>
         /// <param name="b"></param>
         public static string Sha256Hash(byte[] b)
@@ -193,7 +190,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA256 hash for the inputted string.
+        /// Returns a SHA256 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
         public static string Sha256Hash(Stream s)
@@ -204,7 +201,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA512 hash for the inputted string.  The default overload uses ASCII encoding.
+        /// Returns a SHA512 hash for the inputted string.  The default overload uses ASCII encoding.
         /// </summary>
         /// <param name="str"></param>
         public static string Sha512Hash(string str)
@@ -213,7 +210,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA512 hash for the inputted string.
+        /// Returns a SHA512 hash for the inputted string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
@@ -225,7 +222,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA512 hash for the inputted string.
+        /// Returns a SHA512 hash for the inputted string.
         /// </summary>
         /// <param name="b"></param>
         public static string Sha512Hash(byte[] b)
@@ -236,7 +233,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a SHA512 hash for the inputted string.
+        /// Returns a SHA512 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
         public static string Sha512Hash(Stream s)
@@ -247,7 +244,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a MD5 hash for the inputted string.  The default overload uses ASCII encoding.
+        /// Returns a MD5 hash for the inputted string.  The default overload uses ASCII encoding.
         /// </summary>
         /// <param name="str"></param>
         public static string MD5Hash(string str)
@@ -256,7 +253,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a MD5 hash for the inputted string.
+        /// Returns a MD5 hash for the inputted string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
@@ -268,7 +265,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a MD5 hash for the inputted string.
+        /// Returns a MD5 hash for the inputted string.
         /// </summary>
         /// <param name="b"></param>
         public static string MD5Hash(byte[] b)
@@ -279,7 +276,7 @@ namespace Argus.Cryptography
         }
 
         /// <summary>
-        ///     Returns a MD5 hash for the inputted string.
+        /// Returns a MD5 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
         public static string MD5Hash(Stream s)

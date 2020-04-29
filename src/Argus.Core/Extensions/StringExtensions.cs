@@ -1683,7 +1683,7 @@ namespace Argus.Extensions
         /// <param name="key"></param>
         public static string Encrypt(this string str, string key)
         {
-            return Encryption.Encrypt(str, key);
+            return Encryption.EncryptToString(str, key);
         }
 
         /// <summary>
@@ -1693,7 +1693,7 @@ namespace Argus.Extensions
         /// <param name="key"></param>
         public static string Decrypt(this string str, string key)
         {
-            return Encryption.Decrypt(str, key);
+            return Encryption.DecryptToString(str, key);
         }
 
 #if NETSTANDARD2_0
