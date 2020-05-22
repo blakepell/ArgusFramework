@@ -21,7 +21,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  04/26/2020
+        //      Last Updated:  05/22/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -263,13 +263,13 @@ namespace Argus.Extensions
         {
             if (includeLineTerminators)
             {
-                char[] chars = {' ', '\t', '\r', '\n'};
+                char[] chars = { ' ', '\t', '\r', '\n' };
 
                 return buf.Trim(chars);
             }
             else
             {
-                char[] chars = {' ', '\t'};
+                char[] chars = { ' ', '\t' };
 
                 return buf.Trim(chars);
             }
@@ -284,13 +284,13 @@ namespace Argus.Extensions
         {
             if (includeLineTerminators)
             {
-                char[] chars = {' ', '\t', '\r', '\n'};
+                char[] chars = { ' ', '\t', '\r', '\n' };
 
                 return buf.TrimStart(chars);
             }
             else
             {
-                char[] chars = {' ', '\t'};
+                char[] chars = { ' ', '\t' };
 
                 return buf.TrimStart(chars);
             }
@@ -305,13 +305,13 @@ namespace Argus.Extensions
         {
             if (includeLineTerminators)
             {
-                char[] chars = {' ', '\t', '\r', '\n'};
+                char[] chars = { ' ', '\t', '\r', '\n' };
 
                 return buf.TrimEnd(chars);
             }
             else
             {
-                char[] chars = {' ', '\t'};
+                char[] chars = { ' ', '\t' };
 
                 return buf.TrimEnd(chars);
             }
@@ -357,8 +357,8 @@ namespace Argus.Extensions
         /// </param>
         public static string TrimEachLineWhitespace(this string buf, bool includeLineTerminators)
         {
-            char[] charsWithLineTerminators = {' ', '\t', '\r', '\n'};
-            char[] charsWithoutLineTerminators = {' ', '\t'};
+            char[] charsWithLineTerminators = { ' ', '\t', '\r', '\n' };
+            char[] charsWithoutLineTerminators = { ' ', '\t' };
             var sb = new StringBuilder();
 
             var lines = buf.Split('\n');
@@ -1254,13 +1254,13 @@ namespace Argus.Extensions
         /// <returns>A new string with characters corresponding to invalid XML ASCII codes removed.</returns>
         public static string ToValidXmlAsciiCharacters(this string input)
         {
-            var validCodes = new[] {0, 9, 10, 13, 32};
+            var validCodes = new[] { 0, 9, 10, 13, 32 };
 
             for (int i = 0; i <= 32; i++)
             {
                 if (!validCodes.Contains(i))
                 {
-                    input = input.Replace(Convert.ToString((char) i), "");
+                    input = input.Replace(Convert.ToString((char)i), "");
                 }
             }
 
@@ -1587,7 +1587,7 @@ namespace Argus.Extensions
         /// </summary>
         public static string RemoveWord(this string value, int wordNumber)
         {
-            var strArray = value.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var strArray = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             string newString = string.Empty;
             int count = 0;
@@ -1671,29 +1671,9 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="value"></param>
         /// <param name="enc"></param>
-        private static byte[] ToBytes(this string value, Encoding enc)
+        public static byte[] ToBytes(this string value, Encoding enc)
         {
             return enc.GetBytes(value);
-        }
-
-        /// <summary>
-        ///     Encrypts a string with AES encryption.
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="key"></param>
-        public static string Encrypt(this string str, string key)
-        {
-            return Encryption.EncryptToString(str, key);
-        }
-
-        /// <summary>
-        ///     Decrypts a string with AES encryption.
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="key"></param>
-        public static string Decrypt(this string str, string key)
-        {
-            return Encryption.DecryptToString(str, key);
         }
 
 #if NETSTANDARD2_0
@@ -1704,7 +1684,7 @@ namespace Argus.Extensions
         /// <param name="str"></param>
         /// <param name="beginMarker"></param>
         /// <param name="endMarker"></param>
-        private static string Between(this string str, string beginMarker, string endMarker)
+        public static string Between(this string str, string beginMarker, string endMarker)
         {
             int pos1 = str.IndexOf(beginMarker) + beginMarker.Length;
             int pos2 = str.Substring(pos1).IndexOf(endMarker);
@@ -1728,7 +1708,7 @@ namespace Argus.Extensions
         /// <param name="beginMarker"></param>
         /// <param name="endMarker"></param>
         /// <returns></returns>
-        private static string Between(this string str, string beginMarker, string endMarker)
+        public static string Between(this string str, string beginMarker, string endMarker)
         {
             return Between(str.AsSpan(), beginMarker.AsSpan(), endMarker.AsSpan());
         }
@@ -1739,7 +1719,7 @@ namespace Argus.Extensions
         /// <param name="str"></param>
         /// <param name="beginMarker"></param>
         /// <param name="endMarker"></param>
-        private static string Between(this ReadOnlySpan<char> span, ReadOnlySpan<char> beginMarker, ReadOnlySpan<char> endMarker)
+        public static string Between(this ReadOnlySpan<char> span, ReadOnlySpan<char> beginMarker, ReadOnlySpan<char> endMarker)
         {
             int pos1 = span.IndexOf(beginMarker) + beginMarker.Length;
             int pos2 = span.Slice(pos1).IndexOf(endMarker);
@@ -1753,6 +1733,28 @@ namespace Argus.Extensions
             return span.Slice(pos1, pos2).ToString();
         }
 #endif
+
+        /// <summary>
+        ///     Encrypts a string with AES encryption.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="key"></param>
+        public static string Encrypt(this string str, string key)
+        {
+            var crypt = new Encryption("ijJsJuy%487sDrz&");
+            return crypt.EncryptToString(str, key);
+        }
+
+        /// <summary>
+        ///     Decrypts a string with AES encryption.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="key"></param>
+        public static string Decrypt(this string str, string key)
+        {
+            var crypt = new Encryption("ijJsJuy%487sDrz&");
+            return crypt.DecryptToString(str, key);
+        }
 
     }
 }
