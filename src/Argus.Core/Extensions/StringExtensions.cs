@@ -21,7 +21,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  05/22/2020
+        //      Last Updated:  06/25/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -1756,5 +1756,25 @@ namespace Argus.Extensions
             return crypt.DecryptToString(str, key);
         }
 
+        /// <summary>
+        ///     Returns the plural form which is provided if the count is 0 or greater than 1.  Otherwise
+        ///     the string itself is returned which should be the singular form.  This allows you to return 
+        ///     0 items, 2 items or 1 item depending on the count.
+        /// </summary>
+        /// <param name="singularForm"></param>
+        /// <param name="count"></param>
+        /// <param name="pluralForm"></param>
+        public static string IfCountPluralize(this string singularForm, int count, string pluralForm)
+        {
+            // 0 items, 5 items, 1 item
+            if (count == 0 || count > 1)
+            {
+                return pluralForm;
+            }
+            else
+            {
+                return singularForm;
+            }
+        }
     }
 }

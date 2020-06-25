@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Argus.Data;
 using Argus.Math;
 
@@ -14,7 +15,7 @@ namespace Argus.Extensions
         //            Module:  NumericExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  07/03/2010
-        //      Last Updated:  09/26/2019
+        //      Last Updated:  06/25/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -85,6 +86,7 @@ namespace Argus.Extensions
         ///     Sorts the list of integers  either ascending or descending order.
         /// </summary>
         /// <param name="ls"></param>
+        /// <param name="so"></param>
         public static void Sort(this List<int> ls, SortOrder so)
         {
             if (so == SortOrder.Ascending)
@@ -143,5 +145,55 @@ namespace Argus.Extensions
         {
             return MathUtilities.Clamp(value, min, max);
         }
+
+        /// <summary>
+        ///     Returns "is" if the value is 1 otherwise returns "are".
+        /// </summary>
+        /// <param name="value"></param>
+        public static string IsOrAre(this int value)
+        {
+            if (value == 1)
+            {
+                return "is";
+            }
+            else
+            {
+                return "are";
+            }
+        }
+
+        /// <summary>
+        ///     Returns "is" if the value is 1 otherwise returns "are".
+        /// </summary>
+        /// <param name="value"></param>
+        public static string IsOrAre(this double value)
+        {
+            if (value == 1.0)
+            {
+                return "is";
+            }
+            else
+            {
+                return "are";
+            }
+        }
+
+        /// <summary>
+        ///     Returns "is" if the value is 1 otherwise returns "are".
+        /// </summary>
+        /// <param name="value"></param>
+        public static string IsOrAre(this long value)
+        {
+
+            if (value == 1)
+            {
+                return "is";
+            }
+            else
+            {
+                return "are";
+            }
+        }
+
     }
 }
