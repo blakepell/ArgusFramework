@@ -21,5 +21,4 @@ NAudio|https://github.com/naudio/NAudio|`Install-Package NAudio`
 Name | URL | Nuget
 --- | --- | ---
 ModernWpf|https://github.com/Kinnara/ModernWpf|`Install-Package ModernWpfUI`
-WPFSplitView|https://github.com/MrDaedra/WPFSplitView|N/A
 AppBar|https://github.com/PhilipRieck/WpfAppBar|`Install-Package WpfAppBar`

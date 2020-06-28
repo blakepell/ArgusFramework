@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>2020.6.28.1</Version>
+    <Authors>Blake Pell</Authors>
+    <Company>https://www.blakepell.com</Company>
+    <Product>Argus Framework - NAudio Utilities</Product>
+    <Description>NAudio utilities including a LoopbackRecorder to allow for easy recording of what is coming through your soundcard.</Description>
+    <Copyright>2003-2020</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
+    <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
+    <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>argus naudio loopback recorder recording</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RootNamespace>Argus.Audio.NAudio</RootNamespace>
+    <AssemblyName>Argus.Audio.NAudio</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="1.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\Argus-Logo-Purple-64.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
