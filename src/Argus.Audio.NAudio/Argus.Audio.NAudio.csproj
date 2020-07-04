@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2020.6.28.1</Version>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net461;net45;net35;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <Version>2020.7.4.1</Version>
     <Authors>Blake Pell</Authors>
     <Company>https://www.blakepell.com</Company>
     <Product>Argus Framework - NAudio Utilities</Product>
@@ -13,10 +13,12 @@
     <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>argus naudio loopback recorder recording</PackageTags>
+    <PackageTags>naudio loopback recorder recording argus</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RootNamespace>Argus.Audio.NAudio</RootNamespace>
     <AssemblyName>Argus.Audio.NAudio</AssemblyName>
+    <PackageReleaseNotes>Version 2020.7.4.1
+ - LoopbackRecorder to record from the currently playing sound device (or a device you specify).</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

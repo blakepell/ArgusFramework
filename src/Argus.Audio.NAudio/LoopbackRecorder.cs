@@ -77,7 +77,7 @@ namespace Argus.Audio.NAudio
         /// <param name="filename">The location of where the wave file should be saved.</param>
         public void StartRecording(string filename)
         {
-            // If we are currently record then go ahead and exit out.
+            // If we are currently recording then go ahead and exit out.
             if (IsRecording)
             {
                 return;
@@ -160,7 +160,7 @@ namespace Argus.Audio.NAudio
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void OnDataAvailable(object sender, WaveInEventArgs e)
+        private void OnDataAvailable(object sender, WaveInEventArgs e)
         {
             _writer.Write(e.Buffer, 0, e.BytesRecorded);
         }
