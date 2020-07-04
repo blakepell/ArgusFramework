@@ -9,7 +9,7 @@
     <Description>NAudio utilities including a LoopbackRecorder to allow for easy recording of what is coming through your soundcard.</Description>
     <Copyright>2003-2020</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/blakepell/ArgusFramework/blob/master/src/Argus.Audio.NAudio/README.md</PackageProjectUrl>
     <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
