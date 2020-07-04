@@ -21,7 +21,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  06/25/2020
+        //      Last Updated:  07/04/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -1741,8 +1741,7 @@ namespace Argus.Extensions
         /// <param name="key"></param>
         public static string Encrypt(this string str, string key)
         {
-            var crypt = new Encryption("ijJsJuy%487sDrz&");
-            return crypt.EncryptToString(str, key);
+            return Encrypt(str, key, "ijJsJuy%487sDrz&");
         }
 
         /// <summary>
@@ -1752,9 +1751,36 @@ namespace Argus.Extensions
         /// <param name="key"></param>
         public static string Decrypt(this string str, string key)
         {
-            var crypt = new Encryption("ijJsJuy%487sDrz&");
+            // A specific note that the salt is passed in which can be public.
+            return Decrypt(str, key, "ijJsJuy%487sDrz&");
+        }
+
+        /// <summary>
+        ///     Encrypts a string with AES encryption.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="key"></param>
+        /// <param name="salt">A 16 character salt value.</param>
+        public static string Encrypt(this string str, string key, string salt)
+        {
+            // A specific note that the salt is passed in which can be public.
+            var crypt = new Encryption(salt);
+            return crypt.EncryptToString(str, key);
+        }
+
+        /// <summary>
+        ///     Decrypts a string with AES encryption.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="key"></param>
+        /// <param name="salt">A 16 character salt value.</param>
+        public static string Decrypt(this string str, string key, string salt)
+        {
+            // A specific note that the salt is passed in which can be public.
+            var crypt = new Encryption(salt);
             return crypt.DecryptToString(str, key);
         }
+
 
         /// <summary>
         ///     Returns the plural form which is provided if the count is 0 or greater than 1.  Otherwise
