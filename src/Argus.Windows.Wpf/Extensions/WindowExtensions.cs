@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,7 +17,7 @@ namespace Argus.Extensions
         //            Module:  WindowExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  09/19/2019
-        //      Last Updated:  11/17/2019
+        //      Last Updated:  07/17/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -34,6 +35,15 @@ namespace Argus.Extensions
             }
 
             return window.Dispatcher?.CheckAccess() != false;
+        }
+
+        /// <summary>
+        ///     Whether or not the current Window is being shown as a modal.
+        /// </summary>
+        /// <param name="window"></param>
+        public static bool IsModal(this Window window)
+        {
+            return (bool)typeof(Window).GetField("_showingAsDialog", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(window);
         }
 
         /// <summary>
