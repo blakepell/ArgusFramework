@@ -15,7 +15,7 @@ namespace Argus.Extensions
         //            Module:  GenericExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/02/2014
-        //      Last Updated:  03/27/2019
+        //      Last Updated:  08/23/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -49,6 +49,20 @@ namespace Argus.Extensions
         public static IEnumerable<T> TakeLast<T>(this IEnumerable<T> source, int itemCount)
         {
             return source.Skip(System.Math.Max(0, source.Count() - itemCount));
+        }
+
+        /// <summary>
+        ///     Executes an action for each item in the IEnumerable.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumeration"></param>
+        /// <param name="action"></param>
+        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
+        {
+            foreach (T item in enumeration)
+            {
+                action(item);
+            }
         }
 
         /// <summary>
