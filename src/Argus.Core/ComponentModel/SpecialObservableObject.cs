@@ -61,6 +61,29 @@ namespace Argus.ComponentModel
             }
         }
 
+        /// <summary>
+        /// Implements a compariable version of the Linq Find which searches via index and not IEnumerable and can
+        /// offer performance improvements over FirstOrDefault when searching in memory objects.
+        /// </summary>
+        /// <param name="match"></param>
+        public T Find(Predicate<T> match)
+        {
+            if (match == null)
+            {
+                throw new ArgumentNullException("Predicate cannot be null.");
+            }
+            
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (match(this[i]))
+                {
+                    return this[i];
+                }
+            }
+
+            return default(T);
+        }
+
         private void ListItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             this.OnListItemChanged(this, e);
