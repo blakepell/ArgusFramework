@@ -8,18 +8,21 @@ namespace Argus.ComponentModel
     ///     properties.
     /// </summary>
     /// <example>
-    ///     private int _length = 0;
-    ///     public int Length
-    ///     {
-    ///     get
-    ///     {
-    ///     return _length;
-    ///     }
-    ///     set
-    ///     {
-    ///     Set(ref _length, value, "Length");
-    ///     }
-    ///     }
+    ///     <code>
+    ///         private int _length = 0;
+    ///     
+    ///         public int Length
+    ///         {
+    ///             get
+    ///             {
+    ///                 return _length;
+    ///             }
+    ///             set
+    ///             {
+    ///                 Set(ref _length, value, "Length");
+    ///             }
+    ///         }
+    ///     </code>
     /// </example>
     public class Observable : INotifyPropertyChanged
     {
