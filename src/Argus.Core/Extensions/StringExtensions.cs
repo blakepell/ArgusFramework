@@ -21,7 +21,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  07/04/2020
+        //      Last Updated:  08/28/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -236,6 +236,30 @@ namespace Argus.Extensions
             }
 
             return str.Left(str.Length - length);
+        }
+
+        /// <summary>
+        ///     Removes all line endings from a string using a char array for performance vs.
+        ///     a string replace.
+        /// </summary>
+        /// <param name="s"></param>
+        public static string RemoveLineEndings(string s)
+        {
+            int len = s.Length;
+            char[] output = new char[len];
+            int i2 = 0;
+
+            for (int i = 0; i < len; i++)
+            {
+                char c = s[i];
+
+                if (c != '\r' && c != '\n')
+                {
+                    output[i2++] = c;
+                }
+            }
+
+            return new string(output, 0, i2);
         }
 
         /// <summary>
