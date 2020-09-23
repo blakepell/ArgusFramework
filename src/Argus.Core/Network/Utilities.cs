@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Argus.Network
 {
@@ -13,7 +15,7 @@ namespace Argus.Network
         //             Class:  NetworkUtilities
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  04/07/2009
-        //      Last Updated:  11/18/2019
+        //      Last Updated:  09/23/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -56,6 +58,34 @@ namespace Argus.Network
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <param name="localFileName"></param>
+        public static void DownloadFile(string remoteUrl, string localFileName)
+        {
+            using (var wc = new WebClient())
+            {
+                wc.BaseAddress = remoteUrl;
+                wc.DownloadFile(remoteUrl, localFileName);
+            }
+        }
+
+        /// <summary>
+        ///     Downloads a file from the Internet (http, https)
+        /// </summary>
+        /// <param name="remoteUrl"></param>
+        /// <param name="localFileName"></param>
+        public static async Task DownloadFileAsync(string remoteUrl, string localFileName)
+        {
+            using (var wc = new WebClient())
+            {
+                wc.BaseAddress = remoteUrl;
+                await wc.DownloadFileTaskAsync(new Uri(remoteUrl), localFileName);
+            }
+        }
+
+        /// <summary>
+        ///     Downloads a file from the Internet (http, https)
+        /// </summary>
+        /// <param name="remoteUrl"></param>
+        /// <param name="localFileName"></param>
         /// <param name="timeout">The timeout in seconds.</param>
         public static void DownloadFile(string remoteUrl, string localFileName, int timeout)
         {
@@ -64,6 +94,22 @@ namespace Argus.Network
                 wc.Timeout = timeout;
                 wc.BaseAddress = remoteUrl;
                 wc.DownloadFile(remoteUrl, localFileName);
+            }
+        }
+
+        /// <summary>
+        ///     Downloads a file from the Internet (http, https)
+        /// </summary>
+        /// <param name="remoteUrl"></param>
+        /// <param name="localFileName"></param>
+        /// <param name="timeout">The timeout in seconds.</param>
+        public static async Task DownloadFileAsync(string remoteUrl, string localFileName, int timeout)
+        {
+            using (var wc = new WebClient())
+            {
+                wc.Timeout = timeout;
+                wc.BaseAddress = remoteUrl;
+                await wc.DownloadFileTaskAsync(new Uri(remoteUrl), localFileName);
             }
         }
 
@@ -83,6 +129,25 @@ namespace Argus.Network
                 wc.BaseAddress = remoteUrl;
                 wc.Credentials = new NetworkCredential(username, password);
                 wc.DownloadFile(remoteUrl, localFileName);
+            }
+        }
+
+        /// <summary>
+        ///     Downloads a file from the Internet with provided authentication credentials (http, https, ftp)
+        /// </summary>
+        /// <param name="remoteUrl"></param>
+        /// <param name="localFileName"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="timeout">The timeout in seconds.</param>
+        public static async Task DownloadFileAsync(string remoteUrl, string localFileName, string username, string password, int timeout)
+        {
+            using (var wc = new WebClient())
+            {
+                wc.Timeout = timeout;
+                wc.BaseAddress = remoteUrl;
+                wc.Credentials = new NetworkCredential(username, password);
+                await wc.DownloadFileTaskAsync(remoteUrl, localFileName);
             }
         }
     }
