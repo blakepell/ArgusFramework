@@ -60,7 +60,7 @@ namespace Argus.Network
         /// <param name="localFileName"></param>
         public static void DownloadFile(string remoteUrl, string localFileName)
         {
-            using (var wc = new WebClient())
+            using (var wc = new System.Net.WebClient())
             {
                 wc.BaseAddress = remoteUrl;
                 wc.DownloadFile(remoteUrl, localFileName);
@@ -74,7 +74,7 @@ namespace Argus.Network
         /// <param name="localFileName"></param>
         public static async Task DownloadFileAsync(string remoteUrl, string localFileName)
         {
-            using (var wc = new WebClient())
+            using (var wc = new System.Net.WebClient())
             {
                 wc.BaseAddress = remoteUrl;
                 await wc.DownloadFileTaskAsync(new Uri(remoteUrl), localFileName);
