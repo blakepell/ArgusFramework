@@ -13,10 +13,11 @@
     <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>2020.3.31.1</Version>
-    <AssemblyVersion>2020.3.31.1</AssemblyVersion>
-    <FileVersion>2020.3.31.1</FileVersion>
+    <Version>2020.10.7.1</Version>
+    <AssemblyVersion>2020.10.7.1</AssemblyVersion>
+    <FileVersion>2020.10.7.1</FileVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/blakepell/ArgusFramework/master/Assets/Argus-Logo-Purple-64.png</PackageIconUrl>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Argus.Extensions;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -15,10 +16,34 @@ namespace Argus.Graphics
         //             Class:  ImageUtils
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  11/20/2007
-        //      Last Updated:  11/15/2019
+        //      Last Updated:  10/07/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
+
+        /// <summary>
+        /// Calculates the percentage match based on the images median brightness calculation.  This will return
+        /// a percentage as an int between 0 and 100.
+        /// </summary>
+        /// <param name="bm1"></param>
+        /// <param name="bm2"></param>
+        public static int MedianBrightnessMatch(Bitmap bm1, Bitmap bm2)
+        {
+            string hash1 = bm1.MedianBrightnessHash();
+            string hash2 = bm2.MedianBrightnessHash();
+            int match = 0;
+
+            // Each hash will have a length of 64.
+            for (int i = 0; i < hash1.Length; i++)
+            {
+                if (hash1[i] == hash2[i])
+                {
+                    match++;
+                }
+            }
+
+            return (match / 64) * 100;
+        }
 
         /// <summary>
         ///     Extracts operating system's associated icon (in the highest resolution possible) for a given file and returns it as an Image object.

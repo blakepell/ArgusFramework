@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Text;
 
 namespace Argus.Extensions
 {
@@ -12,7 +13,7 @@ namespace Argus.Extensions
         //            Module:  ImageExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  02/04/2010
-        //      Last Updated:  11/15/2019
+        //      Last Updated:  10/07/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -46,5 +47,52 @@ namespace Argus.Extensions
 
             return true;
         }
+
+        /// <summary>
+        ///     Returns a hash that identify like images based on a downscaled mapping of pixels
+        ///     above or below the a median brightness threshold.
+        /// </summary>
+        /// <param name="bmp"></param>
+        public static string MedianBrightnessHash(this Bitmap bmp)
+        {
+            float sum = 0;
+            var sb = new StringBuilder();
+
+            // Create new image downscaled to 16x16 pixels.
+            using var bmpMin = new Bitmap(bmp, new Size(16, 16));
+
+            // Calculate the median brightness of the image.
+            for (int j = 0; j < bmpMin.Height; j++)
+            {
+                for (int i = 0; i < bmpMin.Width; i++)
+                {
+                    sum += bmpMin.GetPixel(i, j).GetBrightness();
+                }
+            }
+
+            const int pixelCount = 256;
+            float avg = sum / pixelCount;
+
+            // Create the bit hash based off of each pixels brightness being over the median
+            // brightness threshold of the entire image.
+            for (int j = 0; j < bmpMin.Height; j++)
+            {
+                for (int i = 0; i < bmpMin.Width; i++)
+                {
+                    // Reduce colors to true / false                
+                    if (bmpMin.GetPixel(i, j).GetBrightness() < avg)
+                    {
+                        sb.Append(0);
+                    }
+                    else
+                    {
+                        sb.Append(1);
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
+
     }
 }
