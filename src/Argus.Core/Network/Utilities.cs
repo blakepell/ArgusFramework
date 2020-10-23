@@ -15,7 +15,7 @@ namespace Argus.Network
         //             Class:  NetworkUtilities
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  04/07/2009
-        //      Last Updated:  09/23/2020
+        //      Last Updated:  10/23/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -51,6 +51,62 @@ namespace Argus.Network
             }
 
             return list;
+        }
+
+        /// <summary>
+        ///     Downloads a file from the Internet (http, https).
+        /// </summary>
+        /// <param name="remoteUrl"></param>
+        public static async Task<byte[]> DownloadFileAsync(string remoteUrl)
+        {
+            using var wc = new System.Net.WebClient();
+            return await wc.DownloadDataTaskAsync(remoteUrl);
+        }
+
+        /// <summary>
+        ///     Downloads a file from the Internet (http, https).  If an exception occurs a
+        ///     null will be returned.
+        /// </summary>
+        /// <param name="remoteUrl"></param>
+        public static async Task<byte[]> SafeDownloadFileAsync(string remoteUrl)
+        {
+            try
+            {
+                using var wc = new System.Net.WebClient();
+                return await wc.DownloadDataTaskAsync(remoteUrl);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///     Downloads a file from the Internet (http, https).
+        /// </summary>
+        /// <param name="remoteUrl"></param>
+        public static byte[] DownloadFile(string remoteUrl)
+        {
+            using var wc = new System.Net.WebClient();
+            return wc.DownloadData(remoteUrl);
+        }
+
+        /// <summary>
+        ///     Downloads a file from the Internet (http, https).  If an exception occurs a
+        ///     null will be returned.
+        /// </summary>
+        /// <param name="remoteUrl"></param>
+        public static byte[] SafeDownloadFile(string remoteUrl)
+        {
+            try
+            {
+                using var wc = new System.Net.WebClient();
+                return wc.DownloadData(remoteUrl);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -150,5 +206,6 @@ namespace Argus.Network
                 await wc.DownloadFileTaskAsync(remoteUrl, localFileName);
             }
         }
+
     }
 }
