@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace Argus.Extensions
@@ -13,7 +14,7 @@ namespace Argus.Extensions
         //            Module:  ImageExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  02/04/2010
-        //      Last Updated:  10/07/2020
+        //      Last Updated:  10/23/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -92,6 +93,25 @@ namespace Argus.Extensions
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        ///     Counts the unique colors in a <see cref="Bitmap"/>.
+        /// </summary>
+        /// <param name="bmp"></param>
+        public static int CountColors(this Bitmap bmp)
+        {
+            var colors = new HashSet<Color>();
+
+            for (int x = 0; x < bmp.Size.Width; x++)
+            {
+                for (int y = 0; y < bmp.Size.Height; y++)
+                {
+                    colors.Add(bmp.GetPixel(x, y));
+                }
+            }
+
+            return colors.Count;
         }
 
     }
