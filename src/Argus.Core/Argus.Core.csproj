@@ -22,6 +22,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes />
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -21,7 +21,7 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageIconUrl>https://github.com/blakepell/ArgusFramework/blob/master/Assets/Argus-Logo-Purple-64.png</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">

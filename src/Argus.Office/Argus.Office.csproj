@@ -16,6 +16,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/blakepell/ArgusFramework/master/Assets/Argus-Logo-Purple-64.png</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Product>Argus Framework - Office File Format Library</Product>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

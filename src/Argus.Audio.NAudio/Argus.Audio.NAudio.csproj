@@ -19,6 +19,7 @@
     <AssemblyName>Argus.Audio.NAudio</AssemblyName>
     <PackageReleaseNotes>Version 2020.7.4.1
  - LoopbackRecorder to record from the currently playing sound device (or a device you specify).</PackageReleaseNotes>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
