@@ -21,7 +21,7 @@
         /// <param name="value"></param>
         public static bool IsTrue(this bool? value)
         {
-            if (value == null || !value.Value)
+            if (!value.GetValueOrDefault(false))
             {
                 return false;
             }
@@ -35,7 +35,7 @@
         /// <param name="value"></param>
         public static bool IsFalse(this bool? value)
         {
-            if (value == null || !value.Value)
+            if (value.GetValueOrDefault(false))
             {
                 return true;
             }
