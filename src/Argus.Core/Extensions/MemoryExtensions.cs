@@ -56,6 +56,24 @@ namespace Argus.Extensions
         }
 
         /// <summary>
+        ///     Returns the zero based index of the first occurence of a matching char.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <param name="value"></param>
+        /// <param name="startIndex"></param>
+        public static int IndexOf(ReadOnlySpan<char> span, char value, int startIndex)
+        {
+            var indexInSlice = span.Slice(startIndex).IndexOf(value);
+
+            if (indexInSlice == -1)
+            {
+                return -1;
+            }
+
+            return startIndex + indexInSlice;
+        }
+
+        /// <summary>
         ///     Split the next part of this span with the given separator. 
         /// </summary>
         /// <typeparam name="T"></typeparam>
