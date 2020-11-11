@@ -1723,7 +1723,7 @@ namespace Argus.Extensions
         }
 #endif
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_1 || NET5_0
 
         /// <summary>
         /// Returns a string between the first occurance of two markers.
