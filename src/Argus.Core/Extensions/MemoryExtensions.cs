@@ -13,12 +13,64 @@ namespace Argus.Extensions
         //             Class:  MemoryExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  02/12/2020
-        //      Last Updated:  10/29/2020
+        //      Last Updated:  11/21/2020
         //
         //*********************************************************************************************************************
 
         /// <summary>
-        ///     Reports the zero based index of the first occurence of a matching string.
+        ///     Returns the left most portion of the span of the specified length.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <param name="length"></param>
+        public static ReadOnlySpan<char> Left(this ReadOnlySpan<char> span, int length)
+        {
+            return span.Slice(0, length);
+        }
+
+        /// <summary>
+        ///     Returns the left most portion of the span of the specified length.  If the length specified is
+        ///     longer than the span the entire span is returned without an exception.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <param name="length"></param>
+        public static ReadOnlySpan<char> SafeLeft(this ReadOnlySpan<char> span, int length)
+        {
+            if (length >= span.Length)
+            {
+                return span;
+            }
+
+            return span.Slice(0, length);
+        }
+
+        /// <summary>
+        ///     Returns the right most portion of the span of the specified length.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <param name="length"></param>
+        public static ReadOnlySpan<char> Right(this ReadOnlySpan<char> span, int length)
+        {
+            return span.Slice(span.Length - length, length);
+        }
+
+        /// <summary>
+        ///     Returns the right  most portion of the span of the specified length.  If the length specified is
+        ///     longer than the span the entire span is returned without an exception.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <param name="length"></param>
+        public static ReadOnlySpan<char> SafeRight(this ReadOnlySpan<char> span, int length)
+        {
+            if (length >= span.Length)
+            {
+                return span;
+            }
+
+            return span.Slice(span.Length - length, length);
+        }
+
+        /// <summary>
+        ///     Reports the zero based index of the first occurrence of a matching string.
         /// </summary>
         /// <param name="span">The Span to search.</param>
         /// <param name="value">The string to search for.</param>
@@ -38,7 +90,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Reports the zero based index of the first occurence of a matching char.
+        ///     Reports the zero based index of the first occurrence of a matching char.
         /// </summary>
         /// <param name="span">The Span to search.</param>
         /// <param name="value">The string to search for.</param>
@@ -58,7 +110,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the zero based index of the first occurence of a matching string.
+        ///     Returns the zero based index of the first occurrence of a matching string.
         /// </summary>
         /// <param name="span"></param>
         /// <param name="value"></param>
@@ -76,7 +128,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the zero based index of the first occurence of a matching char.
+        ///     Returns the zero based index of the first occurrence of a matching char.
         /// </summary>
         /// <param name="span"></param>
         /// <param name="value"></param>
@@ -94,12 +146,33 @@ namespace Argus.Extensions
         }
 
         /// <summary>
+        ///     If the ReadOnlySpan starts with a specified <see cref="char"/>.  0 length strings return false.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="c"></param>
+        public static bool StartsWith(this ReadOnlySpan<char> value, char c)
+        {
+            return value.Length > 0 && value[0].Equals(c);
+        }
+
+        /// <summary>
+        ///     If the current string ends with a specific <see cref="char"/>.  0 length strings return false.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="c"></param>
+        public static bool EndsWith(this ReadOnlySpan<char> value, char c)
+        {
+
+            return value.Length > 0 && value[^1].Equals(c);
+        }
+
+        /// <summary>
         ///     Split the next part of this span with the given separator. 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="span">A reference to the span</param>
         /// <param name="seperator">A seperator that delimits the values</param>
-        /// <returns>The first splitted value</returns>
+        /// <returns>The first split value</returns>
         public static ReadOnlySpan<T> SplitNext<T>(this ref ReadOnlySpan<T> span, T seperator) where T : IEquatable<T>
         {
             int pos = span.IndexOf(seperator);
