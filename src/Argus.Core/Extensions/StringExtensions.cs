@@ -64,7 +64,7 @@ namespace Argus.Extensions
                 return str;
             }
 
-           
+
             return Left(str, length);
         }
 
@@ -199,6 +199,39 @@ namespace Argus.Extensions
 
             return str.IndexOf(c, startIndex);
         }
+
+        /// <summary>
+        ///     Returns true if the specified <see cref="char"/> is found at the start of the string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        public static bool SafeStartsWith(this string str, char c)
+        {
+            return !string.IsNullOrEmpty(str) && str.StartsWith(c);
+        }
+
+
+#if NETSTANDARD2_1 || NET5_0
+        /// <summary>
+        ///     Returns true if the specified <see cref="char"/> is found at the end of the string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        public static bool SafeEndsWith(this string str, char c)
+        {
+            return str.Length > 0 && str[^1].Equals(c);
+        }
+#else
+        /// <summary>
+        ///     Returns true if the specified <see cref="char"/> is found at the end of the string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        public static bool SafeEndsWith(this string str, char c)
+        {
+            return str.Length > 0 && str[str.Length - 1].Equals(c);
+        }
+#endif
 
         /// <summary>
         ///     Simulates the same functionality provide by the traditional 1 based index Mid function.
@@ -1735,7 +1768,7 @@ namespace Argus.Extensions
         {
             return value.Length > 0 && value[^1].Equals(c);
         }
-        #endif
+#endif
 
 #if NETSTANDARD2_0
         /// <summary>
