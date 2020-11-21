@@ -21,7 +21,7 @@ namespace Argus.Extensions
         //            Module:  StringExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  08/28/2020
+        //      Last Updated:  11/21/2020
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -54,7 +54,7 @@ namespace Argus.Extensions
         /// <param name="length"></param>
         public static string SafeLeft(this string str, int length)
         {
-            if (string.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(str) || length <= 0)
             {
                 return "";
             }
@@ -64,11 +64,7 @@ namespace Argus.Extensions
                 return str;
             }
 
-            if (length < 0)
-            {
-                return "";
-            }
-
+           
             return Left(str, length);
         }
 
@@ -80,7 +76,7 @@ namespace Argus.Extensions
         /// <param name="length"></param>
         public static string SafeRight(this string str, int length)
         {
-            if (string.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(str) || length <= 0)
             {
                 return "";
             }
@@ -88,11 +84,6 @@ namespace Argus.Extensions
             if (length >= str.Length)
             {
                 return str;
-            }
-
-            if (length < 0)
-            {
-                return "";
             }
 
             return Right(str, length);
@@ -110,12 +101,7 @@ namespace Argus.Extensions
                 return "";
             }
 
-            if (startIndex < 0)
-            {
-                return str;
-            }
-
-            return str.Substring(startIndex);
+            return startIndex < 0 ? str : str.Substring(startIndex);
         }
 
         /// <summary>
@@ -131,7 +117,7 @@ namespace Argus.Extensions
                 return "";
             }
 
-            // We have a good start index but that index plus the requested lenth is longer than the string
+            // We have a good start index but that index plus the requested length is longer than the string
             // so we will just return the string from that point.
             if (startIndex + length > str.Length)
             {
@@ -147,13 +133,13 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Reports the zero based index of the first occurence of a matching string.
+        ///     Reports the zero based index of the first occurrence of a matching string.
         /// </summary>
         /// <param name="str">The string to search.</param>
         /// <param name="value">The string to search for.</param>
         /// <param name="startIndex"></param>
         /// <returns>
-        ///     Returns the zero based index or a -1 if the string isn't found or the startIndex greater than the length of the string.
+        ///     Returns the zero based index or a -1 if the string isn't found or the startIndex is greater than the length of the string.
         /// </returns>
         public static int SafeIndexOf(this string str, string value, int startIndex)
         {
@@ -171,14 +157,14 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Reports the zero based index of the first occurence of a matching string.
+        ///     Reports the zero based index of the first occurrence of a matching string.
         /// </summary>
         /// <param name="str">The string to search.</param>
         /// <param name="value">The string to search for.</param>
         /// <param name="startIndex"></param>
         /// <param name="length">The number of positions to examine.</param>
         /// <returns>
-        ///     Returns the zero based index or a -1 if the string isn't found or the startIndex greater than the length of the string.
+        ///     Returns the zero based index or a -1 if the string isn't found or the startIndex is greater than the length of the string.
         /// </returns>
         public static int SafeIndexOf(this string str, string value, int startIndex, int length)
         {
@@ -193,6 +179,25 @@ namespace Argus.Extensions
             }
 
             return str.IndexOf(value, startIndex, length, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        ///     Returns the index of the specified <see cref="char"/>.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="c"></param>
+        /// <param name="startIndex"></param>
+        /// <returns>
+        ///     Returns the zero based index or a -1 if the char isn't found or the startIndex is greater than the length of the string.
+        /// </returns>
+        public static int SafeIndexOf(this string str, char c, int startIndex)
+        {
+            if (str == null || startIndex > str.Length - 1)
+            {
+                return -1;
+            }
+
+            return str.IndexOf(c, startIndex);
         }
 
         /// <summary>
@@ -1700,9 +1705,41 @@ namespace Argus.Extensions
             return enc.GetBytes(value);
         }
 
+        /// <summary>
+        ///     If the current string starts with a specific <see cref="char"/>.  0 length strings return false.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="c"></param>
+        public static bool StartsWith(this string value, char c)
+        {
+            return value.Length > 0 && value[0].Equals(c);
+        }
+
 #if NETSTANDARD2_0
         /// <summary>
-        /// Returns a string between the first occurance of two markers with assumption that the end marker
+        /// If the current string ends with a specific <see cref="char"/>.  0 length strings return false.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="c"></param>
+        public static bool EndsWith(this string value, char c)
+        {
+            return value.Length > 0 && value[value.Length - 1].Equals(c);
+        }
+#else
+        /// <summary>
+        ///     If the current string ends with a specific <see cref="char"/>.  0 length strings return false.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="c"></param>
+        public static bool EndsWith(this string value, char c)
+        {
+            return value.Length > 0 && value[^1].Equals(c);
+        }
+        #endif
+
+#if NETSTANDARD2_0
+        /// <summary>
+        /// Returns a string between the first occurrence of two markers with assumption that the end marker
         /// falls after the begin marker.
         /// </summary>
         /// <param name="str"></param>
@@ -1726,7 +1763,7 @@ namespace Argus.Extensions
 #if NETSTANDARD2_1 || NET5_0
 
         /// <summary>
-        /// Returns a string between the first occurance of two markers.
+        /// Returns a string between the first occurrence of two markers.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="beginMarker"></param>
@@ -1738,7 +1775,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a string between the first occurance two markers.
+        /// Returns a string between the first occurrence two markers.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="beginMarker"></param>
