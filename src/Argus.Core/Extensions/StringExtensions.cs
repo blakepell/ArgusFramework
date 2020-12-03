@@ -580,14 +580,7 @@ namespace Argus.Extensions
 
             foreach (char c in value)
             {
-                if (rnd.Next(1, 100) > 50)
-                {
-                    sb.Append(char.ToLower(c));
-                }
-                else
-                {
-                    sb.Append(char.ToUpper(c));
-                }
+                sb.Append(rnd.Next(1, 100) > 50 ? char.ToLower(c) : char.ToUpper(c));
             }
 
             return sb.ToString();
@@ -605,9 +598,8 @@ namespace Argus.Extensions
             }
 
             var builder = new StringBuilder(s.Length);
-            int i = 0;
 
-            for (i = 0; i <= s.Length - 1; i++)
+            for (int i = 0; i <= s.Length - 1; i++)
             {
                 if (char.IsLetterOrDigit(s, i))
                 {
@@ -760,7 +752,7 @@ namespace Argus.Extensions
         {
             if (buf.SafeRight(value.Length) != value)
             {
-                return buf + value;
+                return $"{buf}{value}";
             }
 
             return buf;
@@ -775,7 +767,7 @@ namespace Argus.Extensions
         {
             if (buf.SafeLeft(value.Length) != value)
             {
-                return value + buf;
+                return $"{value}{buf}";
             }
 
             return buf;
@@ -787,18 +779,14 @@ namespace Argus.Extensions
         /// <param name="str"></param>
         public static string DefaultIfNull(this string str)
         {
-            if (str != null)
-            {
-                return str;
-            }
-
-            return string.Empty;
+            return str != null ? str : string.Empty;
         }
 
         /// <summary>
         ///     Returns the specified default value if the current string object is null.
         /// </summary>
         /// <param name="str"></param>
+        /// <param name="defaultValue"></param>
         public static string DefaultIfNull(this string str, string defaultValue)
         {
             if (str != null)
@@ -806,12 +794,7 @@ namespace Argus.Extensions
                 return str;
             }
 
-            if (defaultValue != null)
-            {
-                return defaultValue;
-            }
-
-            return string.Empty;
+            return defaultValue != null ? defaultValue : string.Empty;
         }
 
         /// <summary>
@@ -826,12 +809,7 @@ namespace Argus.Extensions
                 defaultValue = "";
             }
 
-            if (string.IsNullOrEmpty(str))
-            {
-                return defaultValue;
-            }
-
-            return str;
+            return string.IsNullOrEmpty(str) ? defaultValue : str;
         }
 
         /// <summary>
@@ -1265,16 +1243,9 @@ namespace Argus.Extensions
         /// <param name="str"></param>
         public static bool IsGuid(this string str)
         {
-            if (str != null)
+            if (str != null && Guid.TryParse(str, out var testGuid))
             {
-                var testGuid = Guid.Empty;
-
-                if (Guid.TryParse(str, out testGuid))
-                {
-                    return true;
-                }
-
-                return false;
+                return true;
             }
 
             return false;
@@ -1289,12 +1260,7 @@ namespace Argus.Extensions
         {
             if (requireDashes)
             {
-                if (str.Contains("-") & IsGuid(str))
-                {
-                    return true;
-                }
-
-                return false;
+                return str.Contains("-") & IsGuid(str);
             }
 
             return IsGuid(str);
@@ -1340,7 +1306,15 @@ namespace Argus.Extensions
                 return input;
             }
 
-            return input.First().ToString().ToUpper() + input.Substring(1);
+            // Length will be greater than 0 if it gets here.
+            var chars = input.ToCharArray();
+
+            if (char.IsLower(chars[0]))
+            {
+                chars[0] = char.ToUpper(chars[0]);
+            }
+
+            return new string(chars);
         }
 
         /// <summary>
@@ -1717,15 +1691,7 @@ namespace Argus.Extensions
         /// <param name="str"></param>
         public static bool ContainsNumber(this string str)
         {
-            foreach (char c in str)
-            {
-                if (char.IsNumber(c))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return str.Any(c => char.IsNumber(c));
         }
 
         /// <summary>
@@ -1891,10 +1857,8 @@ namespace Argus.Extensions
             {
                 return pluralForm;
             }
-            else
-            {
-                return singularForm;
-            }
+
+            return singularForm;
         }
     }
 }

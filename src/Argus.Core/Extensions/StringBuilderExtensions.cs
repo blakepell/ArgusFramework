@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace Argus.Extensions
@@ -49,6 +50,24 @@ namespace Argus.Extensions
             return sb;
         }
 
+#if NETSTANDARD2_1 || NET5_0
+        /// <summary>
+        ///     Appends the provided value if the condition is true.
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="condition"></param>
+        /// <param name="value"></param>
+        public static StringBuilder AppendIf(this StringBuilder sb, bool condition, ReadOnlySpan<char> value)
+        {
+            if (condition)
+            {
+                sb.Append(value);
+            }
+
+            return sb;
+        }
+#endif
+
         /// <summary>
         ///     Appends the provided formatted text if the condition is true.
         /// </summary>
@@ -90,7 +109,7 @@ namespace Argus.Extensions
         {
             if (sb == null)
             {
-                return sb;
+                return null;
             }
 
             for (int i = 0; i < sb.Length; i++)
@@ -110,7 +129,7 @@ namespace Argus.Extensions
         {
             if (sb == null)
             {
-                return sb;
+                return null;
             }
 
             for (int i = 0; i < sb.Length; i++)
