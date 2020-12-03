@@ -9,7 +9,7 @@ namespace Argus.Audio.NAudio
     /// </summary>
     /// <remarks>
     /// This was originally from a blog post I wrote on 7/26/2013.  I had recently noticed that the code provided in that
-    /// post had mades it's way into 25+ GitHub repositories.  Over the years I have cleaned up and expanded on the code
+    /// post had made it's way into 25+ GitHub repositories.  Over the years I have cleaned up and expanded on the code
     /// provided in that post and seeing that it's being used I felt sharing it as a library / Nuget package might be useful
     /// for some folks.  In particular this version allows for the setting of the AudioDevice (not just the default) as well
     /// has the ability to get to get an audio level from the right and level channels (which you can use to determine if
@@ -25,7 +25,7 @@ namespace Argus.Audio.NAudio
          *            Class:  LoopbackRecorder
          *     Organization:  http://www.blakepell.com
          *     Initial Date:  07/26/2013
-         *     Last Updated:  06/28/2020
+         *     Last Updated:  12/03/2020
          *    Programmer(s):  Blake Pell, blakepell@hotmail.com
          *
          *********************************************************************************************************************/
@@ -48,7 +48,7 @@ namespace Argus.Audio.NAudio
         }
 
         /// <summary>
-        /// Constructor.  Allows for setting up the intial recording device or skipping that step and
+        /// Constructor.  Allows for setting up the initial recording device or skipping that step and
         /// only setting up the Devices object so that the caller can set the device of their choosing.
         /// </summary>
         /// <param name="setupDefaultDevice"></param>
@@ -90,7 +90,7 @@ namespace Argus.Audio.NAudio
             _waveIn.DataAvailable += OnDataAvailable;
             _waveIn.RecordingStopped += OnRecordingStopped;
             _waveIn.StartRecording();
-            IsRecording = true;
+            this.IsRecording = true;
         }
 
         /// <summary>
@@ -98,12 +98,7 @@ namespace Argus.Audio.NAudio
         /// </summary>
         public void StopRecording()
         {
-            if (_waveIn == null)
-            {
-                return;
-            }
-
-            _waveIn.StopRecording();
+            _waveIn?.StopRecording();
         }
 
         /// <summary>
@@ -175,7 +170,7 @@ namespace Argus.Audio.NAudio
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
         }
 
         /// <summary>
@@ -217,7 +212,7 @@ namespace Argus.Audio.NAudio
         /// <summary>
         /// Whether or not recording is currently happening.
         /// </summary>
-        public bool IsRecording { get; private set; } = false;
+        public bool IsRecording { get; private set; }
 
         /// <summary>
         /// A list of the available devices.
@@ -234,10 +229,7 @@ namespace Argus.Audio.NAudio
         /// </summary>
         public MMDevice AudioDevice
         {
-            get
-            {
-                return _audioDevice;
-            }
+            get => _audioDevice;
             set
             {
                 // If the underlying audio device already exists when this is set then dispose of it
@@ -259,10 +251,8 @@ namespace Argus.Audio.NAudio
                 {
                     return (int)this.AudioDevice.AudioMeterInformation.PeakValues[0] * 100;
                 }
-                else
-                {
-                    return 0;
-                }
+
+                return 0;
             }
         }
 
@@ -278,10 +268,8 @@ namespace Argus.Audio.NAudio
                 {
                     return (int)this.AudioDevice.AudioMeterInformation.PeakValues[1] * 100;
                 }
-                else
-                {
-                    return 0;
-                }
+
+                return 0;
             }
         }
 

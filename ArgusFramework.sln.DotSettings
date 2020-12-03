@@ -140,4 +140,5 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/StructuralSearch/RecentSearch/=201911171940388514/SearchPattern/@EntryValue">*&lt;remarks&gt;&lt;/remarks&gt;\r\n</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/StructuralSearch/RecentSearch/=201911171940388514/ShortenReferences/@EntryValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=browsable/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/UserDictionary/Words/=Pell/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Pell/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Wasapi/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
