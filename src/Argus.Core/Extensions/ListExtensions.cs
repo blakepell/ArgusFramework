@@ -193,11 +193,11 @@ namespace Argus.Extensions
         {
             if (order == ListSortDirection.Ascending)
             {
-                ls.Sort((p1, p2) => p1.CompareTo(p2));
+                ls.Sort((p1, p2) => String.Compare(p1, p2, StringComparison.Ordinal));
             }
             else
             {
-                ls.Sort((p1, p2) => p2.CompareTo(p1));
+                ls.Sort((p1, p2) => String.Compare(p2, p1, StringComparison.Ordinal));
             }
         }
 

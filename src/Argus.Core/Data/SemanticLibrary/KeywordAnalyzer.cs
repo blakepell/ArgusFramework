@@ -208,7 +208,7 @@ namespace Argus.Data.SemanticLibrary
 
         private string GetTermFromStemTerm(List<Word> allWords, string term)
         {
-            if (term.IndexOf(" ") > -1)
+            if (term.IndexOf(' ') > -1)
             {
                 var terms = term.Split(' ');
                 var words = new string[terms.Length];
@@ -218,9 +218,7 @@ namespace Argus.Data.SemanticLibrary
                     words[i] = this.GetTermFromStem(allWords, terms[i]);
                 }
 
-                string retval = string.Join(" ", words);
-
-                return retval;
+                return string.Join(" ", words);
             }
 
             return this.GetTermFromStem(allWords, term);
@@ -325,7 +323,7 @@ namespace Argus.Data.SemanticLibrary
             bool found = false;
 
             //if term appears in this sentence, count the terms (words + 2 and 3 word terms)
-            if (term.IndexOf(" ") > -1)
+            if (term.IndexOf(' ') > -1)
             {
                 var termWords = term.Split(' ');
 
@@ -397,7 +395,7 @@ namespace Argus.Data.SemanticLibrary
                         bool found = false;
 
                         //if term appears in this sentence, count the terms (words + 2 and 3 word terms)
-                        if (term.IndexOf(" ") > -1)
+                        if (term.IndexOf(' ') > -1)
                         {
                             var termWords = term.Split(' ');
 

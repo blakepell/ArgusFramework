@@ -1086,7 +1086,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Truncates the string after the first occurence of the character or string provided.
+        ///     Truncates the string after the first occurrence of the character or string provided.
         /// </summary>
         /// <param name="str">The source string.</param>
         /// <param name="searchFor">The marker to use to start the truncation.</param>
@@ -1100,14 +1100,14 @@ namespace Argus.Extensions
 
             if (keepSearchString)
             {
-                return str.Substring(0, str.IndexOf(searchFor) + searchFor.Length);
+                return str.Substring(0, str.IndexOf(searchFor, StringComparison.Ordinal) + searchFor.Length);
             }
 
-            return str.Substring(0, str.IndexOf(searchFor));
+            return str.Substring(0, str.IndexOf(searchFor, StringComparison.Ordinal));
         }
 
         /// <summary>
-        ///     Truncates the string before the first occurence of the character or string provided.
+        ///     Truncates the string before the first occurrence of the character or string provided.
         /// </summary>
         /// <param name="str">The source string.</param>
         /// <param name="searchFor">The marker to use to start the truncation.</param>
@@ -1121,10 +1121,10 @@ namespace Argus.Extensions
 
             if (keepSearchString)
             {
-                return str.Substring(str.IndexOf(searchFor), str.Length - str.IndexOf(searchFor));
+                return str.Substring(str.IndexOf(searchFor, StringComparison.Ordinal), str.Length - str.IndexOf(searchFor, StringComparison.Ordinal));
             }
 
-            return str.Substring(str.IndexOf(searchFor) + searchFor.Length, str.Length - str.IndexOf(searchFor) - searchFor.Length);
+            return str.Substring(str.IndexOf(searchFor, StringComparison.Ordinal) + searchFor.Length, str.Length - str.IndexOf(searchFor, StringComparison.Ordinal) - searchFor.Length);
         }
 
         /// <summary>

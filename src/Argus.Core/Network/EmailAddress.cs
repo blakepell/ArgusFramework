@@ -29,9 +29,9 @@ namespace Argus.Network
         {
             get
             {
-                if (this.Email.Contains("@"))
+                if (this.Email.IndexOf('@') >= 0)
                 {
-                    return this.Email.Left(this.Email.IndexOf("@"));
+                    return this.Email.Left(this.Email.IndexOf('@'));
                 }
 
                 return "";

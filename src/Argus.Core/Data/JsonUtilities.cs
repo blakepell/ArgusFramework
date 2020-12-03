@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
@@ -48,7 +49,12 @@ namespace Argus.Data
             var dt = new DataTable(tableName);
 
             var root = JObject.Parse(json);
-            var items = (JArray) root[tableName];
+            var items = (JArray)root[tableName];
+
+            if (items == null)
+            {
+                return dt;
+            }
 
             for (int i = 0; i <= items.Count - 1; i++)
             {
@@ -58,12 +64,12 @@ namespace Argus.Data
 
                 if (columnsCreated == false)
                 {
-                    item = (JObject) items[i];
+                    item = (JObject)items[i];
                     jtoken = item.First;
 
                     while (jtoken != null)
                     {
-                        dt.Columns.Add(new DataColumn(((JProperty) jtoken).Name));
+                        dt.Columns.Add(new DataColumn(((JProperty)jtoken).Name));
                         jtoken = jtoken.Next;
                     }
 
@@ -71,7 +77,7 @@ namespace Argus.Data
                 }
 
                 // Add each of the columns into a new row then put that new row into the DataTable
-                item = (JObject) items[i];
+                item = (JObject)items[i];
                 jtoken = item.First;
 
                 // Create the new row, put the values into the columns then add the row to the DataTable
@@ -79,7 +85,7 @@ namespace Argus.Data
 
                 while (jtoken != null)
                 {
-                    dr[((JProperty) jtoken).Name] = ((JProperty) jtoken).Value.ToString();
+                    dr[((JProperty)jtoken).Name] = ((JProperty)jtoken).Value.ToString();
                     jtoken = jtoken.Next;
                 }
 
@@ -95,13 +101,16 @@ namespace Argus.Data
         /// <param name="json"></param>
         public static string JsonToQueryString(string json)
         {
-            var jObj = (JObject) JsonConvert.DeserializeObject(json);
+            var jObj = (JObject)JsonConvert.DeserializeObject(json);
 
-            string query = string.Join("&",
-                                       jObj.Children().Cast<JProperty>()
-                                           .Select(jp => jp.Name + "=" + HttpUtility.UrlEncode(jp.Value.ToString())));
+            if (jObj == null)
+            {
+                throw new Exception("The deserialized JSON object was null.");
+            }
 
-            return query;
+            return string.Join("&",
+                       jObj.Children().Cast<JProperty>()
+                           .Select(jp => jp.Name + "=" + HttpUtility.UrlEncode(jp.Value.ToString())));
         }
     }
 }

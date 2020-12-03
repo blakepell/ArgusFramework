@@ -127,19 +127,14 @@ namespace Argus.IO
         /// <param name="fullPath"></param>
         public static string ExtractFileName(string fullPath)
         {
-            int lastSlash = fullPath.LastIndexOf("\\");
+            int lastSlash = fullPath.LastIndexOf('\\');
 
             if (lastSlash == -1)
             {
-                lastSlash = fullPath.LastIndexOf("/");
+                lastSlash = fullPath.LastIndexOf('/');
             }
 
-            if (lastSlash == -1)
-            {
-                return fullPath;
-            }
-
-            return fullPath.Substring(lastSlash + 1);
+            return lastSlash == -1 ? fullPath : fullPath.Substring(lastSlash + 1);
         }
 
         /// <summary>
@@ -149,16 +144,18 @@ namespace Argus.IO
         /// <param name="filePath"></param>
         public static void SafeFileDelete(string filePath)
         {
-            if (File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
-                try
-                {
-                    File.Delete(filePath);
-                }
-                catch
-                {
-                    // eat error
-                }
+                return;
+            }
+
+            try
+            {
+                File.Delete(filePath);
+            }
+            catch
+            {
+                // eat error
             }
         }
 
@@ -169,16 +166,18 @@ namespace Argus.IO
         /// <param name="dirPath"></param>
         public static void SafeDirectoryDelete(string dirPath)
         {
-            if (Directory.Exists(dirPath))
+            if (!Directory.Exists(dirPath))
             {
-                try
-                {
-                    Directory.Delete(dirPath);
-                }
-                catch
-                {
-                    // eat error
-                }
+                return;
+            }
+
+            try
+            {
+                Directory.Delete(dirPath);
+            }
+            catch
+            {
+                // eat error
             }
         }
 
@@ -189,9 +188,7 @@ namespace Argus.IO
         /// <param name="pattern"></param>
         public static void DeleteFilesByPattern(string path, string pattern)
         {
-            var files = Directory.GetFiles(path, pattern);
-
-            foreach (string f in files)
+            foreach (string f in Directory.GetFiles(path, pattern))
             {
                 File.Delete(f);
             }
@@ -211,7 +208,6 @@ namespace Argus.IO
             var di = new DirectoryInfo(dir);
             var files = di.GetFileSystemInfos();
             var orderedFiles = Enumerable.Empty<FileSystemInfo>();
-            ;
             var returnList = new List<string>();
 
             switch (st)
@@ -345,8 +341,7 @@ namespace Argus.IO
             var di = new DirectoryInfo(dir);
             var files = di.GetFileSystemInfos();
             var orderedFiles = Enumerable.Empty<FileSystemInfo>();
-            ;
-
+            
             switch (dateToUse)
             {
                 case SortType.CreationTime:
