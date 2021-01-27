@@ -14,10 +14,39 @@ namespace Argus.Extensions
         //            Module:  StringBuilderExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/12/2008
-        //      Last Updated:  05/06/2019
+        //      Last Updated:  01/27/2021
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
+
+#if NET5_0
+        /// <summary>
+        ///     Finds the first index of a char in a <see cref="StringBuilder"/>.  If not match is found
+        ///     a -1 is returned.
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="c"></param>
+        public static int IndexOf(this StringBuilder sb, char c)
+        {
+            int pos = 0;
+            foreach (var chunk in sb.GetChunks())
+            {
+                var span = chunk.Span;
+
+                for (int i = 0; i < span.Length; i++)
+                {
+                    if (span[i] == c)
+                    {
+                        return pos + i;
+                    }
+                }
+
+                pos += span.Length;
+            }
+
+            return -1;
+        }
+#endif
 
         /// <summary>
         ///     Calls the StringBuilder AppendFormat method and then also calls AppendLine to add the default line terminator to the end

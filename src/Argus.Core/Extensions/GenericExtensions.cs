@@ -15,7 +15,7 @@ namespace Argus.Extensions
         //            Module:  GenericExtensions
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  01/02/2014
-        //      Last Updated:  08/23/2020
+        //      Last Updated:  01/27/2021
         //     Programmer(s):  Blake Pell, blakepell@hotmail.com
         //
         //*********************************************************************************************************************
@@ -38,6 +38,31 @@ namespace Argus.Extensions
         public static bool IsNull<T>(this T? obj) where T : struct
         {
             return !obj.HasValue;
+        }
+
+        /// <summary>
+        ///     Sets a property's value via reflection.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        public static void Set<T>(this T @this, string propertyName, object value)
+        {
+            var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            prop?.SetValue(@this, value, null);
+        }
+
+        /// <summary>
+        ///     Get's a property value via reflection as an object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="propertyName"></param>
+        public static object Get<T>(this T @this, string propertyName)
+        {
+            var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            return prop?.GetValue(@this, null);
         }
 
         /// <summary>
