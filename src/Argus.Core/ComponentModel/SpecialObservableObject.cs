@@ -7,32 +7,42 @@ using System.ComponentModel;
 namespace Argus.ComponentModel
 {
     /// <summary>
-    ///     A collection which is observable.
+    /// A collection which is observable.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SpecialObservableCollection<T> : ObservableCollection<T>
+    public class SpecialObservableCollection<T> : ObservableCollection<T>, IDisposable
     {
         /// <summary>
-        ///     Delegate for when a list item changes.
+        /// Delegate for when a list item changes.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public delegate void ListItemChangedEventHandler(object sender, PropertyChangedEventArgs e);
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         public SpecialObservableCollection()
         {
             this.CollectionChanged += this.OnCollectionChanged;
         }
 
+        /// <summary>
+        /// Event that fires when the collection changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             this.AddOrRemoveListToPropertyChanged(e.NewItems, true);
             this.AddOrRemoveListToPropertyChanged(e.OldItems, false);
         }
 
+        /// <summary>
+        /// Adds or removes from the property changed list.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="add"></param>
         private void AddOrRemoveListToPropertyChanged(IEnumerable list, bool add)
         {
             if (list == null)
@@ -62,7 +72,7 @@ namespace Argus.ComponentModel
         }
 
         /// <summary>
-        /// Implements a compariable version of the Linq Find which searches via index and not IEnumerable and can
+        /// Implements a comparable version of the Linq Find which searches via index and not IEnumerable and can
         /// offer performance improvements over FirstOrDefault when searching in memory objects.
         /// </summary>
         /// <param name="match"></param>
@@ -72,7 +82,7 @@ namespace Argus.ComponentModel
             {
                 throw new ArgumentNullException("Predicate cannot be null.");
             }
-            
+
             for (int i = 0; i < this.Count; i++)
             {
                 if (match(this[i]))
@@ -81,7 +91,7 @@ namespace Argus.ComponentModel
                 }
             }
 
-            return default(T);
+            return default;
         }
 
         private void ListItemPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -94,6 +104,23 @@ namespace Argus.ComponentModel
         private void OnListItemChanged(object sender, PropertyChangedEventArgs e)
         {
             this.ListItemChanged?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Disposes of resources for the SpecialObservableCollection including the removal of
+        /// event handlers.
+        /// </summary>
+        public void Dispose()
+        {
+            this.CollectionChanged -= this.OnCollectionChanged;
+
+            foreach (var item in this)
+            {
+                if (item is INotifyPropertyChanged o)
+                {
+                    o.PropertyChanged -= this.ListItemPropertyChanged;
+                }
+            }
         }
     }
 }
