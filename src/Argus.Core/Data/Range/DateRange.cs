@@ -9,44 +9,41 @@ namespace Argus.Data.Range
     //         Namespace:  Range
     //      Organization:  http://www.blakepell.com        
     //      Initial Date:  06/26/2012
-    //      Last Updated:  04/08/2016
+    //      Last Updated:  01/29/2021
     //     Programmer(s):  Blake Pell, blakepell@hotmail.com
     //
     //*********************************************************************************************************************
 
     /// <summary>
-    ///     A range of date's without times.
+    /// A range of date's without times.
     /// </summary>
     public class DateRange : RangeBase<DateTime>
     {
         /// <summary>
-        ///     The date intervals that the range supports.
+        /// The date intervals that the range supports.
         /// </summary>
         public enum DateInterval
         {
             /// <summary>
-            ///     Interval in days.
+            /// Interval in days.
             /// </summary>
             Day,
-
             /// <summary>
-            ///     Interval in weeks.
+            /// Interval in weeks.
             /// </summary>
             Week,
-
             /// <summary>
-            ///     Interval in months.
+            /// Interval in months.
             /// </summary>
             Month,
-
             /// <summary>
-            ///     Interval in years.
+            /// Interval in years.
             /// </summary>
             Year
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -57,7 +54,7 @@ namespace Argus.Data.Range
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -70,12 +67,12 @@ namespace Argus.Data.Range
         }
 
         /// <summary>
-        ///     The date interval in between items in the range.
+        /// The date interval in between items in the range.
         /// </summary>
         public DateInterval Interval { get; set; }
 
         /// <summary>
-        ///     A list containing all items in the range.
+        /// A list containing all items in the range.
         /// </summary>
         public override List<DateTime> ToList()
         {
@@ -122,7 +119,7 @@ namespace Argus.Data.Range
         }
 
         /// <summary>
-        ///     Returns a comma delimited list of all items in the range.
+        /// Returns a comma delimited list of all items in the range.
         /// </summary>
         public override string ToString()
         {
@@ -130,7 +127,7 @@ namespace Argus.Data.Range
         }
 
         /// <summary>
-        ///     Returns a delimited list of all items in the range.
+        /// Returns a delimited list of all items in the range.
         /// </summary>
         /// <param name="delimiter"></param>
         public string ToString(string delimiter)
@@ -139,7 +136,7 @@ namespace Argus.Data.Range
         }
 
         /// <summary>
-        ///     Returns a delimited list of all items in the range with each item wrapped in a specified character on both sides.
+        /// Returns a delimited list of all items in the range with each item wrapped in a specified character on both sides.
         /// </summary>
         /// <param name="delimiter"></param>
         /// <param name="wrapCharacter"></param>
@@ -150,11 +147,10 @@ namespace Argus.Data.Range
 
             foreach (var d in lst)
             {
-                string shortDate = $"{d.Month}/{d.Day}/{d.Year}";
-                sb.AppendFormat("{0}{1}{0}{2}", wrapCharacter, shortDate, delimiter);
+                sb.AppendFormat("{0}{1}/{2}/{3}{0}{4}", wrapCharacter, d.Month.ToString(), d.Day.ToString(), d.Year.ToString(), delimiter);
             }
 
-            return sb.ToString().TrimEnd(",".ToCharArray());
+            return sb.ToString().TrimEnd(',');
         }
     }
 }

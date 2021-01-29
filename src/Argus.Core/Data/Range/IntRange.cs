@@ -8,19 +8,19 @@ namespace Argus.Data.Range
     //         Namespace:  Range
     //      Organization:  http://www.blakepell.com        
     //      Initial Date:  06/26/2012
-    //      Last Updated:  04/08/2016
+    //      Last Updated:  01/29/2021
     //     Programmer(s):  Blake Pell, blakepell@hotmail.com
     //
     //*********************************************************************************************************************
 
     /// <summary>
-    ///     An integer range
+    /// An integer range
     /// </summary>
     /// <remarks>Add Interval support so the range can be run for intervals of a number and not just by 1's.</remarks>
     public class IntRange : RangeBase<int>
     {
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -29,7 +29,7 @@ namespace Argus.Data.Range
         }
 
         /// <summary>
-        ///     A list containing all items in the range.
+        /// A list containing all items in the range.
         /// </summary>
         public override List<int> ToList()
         {
@@ -61,7 +61,7 @@ namespace Argus.Data.Range
         }
 
         /// <summary>
-        ///     Returns a comma seperated list of all items in the range.
+        /// Returns a comma separated list of all items in the range.
         /// </summary>
         public override string ToString()
         {
@@ -69,7 +69,7 @@ namespace Argus.Data.Range
         }
 
         /// <summary>
-        ///     Returns a delimited list of all items in the range.
+        /// Returns a delimited list of all items in the range.
         /// </summary>
         /// <param name="delimiter"></param>
         public string ToString(string delimiter)
@@ -78,7 +78,7 @@ namespace Argus.Data.Range
         }
 
         /// <summary>
-        ///     Returns a delimited list of all items in the range with each item wrapped in a specified character on both sides.
+        /// Returns a delimited list of all items in the range with each item wrapped in a specified character on both sides.
         /// </summary>
         /// <param name="delimiter"></param>
         /// <param name="wrapCharacter"></param>
@@ -92,7 +92,7 @@ namespace Argus.Data.Range
                 sb.AppendFormat("{0}{1}{0}{2}", wrapCharacter, i.ToString(), delimiter);
             }
 
-            return sb.ToString().TrimEnd(",".ToCharArray());
+            return sb.ToString().TrimEnd(',');
         }
     }
 }
