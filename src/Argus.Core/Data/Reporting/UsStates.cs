@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Argus.Data.Reporting
 {
     /// <summary>
-    ///     Utilities for US States
+    /// Utilities for US States
     /// </summary>
     public class UsStates
     {
@@ -19,7 +19,7 @@ namespace Argus.Data.Reporting
         //*********************************************************************************************************************
 
         /// <summary>
-        ///     An enumeration of the US States.
+        /// An enumeration of the US States.
         /// </summary>
         public enum State
         {
@@ -76,7 +76,7 @@ namespace Argus.Data.Reporting
         }
 
         /// <summary>
-        ///     Returns a state's enum based off of the abbreviation passed in.
+        /// Returns a state's enum based off of the abbreviation passed in.
         /// </summary>
         /// <param name="stateString"></param>
         public static State StateFromString(string stateString)
@@ -239,7 +239,7 @@ namespace Argus.Data.Reporting
         }
 
         /// <summary>
-        ///     A key pair value of the state and it's postal code.  The post code is the Key and the state name is the Value.
+        /// A key pair value of the state and it's postal code.  The post code is the Key and the state name is the Value.
         /// </summary>
         public static Dictionary<string, string> StateList()
         {
