@@ -9,13 +9,13 @@
     <Company>http://www.blakepell.com</Company>
     <Product>Argus Framework - Common Library</Product>
     <Description>Argus Framework - Common Library</Description>
-    <Copyright>2003-2020</Copyright>
+    <Copyright>2003-2021</Copyright>
     <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>2020.11.21.1</Version>
-    <AssemblyVersion>2020.11.21.1</AssemblyVersion>
-    <FileVersion>2020.11.21.1</FileVersion>
+    <Version>2021.1.31.1</Version>
+    <AssemblyVersion>2021.1.31.1</AssemblyVersion>
+    <FileVersion>2021.1.31.1</FileVersion>
     <PackageIconUrl></PackageIconUrl>
     <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
     <PackageTags>argus</PackageTags>
