@@ -1,29 +1,28 @@
-﻿using System.IO;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2010-03-01
+ * @last updated      : 2010-03-01
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System.IO;
 using Argus.Extensions;
 
 namespace Argus.IO
 {
     /// <summary>
-    ///     Class to extract information about a file extension and/or parse lists to return lists containing specific categories of files.
+    /// Class to extract information about a file extension and/or parse lists to return lists containing specific categories of files.
     /// </summary>
     /// <remarks>
-    ///     Additional file path parsing methods are included in the System.IO.Path class of the .Net Framework.
+    /// Additional file path parsing methods are included in the System.IO.Path class of the .Net Framework.
     /// </remarks>
-    public class FileExtensionUtilities
+    public static class FileExtensionUtilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  FileExtensionUtilities
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  03/01/2010
-        //      Last Updated:  03/01/2010
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns the file extension, minus the period in lower case.  The file path can be either a location URL or a web hyper reference.  Reference
-        ///     System.IO.Path for managed .Net Framework file methods.
+        /// Returns the file extension, minus the period in lower case.  The file path can be either a location URL or a web hyper reference.  Reference
+        /// System.IO.Path for managed .Net Framework file methods.
         /// </summary>
         /// <param name="filePath"></param>
         public static string GetFileExtension(string filePath)
@@ -37,7 +36,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Whether or not the path points to a valid image file determined by the extension.
+        /// Whether or not the path points to a valid image file determined by the extension.
         /// </summary>
         /// <param name="filePath"></param>
         public static bool IsImage(string filePath)
@@ -66,7 +65,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Whether or not the path poitns to a valid video file deteremined by the extension.
+        /// Whether or not the path poitns to a valid video file deteremined by the extension.
         /// </summary>
         /// <param name="filepath"></param>
         public static bool IsVideo(string filepath)
@@ -101,7 +100,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Whether or not the path poitns to a valid audio file deteremined by the extension.
+        /// Whether or not the path poitns to a valid audio file deteremined by the extension.
         /// </summary>
         /// <param name="filePath"></param>
         public static bool IsAudio(string filePath)

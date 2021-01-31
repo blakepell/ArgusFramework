@@ -1,7 +1,15 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2010-02-10
+ * @last updated      : 2021-01-29
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Argus.Extensions;
 
 namespace Argus.Data
 {
@@ -27,16 +35,6 @@ namespace Argus.Data
     /// </remarks>
     public class AlphabetLetter
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  AlphabetLetter
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  02/10/2010
-        //      Last Updated:  01/29/2021
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
         /// Constructor:  Initializes the letter with a Char.  The Char must be an alpha letter, if not, an exception will be thrown.
         /// </summary>

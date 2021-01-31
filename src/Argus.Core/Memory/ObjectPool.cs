@@ -1,40 +1,40 @@
-﻿using System.Collections.Concurrent;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2020-02-27
+ * @last updated      : 2021-01-31
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System.Collections.Concurrent;
 
 namespace Argus.Memory
 {
     /// <summary>
-    ///     Represents a pool of objects that can be reused (Note that data in those objects are not cleared between uses).
+    /// Represents a pool of objects that can be reused (Note that data in those objects are not cleared between uses).
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class ObjectPool<T> where T : new()
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  ObjectPool
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  02/27/2020
-        //      Last Updated:  01/31/2021
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Holds the objects in the pool.
+        /// Holds the objects in the pool.
         /// </summary>
         private readonly ConcurrentBag<T> _items = new ConcurrentBag<T>();
 
         /// <summary>
-        ///     The current internal counter of how many objects are in the ConcurrentBag.
+        /// The current internal counter of how many objects are in the ConcurrentBag.
         /// </summary>
-        private int _counter = 0;
+        private int _counter;
 
         /// <summary>
-        ///     The maximum number of objects we will hold in the Pool.  Anything over this number is created and
-        ///     returned on Get but not pooled.
+        /// The maximum number of objects we will hold in the Pool.  Anything over this number is created and
+        /// returned on Get but not pooled.
         /// </summary>
         public int Max { get; set; } = 10;
 
         /// <summary>
-        ///     Releases an object back into the pool.
+        /// Releases an object back into the pool.
         /// </summary>
         /// <param name="item">The item to release back into the pool.</param>
         public void Release(T item)
@@ -47,14 +47,15 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        ///     Gets an object from the pool if one is available.  If an object is not available a new object
-        ///     is created and returned.
+        /// Gets an object from the pool if one is available.  If an object is not available a new object
+        /// is created and returned.
         /// </summary>
         public T Get()
         {
             if (_items.TryTake(out var item))
             {
                 _counter--;
+
                 return item;
             }
 
@@ -66,7 +67,7 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        /// Clears the <see cref="ConcurrentBag{T}"/>.
+        /// Clears the <see cref="ConcurrentBag{T}" />.
         /// </summary>
         public void Clear()
         {
@@ -83,12 +84,11 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        /// The number of items currently held into the <see cref="ConcurrentBag{T}"/>.
+        /// The number of items currently held into the <see cref="ConcurrentBag{T}" />.
         /// </summary>
         public int Count()
         {
             return _counter;
         }
-
     }
 }

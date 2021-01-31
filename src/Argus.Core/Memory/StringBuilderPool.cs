@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2020-02-27
+ * @last updated      : 2021-01-31
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Collections.Concurrent;
 using System.Text;
 using Argus.Extensions;
@@ -11,7 +20,6 @@ namespace Argus.Memory
     public static class StringBuilderPool
     {
         private const int MaxPooledStringBuilders = 64;
-        
         private static readonly ConcurrentQueue<StringBuilder> Pool = new ConcurrentQueue<StringBuilder>();
 
         /// <summary>
@@ -24,7 +32,7 @@ namespace Argus.Memory
             {
                 return sb;
             }
-            
+
             return new StringBuilder();
         }
 
@@ -38,6 +46,7 @@ namespace Argus.Memory
             if (Pool.TryDequeue(out var sb))
             {
                 sb.Append(buf);
+
                 return sb;
             }
 
@@ -54,15 +63,17 @@ namespace Argus.Memory
             if (Pool.TryDequeue(out var sb))
             {
                 sb.Append(sbCopy);
+
                 return sb;
             }
 
             var sbSpan = new StringBuilder();
             sbSpan.Append(sbCopy);
+
             return sbSpan;
         }
 
-#if NETSTANDARD2_1 || NET5_0
+        #if NETSTANDARD2_1 || NET5_0
         /// <summary>
         /// Returns a StringBuilder from the pool and populates it with the specified ReadOnlySpan.  If no
         /// StringBuilder is available a new one will be allocated and returned.        
@@ -80,7 +91,7 @@ namespace Argus.Memory
             sbSpan.Append(span);
             return sbSpan;
         }
-#endif
+        #endif
 
         /// <summary>
         /// Returns a StringBuilder to the pool and clears its contents.
@@ -99,7 +110,7 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        /// Clears the <see cref="StringBuilder"/> <see cref="ConcurrentQueue{T}" /> pool.
+        /// Clears the <see cref="StringBuilder" /> <see cref="ConcurrentQueue{T}" /> pool.
         /// </summary>
         public static void Clear()
         {

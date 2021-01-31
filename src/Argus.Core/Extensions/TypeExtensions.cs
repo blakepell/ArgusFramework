@@ -1,24 +1,23 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2016-01-17
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Type Extensions
+    /// Type Extensions
     /// </summary>
     public static class TypeExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  TypeExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  01/17/2016
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns whether a type is a nullable enum.
+        /// Returns whether a type is a nullable enum.
         /// </summary>
         /// <param name="t"></param>
         /// <remarks>http://stackoverflow.com/questions/2723048/checking-if-type-instance-is-a-nullable-enum-in-c-sharp</remarks>
@@ -28,6 +27,5 @@ namespace Argus.Extensions
 
             return u != null && u.IsEnum;
         }
-
     }
 }

@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2010-03-08
+ * @last updated      : 2017-09-19
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
@@ -8,22 +17,12 @@ using Newtonsoft.Json;
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension Methods for all Objects.
+    /// Extension Methods for all Objects.
     /// </summary>
     public static class ObjectExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  ObjectExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  03/08/2010
-        //      Last Updated:  09/19/2017
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Serializes an object into it's JSON (JavaScript Object Notation) representation.
+        /// Serializes an object into it's JSON (JavaScript Object Notation) representation.
         /// </summary>
         /// <param name="obj"></param>
         public static string ToJson(this object obj)
@@ -32,18 +31,18 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Serializes an object into it's JSON (JavaScript Object Notation) representation.  This method is using
-        ///     Microsoft's JavaScriptSerializer.
+        /// Serializes an object into it's JSON (JavaScript Object Notation) representation.  This method is using
+        /// Microsoft's JavaScriptSerializer.
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="recursionDepth"></param>
         public static string ToJson(this object obj, int recursionDepth)
         {
-            return JsonConvert.SerializeObject(obj, null, Formatting.None, new JsonSerializerSettings { MaxDepth = recursionDepth });
+            return JsonConvert.SerializeObject(obj, null, Formatting.None, new JsonSerializerSettings {MaxDepth = recursionDepth});
         }
 
         /// <summary>
-        ///     Returns the Description attribute that is attached to the object.
+        /// Returns the Description attribute that is attached to the object.
         /// </summary>
         /// <param name="value"></param>
         public static string DescriptionAttribute(this object value)
@@ -70,9 +69,9 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a serializable object into it's XML representation.  This makes a call to the Argus.Utilities.Serialization.ObjectToXML function.
-        ///     Due to issues with generics, this will need to be re-read in with Argus.Utilities.Serialization and not from an extension since the (Of T)
-        ///     needs to be specified and cannot be obtained with GetType.  If an object cannot be serialized this method will throw an exception.
+        /// Converts a serializable object into it's XML representation.  This makes a call to the Argus.Utilities.Serialization.ObjectToXML function.
+        /// Due to issues with generics, this will need to be re-read in with Argus.Utilities.Serialization and not from an extension since the (Of T)
+        /// needs to be specified and cannot be obtained with GetType.  If an object cannot be serialized this method will throw an exception.
         /// </summary>
         /// <param name="obj"></param>
         public static string ToXml(this object obj)
@@ -88,12 +87,12 @@ namespace Argus.Extensions
                 serializer.Serialize(stream, obj);
                 stream.Flush();
 
-                return Encoding.UTF8.GetString(stream.GetBuffer(), 0, (int)stream.Position);
+                return Encoding.UTF8.GetString(stream.GetBuffer(), 0, (int) stream.Position);
             }
         }
 
         /// <summary>
-        ///     Deserializes an object into object format from XML.
+        /// Deserializes an object into object format from XML.
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="xml"></param>
@@ -107,7 +106,7 @@ namespace Argus.Extensions
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {
                 var serializer = new XmlSerializer(typeof(T));
-                obj = (T)serializer.Deserialize(stream);
+                obj = (T) serializer.Deserialize(stream);
             }
         }
     }

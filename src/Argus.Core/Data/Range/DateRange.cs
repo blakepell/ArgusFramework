@@ -1,19 +1,18 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2012-06-26
+ * @last updated      : 2021-01-29
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Argus.Data.Range
 {
-    //*********************************************************************************************************************
-    //
-    //         Namespace:  Range
-    //      Organization:  http://www.blakepell.com        
-    //      Initial Date:  06/26/2012
-    //      Last Updated:  01/29/2021
-    //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-    //
-    //*********************************************************************************************************************
-
     /// <summary>
     /// A range of date's without times.
     /// </summary>

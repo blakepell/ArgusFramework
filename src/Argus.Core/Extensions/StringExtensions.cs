@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2008-01-12
+ * @last updated      : 2020-11-21
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -12,22 +21,12 @@ using Argus.Cryptography;
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     String extension methods.
+    /// String extension methods.
     /// </summary>
     public static class StringExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  StringExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  01/12/2008
-        //      Last Updated:  11/21/2020
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     This function will return the specified amount of characters from the left hand side of the string.  This is the equivalent of the Visual Basic Left function.
+        /// This function will return the specified amount of characters from the left hand side of the string.  This is the equivalent of the Visual Basic Left function.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
@@ -37,7 +36,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     This function will return the specified amount of characters from the right hand side of the string.  This is the equivalent of the Visual Basic Right function.
+        /// This function will return the specified amount of characters from the right hand side of the string.  This is the equivalent of the Visual Basic Right function.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
@@ -47,8 +46,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the specified number of characters from the left hand side of the string.  If the number asked for is longer the
-        ///     string then the entire string is returned without an exception.
+        /// Returns the specified number of characters from the left hand side of the string.  If the number asked for is longer the
+        /// string then the entire string is returned without an exception.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
@@ -69,8 +68,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the specified number of characters from the right hand side of the string.  If the number asked for is longer the
-        ///     string then the entire string is returned without an exception.
+        /// Returns the specified number of characters from the right hand side of the string.  If the number asked for is longer the
+        /// string then the entire string is returned without an exception.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
@@ -90,7 +89,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Retrieves a substring from this instance with error checking to prevent exceptions.
+        /// Retrieves a substring from this instance with error checking to prevent exceptions.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="startIndex"></param>
@@ -105,7 +104,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Retrieves a substring from this instance with error checking to prevent exceptions.
+        /// Retrieves a substring from this instance with error checking to prevent exceptions.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="startIndex"></param>
@@ -133,13 +132,13 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Reports the zero based index of the first occurrence of a matching string.
+        /// Reports the zero based index of the first occurrence of a matching string.
         /// </summary>
         /// <param name="str">The string to search.</param>
         /// <param name="value">The string to search for.</param>
         /// <param name="startIndex"></param>
         /// <returns>
-        ///     Returns the zero based index or a -1 if the string isn't found or the startIndex is greater than the length of the string.
+        /// Returns the zero based index or a -1 if the string isn't found or the startIndex is greater than the length of the string.
         /// </returns>
         public static int SafeIndexOf(this string str, string value, int startIndex)
         {
@@ -157,14 +156,14 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Reports the zero based index of the first occurrence of a matching string.
+        /// Reports the zero based index of the first occurrence of a matching string.
         /// </summary>
         /// <param name="str">The string to search.</param>
         /// <param name="value">The string to search for.</param>
         /// <param name="startIndex"></param>
         /// <param name="length">The number of positions to examine.</param>
         /// <returns>
-        ///     Returns the zero based index or a -1 if the string isn't found or the startIndex is greater than the length of the string.
+        /// Returns the zero based index or a -1 if the string isn't found or the startIndex is greater than the length of the string.
         /// </returns>
         public static int SafeIndexOf(this string str, string value, int startIndex, int length)
         {
@@ -173,7 +172,7 @@ namespace Argus.Extensions
                 return -1;
             }
 
-            if (startIndex > str.Length - 1 || (startIndex + length) > str.Length - 1)
+            if (startIndex > str.Length - 1 || startIndex + length > str.Length - 1)
             {
                 return -1;
             }
@@ -182,13 +181,13 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the index of the specified <see cref="char"/>.
+        /// Returns the index of the specified <see cref="char" />.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="c"></param>
         /// <param name="startIndex"></param>
         /// <returns>
-        ///     Returns the zero based index or a -1 if the char isn't found or the startIndex is greater than the length of the string.
+        /// Returns the zero based index or a -1 if the char isn't found or the startIndex is greater than the length of the string.
         /// </returns>
         public static int SafeIndexOf(this string str, char c, int startIndex)
         {
@@ -201,7 +200,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns true if the specified <see cref="char"/> is found at the start of the string.
+        /// Returns true if the specified <see cref="char" /> is found at the start of the string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="c"></param>
@@ -210,8 +209,7 @@ namespace Argus.Extensions
             return !string.IsNullOrEmpty(str) && str.StartsWith(c);
         }
 
-
-#if NETSTANDARD2_1 || NET5_0
+        #if NETSTANDARD2_1 || NET5_0
         /// <summary>
         ///     Returns true if the specified <see cref="char"/> is found at the end of the string.
         /// </summary>
@@ -221,9 +219,9 @@ namespace Argus.Extensions
         {
             return str.Length > 0 && str[^1].Equals(c);
         }
-#else
+        #else
         /// <summary>
-        ///     Returns true if the specified <see cref="char"/> is found at the end of the string.
+        /// Returns true if the specified <see cref="char" /> is found at the end of the string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="c"></param>
@@ -231,10 +229,10 @@ namespace Argus.Extensions
         {
             return str.Length > 0 && str[str.Length - 1].Equals(c);
         }
-#endif
+        #endif
 
         /// <summary>
-        ///     Simulates the same functionality provide by the traditional 1 based index Mid function.
+        /// Simulates the same functionality provide by the traditional 1 based index Mid function.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="startPos"></param>
@@ -245,8 +243,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Deletes the specified number of characters from the left hand side of the string.  If the number to delete is longer than
-        ///     the length of the string then a blank string will be returned.
+        /// Deletes the specified number of characters from the left hand side of the string.  If the number to delete is longer than
+        /// the length of the string then a blank string will be returned.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
@@ -261,8 +259,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Deletes the specified number of characters from the right hand side of the string.  If the number to delete is longer than
-        ///     the length of the string then a blank string will be returned.
+        /// Deletes the specified number of characters from the right hand side of the string.  If the number to delete is longer than
+        /// the length of the string then a blank string will be returned.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
@@ -277,14 +275,14 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes all line endings from a string using a char array for performance vs.
-        ///     a string replace.
+        /// Removes all line endings from a string using a char array for performance vs.
+        /// a string replace.
         /// </summary>
         /// <param name="s"></param>
         public static string RemoveLineEndings(string s)
         {
             int len = s.Length;
-            char[] output = new char[len];
+            var output = new char[len];
             int i2 = 0;
 
             for (int i = 0; i < len; i++)
@@ -301,8 +299,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a string that is truncated at a given length amount.  Ellipses are then added on at the end but only if
-        ///     the string needs to be trimmed.
+        /// Returns a string that is truncated at a given length amount.  Ellipses are then added on at the end but only if
+        /// the string needs to be trimmed.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="length"></param>
@@ -317,7 +315,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Trims whitespace from the beginning and ending of a string (coupling both Trim and replacing tabs)
+        /// Trims whitespace from the beginning and ending of a string (coupling both Trim and replacing tabs)
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="includeLineTerminators">Whether or not to trim off the line terminators also.</param>
@@ -325,20 +323,20 @@ namespace Argus.Extensions
         {
             if (includeLineTerminators)
             {
-                char[] chars = { ' ', '\t', '\r', '\n' };
+                char[] chars = {' ', '\t', '\r', '\n'};
 
                 return buf.Trim(chars);
             }
             else
             {
-                char[] chars = { ' ', '\t' };
+                char[] chars = {' ', '\t'};
 
                 return buf.Trim(chars);
             }
         }
 
         /// <summary>
-        ///     Trims whitespace from the beginning of a string (coupling both Trim and replacing tabs)
+        /// Trims whitespace from the beginning of a string (coupling both Trim and replacing tabs)
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="includeLineTerminators">Whether or not to trim off the line terminators also.</param>
@@ -346,20 +344,20 @@ namespace Argus.Extensions
         {
             if (includeLineTerminators)
             {
-                char[] chars = { ' ', '\t', '\r', '\n' };
+                char[] chars = {' ', '\t', '\r', '\n'};
 
                 return buf.TrimStart(chars);
             }
             else
             {
-                char[] chars = { ' ', '\t' };
+                char[] chars = {' ', '\t'};
 
                 return buf.TrimStart(chars);
             }
         }
 
         /// <summary>
-        ///     Trims whitespace from the beginning of a string (coupling both Trim and replacing tabs)
+        /// Trims whitespace from the beginning of a string (coupling both Trim and replacing tabs)
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="includeLineTerminators">Whether or not to trim off the line terminators also.</param>
@@ -367,20 +365,20 @@ namespace Argus.Extensions
         {
             if (includeLineTerminators)
             {
-                char[] chars = { ' ', '\t', '\r', '\n' };
+                char[] chars = {' ', '\t', '\r', '\n'};
 
                 return buf.TrimEnd(chars);
             }
             else
             {
-                char[] chars = { ' ', '\t' };
+                char[] chars = {' ', '\t'};
 
                 return buf.TrimEnd(chars);
             }
         }
 
         /// <summary>
-        ///     Removes all trailing occurrences of the specified string.
+        /// Removes all trailing occurrences of the specified string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="trimStr"></param>
@@ -390,7 +388,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes all leading occurrences of the specified string.
+        /// Removes all leading occurrences of the specified string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="trimStr"></param>
@@ -400,7 +398,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes all leading and trailing occurrences of the specified string.
+        /// Removes all leading and trailing occurrences of the specified string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="trimStr"></param>
@@ -410,17 +408,17 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Trims whitespace from the beginning and ending of each line in a string if it contains multiple lines.
+        /// Trims whitespace from the beginning and ending of each line in a string if it contains multiple lines.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="includeLineTerminators">
-        ///     Whether or not to trim off the line terminators also.  If true, this will
-        ///     remove the line terminator from the string.
+        /// Whether or not to trim off the line terminators also.  If true, this will
+        /// remove the line terminator from the string.
         /// </param>
         public static string TrimEachLineWhitespace(this string buf, bool includeLineTerminators)
         {
-            char[] charsWithLineTerminators = { ' ', '\t', '\r', '\n' };
-            char[] charsWithoutLineTerminators = { ' ', '\t' };
+            char[] charsWithLineTerminators = {' ', '\t', '\r', '\n'};
+            char[] charsWithoutLineTerminators = {' ', '\t'};
             var sb = new StringBuilder();
 
             var lines = buf.Split('\n');
@@ -441,8 +439,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Trims whitespace from the beginning and ending of each line in a string if it contains multiple lines.  This overload will not
-        ///     remove line terminators.
+        /// Trims whitespace from the beginning and ending of each line in a string if it contains multiple lines.  This overload will not
+        /// remove line terminators.
         /// </summary>
         /// <param name="buf"></param>
         public static string TrimEachLineWhitespace(this string buf)
@@ -451,7 +449,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Determines whether a string is a numeric value.  This implementation uses Decimal.TryParse to produce it's value.
+        /// Determines whether a string is a numeric value.  This implementation uses Decimal.TryParse to produce it's value.
         /// </summary>
         /// <param name="str"></param>
         public static bool IsNumeric(this string str)
@@ -460,7 +458,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Inserts a string after given number of characters specified in the interval property.
+        /// Inserts a string after given number of characters specified in the interval property.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="textToInsert">The string to insert at the specified interval.  This could be a line break, an HTML tag, etc.</param>
@@ -484,7 +482,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes non-numeric characters from a string.
+        /// Removes non-numeric characters from a string.
         /// </summary>
         /// <param name="value"></param>
         public static string RemoveNonNumericCharacters(this string value)
@@ -493,8 +491,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes non-numeric characters from a string.  An option is available to allow for a period in case this is used with
-        ///     a money value or number that requires a decimal place.
+        /// Removes non-numeric characters from a string.  An option is available to allow for a period in case this is used with
+        /// a money value or number that requires a decimal place.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="allowPeriod">If true, any periods will be left, if false, all periods will also be removed.</param>
@@ -509,8 +507,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes non-numeric characters from a string.  An option is available to allow for a period and/or comma in case this is used with
-        ///     a money value or number that requires a decimal place or a value that requires keeping it's formatting with commas and peroids only.
+        /// Removes non-numeric characters from a string.  An option is available to allow for a period and/or comma in case this is used with
+        /// a money value or number that requires a decimal place or a value that requires keeping it's formatting with commas and peroids only.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="allowPeriod">If true, any periods will be left, if false, all periods will also be removed.</param>
@@ -536,7 +534,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the title case for the string.
+        /// Returns the title case for the string.
         /// </summary>
         /// <param name="value"></param>
         public static string ToTitleCase(this string value)
@@ -547,7 +545,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Inverts the case of each character in a string.
+        /// Inverts the case of each character in a string.
         /// </summary>
         /// <param name="value"></param>
         public static string ToInvertCase(this string value)
@@ -570,7 +568,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts each character in a string to a random upper or lower case.
+        /// Converts each character in a string to a random upper or lower case.
         /// </summary>
         /// <param name="value"></param>
         public static string ToRandomCase(this string value)
@@ -587,7 +585,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes everything from a string that is not a letter or a digit.
+        /// Removes everything from a string that is not a letter or a digit.
         /// </summary>
         /// <param name="s"></param>
         public static string RemoveSpecialCharacters(this string s)
@@ -611,7 +609,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes all numeric characters from a string value.
+        /// Removes all numeric characters from a string value.
         /// </summary>
         /// <param name="value"></param>
         public static string RemoveNumericCharacters(this string value)
@@ -620,7 +618,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes non ASCII characters via a regular expression.
+        /// Removes non ASCII characters via a regular expression.
         /// </summary>
         /// <param name="value"></param>
         public static string RemoveNonAsciiCharacters(this string value)
@@ -629,7 +627,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Normalizes accent marks that some programs and web-sites replace for common characters.
+        /// Normalizes accent marks that some programs and web-sites replace for common characters.
         /// </summary>
         /// <param name="value"></param>
         public static string NormalizeAccentMarks(this string value)
@@ -708,7 +706,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes blank lines including blank lines that just have whitespace on them.
+        /// Removes blank lines including blank lines that just have whitespace on them.
         /// </summary>
         /// <param name="value"></param>
         public static string RemoveBlankLines(this string value)
@@ -717,7 +715,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Creates a string repeated multiple times.
+        /// Creates a string repeated multiple times.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="repeatCount">Number of times to repeat the string</param>
@@ -734,7 +732,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Pad's the right side of a string to make sure it's a specified length.
+        /// Pad's the right side of a string to make sure it's a specified length.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="length"></param>
@@ -744,7 +742,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Adds a value onto the end of the string if it does not already exist there.
+        /// Adds a value onto the end of the string if it does not already exist there.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="value"></param>
@@ -759,7 +757,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Adds a value onto the beginning of a string if it does not already exist there.
+        /// Adds a value onto the beginning of a string if it does not already exist there.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="value"></param>
@@ -774,7 +772,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns an empty string if the current string object is null.
+        /// Returns an empty string if the current string object is null.
         /// </summary>
         /// <param name="str"></param>
         public static string DefaultIfNull(this string str)
@@ -783,7 +781,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the specified default value if the current string object is null.
+        /// Returns the specified default value if the current string object is null.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="defaultValue"></param>
@@ -798,7 +796,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the specified default value if the current string object is null or empty.
+        /// Returns the specified default value if the current string object is null or empty.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="defaultValue"></param>
@@ -813,7 +811,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Indicates whether the regular expression finds a match in the current string object for the specified pattern.
+        /// Indicates whether the regular expression finds a match in the current string object for the specified pattern.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="regExPattern"></param>
@@ -823,7 +821,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Indicates whether the string is a valid regular expression pattern.
+        /// Indicates whether the string is a valid regular expression pattern.
         /// </summary>
         /// <param name="pattern"></param>
         public static bool IsValidRegex(this string pattern)
@@ -846,8 +844,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Indicates whether the string is a valid regular expression pattern.  If the pattern is
-        ///     not valid the exceptionText out parameter will be populated with the syntax error.
+        /// Indicates whether the string is a valid regular expression pattern.  If the pattern is
+        /// not valid the exceptionText out parameter will be populated with the syntax error.
         /// </summary>
         /// <param name="pattern"></param>
         /// <param name="exceptionText"></param>
@@ -860,15 +858,17 @@ namespace Argus.Extensions
             catch (Exception ex)
             {
                 exceptionText = ex.Message;
+
                 return false;
             }
 
             exceptionText = "";
+
             return true;
         }
 
         /// <summary>
-        ///     Will take a string and split its contents into a list based off of a provided delimiter.
+        /// Will take a string and split its contents into a list based off of a provided delimiter.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="delimiter"></param>
@@ -880,7 +880,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Will take a string and split its contents into a list based off of multiple delimiters that are provided.
+        /// Will take a string and split its contents into a list based off of multiple delimiters that are provided.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="delimiter"></param>
@@ -905,7 +905,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Will take a string and split its contents into a string array based off of a provided delimiter.
+        /// Will take a string and split its contents into a string array based off of a provided delimiter.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="delimiter"></param>
@@ -915,7 +915,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Will take a string and split its contents into a list based off of multiple delimiter that are provided.
+        /// Will take a string and split its contents into a list based off of multiple delimiter that are provided.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="delimiter"></param>
@@ -938,7 +938,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     An extension method that replaces the first occurrence of a specified string.
+        /// An extension method that replaces the first occurrence of a specified string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="searchText"></param>
@@ -961,7 +961,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     An extension method that replaces the last occurrence of a specified string.
+        /// An extension method that replaces the last occurrence of a specified string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="searchText"></param>
@@ -984,7 +984,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the string in between two markers.
+        /// Returns the string in between two markers.
         /// </summary>
         /// <param name="searchText"></param>
         /// <param name="beginMarker">The beginning marker, such as a single or double quote.</param>
@@ -1013,7 +1013,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the string in between two markers.
+        /// Returns the string in between two markers.
         /// </summary>
         /// <param name="searchText"></param>
         /// <param name="marker">The beginning and ending marker, such as a single or double quote.</param>
@@ -1025,7 +1025,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     A string value wrapped by a specified character at the beginning and end.
+        /// A string value wrapped by a specified character at the beginning and end.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="wrapCharacter"></param>
@@ -1035,7 +1035,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     A string value wrapped by a beginning and an ending character.
+        /// A string value wrapped by a beginning and an ending character.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="startWrapCharacter"></param>
@@ -1046,7 +1046,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts the string into a Base64 string.  UTF8 is used by default for the encoding as supported by the portable class library.
+        /// Converts the string into a Base64 string.  UTF8 is used by default for the encoding as supported by the portable class library.
         /// </summary>
         /// <param name="buf"></param>
         public static string ToBase64(this string buf)
@@ -1055,7 +1055,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a string into a Base64 string.
+        /// Converts a string into a Base64 string.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="enc">The encoding to use for the Base64 conversion.</param>
@@ -1065,7 +1065,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts the string from a Base64 string to a string.  UTF8 is used by default for the encoding as supported by the portable class library.
+        /// Converts the string from a Base64 string to a string.  UTF8 is used by default for the encoding as supported by the portable class library.
         /// </summary>
         /// <param name="buf"></param>
         public static string FromBase64(this string buf)
@@ -1076,7 +1076,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a Base64 string into a string.
+        /// Converts a Base64 string into a string.
         /// </summary>
         /// <param name="buf"></param>
         /// <param name="enc">The encoding to use for the Base64 conversion.</param>
@@ -1086,7 +1086,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Truncates the string after the first occurrence of the character or string provided.
+        /// Truncates the string after the first occurrence of the character or string provided.
         /// </summary>
         /// <param name="str">The source string.</param>
         /// <param name="searchFor">The marker to use to start the truncation.</param>
@@ -1107,7 +1107,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Truncates the string before the first occurrence of the character or string provided.
+        /// Truncates the string before the first occurrence of the character or string provided.
         /// </summary>
         /// <param name="str">The source string.</param>
         /// <param name="searchFor">The marker to use to start the truncation.</param>
@@ -1128,7 +1128,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Truncates a string after a specified position.
+        /// Truncates a string after a specified position.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="position"></param>
@@ -1144,8 +1144,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Formats a number without decimal places.  If the string is not numeric it's full contents
-        ///     will be returned.  This will return no decimal places.
+        /// Formats a number without decimal places.  If the string is not numeric it's full contents
+        /// will be returned.  This will return no decimal places.
         /// </summary>
         /// <param name="str"></param>
         public static string FormatIfNumber(this string str)
@@ -1161,7 +1161,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Formats a number with commas and the specified number of decimal places.
+        /// Formats a number with commas and the specified number of decimal places.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="decimalPlaces"></param>
@@ -1182,8 +1182,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a string array that contains the substrings in this instance that are delimited by elements of a specified Unicode string.  The
-        ///     string will be converted into a character array and passed on to the underlying String.Split method provided by the .Net Framework.
+        /// Returns a string array that contains the substrings in this instance that are delimited by elements of a specified Unicode string.  The
+        /// string will be converted into a character array and passed on to the underlying String.Split method provided by the .Net Framework.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="delimiter"></param>
@@ -1193,8 +1193,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns all words in a string that start with a specified character (to return hashtags or twitter handles for instance).  This uses a regular expression
-        ///     that return words so it's looking for characters, for example if you were looking for @blakepell or #test.  It would not correctly work with #this.is.a.test.
+        /// Returns all words in a string that start with a specified character (to return hashtags or twitter handles for instance).  This uses a regular expression
+        /// that return words so it's looking for characters, for example if you were looking for @blakepell or #test.  It would not correctly work with #this.is.a.test.
         /// </summary>
         /// <param name="parentText">The text to search.</param>
         /// <param name="wordToSearchFor">This is the character or the start of the word to search for, e.g. #, @</param>
@@ -1211,7 +1211,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a string into a MemoryStream using the specified encoding.
+        /// Converts a string into a MemoryStream using the specified encoding.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="enc">The encoding to use with the string.</param>
@@ -1221,7 +1221,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a string into a MemoryStream.
+        /// Converts a string into a MemoryStream.
         /// </summary>
         /// <param name="buf"></param>
         public static MemoryStream ToMemoryString(this string buf)
@@ -1238,7 +1238,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Determines if the string is a guid format (via Guid.TryParse).
+        /// Determines if the string is a guid format (via Guid.TryParse).
         /// </summary>
         /// <param name="str"></param>
         public static bool IsGuid(this string str)
@@ -1252,7 +1252,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Determines if the string is a guid format and additionally is one that has dashes.
+        /// Determines if the string is a guid format and additionally is one that has dashes.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="requireDashes">Whether or not the potential guid should be validated to include dashes.</param>
@@ -1267,7 +1267,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Normalizes line endings (makes \n\r -> \r\n, makes \n\n, \r\n\r\n) etc.
+        /// Normalizes line endings (makes \n\r -> \r\n, makes \n\n, \r\n\r\n) etc.
         /// </summary>
         /// <param name="str"></param>
         public static string NormalizeLineEndings(this string str)
@@ -1276,19 +1276,19 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Will remove any ASCII characters that are not valid XML characters.
+        /// Will remove any ASCII characters that are not valid XML characters.
         /// </summary>
         /// <param name="input"></param>
         /// <returns>A new string with characters corresponding to invalid XML ASCII codes removed.</returns>
         public static string ToValidXmlAsciiCharacters(this string input)
         {
-            var validCodes = new[] { 0, 9, 10, 13, 32 };
+            var validCodes = new[] {0, 9, 10, 13, 32};
 
             for (int i = 0; i <= 32; i++)
             {
                 if (!validCodes.Contains(i))
                 {
-                    input = input.Replace(Convert.ToString((char)i), "");
+                    input = input.Replace(Convert.ToString((char) i), "");
                 }
             }
 
@@ -1296,7 +1296,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Capitalizes the first letter of a string.
+        /// Capitalizes the first letter of a string.
         /// </summary>
         /// <param name="input"></param>
         public static string Capitalize(this string input)
@@ -1318,7 +1318,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     HTML encodes a string.
+        /// HTML encodes a string.
         /// </summary>
         /// <param name="text"></param>
         public static string HtmlEncode(this string text)
@@ -1327,7 +1327,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Html Decodes a string
+        /// Html Decodes a string
         /// </summary>
         /// <param name="text"></param>
         public static string HtmlDecode(this string text)
@@ -1336,7 +1336,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Url Encodes a string.
+        /// Url Encodes a string.
         /// </summary>
         /// <param name="text"></param>
         public static string UrlEncode(this string text)
@@ -1345,7 +1345,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Url Decodes a string.
+        /// Url Decodes a string.
         /// </summary>
         /// <param name="text"></param>
         public static string UrlDecode(this string text)
@@ -1354,8 +1354,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Attempts to identify the string as a boolean.  This will check the true cases, anything else returns
-        ///     a false.  True is identified as "true", "yes", "on", "1", "y", "t", "checked"
+        /// Attempts to identify the string as a boolean.  This will check the true cases, anything else returns
+        /// a false.  True is identified as "true", "yes", "on", "1", "y", "t", "checked"
         /// </summary>
         /// <param name="value"></param>
         public static bool ToBoolean(this string value)
@@ -1376,7 +1376,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a DateTime if the string is a DateTime
+        /// Returns a DateTime if the string is a DateTime
         /// </summary>
         /// <param name="value"></param>
         public static DateTime ToDateTime(this string value)
@@ -1387,8 +1387,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a DateTime if the string is in a DateTime format.  If the string is not a DateTime
-        ///     it will return the provided default value parameter instead.
+        /// Returns a DateTime if the string is in a DateTime format.  If the string is not a DateTime
+        /// it will return the provided default value parameter instead.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="defaultValue"></param>
@@ -1403,8 +1403,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a DateTime if the string is in a DateTime format.  If not, it will attempt to create a
-        ///     new DateTime from the defaultValue.  If that fails an exception will be thrown.
+        /// Returns a DateTime if the string is in a DateTime format.  If not, it will attempt to create a
+        /// new DateTime from the defaultValue.  If that fails an exception will be thrown.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="defaultValue"></param>
@@ -1419,7 +1419,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a string to a secure string.
+        /// Converts a string to a secure string.
         /// </summary>
         /// <param name="str"></param>
         public static SecureString ConvertToSecureString(this string str)
@@ -1435,7 +1435,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Whether the string is a valid DateTime.
+        /// Whether the string is a valid DateTime.
         /// </summary>
         /// <param name="input"></param>
         public static bool IsDateTime(this string input)
@@ -1449,7 +1449,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a string into it's hexadecimal representation.
+        /// Converts a string into it's hexadecimal representation.
         /// </summary>
         /// <param name="value">String to turn into hexadecimal.</param>
         /// <param name="includeSpace">Whether to include space in between the output values for display purposes.</param>
@@ -1476,7 +1476,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a hexadecimal string into it's string representation.
+        /// Converts a hexadecimal string into it's string representation.
         /// </summary>
         /// <param name="hex"></param>
         public static string FromHexadecimal(this string hex)
@@ -1504,7 +1504,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a string into binary.
+        /// Converts a string into binary.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="includeSpace">Whether to include space in between the output values for display purposes.</param>
@@ -1526,7 +1526,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a string from binary into text.
+        /// Converts a string from binary into text.
         /// </summary>
         /// <param name="value"></param>
         public static string FromBinary(this string value)
@@ -1544,7 +1544,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Safely checks if a string is null or empty.
+        /// Safely checks if a string is null or empty.
         /// </summary>
         /// <param name="value"></param>
         public static bool IsNullOrEmpty(this string value)
@@ -1553,7 +1553,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Safely checks if a string is null, empty or white space.
+        /// Safely checks if a string is null, empty or white space.
         /// </summary>
         /// <param name="value"></param>
         public static bool IsNullOrEmptyOrWhiteSpace(this string value)
@@ -1562,7 +1562,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Pick off one argument from a string and return a tuple
+        /// Pick off one argument from a string and return a tuple
         /// </summary>
         /// <param name="value"></param>
         /// <returns>Tuple where Item1 is the first word and Item2 is the remainder</returns>
@@ -1573,7 +1573,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a list of words as defined by splitting on a space char.
+        /// Returns a list of words as defined by splitting on a space char.
         /// </summary>
         /// <param name="value"></param>
         public static List<string> ToWords(this string value)
@@ -1582,7 +1582,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Gets the first word in the string
+        /// Gets the first word in the string
         /// </summary>
         /// <param name="value"></param>
         public static string FirstWord(this string value)
@@ -1591,7 +1591,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Gets the second word in the string
+        /// Gets the second word in the string
         /// </summary>
         /// <param name="value"></param>
         public static string SecondWord(this string value)
@@ -1600,7 +1600,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Gets the third word in the string
+        /// Gets the third word in the string
         /// </summary>
         /// <param name="value"></param>
         public static string ThirdWord(this string value)
@@ -1609,7 +1609,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Parses the given word from the string
+        /// Parses the given word from the string
         /// </summary>
         public static string ParseWord(this string value, int wordNumber, string delimiter)
         {
@@ -1619,11 +1619,11 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes the word from the string at the given index
+        /// Removes the word from the string at the given index
         /// </summary>
         public static string RemoveWord(this string value, int wordNumber)
         {
-            var strArray = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var strArray = value.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
             string newString = string.Empty;
             int count = 0;
@@ -1686,7 +1686,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Whether or not the string contains a number anywhere in it's contents.
+        /// Whether or not the string contains a number anywhere in it's contents.
         /// </summary>
         /// <param name="str"></param>
         public static bool ContainsNumber(this string str)
@@ -1695,7 +1695,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a <see cref="byte" /> array in the specified encoding.
+        /// Returns a <see cref="byte" /> array in the specified encoding.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="enc"></param>
@@ -1705,7 +1705,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     If the current string starts with a specific <see cref="char"/>.  0 length strings return false.
+        /// If the current string starts with a specific <see cref="char" />.  0 length strings return false.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="c"></param>
@@ -1714,9 +1714,9 @@ namespace Argus.Extensions
             return value.Length > 0 && value[0].Equals(c);
         }
 
-#if NETSTANDARD2_0
+        #if NETSTANDARD2_0
         /// <summary>
-        /// If the current string ends with a specific <see cref="char"/>.  0 length strings return false.
+        /// If the current string ends with a specific <see cref="char" />.  0 length strings return false.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="c"></param>
@@ -1724,7 +1724,7 @@ namespace Argus.Extensions
         {
             return value.Length > 0 && value[value.Length - 1].Equals(c);
         }
-#else
+        #else
         /// <summary>
         ///     If the current string ends with a specific <see cref="char"/>.  0 length strings return false.
         /// </summary>
@@ -1734,9 +1734,8 @@ namespace Argus.Extensions
         {
             return value.Length > 0 && value[^1].Equals(c);
         }
-#endif
-
-#if NETSTANDARD2_0
+        #endif
+        #if NETSTANDARD2_0
         /// <summary>
         /// Returns a string between the first occurrence of two markers with assumption that the end marker
         /// falls after the begin marker.
@@ -1757,10 +1756,8 @@ namespace Argus.Extensions
 
             return str.Substring(pos1, pos2);
         }
-#endif
-
-#if NETSTANDARD2_1 || NET5_0
-
+        #endif
+        #if NETSTANDARD2_1 || NET5_0
         /// <summary>
         /// Returns a string between the first occurrence of two markers.
         /// </summary>
@@ -1792,10 +1789,10 @@ namespace Argus.Extensions
 
             return span.Slice(pos1, pos2).ToString();
         }
-#endif
+        #endif
 
         /// <summary>
-        ///     Encrypts a string with AES encryption.
+        /// Encrypts a string with AES encryption.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="key"></param>
@@ -1805,7 +1802,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Decrypts a string with AES encryption.
+        /// Decrypts a string with AES encryption.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="key"></param>
@@ -1816,7 +1813,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Encrypts a string with AES encryption.
+        /// Encrypts a string with AES encryption.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="key"></param>
@@ -1825,11 +1822,12 @@ namespace Argus.Extensions
         {
             // A specific note that the salt is passed in which can be public.
             var crypt = new Encryption(salt);
+
             return crypt.EncryptToString(str, key);
         }
 
         /// <summary>
-        ///     Decrypts a string with AES encryption.
+        /// Decrypts a string with AES encryption.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="key"></param>
@@ -1838,14 +1836,14 @@ namespace Argus.Extensions
         {
             // A specific note that the salt is passed in which can be public.
             var crypt = new Encryption(salt);
+
             return crypt.DecryptToString(str, key);
         }
 
-
         /// <summary>
-        ///     Returns the plural form which is provided if the count is 0 or greater than 1.  Otherwise
-        ///     the string itself is returned which should be the singular form.  This allows you to return 
-        ///     0 items, 2 items or 1 item depending on the count.
+        /// Returns the plural form which is provided if the count is 0 or greater than 1.  Otherwise
+        /// the string itself is returned which should be the singular form.  This allows you to return
+        /// 0 items, 2 items or 1 item depending on the count.
         /// </summary>
         /// <param name="singularForm"></param>
         /// <param name="count"></param>

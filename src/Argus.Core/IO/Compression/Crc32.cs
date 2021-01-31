@@ -1,3 +1,9 @@
+/*
+ * @author            : Microsoft
+ * @copyright         : Copyright (c) 2006-2008, All rights reserved.
+ * @license           : Microsoft Public License
+ */
+
 // Crc32.cs
 //
 // Copyright (c) 2006, 2007 Microsoft Corporation.  All rights reserved.
@@ -23,9 +29,9 @@ using System.IO;
 namespace Argus.IO.Compression
 {
     /// <summary>
-    ///     Calculates a 32bit Cyclic Redundancy Checksum (CRC) using the
-    ///     same polynomial used by Zip. This type ie generally not used directly
-    ///     by applications wishing to create, read, or manipulate zip archive files.
+    /// Calculates a 32bit Cyclic Redundancy Checksum (CRC) using the
+    /// same polynomial used by Zip. This type ie generally not used directly
+    /// by applications wishing to create, read, or manipulate zip archive files.
     /// </summary>
     public class CRC32
     {
@@ -33,8 +39,8 @@ namespace Argus.IO.Compression
         private readonly uint[] crc32Table;
 
         /// <summary>
-        ///     Construct an instance of the CRC32 class, pre-initialising the table
-        ///     for speed of lookup.
+        /// Construct an instance of the CRC32 class, pre-initialising the table
+        /// for speed of lookup.
         /// </summary>
         public CRC32()
         {
@@ -71,13 +77,13 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     indicates the total number of bytes read on the CRC stream.
-        ///     This is used when writing the ZipDirEntry when compressing files.
+        /// indicates the total number of bytes read on the CRC stream.
+        /// This is used when writing the ZipDirEntry when compressing files.
         /// </summary>
         public int TotalBytesRead { get; private set; }
 
         /// <summary>
-        ///     Returns the CRC32 for the specified stream.
+        /// Returns the CRC32 for the specified stream.
         /// </summary>
         /// <param name="input">The stream over which to calculate the CRC32</param>
         /// <returns>the CRC32 calculation</returns>
@@ -87,7 +93,7 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     Returns the CRC32 for the specified stream, and writes the input into the output stream.
+        /// Returns the CRC32 for the specified stream, and writes the input into the output stream.
         /// </summary>
         /// <param name="input">The stream over which to calculate the CRC32</param>
         /// <param name="output">The stream into which to deflate the input</param>

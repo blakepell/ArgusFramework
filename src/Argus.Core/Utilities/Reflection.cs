@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2010-07-01
+ * @last updated      : 2019-11-16
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -9,45 +18,35 @@ using System.Text;
 namespace Argus.Utilities
 {
     /// <summary>
-    ///     Utilities for use when dealing with reflection and runtime getting, setting and displaying of properties
-    ///     of an object.
+    /// Utilities for use when dealing with reflection and runtime getting, setting and displaying of properties
+    /// of an object.
     /// </summary>
-    public class Reflection
+    public static class Reflection
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Reflection
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  07/01/2010
-        //      Last Updated:  11/16/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     The assembly types supported through via this library.
+        /// The assembly types supported through via this library.
         /// </summary>
         public enum AssemblyTypes
         {
             /// <summary>
-            ///     The Assembly of the method that invoked the currently executing method.
+            /// The Assembly of the method that invoked the currently executing method.
             /// </summary>
             CallingAssembly,
 
             /// <summary>
-            ///     The process executable in the default application domain. In other application
-            ///     domains, this is the first executable that was executed by ExecuteAssembly(String).
+            /// The process executable in the default application domain. In other application
+            /// domains, this is the first executable that was executed by ExecuteAssembly(String).
             /// </summary>
             EntryAssembly,
 
             /// <summary>
-            ///     The assembly that contains the code that is currently executing.
+            /// The assembly that contains the code that is currently executing.
             /// </summary>
             ExecutingAssembly
         }
 
         /// <summary>
-        ///     Determines whether a property of a specific type is browsable.
+        /// Determines whether a property of a specific type is browsable.
         /// </summary>
         /// <param name="t"></param>
         /// <param name="propertyName"></param>
@@ -65,7 +64,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Determines whether a property of a specific type is Browsable.
+        /// Determines whether a property of a specific type is Browsable.
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="propertyName"></param>
@@ -77,7 +76,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Determines whether a property of a specific type is Browsable and can be written to.
+        /// Determines whether a property of a specific type is Browsable and can be written to.
         /// </summary>
         /// <param name="t"></param>
         /// <param name="propertyName"></param>
@@ -97,7 +96,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Determines whether a property of a specific type is Browsable and can be written to.
+        /// Determines whether a property of a specific type is Browsable and can be written to.
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="propertyName"></param>
@@ -109,7 +108,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Gets browsable properties from a type that you can also write to.
+        /// Gets browsable properties from a type that you can also write to.
         /// </summary>
         /// <param name="t"></param>
         public static List<PropertyInfo> GetBrowsableWritableProperties(Type t)
@@ -133,7 +132,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Gets browsable properties from a type that you can also write to.
+        /// Gets browsable properties from a type that you can also write to.
         /// </summary>
         /// <param name="typeName"></param>
         public static List<PropertyInfo> GetBrowsableWritableProperties(string typeName)
@@ -144,7 +143,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Gets just browsable properties from a type whether they are read only or writable.
+        /// Gets just browsable properties from a type whether they are read only or writable.
         /// </summary>
         /// <param name="t"></param>
         public static List<PropertyInfo> GetBrowsableProperties(Type t)
@@ -166,7 +165,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Gets just browsable properties from a type whether they are read only or writable.
+        /// Gets just browsable properties from a type whether they are read only or writable.
         /// </summary>
         /// <param name="typeName"></param>
         public static List<PropertyInfo> GetBrowsableProperties(string typeName)
@@ -177,7 +176,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Returns System.Type classes for all of the types found in the calling assembly.
+        /// Returns System.Type classes for all of the types found in the calling assembly.
         /// </summary>
         public static List<Type> GetTypesInAssembly(AssemblyTypes assemblyType)
         {
@@ -214,7 +213,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Returns System.Type classes for all of the types found in the calling assembly filtered by the namespaceFilter parameter.
+        /// Returns System.Type classes for all of the types found in the calling assembly filtered by the namespaceFilter parameter.
         /// </summary>
         /// <param name="assemblyType"></param>
         /// <param name="namespaceFilter"></param>
@@ -256,7 +255,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Returns a string containing the contents of the specified embedded resource from the executing assembly.
+        /// Returns a string containing the contents of the specified embedded resource from the executing assembly.
         /// </summary>
         /// <param name="name">The name of the file of the embedded resource.  This should include the root namespace preceding the file name.</param>
         /// <returns>A string with the contents of the embedded resource.</returns>
@@ -266,7 +265,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Returns a string containing the contents of the specified embedded resource from the provided assembly.
+        /// Returns a string containing the contents of the specified embedded resource from the provided assembly.
         /// </summary>
         /// <param name="assembly">The System.Reflection.Assembly object you want to get the embedded resource from.</param>
         /// <param name="name">The name of the file of the embedded resource.  This should include the root namespace preceding the file name.</param>
@@ -283,8 +282,8 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Returns a CacheKey that is comprised off of the calling methods reflected namespace, class and
-        ///     method name plus the arguments that are passed in.
+        /// Returns a CacheKey that is comprised off of the calling methods reflected namespace, class and
+        /// method name plus the arguments that are passed in.
         /// </summary>
         /// <param name="args">Arguments unique to the cache item</param>
         /// <returns>String cache key used to cache and item.</returns>

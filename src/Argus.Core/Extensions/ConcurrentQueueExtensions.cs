@@ -1,4 +1,13 @@
-﻿using System.Collections.Concurrent;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2021-01-31
+ * @last updated      : 2021-01-31
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Collections.Concurrent;
 
 namespace Argus.Extensions
 {

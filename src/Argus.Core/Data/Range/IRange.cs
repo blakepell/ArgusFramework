@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2012-06-26
+ * @last updated      : 2016-04-28
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Collections.Generic;
 
 namespace Argus.Data.Range
 {
-    //*********************************************************************************************************************
-    //
-    //         Namespace:  Range
-    //      Organization:  http://www.blakepell.com        
-    //      Initial Date:  06/26/2012
-    //      Last Updated:  04/08/2016
-    //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-    //
-    //*********************************************************************************************************************
-
     /// <summary>
     /// Range interface that specifies the properties and methods that range's should carry.
     /// </summary>

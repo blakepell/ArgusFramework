@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * @author            : Sam Wood, Spksh
+ * @license           : Apache License, Version 2.0  
+ * @website           : https://github.com/Spksh/TentacleSoftware.Telnet
+ */
+
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,17 +17,17 @@ using System.Threading.Tasks;
 namespace Argus.Network
 {
     /// <summary>
-    ///     A telnet client to send a receive messages from a server.
+    /// A telnet client to send a receive messages from a server.
     /// </summary>
     /// <example>
-    ///     var cancellationSource = new CancellationTokenSource();
-    ///     var telnet = new TelnetClient("someserver.somewhere.com", 23, false, cancellationSource.Token);
-    ///     telnet.ConnectionClosed += HandleConnectionClosed;
-    ///     telnet.MessageReceived += HandleMessageReceived;
-    ///     telnet.Connect();
+    /// var cancellationSource = new CancellationTokenSource();
+    /// var telnet = new TelnetClient("someserver.somewhere.com", 23, false, cancellationSource.Token);
+    /// telnet.ConnectionClosed += HandleConnectionClosed;
+    /// telnet.MessageReceived += HandleMessageReceived;
+    /// telnet.Connect();
     /// </example>
     /// <remarks>
-    ///     Based off of: https://github.com/Spksh/TentacleSoftware.Telnet
+    /// Based off of: https://github.com/Spksh/TentacleSoftware.Telnet
     /// </remarks>
     public class TelnetClient : IDisposable
     {
@@ -36,17 +42,17 @@ namespace Argus.Network
         private StreamWriter _tcpWriter;
 
         /// <summary>
-        ///     An event that fires when the connection closes.
+        /// An event that fires when the connection closes.
         /// </summary>
         public EventHandler ConnectionClosed;
 
         /// <summary>
-        ///     An event that fires when a message with data is received.
+        /// An event that fires when a message with data is received.
         /// </summary>
         public EventHandler<string> MessageReceived;
 
         /// <summary>
-        ///     Simple telnet client
+        /// Simple telnet client
         /// </summary>
         /// <param name="host">Destination Hostname or IP</param>
         /// <param name="port">Destination TCP port number</param>
@@ -64,7 +70,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Disposes of the allocated resources.
+        /// Disposes of the allocated resources.
         /// </summary>
         public void Dispose()
         {
@@ -72,11 +78,10 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Connect and wait for incoming messages.
-        ///     When this task completes you are connected.
-        ///     You cannot call this method twice; if you need to reconnect, dispose of this instance and create a new one.
+        /// Connect and wait for incoming messages.
+        /// When this task completes you are connected.
+        /// You cannot call this method twice; if you need to reconnect, dispose of this instance and create a new one.
         /// </summary>
-        /// <returns></returns>
         public async Task Connect()
         {
             if (_tcpClient != null)
@@ -95,14 +100,13 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Connect via SOCKS4 proxy. See http://en.wikipedia.org/wiki/SOCKS#SOCKS4.
-        ///     When this task completes you are connected.
-        ///     You cannot call this method twice; if you need to reconnect, dispose of this instance and create a new one.
+        /// Connect via SOCKS4 proxy. See http://en.wikipedia.org/wiki/SOCKS#SOCKS4.
+        /// When this task completes you are connected.
+        /// You cannot call this method twice; if you need to reconnect, dispose of this instance and create a new one.
         /// </summary>
         /// <param name="socks4ProxyHost"></param>
         /// <param name="socks4ProxyPort"></param>
         /// <param name="socks4ProxyUser"></param>
-        /// <returns></returns>
         public async Task Connect(string socks4ProxyHost, int socks4ProxyPort, string socks4ProxyUser)
         {
             if (_tcpClient != null)
@@ -288,7 +292,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Disconnecting will leave TelnetClient in an unusable state.
+        /// Disconnecting will leave TelnetClient in an unusable state.
         /// </summary>
         public void Disconnect()
         {
@@ -325,7 +329,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Disposes of the allocated resources.
+        /// Disposes of the allocated resources.
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)

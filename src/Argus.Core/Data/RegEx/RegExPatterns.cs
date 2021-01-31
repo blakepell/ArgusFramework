@@ -1,4 +1,13 @@
-﻿using System.Text.RegularExpressions;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2010-07-03
+ * @last updated      : 2016-04-08
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Text.RegularExpressions;
 
 namespace Argus.Data.RegEx
 {
@@ -7,16 +16,6 @@ namespace Argus.Data.RegEx
     /// </summary>
     public class RegExPatterns
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  RegExPatterns
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  07/03/2010
-        //      Last Updated:  04/08/2016
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         public const string Alpha = "^[a-zA-Z]*$";
         public const string AlphaUpperCase = "^[A-Z]*$";
         public const string AlphaLowerCase = "^[a-z]*$";
@@ -43,7 +42,7 @@ namespace Argus.Data.RegEx
         public const string HtmlTags = "<[^>]*>";
 
         /// <summary>
-        /// Uses backreferences and word boundaries to match repeated words separated by whitespace
+        /// Uses back references and word boundaries to match repeated words separated by whitespace
         /// without matching a word with the same ending as the next words beginning.
         /// </summary>
         public const string RepeatedWords = "\\b(\\w+)\\s+\\1\\b";

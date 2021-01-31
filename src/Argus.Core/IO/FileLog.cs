@@ -1,31 +1,30 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2010-11-29
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.IO;
 using System.Text;
 
 namespace Argus.IO
 {
     /// <summary>
-    ///     Utility methods for handling logging entries to file system log files.
+    /// Utility methods for handling logging entries to file system log files.
     /// </summary>
     public class FileLog : IDisposable
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  FileLog
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  11/29/2010
-        //     Last Modified:  11/17/2019
-        //     Programmer(s):  Blake Pell
-        //
-        //*********************************************************************************************************************      
-
         /// <summary>
-        ///     To detect redudant calls
+        /// To detect redundant calls
         /// </summary>
         private bool _disposedValue;
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="logFile">The file to append to.</param>
         public FileLog(string logFile) : this(logFile, FileMode.Append, Encoding.ASCII, true)
@@ -33,7 +32,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="logFile">The file to open for writing</param>
         /// <param name="fileMode">The file mode when opened, whether to append, create new, truncate, etc.</param>
@@ -42,7 +41,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="logFile">The file to open for writing</param>
         /// <param name="fileMode">The file mode when opened, whether to append, create new, truncate, etc.</param>
@@ -52,7 +51,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="logFile">The file to open for writing</param>
         /// <param name="fileMode">The file mode when opened, whether to append, create new, truncate, etc.</param>
@@ -67,27 +66,27 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     The encoding to use when writing to the log file.
+        /// The encoding to use when writing to the log file.
         /// </summary>
         public Encoding Encoding { get; set; }
 
         /// <summary>
-        ///     The file to write to.
+        /// The file to write to.
         /// </summary>
         public string LogFile { get; set; } = "";
 
         /// <summary>
-        ///     The underlying FileStream.
+        /// The underlying FileStream.
         /// </summary>
         public FileStream FileStream { get; }
 
         /// <summary>
-        ///     Whether or not the FileLog should echo it's output to the Console.  This property is ignored on the static declarations.
+        /// Whether or not the FileLog should echo it's output to the Console.  This property is ignored on the static declarations.
         /// </summary>
         public bool Echo { get; set; }
 
         /// <summary>
-        ///     Disposes of all resources in this object.
+        /// Disposes of all resources in this object.
         /// </summary>
         public void Dispose()
         {
@@ -97,7 +96,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Adds an entry to a log file on the file system.
+        /// Adds an entry to a log file on the file system.
         /// </summary>
         /// <param name="msg"></param>
         public void AddEntry(string msg)
@@ -114,8 +113,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Adds an entry to a log file on the file system.  This shared/static method will open the file, append to it
-        ///     and then close the file.  It should not be used for bulk logging, instead, instatiate this class for that.
+        /// Adds an entry to a log file on the file system.  This shared/static method will open the file, append to it
+        /// and then close the file.  It should not be used for bulk logging, instead, instatiate this class for that.
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="logFile"></param>
@@ -127,7 +126,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Truncates the log file if it is over the size of the threshold (e.g. 2048 would be about 2MB).
+        /// Truncates the log file if it is over the size of the threshold (e.g. 2048 would be about 2MB).
         /// </summary>
         /// <param name="logFile">The log file to truncate if the size threshold is met.</param>
         /// <param name="thresholdInKiloBytes"></param>
@@ -149,7 +148,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Formats a log message in a consistent format.
+        /// Formats a log message in a consistent format.
         /// </summary>
         /// <param name="msg">The message to log.</param>
         public static string FormatLogMessage(string msg)
@@ -158,7 +157,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Formats a log message in a consistent format.
+        /// Formats a log message in a consistent format.
         /// </summary>
         /// <param name="msg">The message to log.</param>
         /// <param name="escapeTab">Whether or not to escape a tab character so it is visible in the log.</param>
@@ -174,7 +173,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Closes the underlying FileStream and disposes of it.
+        /// Closes the underlying FileStream and disposes of it.
         /// </summary>
         public void Close()
         {
@@ -188,7 +187,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Disposes of all resources in this object.
+        /// Disposes of all resources in this object.
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)

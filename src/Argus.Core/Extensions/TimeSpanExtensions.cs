@@ -1,26 +1,25 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2012-10-18
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Text;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="TimeSpan"/>
+    /// Extension methods for <see cref="TimeSpan" />
     /// </summary>
     public static class TimeSpanExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  TimeSpanExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  10/18/2012
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Displays a formatted vertical string with line breaks that contains the contents of the current TimeSpan
-        ///     in a human readable form.
+        /// Displays a formatted vertical string with line breaks that contains the contents of the current TimeSpan
+        /// in a human readable form.
         /// </summary>
         /// <param name="ts"></param>
         public static string ToVerticalString(this TimeSpan ts)
@@ -36,7 +35,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Multiplies the TimeSpan by the provided value.
+        /// Multiplies the TimeSpan by the provided value.
         /// </summary>
         /// <param name="ts"></param>
         /// <param name="value"></param>
@@ -46,7 +45,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Divides the TimeSpan by the provided value.
+        /// Divides the TimeSpan by the provided value.
         /// </summary>
         /// <param name="ts"></param>
         /// <param name="value"></param>

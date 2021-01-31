@@ -1,4 +1,13 @@
-﻿using System.IO;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2018-06-12
+ * @last updated      : 2020-04-28
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,16 +18,6 @@ namespace Argus.Cryptography
     /// </summary>
     public static class HashUtilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  HashUtilities
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  06/12/2018
-        //      Last Updated:  04/28/2020
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
         /// Shared function to output the hash from the specified hash algorithm.
         /// </summary>

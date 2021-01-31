@@ -1,25 +1,24 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2013-11-05
+ * @last updated      : 2019-11-18
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Text;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for Byte arrays.
+    /// Extension methods for Byte arrays.
     /// </summary>
     public static class ByteExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  ByteExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  11/05/2013
-        //      Last Updated:  11/18/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Converts a byte array to it's string representation that is encoded with base-64 digits.
+        /// Converts a byte array to it's string representation that is encoded with base-64 digits.
         /// </summary>
         /// <param name="bytes"></param>
         public static string ToBase64String(this byte[] bytes)
@@ -28,7 +27,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a byte array into a string with the specified encoding.
+        /// Converts a byte array into a string with the specified encoding.
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="enc"></param>

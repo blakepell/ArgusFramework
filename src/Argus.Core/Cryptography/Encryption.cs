@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2005-09-28
+ * @last updated      : 2020-04-29
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,16 +19,6 @@ namespace Argus.Cryptography
     /// </summary>
     public class Encryption
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Encryption
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  09/28/2005
-        //      Last Updated:  04/29/2020
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
         /// A sixteen character salt.  This is populated by default with a value but can
         /// be changed by the caller.

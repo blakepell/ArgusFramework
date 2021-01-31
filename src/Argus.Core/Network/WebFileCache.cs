@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2016-11-01
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -7,22 +16,13 @@ using Argus.IO;
 namespace Argus.Network
 {
     /// <summary>
-    ///     Downloads a copy of a file from the web and holds it on the local file system until the cache
-    ///     period is up at which point it will fetch a new copy.
+    /// Downloads a copy of a file from the web and holds it on the local file system until the cache
+    /// period is up at which point it will fetch a new copy.
     /// </summary>
     public class WebFileCache
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  WebFileCache
-        //      Initial Date:  11/01/2016
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="saveLocation">The location to save the cached file in.</param>
         public WebFileCache(string saveLocation)
@@ -31,29 +31,29 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         public WebFileCache()
         {
         }
 
         /// <summary>
-        ///     The path to the last file that was processed.
+        /// The path to the last file that was processed.
         /// </summary>
         public string LastProcessedFile { get; set; }
 
         /// <summary>
-        ///     The directory where cached content should be saved.
+        /// The directory where cached content should be saved.
         /// </summary>
         public string SaveLocation { get; set; }
 
         /// <summary>
-        ///     If set, the name of the file to use in replace of the filename specified in the URL.
+        /// If set, the name of the file to use in replace of the filename specified in the URL.
         /// </summary>
         public string OverrideFilename { get; set; }
 
         /// <summary>
-        ///     Downloads a copy of the file if the file on the file system is older than the threshold.
+        /// Downloads a copy of the file if the file on the file system is older than the threshold.
         /// </summary>
         /// <param name="uri"></param>
         /// <param name="hoursThreshold">The number of hours the file should be cached for before a new copy is fetched.</param>

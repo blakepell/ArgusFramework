@@ -3,15 +3,14 @@ using System.Collections.Generic;
 
 namespace Argus.Data.Range
 {
-    //*********************************************************************************************************************
-    //
-    //         Namespace:  Range
-    //      Organization:  http://www.blakepell.com        
-    //      Initial Date:  06/26/2012
-    //      Last Updated:  04/08/2016
-    //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-    //
-    //*********************************************************************************************************************
+    /*
+     * @author            : Blake Pell
+     * @website           : http://www.blakepell.com
+     * @initial date      : 2012-06-26
+     * @last updated      : 2016-04-28
+     * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+     * @license           : MIT
+     */
 
     /// <summary>
     /// The base class for all ranges.  This implements the functionality for the properties and sets up the methods that must be

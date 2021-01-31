@@ -1,15 +1,24 @@
-﻿using System.Text.RegularExpressions;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2003-04-26
+ * @last updated      : 2021-01-31
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System.Text.RegularExpressions;
 using Argus.Extensions;
 
 namespace Argus.Network
 {
     /// <summary>
-    ///     Basic parsing an validation functions for an e-mail address.
+    /// Basic parsing an validation functions for an e-mail address.
     /// </summary>
     public class EmailAddress
     {
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="email"></param>
         public EmailAddress(string email)
@@ -18,28 +27,17 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     The e-mail address
+        /// The e-mail address
         /// </summary>
-        public string Email { get; set; } = "";
+        public string Email { get; set; }
 
         /// <summary>
-        ///     The portion of the email before the @ symbol
+        /// The portion of the email before the @ symbol
         /// </summary>
-        public string Username
-        {
-            get
-            {
-                if (this.Email.IndexOf('@') >= 0)
-                {
-                    return this.Email.Left(this.Email.IndexOf('@'));
-                }
-
-                return "";
-            }
-        }
+        public string Username => this.Email.IndexOf('@') >= 0 ? this.Email.Left(this.Email.IndexOf('@')) : "";
 
         /// <summary>
-        ///     Whether or not the e-mail address is valid
+        /// Whether or not the e-mail address is valid
         /// </summary>
         public bool IsValid()
         {
@@ -47,7 +45,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Returns the string representation of the email address.
+        /// Returns the string representation of the email address.
         /// </summary>
         public override string ToString()
         {

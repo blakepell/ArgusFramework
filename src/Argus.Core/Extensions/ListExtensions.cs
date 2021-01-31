@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2012-11-19
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,23 +17,14 @@ using System.Text;
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     List extensions.
+    /// List extensions.
     /// </summary>
     public static class ListExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  ListExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  11/19/2012
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
         private static readonly Random _shuffleRng = new Random();
 
         /// <summary>
-        ///     Removes an item from the end of the list and returns it.
+        /// Removes an item from the end of the list and returns it.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="lst"></param>
@@ -43,7 +43,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes an item from the beginning of the list and returns it.
+        /// Removes an item from the beginning of the list and returns it.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="lst"></param>
@@ -62,7 +62,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the first non null value in the list.  If no non null values are found a null is returned.
+        /// Returns the first non null value in the list.  If no non null values are found a null is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="lst"></param>
@@ -80,8 +80,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the first non null value in the list.  If no non null values are found the default value
-        ///     specified is returned.
+        /// Returns the first non null value in the list.  If no non null values are found the default value
+        /// specified is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="lst"></param>
@@ -100,7 +100,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Will concatenate all items in a string list.  The optional delimiter can be used to put a space in or any other delimiter required.
+        /// Will concatenate all items in a string list.  The optional delimiter can be used to put a space in or any other delimiter required.
         /// </summary>
         /// <param name="lst"></param>
         /// <param name="delimiter"></param>
@@ -117,7 +117,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Populates a list with the contents of a delimited string.  Note: This will remove blank entries from the list if they exist.
+        /// Populates a list with the contents of a delimited string.  Note: This will remove blank entries from the list if they exist.
         /// </summary>
         /// <param name="ls"></param>
         /// <param name="buf"></param>
@@ -142,7 +142,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a delimited string from the list.
+        /// Returns a delimited string from the list.
         /// </summary>
         /// <param name="ls"></param>
         /// <param name="delimiter"></param>
@@ -163,7 +163,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a delimited string from the list with each item wrapped by a specified character.
+        /// Returns a delimited string from the list with each item wrapped by a specified character.
         /// </summary>
         /// <param name="ls"></param>
         /// <param name="delimiter"></param>
@@ -185,7 +185,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Sorts the string list is either ascending or descending order.
+        /// Sorts the string list is either ascending or descending order.
         /// </summary>
         /// <param name="ls"></param>
         /// <param name="order"></param>
@@ -193,16 +193,16 @@ namespace Argus.Extensions
         {
             if (order == ListSortDirection.Ascending)
             {
-                ls.Sort((p1, p2) => String.Compare(p1, p2, StringComparison.Ordinal));
+                ls.Sort((p1, p2) => string.Compare(p1, p2, StringComparison.Ordinal));
             }
             else
             {
-                ls.Sort((p1, p2) => String.Compare(p2, p1, StringComparison.Ordinal));
+                ls.Sort((p1, p2) => string.Compare(p2, p1, StringComparison.Ordinal));
             }
         }
 
         /// <summary>
-        ///     Shuffles a list.  Note, this is not thread safe due to Random not being thread safe.
+        /// Shuffles a list.  Note, this is not thread safe due to Random not being thread safe.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
@@ -221,7 +221,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the length of the longest line in the string list.
+        /// Returns the length of the longest line in the string list.
         /// </summary>
         /// <param name="list"></param>
         public static int LengthLongestLine(this List<string> list)
@@ -230,7 +230,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts an <see cref="IEnumerable{T}" /> into an <see cref="ObservableCollection{T}" />.
+        /// Converts an <see cref="IEnumerable{T}" /> into an <see cref="ObservableCollection{T}" />.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ie"></param>

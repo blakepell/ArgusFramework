@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Collections.Generic;
 
 namespace Argus.Data.SemanticLibrary
 {

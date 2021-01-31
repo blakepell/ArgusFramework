@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -47,7 +52,7 @@ namespace Argus.Data.SemanticLibrary
         private static readonly char[] trim = new char[11] {(char) 247, ' ', '\t', '\n', '\r', '[', ']', '(', ')', '{', '}'}; //trim word
 
         /// <summary>
-        ///     Removes non-meaningful words and breaks text into paragraphs.
+        /// Removes non-meaningful words and breaks text into paragraphs.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="wordCount"></param>
@@ -103,12 +108,12 @@ namespace Argus.Data.SemanticLibrary
             }
 
             /* now process rawParagraphs into dense paragraphs
-			 *
-			 * remove all non-essential words: pronouns, helper verbs (to be forms, propositions, a, an, the, conjunctions
-			 *
-			 * split text into sentences ( . ? ! ) and into words stemming each and adding
-			 * to sentences, stems, and termCount (total occurence)
-			*/
+             *
+             * remove all non-essential words: pronouns, helper verbs (to be forms, propositions, a, an, the, conjunctions
+             *
+             * split text into sentences ( . ? ! ) and into words stemming each and adding
+             * to sentences, stems, and termCount (total occurence)
+            */
 
             var paragraphs = new List<Paragraph>();
             var stemmer = new Stemmer();

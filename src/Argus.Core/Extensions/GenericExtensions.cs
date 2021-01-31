@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2014-01-02
+ * @last updated      : 2021-01-27
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,22 +15,12 @@ using System.Reflection;
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Generic extension methods.
+    /// Generic extension methods.
     /// </summary>
     public static class GenericExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  GenericExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  01/02/2014
-        //      Last Updated:  01/27/2021
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Safely determines whether the value is null or not.
+        /// Safely determines whether the value is null or not.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
@@ -31,7 +30,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Safely determines whether the value is null or not.
+        /// Safely determines whether the value is null or not.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
@@ -41,7 +40,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Sets a property's value via reflection.
+        /// Sets a property's value via reflection.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="this"></param>
@@ -54,7 +53,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Get's a property value via reflection as an object.
+        /// Get's a property value via reflection as an object.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="this"></param>
@@ -62,11 +61,12 @@ namespace Argus.Extensions
         public static object Get<T>(this T @this, string propertyName)
         {
             var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
             return prop?.GetValue(@this, null);
         }
 
         /// <summary>
-        ///     Returns a set of items off of the end of the IEnumerable.
+        /// Returns a set of items off of the end of the IEnumerable.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -77,22 +77,22 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Executes an action for each item in the IEnumerable.
+        /// Executes an action for each item in the IEnumerable.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumeration"></param>
         /// <param name="action"></param>
         public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
         {
-            foreach (T item in enumeration)
+            foreach (var item in enumeration)
             {
                 action(item);
             }
         }
 
         /// <summary>
-        ///     Attempt to copy properties from another class where the names match up (and only those
-        ///     properties).
+        /// Attempt to copy properties from another class where the names match up (and only those
+        /// properties).
         /// </summary>
         /// <typeparam name="TSelf"></typeparam>
         /// <typeparam name="TSource"></typeparam>
@@ -113,7 +113,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Adds an object to the list only if it does not already exist in the list.  Null are checked for and will will not be added.
+        /// Adds an object to the list only if it does not already exist in the list.  Null are checked for and will will not be added.
         /// </summary>
         /// <param name="ls"></param>
         /// <param name="value"></param>
@@ -133,7 +133,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Adds the provided item if the condition is true.
+        /// Adds the provided item if the condition is true.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ls"></param>
@@ -155,7 +155,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Checks to see if the current object is contained within the list provided.
+        /// Checks to see if the current object is contained within the list provided.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -166,7 +166,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Checks to see if the current object is contained within the list provided.
+        /// Checks to see if the current object is contained within the list provided.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -177,7 +177,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Turns an IEnumerable into a Markdown table.
+        /// Turns an IEnumerable into a Markdown table.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>

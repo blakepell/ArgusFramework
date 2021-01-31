@@ -1,22 +1,22 @@
-﻿namespace Argus.Math
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2019-09-26
+ * @last updated      : 2019-09-26
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+namespace Argus.Math
 {
     /// <summary>
-    ///     Various math related utilities.
+    /// Various math related utilities.
     /// </summary>
     public static class MathUtilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  MathUtilities
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  09/26/2019
-        //      Last Updated:  09/26/2019
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns the value if it falls in the range of the max and min.  Otherwise it returns
-        ///     the upper or lower boundary depending on which one the value has crossed.
+        /// Returns the value if it falls in the range of the max and min.  Otherwise it returns
+        /// the upper or lower boundary depending on which one the value has crossed.
         /// </summary>
         public static int Clamp(int value, int min, int max)
         {

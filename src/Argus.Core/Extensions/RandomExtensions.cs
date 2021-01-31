@@ -1,23 +1,21 @@
-﻿using System;
+﻿/*
+ * @author            : Dave DeMeulenaere
+ * @last updated      : 2016-05-26
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extensions to the random number generator.
+    /// Extensions to the random number generator.
     /// </summary>
     public static class RandomExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  RandomExtensions
-        //      Initial Date:  N/A
-        //      Last Updated:  05/26/2016
-        //     Programmer(s):  Dave DeMeulenaere <dmdemeul@iu.edu> 
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns the next Int32.
+        /// Returns the next Int32.
         /// </summary>
         /// <param name="rng"></param>
         public static int NextInt32(this Random rng)
@@ -29,7 +27,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the next decimal.
+        /// Returns the next decimal.
         /// </summary>
         /// <param name="rng"></param>
         public static decimal NextDecimal(this Random rng)

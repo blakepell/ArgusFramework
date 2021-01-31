@@ -1,25 +1,24 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2010-06-22
+ * @last updated      : 2016-04-03
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Text;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extensions for Exceptions.
+    /// Extensions for Exceptions.
     /// </summary>
     public static class ExceptionExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  ExceptionExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  06/22/2010
-        //      Last Updated:  04/03/2016
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns the Exception's method and StackTrace.  If an InnerException exists, it also returns the information on it.
+        /// Returns the Exception's method and StackTrace.  If an InnerException exists, it also returns the information on it.
         /// </summary>
         /// <param name="ex"></param>
         public static string ToFormattedString(this Exception ex)

@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2009-01-24
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
@@ -6,22 +15,12 @@ using System.Xml.Serialization;
 namespace Argus.Utilities
 {
     /// <summary>
-    ///     Helps with serializing an object to XML and back again.
+    /// Helps with serializing an object to XML and back again.
     /// </summary>
     public static class XmlSerialization
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  XmlSerialization
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  01/27/2009
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Converts an object to xml
+        /// Converts an object to xml
         /// </summary>
         /// <param name="obj">Object to convert</param>
         public static string ObjectToXml(object obj)
@@ -42,7 +41,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Converts an xml string to an object
+        /// Converts an xml string to an object
         /// </summary>
         /// <typeparam name="T">Object type</typeparam>
         /// <param name="xml">XML string</param>

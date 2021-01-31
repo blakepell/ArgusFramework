@@ -1,3 +1,9 @@
+/*
+ * @author            : Microsoft
+ * @copyright         : Copyright (c) 2006-2008, All rights reserved.
+ * @license           : Microsoft Public License
+ */
+
 // ZipDirEntry.cs
 //
 // Copyright (c) 2006, 2007, 2008 Microsoft Corporation.  All rights reserved.
@@ -13,9 +19,9 @@ using System.IO;
 namespace Argus.IO.Compression
 {
     /// <summary>
-    ///     This class models an entry in the directory contained within the zip file.
-    ///     The class is generally not used from within application code, though it is
-    ///     used by the ZipFile class.
+    /// This class models an entry in the directory contained within the zip file.
+    /// The class is generally not used from within application code, though it is
+    /// used by the ZipFile class.
     /// </summary>
     public class ZipDirEntry
     {
@@ -37,59 +43,59 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     The time at which the file represented by the given entry was last modified.
+        /// The time at which the file represented by the given entry was last modified.
         /// </summary>
         public DateTime LastModified { get; private set; }
 
         /// <summary>
-        ///     The filename of the file represented by the given entry.
+        /// The filename of the file represented by the given entry.
         /// </summary>
         public string FileName { get; private set; }
 
         /// <summary>
-        ///     Any comment associated to the given entry. Comments are generally optional.
+        /// Any comment associated to the given entry. Comments are generally optional.
         /// </summary>
         public string Comment { get; private set; }
 
         /// <summary>
-        ///     The version of the zip engine this archive was made by.
+        /// The version of the zip engine this archive was made by.
         /// </summary>
         public short VersionMadeBy { get; private set; }
 
         /// <summary>
-        ///     The version of the zip engine this archive can be read by.
+        /// The version of the zip engine this archive can be read by.
         /// </summary>
         public short VersionNeeded { get; private set; }
 
         /// <summary>
-        ///     The compression method used to generate the archive.  Deflate is our favorite!
+        /// The compression method used to generate the archive.  Deflate is our favorite!
         /// </summary>
         public short CompressionMethod { get; private set; }
 
         /// <summary>
-        ///     The size of the file, after compression. This size can actually be
-        ///     larger than the uncompressed file size, for previously compressed
-        ///     files, such as JPG files.
+        /// The size of the file, after compression. This size can actually be
+        /// larger than the uncompressed file size, for previously compressed
+        /// files, such as JPG files.
         /// </summary>
         public int CompressedSize { get; private set; }
 
         /// <summary>
-        ///     The size of the file before compression.
+        /// The size of the file before compression.
         /// </summary>
         public int UncompressedSize { get; private set; }
 
         /// <summary>
-        ///     True if the referenced entry is a directory.
+        /// True if the referenced entry is a directory.
         /// </summary>
         public bool IsDirectory => _InternalFileAttrs == 0 && (_ExternalFileAttrs & 0x0010) == 0x0010;
 
         /// <summary>
-        ///     The calculated compression ratio for the given file.
+        /// The calculated compression ratio for the given file.
         /// </summary>
         public double CompressionRatio => 100 * (1.0 - 1.0 * this.CompressedSize / (1.0 * this.UncompressedSize));
 
         /// <summary>
-        ///     Reads one entry from the zip directory structure in the zip file.
+        /// Reads one entry from the zip directory structure in the zip file.
         /// </summary>
         /// <param name="s">the stream from which to read.</param>
         /// <returns>the entry read from the archive.</returns>
@@ -165,7 +171,7 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     Returns true if the passed-in value is a valid signature for a ZipDirEntry.
+        /// Returns true if the passed-in value is a valid signature for a ZipDirEntry.
         /// </summary>
         /// <param name="signature">the candidate 4-byte signature value.</param>
         /// <returns>true, if the signature is valid according to the PKWare spec.</returns>

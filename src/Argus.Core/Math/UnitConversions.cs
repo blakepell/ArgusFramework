@@ -1,22 +1,21 @@
-﻿namespace Argus.Math
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2015-02-20
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+namespace Argus.Math
 {
     /// <summary>
-    ///     Provides various unit conversions.
+    /// Provides various unit conversions.
     /// </summary>
     public static class UnitConversions
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  UnitConversions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  02/20/2015
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Converts Fahrenheit to Celsius.
+        /// Converts Fahrenheit to Celsius.
         /// </summary>
         /// <param name="degreesFahrenheit"></param>
         /// <returns>Celsius degrees</returns>
@@ -26,7 +25,7 @@
         }
 
         /// <summary>
-        ///     Converts Celsius to Fahrenheit.
+        /// Converts Celsius to Fahrenheit.
         /// </summary>
         /// <param name="degreesCelsius"></param>
         /// <returns>Fahrenheit degrees</returns>
@@ -36,7 +35,7 @@
         }
 
         /// <summary>
-        ///     Converts miles to kilometers.
+        /// Converts miles to kilometers.
         /// </summary>
         /// <param name="miles"></param>
         /// <returns>Kilometers</returns>
@@ -46,7 +45,7 @@
         }
 
         /// <summary>
-        ///     Converts kilometers to miles.
+        /// Converts kilometers to miles.
         /// </summary>
         /// <param name="kilometers"></param>
         /// <returns>Miles</returns>
@@ -56,7 +55,7 @@
         }
 
         /// <summary>
-        ///     Converts kilograms to pounds
+        /// Converts kilograms to pounds
         /// </summary>
         /// <param name="kilograms"></param>
         /// <returns>Pounds</returns>
@@ -66,7 +65,7 @@
         }
 
         /// <summary>
-        ///     Converts pounds to kilograms
+        /// Converts pounds to kilograms
         /// </summary>
         /// <param name="pounds"></param>
         /// <returns>Kilograms</returns>
@@ -76,7 +75,7 @@
         }
 
         /// <summary>
-        ///     Converts meters to feet
+        /// Converts meters to feet
         /// </summary>
         /// <param name="meters"></param>
         /// <returns>Feet</returns>
@@ -86,7 +85,7 @@
         }
 
         /// <summary>
-        ///     Converts feet to meters
+        /// Converts feet to meters
         /// </summary>
         /// <param name="feet"></param>
         /// <returns>Meters</returns>
@@ -96,7 +95,7 @@
         }
 
         /// <summary>
-        ///     Converts inches to centimeters
+        /// Converts inches to centimeters
         /// </summary>
         /// <param name="inches"></param>
         /// <returns>Centimeters</returns>
@@ -106,7 +105,7 @@
         }
 
         /// <summary>
-        ///     Converts centimeters to inches.
+        /// Converts centimeters to inches.
         /// </summary>
         /// <param name="centimeters"></param>
         /// <returns>Inches</returns>
@@ -116,7 +115,7 @@
         }
 
         /// <summary>
-        ///     Converts inches to feet.
+        /// Converts inches to feet.
         /// </summary>
         /// <param name="inches"></param>
         /// <returns>Feet</returns>
@@ -126,7 +125,7 @@
         }
 
         /// <summary>
-        ///     Converts feet to inches.
+        /// Converts feet to inches.
         /// </summary>
         /// <param name="feet"></param>
         /// <returns>Inches</returns>
@@ -136,7 +135,7 @@
         }
 
         /// <summary>
-        ///     Miles per hour to kilometers per hour
+        /// Miles per hour to kilometers per hour
         /// </summary>
         /// <param name="mph"></param>
         /// <returns>Kilometers per hour (KPH)</returns>
@@ -146,7 +145,7 @@
         }
 
         /// <summary>
-        ///     Kilometers per hour to miles per hour
+        /// Kilometers per hour to miles per hour
         /// </summary>
         /// <param name="kph"></param>
         /// <returns>Miles per hour (MPH)</returns>
@@ -156,7 +155,7 @@
         }
 
         /// <summary>
-        ///     Converts inches to millimeters
+        /// Converts inches to millimeters
         /// </summary>
         /// <param name="inches"></param>
         /// <returns>Millimeters</returns>
@@ -166,7 +165,7 @@
         }
 
         /// <summary>
-        ///     Converts millimeters to inches
+        /// Converts millimeters to inches
         /// </summary>
         /// <param name="millimeters"></param>
         /// <returns>Inches</returns>

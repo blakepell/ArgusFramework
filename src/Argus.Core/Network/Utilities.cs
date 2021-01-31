@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2009-04-07
+ * @last updated      : 2020-10-23
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -6,22 +15,12 @@ using System.Threading.Tasks;
 namespace Argus.Network
 {
     /// <summary>
-    ///     Network utilities for Windows.
+    /// Network utilities for Windows.
     /// </summary>
     public static class Utilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  NetworkUtilities
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  04/07/2009
-        //      Last Updated:  10/23/2020
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns multiple IPs if they exist.  This is for the workstation/server that this is being run from.
+        /// Returns multiple IPs if they exist.  This is for the workstation/server that this is being run from.
         /// </summary>
         public static List<IPAddress> GetLocalIpAddresses()
         {
@@ -37,7 +36,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Returns a string value of all ip addresses that are resolved separated by commas.
+        /// Returns a string value of all ip addresses that are resolved separated by commas.
         /// </summary>
         /// <param name="ipAddress"></param>
         public static List<string> Resolve(string ipAddress)
@@ -54,18 +53,19 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet (http, https).
+        /// Downloads a file from the Internet (http, https).
         /// </summary>
         /// <param name="remoteUrl"></param>
         public static async Task<byte[]> DownloadFileAsync(string remoteUrl)
         {
             using var wc = new System.Net.WebClient();
+
             return await wc.DownloadDataTaskAsync(remoteUrl);
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet (http, https).  If an exception occurs a
-        ///     null will be returned.
+        /// Downloads a file from the Internet (http, https).  If an exception occurs a
+        /// null will be returned.
         /// </summary>
         /// <param name="remoteUrl"></param>
         public static async Task<byte[]> SafeDownloadFileAsync(string remoteUrl)
@@ -73,6 +73,7 @@ namespace Argus.Network
             try
             {
                 using var wc = new System.Net.WebClient();
+
                 return await wc.DownloadDataTaskAsync(remoteUrl);
             }
             catch
@@ -82,18 +83,19 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet (http, https).
+        /// Downloads a file from the Internet (http, https).
         /// </summary>
         /// <param name="remoteUrl"></param>
         public static byte[] DownloadFile(string remoteUrl)
         {
             using var wc = new System.Net.WebClient();
+
             return wc.DownloadData(remoteUrl);
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet (http, https).  If an exception occurs a
-        ///     null will be returned.
+        /// Downloads a file from the Internet (http, https).  If an exception occurs a
+        /// null will be returned.
         /// </summary>
         /// <param name="remoteUrl"></param>
         public static byte[] SafeDownloadFile(string remoteUrl)
@@ -101,6 +103,7 @@ namespace Argus.Network
             try
             {
                 using var wc = new System.Net.WebClient();
+
                 return wc.DownloadData(remoteUrl);
             }
             catch
@@ -110,7 +113,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet (http, https)
+        /// Downloads a file from the Internet (http, https)
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <param name="localFileName"></param>
@@ -124,7 +127,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet (http, https)
+        /// Downloads a file from the Internet (http, https)
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <param name="localFileName"></param>
@@ -138,7 +141,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet (http, https)
+        /// Downloads a file from the Internet (http, https)
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <param name="localFileName"></param>
@@ -154,7 +157,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet (http, https)
+        /// Downloads a file from the Internet (http, https)
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <param name="localFileName"></param>
@@ -170,7 +173,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet with provided authentication credentials (http, https, ftp)
+        /// Downloads a file from the Internet with provided authentication credentials (http, https, ftp)
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <param name="localFileName"></param>
@@ -189,7 +192,7 @@ namespace Argus.Network
         }
 
         /// <summary>
-        ///     Downloads a file from the Internet with provided authentication credentials (http, https, ftp)
+        /// Downloads a file from the Internet with provided authentication credentials (http, https, ftp)
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <param name="localFileName"></param>
@@ -206,6 +209,5 @@ namespace Argus.Network
                 await wc.DownloadFileTaskAsync(remoteUrl, localFileName);
             }
         }
-
     }
 }

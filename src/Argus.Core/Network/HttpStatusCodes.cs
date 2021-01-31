@@ -1,29 +1,28 @@
-﻿namespace Argus.Network
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2018-12-12
+ * @last updated      : 2018-12-12
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+namespace Argus.Network
 {
     /// <summary>
-    ///     Methods to description and work with HTTP status codes.
+    /// Methods to description and work with HTTP status codes.
     /// </summary>
     /// <remarks>
-    ///     1xx (Informational): The request was received, continuing process
-    ///     2xx (Successful): The request was successfully received, understood, and accepted
-    ///     3xx (Redirection): Further action needs to be taken in order to complete the request
-    ///     4xx (Client Error): The request contains bad syntax or cannot be fulfilled
-    ///     5xx (Server Error): The server failed to fulfill an apparently valid request
+    /// 1xx (Informational): The request was received, continuing process
+    /// 2xx (Successful): The request was successfully received, understood, and accepted
+    /// 3xx (Redirection): Further action needs to be taken in order to complete the request
+    /// 4xx (Client Error): The request contains bad syntax or cannot be fulfilled
+    /// 5xx (Server Error): The server failed to fulfill an apparently valid request
     /// </remarks>
     public static class HttpStatusCodes
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  HttpStatusCodes
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  12/12/2018
-        //      Last Updated:  12/12/2018
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns the description of a HTTP status code.
+        /// Returns the description of a HTTP status code.
         /// </summary>
         /// <param name="statusCode"></param>
         public static string StatusDescription(int statusCode)

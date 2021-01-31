@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-03-27
+ * @last updated      : 2021-01-31
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 
 namespace Argus.Data.Reporting
@@ -6,17 +15,9 @@ namespace Argus.Data.Reporting
     /// <summary>
     /// Utilities for US States
     /// </summary>
-    public class UsStates
+    #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public static class UsStates
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  UsStates
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  03/27/2009
-        //      Last Updated:  04/08/2016
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
 
         /// <summary>
         /// An enumeration of the US States.
@@ -300,4 +301,6 @@ namespace Argus.Data.Reporting
             return lst;
         }
     }
+    #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
 }

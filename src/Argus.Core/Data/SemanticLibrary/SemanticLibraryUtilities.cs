@@ -1,18 +1,22 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Argus.Data.SemanticLibrary
 {
     /// <summary>
-    ///     Helps with serializing an object to XML and back again.
+    /// Helps with serializing an object to XML and back again.
     /// </summary>
     public static class SemanticLibraryUtilities
     {
         /// <summary>
-        ///     Returns a string list of all keywords from the provided text.
+        /// Returns a string list of all keywords from the provided text.
         /// </summary>
         /// <param name="txt">The text to extract keywords from.</param>
-        /// <returns></returns>
         public static List<string> GetKeywords(string txt)
         {
             var ka = new KeywordAnalyzer();
@@ -28,11 +32,10 @@ namespace Argus.Data.SemanticLibrary
         }
 
         /// <summary>
-        ///     Returns a string list of all keywords from the provided text.
+        /// Returns a string list of all keywords from the provided text.
         /// </summary>
         /// <param name="txt">The text to extract keywords from.</param>
         /// <param name="rankLimit">The maximum number to return based on the rank provided by the SemanticLibrary.</param>
-        /// <returns></returns>
         public static List<string> GetKeywords(string txt, int rankLimit)
         {
             var ka = new KeywordAnalyzer();

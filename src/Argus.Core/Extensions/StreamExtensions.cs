@@ -1,25 +1,24 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2008-01-12
+ * @last updated      : 2019-11-16
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.IO;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extensions to Stream based classes.
+    /// Extensions to Stream based classes.
     /// </summary>
     public static class StreamExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  StreamExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  01/12/2008
-        //      Last Updated:  11/16/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Converts the contents of a stream to a string.
+        /// Converts the contents of a stream to a string.
         /// </summary>
         /// <param name="s"></param>
         public static string ToText(this Stream s)
@@ -34,12 +33,12 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a MemoryStream into a Base64 encoded string.
+        /// Converts a MemoryStream into a Base64 encoded string.
         /// </summary>
         /// <param name="ms"></param>
         /// <remarks>
-        ///     The MemoryStream provides a ToArray() function which lends itself
-        ///     to converting to Base64 with Convert easier.
+        /// The MemoryStream provides a ToArray() function which lends itself
+        /// to converting to Base64 with Convert easier.
         /// </remarks>
         public static string ToBase64(this MemoryStream ms)
         {
@@ -47,12 +46,12 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a Stream into a Base64 encoded string.
+        /// Converts a Stream into a Base64 encoded string.
         /// </summary>
         /// <param name="s"></param>
         /// <remarks>
-        ///     Stream does not have a ToArray, we will leverage the MemoryStream
-        ///     method to easily return Base64 for the Stream.
+        /// Stream does not have a ToArray, we will leverage the MemoryStream
+        /// method to easily return Base64 for the Stream.
         /// </remarks>
         public static string ToBase64(this Stream s)
         {

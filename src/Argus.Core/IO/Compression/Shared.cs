@@ -1,3 +1,9 @@
+/*
+ * @author            : Microsoft
+ * @copyright         : Copyright (c) 2006-2008, All rights reserved.
+ * @license           : Microsoft Public License
+ */
+
 // Shared.cs
 //
 // Copyright (c) 2006, 2007 Microsoft Corporation.  All rights reserved.

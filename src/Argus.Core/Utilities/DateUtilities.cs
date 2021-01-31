@@ -1,26 +1,24 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2011-11-16
+ * @last updated      : 2017-11-14
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 
 namespace Argus.Utilities
 {
     /// <summary>
-    ///     Various utility methods to deal with dates.
+    /// Various utility methods to deal with dates.
     /// </summary>
-    /// <remarks></remarks>
     public class DateUtilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  DateUtilities
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  11/16/2011
-        //      Last Updated:  11/14/2017
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns a random date between the minimum value allowed in .Net and the maximum value allowed.  This uses
-        ///     DateTime.MinValue and DateTime.MaxValue.
+        /// Returns a random date between the minimum value allowed in .Net and the maximum value allowed.  This uses
+        /// DateTime.MinValue and DateTime.MaxValue.
         /// </summary>
         /// <returns>A random DateTime between DateTime.MinValue and DateTime.MaxValue.</returns>
         public static DateTime GetRandomDate()
@@ -29,7 +27,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Returns a random date between the specified start and end date.
+        /// Returns a random date between the specified start and end date.
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
@@ -44,7 +42,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Returns a random date between the specified start and end date.
+        /// Returns a random date between the specified start and end date.
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
@@ -54,7 +52,7 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Returns whether a string is a valid DateTime.
+        /// Returns whether a string is a valid DateTime.
         /// </summary>
         /// <param name="strDate"></param>
         public static bool IsValidDateTime(string strDate)
@@ -65,13 +63,13 @@ namespace Argus.Utilities
         }
 
         /// <summary>
-        ///     Formats date ranges for a string display.
+        /// Formats date ranges for a string display.
         /// </summary>
         /// <param name="startDate">The start date.</param>
         /// <param name="endDate">The end date</param>
         /// <remarks>
-        ///     This is initially designed to display formatted date ranges for calendar event items
-        ///     based off of dates that incoming from Exchange.
+        /// This is initially designed to display formatted date ranges for calendar event items
+        /// based off of dates that incoming from Exchange.
         /// </remarks>
         public static string FormatDateRange(DateTime startDate, DateTime endDate)
         {

@@ -1,3 +1,9 @@
+/*
+ * @author            : Microsoft
+ * @copyright         : Copyright (c) 2006-2008, All rights reserved.
+ * @license           : Microsoft Public License
+ */
+
 // ZipEntry.cs
 //
 // Copyright (c) 2006, 2007, 2008 Microsoft Corporation.  All rights reserved.
@@ -14,15 +20,15 @@ using System.IO.Compression;
 namespace Argus.IO.Compression
 {
     /// <summary>
-    ///     Represents a single entry in a ZipFile. Typically, applications
-    ///     get a ZipEntry by enumerating the entries within a ZipFile.
+    /// Represents a single entry in a ZipFile. Typically, applications
+    /// get a ZipEntry by enumerating the entries within a ZipFile.
     /// </summary>
     public class ZipEntry
     {
+        private readonly bool _Debug = false;
         private byte[] __filedata;
         private DeflateStream _CompressedStream;
         private int _Crc32;
-        private readonly bool _Debug = false;
         private byte[] _Extra;
         private int _LastModDateTime;
         private DateTime _LastModified;
@@ -34,76 +40,76 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     The time and date at which the file indicated by the ZipEntry was last modified.
+        /// The time and date at which the file indicated by the ZipEntry was last modified.
         /// </summary>
         public DateTime LastModified => _LastModified;
 
         /// <summary>
-        ///     When this is set, this class trims the volume (eg C:\) from any
-        ///     fully-qualified pathname on the ZipEntry,
-        ///     before writing the ZipEntry into the ZipFile. This flag affects only
-        ///     zip creation.
+        /// When this is set, this class trims the volume (eg C:\) from any
+        /// fully-qualified pathname on the ZipEntry,
+        /// before writing the ZipEntry into the ZipFile. This flag affects only
+        /// zip creation.
         /// </summary>
         public bool TrimVolumeFromFullyQualifiedPaths { get; set; } = true;
 
         /// <summary>
-        ///     The name of the filesystem file, referred to by the ZipEntry.
-        ///     This may be different than the path used in the archive itself.
+        /// The name of the filesystem file, referred to by the ZipEntry.
+        /// This may be different than the path used in the archive itself.
         /// </summary>
         public string LocalFileName { get; private set; }
 
         /// <summary>
-        ///     The name of the file contained in the ZipEntry.
-        ///     When writing a zip, this path has backslashes replaced with
-        ///     forward slashes, according to the zip spec, for compatibility
-        ///     with Unix and Amiga.
+        /// The name of the file contained in the ZipEntry.
+        /// When writing a zip, this path has backslashes replaced with
+        /// forward slashes, according to the zip spec, for compatibility
+        /// with Unix and Amiga.
         /// </summary>
         public string FileName { get; private set; }
 
         /// <summary>
-        ///     The version of the zip engine needed to read the ZipEntry.  This is usually 0x14.
+        /// The version of the zip engine needed to read the ZipEntry.  This is usually 0x14.
         /// </summary>
         public short VersionNeeded { get; private set; }
 
         /// <summary>
-        ///     The comment attached to the ZipEntry.
+        /// The comment attached to the ZipEntry.
         /// </summary>
         public string Comment { get; set; }
 
         /// <summary>
-        ///     a bitfield as defined in the zip spec.
+        /// a bitfield as defined in the zip spec.
         /// </summary>
         public short BitField { get; private set; }
 
         /// <summary>
-        ///     The compression method employed for this ZipEntry. 0x08 = Deflate.  0x00 = Store (no compression).
+        /// The compression method employed for this ZipEntry. 0x08 = Deflate.  0x00 = Store (no compression).
         /// </summary>
         public short CompressionMethod { get; private set; }
 
         /// <summary>
-        ///     The compressed size of the file, in bytes, within the zip archive.
+        /// The compressed size of the file, in bytes, within the zip archive.
         /// </summary>
         public int CompressedSize { get; private set; }
 
         /// <summary>
-        ///     The size of the file, in bytes, before compression, or after extraction.
+        /// The size of the file, in bytes, before compression, or after extraction.
         /// </summary>
         public int UncompressedSize { get; private set; }
 
         /// <summary>
-        ///     The ratio of compressed size to uncompressed size.
+        /// The ratio of compressed size to uncompressed size.
         /// </summary>
         public double CompressionRatio => 100 * (1.0 - 1.0 * this.CompressedSize / (1.0 * this.UncompressedSize));
 
         /// <summary>
-        ///     True if the entry is a directory (not a file).
-        ///     This is a readonly property on the entry.
+        /// True if the entry is a directory (not a file).
+        /// This is a readonly property on the entry.
         /// </summary>
         public bool IsDirectory { get; private set; }
 
         /// <summary>
-        ///     Specifies that the extraction should overwrite any existing files.
-        ///     This applies only when calling an Extract method.
+        /// Specifies that the extraction should overwrite any existing files.
+        /// This applies only when calling an Extract method.
         /// </summary>
         public bool OverwriteOnExtract { get; set; }
 
@@ -252,7 +258,7 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     Reads one ZipEntry from the given stream.
+        /// Reads one ZipEntry from the given stream.
         /// </summary>
         /// <param name="s">the stream to read from.</param>
         /// <returns>the ZipEntry read from the stream.</returns>
@@ -323,61 +329,61 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     Extract the entry to the filesystem, starting at the current working directory.
+        /// Extract the entry to the filesystem, starting at the current working directory.
         /// </summary>
         /// <overloads>This method has five overloads.</overloads>
         /// <remarks>
-        ///     <para>
-        ///         The last modified time of the created file may be adjusted
-        ///         during extraction to compensate
-        ///         for differences in how the .NET Base Class Library deals
-        ///         with daylight saving time (DST) versus how the Windows
-        ///         filesystem deals with daylight saving time.
-        ///         See http://blogs.msdn.com/oldnewthing/archive/2003/10/24/55413.aspx for more context.
-        ///     </para>
-        ///     <para>
-        ///         In a nutshell: Daylight savings time rules change regularly.  In
-        ///         2007, for example, the inception week of DST changed.  In 1977,
-        ///         DST was in place all year round. in 1945, likewise.  And so on.
-        ///         Win32 does not attempt to guess which time zone rules were in
-        ///         effect at the time in question.  It will render a time as
-        ///         "standard time" and allow the app to change to DST as necessary.
-        ///         .NET makes a different choice.
-        ///     </para>
-        ///     <para>
-        ///         Compare the output of FileInfo.LastWriteTime.ToString("f") with
-        ///         what you see in the property sheet for a file that was last
-        ///         written to on the other side of the DST transition. For example,
-        ///         suppose the file was last modified on October 17, during DST but
-        ///         DST is not currently in effect. Explorer's file properties
-        ///         reports Thursday, October 17, 2003, 8:45:38 AM, but .NETs
-        ///         FileInfo reports Thursday, October 17, 2003, 9:45 AM.
-        ///     </para>
-        ///     <para>
-        ///         Win32 says, "Thursday, October 17, 2002 8:45:38 AM PST". Note:
-        ///         Pacific STANDARD Time. Even though October 17 of that year
-        ///         occurred during Pacific Daylight Time, Win32 displays the time as
-        ///         standard time because that's what time it is NOW.
-        ///     </para>
-        ///     <para>
-        ///         .NET BCL assumes that the current DST rules were in place at the
-        ///         time in question.  So, .NET says, "Well, if the rules in effect
-        ///         now were also in effect on October 17, 2003, then that would be
-        ///         daylight time" so it displays "Thursday, October 17, 2003, 9:45
-        ///         AM PDT" - daylight time.
-        ///     </para>
-        ///     <para>
-        ///         So .NET gives a value which is more intuitively correct, but is
-        ///         also potentially incorrect, and which is not invertible. Win32
-        ///         gives a value which is intuitively incorrect, but is strictly
-        ///         correct.
-        ///     </para>
-        ///     <para>
-        ///         With this adjustment, I add one hour to the tweaked .NET time, if
-        ///         necessary.  That is to say, if the time in question had occurred
-        ///         in what the .NET BCL assumed to be DST (an assumption that may be
-        ///         wrong given the constantly changing DST rules).
-        ///     </para>
+        /// <para>
+        /// The last modified time of the created file may be adjusted
+        /// during extraction to compensate
+        /// for differences in how the .NET Base Class Library deals
+        /// with daylight saving time (DST) versus how the Windows
+        /// filesystem deals with daylight saving time.
+        /// See http://blogs.msdn.com/oldnewthing/archive/2003/10/24/55413.aspx for more context.
+        /// </para>
+        /// <para>
+        /// In a nutshell: Daylight savings time rules change regularly.  In
+        /// 2007, for example, the inception week of DST changed.  In 1977,
+        /// DST was in place all year round. in 1945, likewise.  And so on.
+        /// Win32 does not attempt to guess which time zone rules were in
+        /// effect at the time in question.  It will render a time as
+        /// "standard time" and allow the app to change to DST as necessary.
+        /// .NET makes a different choice.
+        /// </para>
+        /// <para>
+        /// Compare the output of FileInfo.LastWriteTime.ToString("f") with
+        /// what you see in the property sheet for a file that was last
+        /// written to on the other side of the DST transition. For example,
+        /// suppose the file was last modified on October 17, during DST but
+        /// DST is not currently in effect. Explorer's file properties
+        /// reports Thursday, October 17, 2003, 8:45:38 AM, but .NETs
+        /// FileInfo reports Thursday, October 17, 2003, 9:45 AM.
+        /// </para>
+        /// <para>
+        /// Win32 says, "Thursday, October 17, 2002 8:45:38 AM PST". Note:
+        /// Pacific STANDARD Time. Even though October 17 of that year
+        /// occurred during Pacific Daylight Time, Win32 displays the time as
+        /// standard time because that's what time it is NOW.
+        /// </para>
+        /// <para>
+        /// .NET BCL assumes that the current DST rules were in place at the
+        /// time in question.  So, .NET says, "Well, if the rules in effect
+        /// now were also in effect on October 17, 2003, then that would be
+        /// daylight time" so it displays "Thursday, October 17, 2003, 9:45
+        /// AM PDT" - daylight time.
+        /// </para>
+        /// <para>
+        /// So .NET gives a value which is more intuitively correct, but is
+        /// also potentially incorrect, and which is not invertible. Win32
+        /// gives a value which is intuitively incorrect, but is strictly
+        /// correct.
+        /// </para>
+        /// <para>
+        /// With this adjustment, I add one hour to the tweaked .NET time, if
+        /// necessary.  That is to say, if the time in question had occurred
+        /// in what the .NET BCL assumed to be DST (an assumption that may be
+        /// wrong given the constantly changing DST rules).
+        /// </para>
         /// </remarks>
         public void Extract()
         {
@@ -385,14 +391,14 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     Extract the entry to a file in the filesystem, potentially overwriting
-        ///     any existing file.
+        /// Extract the entry to a file in the filesystem, potentially overwriting
+        /// any existing file.
         /// </summary>
         /// <remarks>
-        ///     <para>
-        ///         See the remarks on the non-parameterized version of the extract() method,
-        ///         for information on the last modified time of the created file.
-        ///     </para>
+        /// <para>
+        /// See the remarks on the non-parameterized version of the extract() method,
+        /// for information on the last modified time of the created file.
+        /// </para>
         /// </remarks>
         /// <param name="WantOverwrite">true if the caller wants to overwrite an existing file by the same name in the filesystem.</param>
         public void Extract(bool WantOverwrite)
@@ -401,8 +407,8 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     Extracts the entry to the specified stream.
-        ///     For example, the caller could specify Console.Out, or a MemoryStream.
+        /// Extracts the entry to the specified stream.
+        /// For example, the caller could specify Console.Out, or a MemoryStream.
         /// </summary>
         /// <param name="s">the stream to which the entry should be extracted.  </param>
         public void Extract(Stream s)
@@ -411,11 +417,11 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     Extract the entry to the filesystem, starting at the specified base directory.
+        /// Extract the entry to the filesystem, starting at the specified base directory.
         /// </summary>
         /// <para>
-        ///     See the remarks on the non-parameterized version of the extract() method,
-        ///     for information on the last modified time of the created file.
+        /// See the remarks on the non-parameterized version of the extract() method,
+        /// for information on the last modified time of the created file.
         /// </para>
         /// <param name="BaseDirectory">the pathname of the base directory</param>
         public void Extract(string BaseDirectory)
@@ -424,12 +430,12 @@ namespace Argus.IO.Compression
         }
 
         /// <summary>
-        ///     Extract the entry to the filesystem, starting at the specified base directory,
-        ///     and potentially overwriting existing files in the filesystem.
+        /// Extract the entry to the filesystem, starting at the specified base directory,
+        /// and potentially overwriting existing files in the filesystem.
         /// </summary>
         /// <para>
-        ///     See the remarks on the non-parameterized version of the extract() method,
-        ///     for information on the last modified time of the created file.
+        /// See the remarks on the non-parameterized version of the extract() method,
+        /// for information on the last modified time of the created file.
         /// </para>
         /// <param name="BaseDirectory">the pathname of the base directory</param>
         /// <param name="Overwrite">If true, overwrite any existing files if necessary upon extraction.</param>

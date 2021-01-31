@@ -1,24 +1,23 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2008-01-12
+ * @last updated      : 2019-07-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for the DateTime type.
+    /// Extension methods for the DateTime type.
     /// </summary>
     public static class DateExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  DateExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  01/12/2008
-        //      Last Updated:  07/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns the month padded with two characters, E.g. 02 instead of 2.
+        /// Returns the month padded with two characters, E.g. 02 instead of 2.
         /// </summary>
         /// <param name="d"></param>
         public static string MonthTwoCharacters(this DateTime d)
@@ -27,7 +26,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the day padded with two characters.  E.g. 02 instead of 2.
+        /// Returns the day padded with two characters.  E.g. 02 instead of 2.
         /// </summary>
         /// <param name="d"></param>
         public static string DayTwoCharacters(this DateTime d)
@@ -36,7 +35,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the first day of the month for the date.
+        /// Returns the first day of the month for the date.
         /// </summary>
         /// <param name="d"></param>
         public static DateTime FirstDayOfMonth(this DateTime d)
@@ -45,7 +44,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the first date of the year for the date specified (e.g. 1/1/2001 for a date that falls in 2001).
+        /// Returns the first date of the year for the date specified (e.g. 1/1/2001 for a date that falls in 2001).
         /// </summary>
         /// <param name="d"></param>
         public static DateTime FirstDayOfYear(this DateTime d)
@@ -54,7 +53,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the last date of the year for the date specified (e.g. 12/31/2001 for a date that falls in 2001).
+        /// Returns the last date of the year for the date specified (e.g. 12/31/2001 for a date that falls in 2001).
         /// </summary>
         /// <param name="d"></param>
         public static DateTime LastDayOfYear(this DateTime d)
@@ -63,7 +62,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a short date string with leading 0's (e.g. 08/29/2011)
+        /// Returns a short date string with leading 0's (e.g. 08/29/2011)
         /// </summary>
         /// <param name="d"></param>
         public static string ToShortDatePaddedString(this DateTime d)
@@ -72,7 +71,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the last day of the month for the date.
+        /// Returns the last day of the month for the date.
         /// </summary>
         /// <param name="d"></param>
         public static DateTime LastDayOfMonth(this DateTime d)
@@ -81,7 +80,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the month as it's English equivalent.
+        /// Returns the month as it's English equivalent.
         /// </summary>
         /// <param name="d"></param>
         public static string MonthToEnglish(this DateTime d)
@@ -118,11 +117,11 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Calculate the age of an individual.
+        /// Calculate the age of an individual.
         /// </summary>
         /// <param name="birthDate"></param>
         /// <remarks>
-        ///     This calculates an age off of the current date time, not the value of the date.
+        /// This calculates an age off of the current date time, not the value of the date.
         /// </remarks>
         public static int CalculateAge(this DateTime birthDate)
         {
@@ -138,7 +137,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Whether or not the date is a Saturday or a Sunday.
+        /// Whether or not the date is a Saturday or a Sunday.
         /// </summary>
         /// <param name="d"></param>
         public static bool IsWeekend(this DateTime d)
@@ -152,7 +151,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Whether or not the date is a weekday (Monday, Tuesday, Wednesday, Thursday or Friday)
+        /// Whether or not the date is a weekday (Monday, Tuesday, Wednesday, Thursday or Friday)
         /// </summary>
         /// <param name="d"></param>
         public static bool IsWeekday(this DateTime d)
@@ -160,9 +159,9 @@ namespace Argus.Extensions
             return !IsWeekend(d);
         }
 
-#if NETSTANDARD2_0
+        #if NETSTANDARD2_0
         /// <summary>
-        ///     Returns the Unix timestamp for the specified date.
+        /// Returns the Unix timestamp for the specified date.
         /// </summary>
         /// <param name="d"></param>
         public static long UnixEpoch(this DateTime d)
@@ -172,11 +171,11 @@ namespace Argus.Extensions
 
             return Convert.ToInt64(unixTimeSpan.TotalSeconds);
         }
-#endif
+        #endif
 
         /// <summary>
-        ///     Retuns a file friendly format of this name in YYYY-MM-DD format.  If the includeTime parameter is true then the format
-        ///     will be YYYY-MM-DD-HH.MM.SS.MS
+        /// Retuns a file friendly format of this name in YYYY-MM-DD format.  If the includeTime parameter is true then the format
+        /// will be YYYY-MM-DD-HH.MM.SS.MS
         /// </summary>
         /// <param name="d"></param>
         /// <param name="includeTime"></param>
@@ -207,7 +206,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the SQL Server formatted TimeStamp for the beginning of the day, leaving off the "time" portion, e.g. 2012-05-21 00:00:00.
+        /// Returns the SQL Server formatted TimeStamp for the beginning of the day, leaving off the "time" portion, e.g. 2012-05-21 00:00:00.
         /// </summary>
         /// <param name="d"></param>
         public static string ToSqlServerTimeStampBeginningOfDay(this DateTime d)
@@ -216,7 +215,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the SQL Server formatted TimeStamp as a string.
+        /// Returns the SQL Server formatted TimeStamp as a string.
         /// </summary>
         /// <param name="d"></param>
         public static string ToSqlServerTimeStamp(this DateTime d)
@@ -225,7 +224,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a date into a SQLite format timestamp suitable for storage (SQLite does not support an official date field at this time).
+        /// Converts a date into a SQLite format timestamp suitable for storage (SQLite does not support an official date field at this time).
         /// </summary>
         /// <param name="d"></param>
         public static string ToSqliteTimeStamp(this DateTime d)
@@ -234,7 +233,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a string formatted in an Oracle accepted format.
+        /// Returns a string formatted in an Oracle accepted format.
         /// </summary>
         /// <param name="d"></param>
         public static string ToOracleSqlDate(this DateTime d)
@@ -243,7 +242,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a date in a short date format (10/4/2012).
+        /// Returns a date in a short date format (10/4/2012).
         /// </summary>
         /// <param name="d"></param>
         /// <remarks>The base class library does not include this commonly used method off of date, so it is being provided here as an extension.</remarks>
@@ -253,7 +252,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the DateTime of the next week day after the given DateTime.
+        /// Returns the DateTime of the next week day after the given DateTime.
         /// </summary>
         /// <param name="d"></param>
         public static DateTime NextWeekDay(this DateTime d)
@@ -274,7 +273,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the DateTime of the previous week day before the given DateTime.
+        /// Returns the DateTime of the previous week day before the given DateTime.
         /// </summary>
         /// <param name="d"></param>
         public static DateTime LastWeekDay(this DateTime d)
@@ -295,8 +294,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the quarter end date for the DateTime value. Optionally, provide an int to add or subtract quarters
-        ///     to return previous or future quarter dates.
+        /// Returns the quarter end date for the DateTime value. Optionally, provide an int to add or subtract quarters
+        /// to return previous or future quarter dates.
         /// </summary>
         /// <param name="d"></param>
         /// <param name="addQuarters"></param>
@@ -314,8 +313,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the quarter start date for the DateTime value. Optionally, provide an int to add or subtract quarters
-        ///     to return previous or future quarter dates.
+        /// Returns the quarter start date for the DateTime value. Optionally, provide an int to add or subtract quarters
+        /// to return previous or future quarter dates.
         /// </summary>
         /// <param name="d"></param>
         /// <param name="addQuarters"></param>
@@ -333,7 +332,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Whether or not the date is a month end.
+        /// Whether or not the date is a month end.
         /// </summary>
         /// <param name="d"></param>
         public static bool IsMonthEnd(this DateTime d)

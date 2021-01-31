@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-04-06
+ * @last updated      : 2019-11-18
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.IO;
 using Argus.Cryptography;
 using Argus.Data;
@@ -6,22 +15,12 @@ using Argus.Data;
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extensions for methods in classes of the System.IO namespace.
+    /// Extensions for methods in classes of the System.IO namespace.
     /// </summary>
     public static class SystemIOExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  SystemIOExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  04/06/2009
-        //      Last Updated:  11/18/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns the file size formatted, such as 10 KB, 120 MB, 1.2 GB, 1.4 TB, etc.  This supports sizes up to and including Terabytes.
+        /// Returns the file size formatted, such as 10 KB, 120 MB, 1.2 GB, 1.4 TB, etc.  This supports sizes up to and including Terabytes.
         /// </summary>
         /// <param name="fi"></param>
         public static string FormattedFileSize(this FileInfo fi)
@@ -30,7 +29,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a cryptographic SHA256 hash for the bytes in a given file.
+        /// Returns a cryptographic SHA256 hash for the bytes in a given file.
         /// </summary>
         /// <param name="fi"></param>
         public static string CreateSha256Hash(this FileInfo fi)
@@ -39,7 +38,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a cryptographic SHA512 hash for the bytes in a given file.
+        /// Returns a cryptographic SHA512 hash for the bytes in a given file.
         /// </summary>
         /// <param name="fi"></param>
         public static string CreateSha512Hash(this FileInfo fi)
@@ -48,7 +47,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a cryptographic MD5 hash for the bytes in a given file.
+        /// Returns a cryptographic MD5 hash for the bytes in a given file.
         /// </summary>
         /// <param name="fi"></param>
         public static string CreateMD5(this FileInfo fi)
@@ -57,7 +56,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     This opens up a string that is able to read a locked file if the file is locked but shareable.
+        /// This opens up a string that is able to read a locked file if the file is locked but shareable.
         /// </summary>
         /// <param name="fi"></param>
         private static byte[] ReadFile(FileInfo fi)

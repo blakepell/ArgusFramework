@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2010-07-07
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,95 +15,85 @@ using System.Linq;
 namespace Argus.IO
 {
     /// <summary>
-    ///     Utility methods for dealing with common file system operations.
+    /// Utility methods for dealing with common file system operations.
     /// </summary>
-    public class FileSystemUtilities
+    public static class FileSystemUtilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  FileSystemUtilities
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  07/07/2010
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Date types supported for the SafeFileType extension method.
+        /// Date types supported for the SafeFileType extension method.
         /// </summary>
         public enum DateType
         {
             /// <summary>
-            ///     The creation time for the file.
+            /// The creation time for the file.
             /// </summary>
             CreationTime,
 
             /// <summary>
-            ///     The UTC creation time for the file.
+            /// The UTC creation time for the file.
             /// </summary>
             CreationTimeUtc,
 
             /// <summary>
-            ///     The last write time for the file.
+            /// The last write time for the file.
             /// </summary>
             LastWriteTime,
 
             /// <summary>
-            ///     The UTC last write time for the file.
+            /// The UTC last write time for the file.
             /// </summary>
             LastWriteTimeUtc,
 
             /// <summary>
-            ///     The last access time for the file.
+            /// The last access time for the file.
             /// </summary>
             LastAccessTime,
 
             /// <summary>
-            ///     The UTC last access time for the file.
+            /// The UTC last access time for the file.
             /// </summary>
             LastAccessTimeUtc
         }
 
         /// <summary>
-        ///     The supported sort orders.
+        /// The supported sort orders.
         /// </summary>
         public enum SortOrder
         {
             /// <summary>
-            ///     Ascending sort from first to last.
+            /// Ascending sort from first to last.
             /// </summary>
             Ascending,
 
             /// <summary>
-            ///     Descending sort from last to first.
+            /// Descending sort from last to first.
             /// </summary>
             Descending
         }
 
         /// <summary>
-        ///     The supported file sorts.
+        /// The supported file sorts.
         /// </summary>
         public enum SortType
         {
             /// <summary>
-            ///     The last time the file was written to.
+            /// The last time the file was written to.
             /// </summary>
             LastWriteTime,
 
             /// <summary>
-            ///     The last time the file was accessed.
+            /// The last time the file was accessed.
             /// </summary>
             LastAccessTime,
 
             /// <summary>
-            ///     The time the file was originally created.
+            /// The time the file was originally created.
             /// </summary>
             CreationTime
         }
 
         /// <summary>
-        ///     Creates the full directory tree of a specified path.  This method will create all parent directories necessary.
+        /// Creates the full directory tree of a specified path.  This method will create all parent directories necessary.
         /// </summary>
         /// <param name="di"></param>
         public static void CreateDirectory(DirectoryInfo di)
@@ -111,7 +110,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Creates the full directory tree of a specified path.  This method will create all parent directories necessary.
+        /// Creates the full directory tree of a specified path.  This method will create all parent directories necessary.
         /// </summary>
         /// <param name="path"></param>
         public static void CreateDirectory(string path)
@@ -121,8 +120,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Extracts the file name off of a path.  This function first looks for a \ character and if it's not found will then
-        ///     look for a front slash as the separator.
+        /// Extracts the file name off of a path.  This function first looks for a \ character and if it's not found will then
+        /// look for a front slash as the separator.
         /// </summary>
         /// <param name="fullPath"></param>
         public static string ExtractFileName(string fullPath)
@@ -138,8 +137,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Checks to see if a file exists before deleting it.  This will catch and eat any exceptions for cases when you want
-        ///     a silent delete.
+        /// Checks to see if a file exists before deleting it.  This will catch and eat any exceptions for cases when you want
+        /// a silent delete.
         /// </summary>
         /// <param name="filePath"></param>
         public static void SafeFileDelete(string filePath)
@@ -160,8 +159,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Checks to see if a directory exists before deleting it.  This will catch and eat any exceptions for cases when you want
-        ///     a silent delete.
+        /// Checks to see if a directory exists before deleting it.  This will catch and eat any exceptions for cases when you want
+        /// a silent delete.
         /// </summary>
         /// <param name="dirPath"></param>
         public static void SafeDirectoryDelete(string dirPath)
@@ -182,7 +181,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Deletes files in a path by a specified pattern (e.g. *.txt)
+        /// Deletes files in a path by a specified pattern (e.g. *.txt)
         /// </summary>
         /// <param name="path"></param>
         /// <param name="pattern"></param>
@@ -195,8 +194,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Gets all files in a directory and orders them in ascending or descending order by modified date or
-        ///     created date.
+        /// Gets all files in a directory and orders them in ascending or descending order by modified date or
+        /// created date.
         /// </summary>
         /// <param name="dir">The directory to return files for.</param>
         /// <param name="st">Which attribute the directory should be sorted by.</param>
@@ -260,8 +259,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Gets all files in a directory and orders them in ascending or descending order by modified date or
-        ///     created date.
+        /// Gets all files in a directory and orders them in ascending or descending order by modified date or
+        /// created date.
         /// </summary>
         /// <param name="dir">The directory to return files for.</param>
         /// <param name="st">Which attribute the directory should be sorted by.</param>
@@ -319,8 +318,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Keeps the X specified newest files in a directory.  The rest of the files are deleted over the specified threshold.  This overload
-        ///     uses the LastWriteTime to determine what files to keep.
+        /// Keeps the X specified newest files in a directory.  The rest of the files are deleted over the specified threshold.  This overload
+        /// uses the LastWriteTime to determine what files to keep.
         /// </summary>
         /// <param name="dir">The directory to truncate files in.  This does not recurse through child directories.</param>
         /// <param name="numberToKeep">The number of files to keep.</param>
@@ -330,7 +329,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Keeps the X specified newest files in a directory.  The rest of the files are deleted over the specified threshold.
+        /// Keeps the X specified newest files in a directory.  The rest of the files are deleted over the specified threshold.
         /// </summary>
         /// <param name="dir">The directory to truncate files in.  This does not recurse through child directories.</param>
         /// <param name="numberToKeep">The number of files to keep.</param>
@@ -341,7 +340,7 @@ namespace Argus.IO
             var di = new DirectoryInfo(dir);
             var files = di.GetFileSystemInfos();
             var orderedFiles = Enumerable.Empty<FileSystemInfo>();
-            
+
             switch (dateToUse)
             {
                 case SortType.CreationTime:
@@ -376,7 +375,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Removes any illegal characters from the filename.
+        /// Removes any illegal characters from the filename.
         /// </summary>
         /// <param name="filename"></param>
         public static string CleanupFilename(string filename)
@@ -390,13 +389,13 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Reads a specified line from a text file.  Each call to this opens and loops until the specific line is found (since lines are variable length an index cannot be used).
+        /// Reads a specified line from a text file.  Each call to this opens and loops until the specific line is found (since lines are variable length an index cannot be used).
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="lineNumber"></param>
         /// <remarks>
-        ///     This should be used in cases when a specific line is needed but you want to disregard the rest of the file (e.g. don't use this to loop through a file as it opens
-        ///     and finds the specific line going through all previous lines).
+        /// This should be used in cases when a specific line is needed but you want to disregard the rest of the file (e.g. don't use this to loop through a file as it opens
+        /// and finds the specific line going through all previous lines).
         /// </remarks>
         public static string ReadSpecificLine(string filePath, int lineNumber)
         {
@@ -428,8 +427,8 @@ namespace Argus.IO
         }
 
         /// <summary>
-        ///     Returns the requested file time with all exceptions handled, a null will be returned
-        ///     when no file time is accessible for any reason.
+        /// Returns the requested file time with all exceptions handled, a null will be returned
+        /// when no file time is accessible for any reason.
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="dt"></param>

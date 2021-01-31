@@ -1,41 +1,48 @@
-﻿//The following algorithm is based on
-//		Keyword Extraction from a Single Document
-//		using Word Co-occurrence Statistical Information
-//		(found at http://ymatsuo.com/papers/ijait04.pdf)
+﻿/*
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+/* The following algorithm is based on
+ *		Keyword Extraction from a Single Document
+ *		using Word Co-occurrence Statistical Information
+ *		(found at http://ymatsuo.com/papers/ijait04.pdf)
+/*
+
 /*	The paragraphs KeyTerm collection is complete. Process extraction algorithm here.
-* 
-* The algorithm used here was found in a paper published by the
-* International Journal of Artificial Intelligence Tools 
-* Copyright 2003 (C) World Scientific Publishing Company
-* Authored by Yutaka Matsuo of the National Institute of Advanced Industrial 
-* Science and Technology in Tokyo, Japan and by Mitsuru Ishizuka of the University of Tokyo
-* and published either in July or December of 2003 (unsure)
-* 
-* G = set of most frequent terms	  --> termsG = a subset of probabilityTerms where probability is above the average
-* 
-* Pg = sum of the total number of terms in sentences where             Dictionary<string, decimal> termPg
-*      g appears divided by the total number of terms in the document
-* 
-* nw = total number of terms in sentences where w appears	 --> termNw
-* 
-* Fwg = sentence count where w and g occur divided by the total number of sentences
-*       = termFwg is Dictionary<string, Dictionary<string, decimal>>
-* 
-* X2(w) is the rank for a give word w
-* 
-* X2(w) = sum of Z for each g in G (g = term in G or most frequent terms)
-*         EXCEPT for the MAX g -- to create what the authors call robustness
-* 
-* D = nw * Pg
-* 
-* T = (Fwg - D)
-* 
-* Z = (T * T) / D
-* 
-* X2(w) = calculate Z for each g for w and sum the total
-*         EXCEPT for the MAX g -- to create what the authors call robustness
-* 
-*/
+ * 
+ * The algorithm used here was found in a paper published by the
+ * International Journal of Artificial Intelligence Tools 
+ * Copyright 2003 (C) World Scientific Publishing Company
+ *  Authored by Yutaka Matsuo of the National Institute of Advanced Industrial 
+ * Science and Technology in Tokyo, Japan and by Mitsuru Ishizuka of the University of Tokyo
+ * and published either in July or December of 2003 (unsure)
+ * 
+ * G = set of most frequent terms	  --> termsG = a subset of probabilityTerms where probability is above the average
+ * 
+ * Pg = sum of the total number of terms in sentences where             Dictionary<string, decimal> termPg
+ *      g appears divided by the total number of terms in the document
+ * 
+ * nw = total number of terms in sentences where w appears	 --> termNw
+ * 
+ * Fwg = sentence count where w and g occur divided by the total number of sentences
+ *       = termFwg is Dictionary<string, Dictionary<string, decimal>>
+ * 
+ * X2(w) is the rank for a give word w
+ * 
+ * X2(w) = sum of Z for each g in G (g = term in G or most frequent terms)
+ *         EXCEPT for the MAX g -- to create what the authors call robustness
+ * 
+ * D = nw * Pg
+ * 
+ * T = (Fwg - D)
+ * 
+ * Z = (T * T) / D
+ * 
+ * X2(w) = calculate Z for each g for w and sum the total
+ *         EXCEPT for the MAX g -- to create what the authors call robustness
+ * 
+ */
 
 using System.Collections.Generic;
 using System.Linq;
