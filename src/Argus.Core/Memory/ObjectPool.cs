@@ -13,7 +13,7 @@ namespace Argus.Memory
         //             Class:  ObjectPool
         //      Organization:  http://www.blakepell.com
         //      Initial Date:  02/27/2020
-        //      Last Updated:  02/27/2020
+        //      Last Updated:  01/31/2021
         //
         //*********************************************************************************************************************
 
@@ -63,6 +63,31 @@ namespace Argus.Memory
             _counter++;
 
             return obj;
+        }
+
+        /// <summary>
+        /// Clears the <see cref="ConcurrentBag{T}"/>.
+        /// </summary>
+        public void Clear()
+        {
+            if (_items.IsEmpty)
+            {
+                return;
+            }
+
+            // We need to dequeue the entire queue, we will do that but not do anything
+            // inside of the loop.
+            while (_items.TryTake(out var item))
+            {
+            }
+        }
+
+        /// <summary>
+        /// The number of items currently held into the <see cref="ConcurrentBag{T}"/>.
+        /// </summary>
+        public int Count()
+        {
+            return _counter;
         }
 
     }

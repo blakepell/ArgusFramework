@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Text;
+using Argus.Extensions;
 
 namespace Argus.Memory
 {
@@ -87,12 +88,30 @@ namespace Argus.Memory
         /// <param name="sb"></param>
         public static void Return(StringBuilder sb)
         {
-            if (Pool.Count <= MaxPooledStringBuilders)
+            if (Pool.Count > MaxPooledStringBuilders)
             {
-                // There is a race condition here so the count could be off a little bit (but insignificantly)
-                sb.Clear();
-                Pool.Enqueue(sb);
+                return;
             }
+
+            // There is a race condition here so the count could be off a little bit (but insignificantly)
+            sb.Clear();
+            Pool.Enqueue(sb);
+        }
+
+        /// <summary>
+        /// Clears the <see cref="StringBuilder"/> <see cref="ConcurrentQueue{T}" /> pool.
+        /// </summary>
+        public static void Clear()
+        {
+            Pool.Clear();
+        }
+
+        /// <summary>
+        /// The count of items currently the StringBuilder pool.
+        /// </summary>
+        public static int Count()
+        {
+            return Pool.Count;
         }
     }
 }
