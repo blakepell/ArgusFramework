@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2009-06-30
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -6,23 +15,13 @@ using System.Text;
 namespace Argus.Data
 {
     /// <summary>
-    ///     Class with shared functions for generating test data.
+    /// Class with shared functions for generating test data.
     /// </summary>
     public static class TestData
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  TestData
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  06/30/2009
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns a specified number of records as a DataTable.  The DataTable's fields are 'Guid' of System.String, 'Random Number' of
-        ///     System.Int32 and 'Date' of System.DataTime.
+        /// Returns a specified number of records as a DataTable.  The DataTable's fields are 'Guid' of System.String, 'Random Number' of
+        /// System.Int32 and 'Date' of System.DataTime.
         /// </summary>
         /// <param name="numberOfRecords"></param>
         public static DataTable GetTestDataTable(int numberOfRecords)
@@ -42,8 +41,8 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns a specified number of records as a IDataReader.  The IDataReader's fields are 'Guid' of System.String, 'Random Number' of
-        ///     System.Int32 and 'Date' of System.DataTime.
+        /// Returns a specified number of records as a IDataReader.  The IDataReader's fields are 'Guid' of System.String, 'Random Number' of
+        /// System.Int32 and 'Date' of System.DataTime.
         /// </summary>
         /// <param name="numberOfRecords"></param>
         public static IDataReader GetTestDataReader(int numberOfRecords)
@@ -54,7 +53,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns a Generic List of strings with the specified number of records.  The strings are randomly generated guid's.
+        /// Returns a Generic List of strings with the specified number of records.  The strings are randomly generated guid's.
         /// </summary>
         /// <param name="numberOfRecords"></param>
         public static List<string> GetGenericList(int numberOfRecords)
@@ -70,8 +69,8 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns a specified number of records as a string.  The strings fields are 'Guid' of System.String, 'Random Number' of
-        ///     System.Int32 and 'Date' of System.DataTime.  The string will be tab delimited.
+        /// Returns a specified number of records as a string.  The strings fields are 'Guid' of System.String, 'Random Number' of
+        /// System.Int32 and 'Date' of System.DataTime.  The string will be tab delimited.
         /// </summary>
         /// <param name="numberOfRecords"></param>
         public static string GetFlatFile(int numberOfRecords)

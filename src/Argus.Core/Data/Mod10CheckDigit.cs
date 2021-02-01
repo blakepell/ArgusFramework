@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2013-05-20
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Argus.Extensions;
@@ -6,22 +15,12 @@ using Argus.Extensions;
 namespace Argus.Data
 {
     /// <summary>
-    ///     Shared methods for calculating and verifying MOD10 check digits.
+    /// Shared methods for calculating and verifying MOD10 check digits.
     /// </summary>
-    public class Mod10CheckDigit
+    public static class Mod10CheckDigit
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Mod10CheckDigit
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  05/20/2013
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns a check digit for a specified string.
+        /// Returns a check digit for a specified string.
         /// </summary>
         /// <param name="txt">The string value to create a check digit for</param>
         /// <returns>An integer check digit</returns>
@@ -82,8 +81,8 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Whether or not the specified value is correct (e.g. the check digit matches the rest of the provided value).  The inputted value would
-        ///     be the string with the check digit (e.g., a full account number).
+        /// Whether or not the specified value is correct (e.g. the check digit matches the rest of the provided value).  The inputted value would
+        /// be the string with the check digit (e.g., a full account number).
         /// </summary>
         /// <param name="val">The value with the check digit to validate.</param>
         public static bool IsValid(string val)
@@ -112,7 +111,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns the lookup value as specified in the MOD-10 documentation.
+        /// Returns the lookup value as specified in the MOD-10 documentation.
         /// </summary>
         public static string GetValue(string val)
         {

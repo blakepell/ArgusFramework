@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2008-04-02
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,23 +16,13 @@ using Argus.Extensions;
 namespace Argus.Data
 {
     /// <summary>
-    ///     Various formatting procedures.
+    /// Various formatting procedures.
     /// </summary>
-    public class Formatting
+    public static class Formatting
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Formatting
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  04/02/2008
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Formats a number without decimal places.  If the string is not numeric it's full contents
-        ///     will be returned.  This will return no decimal places.
+        /// Formats a number without decimal places.  If the string is not numeric it's full contents
+        /// will be returned.  This will return no decimal places.
         /// </summary>
         /// <param name="str"></param>
         public static string FormatNumber(string str)
@@ -39,7 +38,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Formats a number with commas and the specified number of decimal places.
+        /// Formats a number with commas and the specified number of decimal places.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="decimalPlaces"></param>
@@ -63,7 +62,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Formats a zip code according to the possible different formats (5 or 9 digits)
+        /// Formats a zip code according to the possible different formats (5 or 9 digits)
         /// </summary>
         /// <param name="zipCode"></param>
         public static string FormatZipCode(string zipCode)
@@ -90,7 +89,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Formats phone numbers with dashes.  Supported formats are 8560114, 8128560114, 18128560114.
+        /// Formats phone numbers with dashes.  Supported formats are 8560114, 8128560114, 18128560114.
         /// </summary>
         /// <param name="phoneNumber"></param>
         public static string FormatPhoneNumber(string phoneNumber)
@@ -119,7 +118,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns an Html string for the passed in Url as string.
+        /// Returns an Html string for the passed in Url as string.
         /// </summary>
         /// <param name="url">The link address for the link.</param>
         /// <param name="openInNewWindow">Whether the link should open up in a new window or not</param>
@@ -156,7 +155,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns an Html string for the passed in Url as string.  The DisplayText variable is what will be displayed on the screen.
+        /// Returns an Html string for the passed in Url as string.  The DisplayText variable is what will be displayed on the screen.
         /// </summary>
         /// <param name="url">The link address for the link.</param>
         /// <param name="displayText">The text that should be displayed for the link.</param>
@@ -194,7 +193,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns an Html string for the passed in Url as a Uri format object.
+        /// Returns an Html string for the passed in Url as a Uri format object.
         /// </summary>
         /// <param name="url">The link address for the link.</param>
         /// <param name="openInNewWindow">Whether the link should open up in a new window or not</param>
@@ -215,7 +214,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns an Html string for the passed in Url as a Uri format object.  The DisplayText variable is what will be displayed on the screen.
+        /// Returns an Html string for the passed in Url as a Uri format object.  The DisplayText variable is what will be displayed on the screen.
         /// </summary>
         /// <param name="url">The link address for the link.</param>
         /// <param name="displayText">The text that should be displayed for the link.</param>
@@ -237,7 +236,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns and Html mail link for the passed in e-mail address as a string.
+        /// Returns and Html mail link for the passed in e-mail address as a string.
         /// </summary>
         /// <param name="emailAddress"></param>
         public static string ReturnMailLink(string emailAddress)
@@ -249,7 +248,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns and Html mail link for the passed in e-mail address as a string.  The DisplayText variable is what will be displayed on the screen.
+        /// Returns and Html mail link for the passed in e-mail address as a string.  The DisplayText variable is what will be displayed on the screen.
         /// </summary>
         /// <param name="emailAddress"></param>
         /// <param name="displayText"></param>
@@ -262,7 +261,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Format the dollars with 2 decimal places, commas to group digits and parenthesis for negative amounts.
+        /// Format the dollars with 2 decimal places, commas to group digits and parenthesis for negative amounts.
         /// </summary>
         /// <param name="amount"></param>
         public static string FormatDollars(double amount)
@@ -271,7 +270,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Format the dollars with 2 decimal places, commas to group digits and parenthesis for negative amounts.
+        /// Format the dollars with 2 decimal places, commas to group digits and parenthesis for negative amounts.
         /// </summary>
         /// <param name="amount"></param>
         public static string FormatDollars(string amount)
@@ -286,7 +285,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Formats a percent with a % sign, - sign for negatives and groups digits
+        /// Formats a percent with a % sign, - sign for negatives and groups digits
         /// </summary>
         /// <param name="value"></param>
         public static string FormatPercent(double value, int decimalPlaces)
@@ -295,7 +294,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Formats a percent with a % sign, - sign for negatives and groups digits
+        /// Formats a percent with a % sign, - sign for negatives and groups digits
         /// </summary>
         /// <param name="value"></param>
         public static string FormatPercent(string value, int decimalPlaces)
@@ -313,8 +312,8 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Formats a file size if the length (total number of bytes) are passed in.  This will list sizes up
-        ///     to and including terabytes.
+        /// Formats a file size if the length (total number of bytes) are passed in.  This will list sizes up
+        /// to and including terabytes.
         /// </summary>
         /// <param name="length"></param>
         public static string FormattedFileSize(double length)
@@ -341,7 +340,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Strip HTML from a string.
+        /// Strip HTML from a string.
         /// </summary>
         /// <param name="value"></param>
         public static string StripHtml(string value)
@@ -350,7 +349,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Strip HTML from a string, 2nd method.
+        /// Strip HTML from a string, 2nd method.
         /// </summary>
         /// <param name="value"></param>
         public static string StripHtml2(string value)
@@ -360,7 +359,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Converts a CamelCase string to Title Case
+        /// Converts a CamelCase string to Title Case
         /// </summary>
         /// <param name="text"></param>
         /// <remarks>Example: 'incomeCashAmount' would become 'Income Cash Amount'</remarks>
@@ -372,8 +371,8 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Removes the white space from CSS code.  This can be used to speed the rate at which CSS files transfer over
-        ///     the network.
+        /// Removes the white space from CSS code.  This can be used to speed the rate at which CSS files transfer over
+        /// the network.
         /// </summary>
         /// <param name="css"></param>
         public static object StripWhitespaceFromCss(string css)
@@ -393,7 +392,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns a list of capitalized words in a sentence
+        /// Returns a list of capitalized words in a sentence
         /// </summary>
         /// <param name="str"></param>
         public static List<string> ReturnCapitalizedWords(string str)
@@ -411,7 +410,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Removes any characters other than numeric digits from a string
+        /// Removes any characters other than numeric digits from a string
         /// </summary>
         /// <param name="buf"></param>
         public static string CleanupNumber(string buf)

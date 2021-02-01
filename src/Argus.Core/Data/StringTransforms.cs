@@ -1,27 +1,26 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2008-05-07
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Argus.Data
 {
     /// <summary>
-    ///     Class with static methods for transforming string values.
+    /// Class with static methods for transforming string values.
     /// </summary>
-    public class StringTransforms
+    public static class StringTransforms
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  StringTransforms
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  05/07/2008
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Wraps each line of text with a start and an end value.  For example, this could be a start &lt;li&gt; and end &lt;/li&gt; tag if
-        ///     each line was an HTML list item.
+        /// Wraps each line of text with a start and an end value.  For example, this could be a start &lt;li&gt; and end &lt;/li&gt; tag if
+        /// each line was an HTML list item.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="startValue"></param>
@@ -47,8 +46,8 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Wraps each line of text with a start and an end value.  For example, this could be a start &lt;li&gt; and end &lt;/li&gt; tag if
-        ///     each line was an HTML list item.  This overload uses the carriage return line feed (ASCII 13 and 10) as the line terminator.
+        /// Wraps each line of text with a start and an end value.  For example, this could be a start &lt;li&gt; and end &lt;/li&gt; tag if
+        /// each line was an HTML list item.  This overload uses the carriage return line feed (ASCII 13 and 10) as the line terminator.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="startValue"></param>
@@ -59,9 +58,9 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Wraps each line of text with a start and an end value.  For example, this could be a start &lt;li&gt; and end &lt;/li&gt; tag if
-        ///     each line was an HTML list item.  This also includes parameters to put once before the selection and once after the selection, for instance
-        ///     a start list tag and an end list tag.
+        /// Wraps each line of text with a start and an end value.  For example, this could be a start &lt;li&gt; and end &lt;/li&gt; tag if
+        /// each line was an HTML list item.  This also includes parameters to put once before the selection and once after the selection, for instance
+        /// a start list tag and an end list tag.
         /// </summary>
         /// <param name="text">The entire text to parse</param>
         /// <param name="startLineValue">The value to insert at the beginning of every line</param>
@@ -93,8 +92,8 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Unescapes a string using regular expressions.  This means a \n would be turned into a new line, a \r into a carriage return,
-        ///     a \t into a tab, etc.
+        /// Unescapes a string using regular expressions.  This means a \n would be turned into a new line, a \r into a carriage return,
+        /// a \t into a tab, etc.
         /// </summary>
         /// <param name="text"></param>
         public static string Unescape(string text)
@@ -103,8 +102,8 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Escapes text with the regular expression escape values (Regex.Escape).  This means that a tab would be turned into a \t, a newline into
-        ///     a \n, a carriage return into a \r, etc.
+        /// Escapes text with the regular expression escape values (Regex.Escape).  This means that a tab would be turned into a \t, a newline into
+        /// a \n, a carriage return into a \r, etc.
         /// </summary>
         /// <param name="text"></param>
         public static string Escape(string text)
@@ -113,7 +112,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     This will format a text delimited string for viewing.
+        /// This will format a text delimited string for viewing.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="deliminator"></param>

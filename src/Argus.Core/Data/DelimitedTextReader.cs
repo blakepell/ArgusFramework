@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2010-05-24
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Data;
 using System.IO;
 using System.Text;
@@ -6,27 +15,17 @@ using System.Text;
 namespace Argus.Data
 {
     /// <summary>
-    ///     This class will read delimited text either that is provided or from a file on the file system and render that
-    ///     data through the IDataReader interface.  Optionally, CreateDataTable and ExecuteReader methods are included for backwards
-    ///     compatibility.
+    /// This class will read delimited text either that is provided or from a file on the file system and render that
+    /// data through the IDataReader interface.  Optionally, CreateDataTable and ExecuteReader methods are included for backwards
+    /// compatibility.
     /// </summary>
     public class DelimitedTextReader : IDataReader
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  DelimitedTextReader
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  05/24/2010
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         // To detect redundant calls
         private bool _disposedValue;
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="text">The delimited text to parse</param>
         /// <param name="delimiter">The character or characters that come between each record</param>
@@ -41,7 +40,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="text">The delimited text to parse</param>
         /// <param name="delimiter">The character or characters that come between each record</param>
@@ -54,7 +53,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="text">The delimited text to parse</param>
         /// <param name="delimiter">The character or characters that come between each record</param>
@@ -69,7 +68,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="text">The delimited text to parse</param>
         public DelimitedTextReader(string text)
@@ -80,7 +79,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="localFilePath">The path to the file on the local file system or mapped drive.</param>
         /// <param name="enc">The encoding to use when reading the file.</param>
@@ -91,25 +90,25 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     The delimited text that should be parsed.
+        /// The delimited text that should be parsed.
         /// </summary>
         public string Text { get; set; } = "";
 
         /// <summary>
-        ///     This indicates whether the file contains a header row or not.  If it does the class methods will put the first rows
-        ///     contents as the column headings.  Otherwise, the first row's contents will be part of the data set.
+        /// This indicates whether the file contains a header row or not.  If it does the class methods will put the first rows
+        /// contents as the column headings.  Otherwise, the first row's contents will be part of the data set.
         /// </summary>
         /// <remarks>The default value is false.</remarks>
         public bool ContainsHeaderRow { get; set; }
 
         /// <summary>
-        ///     The delimiter that the file is split up by.
+        /// The delimiter that the file is split up by.
         /// </summary>
         /// <remarks>The default delimiter is a tab.</remarks>
         public string Delimiter { get; set; } = "\t";
 
         /// <summary>
-        ///     The line terminator that is used to split records.  The default is carriage return and line feed (ascii 13 and 10).
+        /// The line terminator that is used to split records.  The default is carriage return and line feed (ascii 13 and 10).
         /// </summary>
         public string LineTerminator { get; set; } = Environment.NewLine;
 
@@ -117,7 +116,7 @@ namespace Argus.Data
         private DataTable DataTable { get; }
 
         /// <summary>
-        ///     Closes the DataReader
+        /// Closes the DataReader
         /// </summary>
         public void Close()
         {
@@ -272,9 +271,9 @@ namespace Argus.Data
         #endregion
 
         /// <summary>
-        ///     Returns a DataTable.  If the file has a header row and the ContainerHeaderRow is set to true then the column names
-        ///     that will be called from the reader will by those names.  Otherwise you'll have to reference those value through Items
-        ///     and input their index.  The data table can then be bound to other objects such as a DataGridView.
+        /// Returns a DataTable.  If the file has a header row and the ContainerHeaderRow is set to true then the column names
+        /// that will be called from the reader will by those names.  Otherwise you'll have to reference those value through Items
+        /// and input their index.  The data table can then be bound to other objects such as a DataGridView.
         /// </summary>
         public DataTable CreateDataTable()
         {
@@ -324,9 +323,9 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns a DataTableReader.  If the file has a header row and the ContainerHeaderRow is set to true then the column names
-        ///     that will be called from the reader will by those names.  Otherwise you'll have to reference those value through Items
-        ///     and input their index.
+        /// Returns a DataTableReader.  If the file has a header row and the ContainerHeaderRow is set to true then the column names
+        /// that will be called from the reader will by those names.  Otherwise you'll have to reference those value through Items
+        /// and input their index.
         /// </summary>
         public DataTableReader ExecuteReader()
         {
@@ -334,7 +333,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Resets the underlying DataReader and creates a new one that is at the first position.
+        /// Resets the underlying DataReader and creates a new one that is at the first position.
         /// </summary>
         public void MoveFirst()
         {
@@ -351,7 +350,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     The number of records in the DataReader.
+        /// The number of records in the DataReader.
         /// </summary>
         public int RowCount()
         {

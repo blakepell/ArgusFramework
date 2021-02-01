@@ -393,18 +393,8 @@ namespace Argus.Data
     /// <summary>
     /// Various helper utilities to work with the alphabet
     /// </summary>
-    public class AlphabetUtilities
+    public static class AlphabetUtilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Alphabet.AlphabetUtilities
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  02/10/2010
-        //      Last Updated:  01/29/2021
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
         /// Returns a list of all 26 letters as AlphabetLetter classes.
         /// </summary>

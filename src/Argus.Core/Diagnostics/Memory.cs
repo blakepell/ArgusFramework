@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ */
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -7,19 +12,19 @@ using System.Runtime.InteropServices;
 namespace Argus.Diagnostics
 {
     /// <summary>
-    ///     Memory related diagnostic utilities.
+    /// Memory related diagnostic utilities.
     /// </summary>
     public static class Memory
     {
         /// <summary>
-        ///     Returns memory information about the current OS and process.
+        /// Returns memory information about the current OS and process.
         /// </summary>
         /// <returns>
-        ///     This should work on both Windows and Linux to obtain bits of overhead data about memory
-        ///     consumption.  On Windows the memory information is obtained through the WinAPI and as a
-        ///     result likely won't be able to be called from applications that are heavily sandboxed like
-        ///     UWP apps (Windows Universal Apps).  I have been unable to find documentation on how to
-        ///     find the associated memory metrics for UWP.
+        /// This should work on both Windows and Linux to obtain bits of overhead data about memory
+        /// consumption.  On Windows the memory information is obtained through the WinAPI and as a
+        /// result likely won't be able to be called from applications that are heavily sandboxed like
+        /// UWP apps (Windows Universal Apps).  I have been unable to find documentation on how to
+        /// find the associated memory metrics for UWP.
         /// </returns>
         public static MemoryInfo CurrentSystemMemory()
         {
@@ -37,8 +42,8 @@ namespace Argus.Diagnostics
         }
 
         /// <summary>
-        ///     Returns the current memory information.  Framework objects are used where they exist.  The Windows API will
-        ///     where they do not exist.
+        /// Returns the current memory information.  Framework objects are used where they exist.  The Windows API will
+        /// where they do not exist.
         /// </summary>
         private static MemoryInfo WindowsMemoryInfo()
         {
@@ -70,7 +75,7 @@ namespace Argus.Diagnostics
         }
 
         /// <summary>
-        ///     Returns the current memory information as parsed from /proc/meminfo.
+        /// Returns the current memory information as parsed from /proc/meminfo.
         /// </summary>
         private static MemoryInfo LinuxMemoryInfo()
         {
@@ -108,14 +113,14 @@ namespace Argus.Diagnostics
         }
 
         /// <summary>
-        ///     Win32 API call for GlobalMemoryStatusEx
+        /// Win32 API call for GlobalMemoryStatusEx
         /// </summary>
         [DllImport("Kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool GlobalMemoryStatusEx(ref MEMORYSTATUSEX lpBuffer);
 
         /// <summary>
-        ///     Structure to hold data for the memory status returned from the Windows WPI.
+        /// Structure to hold data for the memory status returned from the Windows WPI.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         internal struct MEMORYSTATUSEX

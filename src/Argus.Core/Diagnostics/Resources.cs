@@ -1,15 +1,20 @@
-﻿using System;
+﻿/*
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ */
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace Argus.Diagnostics
 {
     /// <summary>
-    ///     Information about current system resources.
+    /// Information about current system resources.
     /// </summary>
     public static class Resources
     {
         /// <summary>
-        ///     Information about current system resource info.
+        /// Information about current system resource info.
         /// </summary>
         public static ResourceInfo CurrentResourceInfo()
         {

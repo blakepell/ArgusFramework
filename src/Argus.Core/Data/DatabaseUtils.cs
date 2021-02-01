@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2008-05-07
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -7,27 +16,17 @@ using Argus.Extensions;
 namespace Argus.Data
 {
     /// <summary>
-    ///     Various database utilities and helper subs/functions.
+    /// Various database utilities and helper subs/functions.
     /// </summary>
-    public class DatabaseUtils
+    public static class DatabaseUtils
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  DatabaseUtils
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  05/07/2008
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Converts delimited text into a data table.
+        /// Converts delimited text into a data table.
         /// </summary>
         /// <param name="buf">The delimited text you want to convert.</param>
         /// <param name="delimiter">The delimiter the text is split up by, typically a tab.</param>
         /// <param name="firstRowContainsHeader">Whether or not the first row contains column headers.</param>
-        /// <param name="tableName">The name of the new <see cref="DataTable"/>.</param>
+        /// <param name="tableName">The name of the new <see cref="DataTable" />.</param>
         public static DataTable DelimitedTextToDataTable(string buf, string delimiter, bool firstRowContainsHeader, string tableName)
         {
             int rowCount = 0;
@@ -76,12 +75,12 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     This will try to open a database connection.  If the connection fails because of a timeout it will attempt to connect
-        ///     2 more times.
+        /// This will try to open a database connection.  If the connection fails because of a timeout it will attempt to connect
+        /// 2 more times.
         /// </summary>
         /// <param name="conn"></param>
         /// <remarks>
-        ///     An exception will be thrown only if the connection passed is is null or the connection fails to connect 3 times.
+        /// An exception will be thrown only if the connection passed is is null or the connection fails to connect 3 times.
         /// </remarks>
         public static void OpenDbConnection(IDbConnection conn)
         {
@@ -127,7 +126,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Formats specified columns in a DataTable to a given number format
+        /// Formats specified columns in a DataTable to a given number format
         /// </summary>
         /// <param name="dt">The DataTable, passed by reference.</param>
         /// <param name="columnIndexes">The index of the columns to format.</param>
@@ -135,14 +134,14 @@ namespace Argus.Data
         /// <param name="preCharacter">A character or string that goes before the number, e.g. a $</param>
         /// <param name="postCharacter">A character or string that goes after the number, e.g. a %</param>
         /// <remarks>
-        ///     This procedure will force all columns ReadOnly property to false in order to make the changes.  Changing a number
-        ///     to a string will require that the DataType of the field be a character/string format otherwise an exception will be
-        ///     thrown.  A DataTable does not allow the DataType to be changed once data exists.  The other option is to specifically
-        ///     set all fields on the DataTable to String before it's loaded from a DataReader (this will force it to be cast when it's
-        ///     loading, otherwise the DataReader will pass it's type on to the DataTable).  Any values that are null will be converted
-        ///     to 0 for display purposes.
-        ///     TODO:  Add a parameter that will automatically convert the table to be all strings.  This will require creating a new table
-        ///     and swapping data between the two.
+        /// This procedure will force all columns ReadOnly property to false in order to make the changes.  Changing a number
+        /// to a string will require that the DataType of the field be a character/string format otherwise an exception will be
+        /// thrown.  A DataTable does not allow the DataType to be changed once data exists.  The other option is to specifically
+        /// set all fields on the DataTable to String before it's loaded from a DataReader (this will force it to be cast when it's
+        /// loading, otherwise the DataReader will pass it's type on to the DataTable).  Any values that are null will be converted
+        /// to 0 for display purposes.
+        /// TODO:  Add a parameter that will automatically convert the table to be all strings.  This will require creating a new table
+        /// and swapping data between the two.
         /// </remarks>
         public static void FormatNumberColumns(ref DataTable dt, List<int> columnIndexes, int precision, string preCharacter, string postCharacter)
         {
@@ -175,23 +174,23 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Takes a data table and switches the columns and the rows creating a cross tab view.
+        /// Takes a data table and switches the columns and the rows creating a cross tab view.
         /// </summary>
         /// <param name="sourceDataTable"></param>
         /// <param name="removeFirstColumn">
-        ///     Whether or not to remove the first column.  The first column data becomes the name for the column headers
-        ///     and thus is repeated if not removed.  A case to remove it would be where you are binding to a DataGrid that
-        ///     will already display that information from the column headings.  A case to leave it would be if you were
-        ///     exporting the cross tab to a flat file or manually looping over it.
+        /// Whether or not to remove the first column.  The first column data becomes the name for the column headers
+        /// and thus is repeated if not removed.  A case to remove it would be where you are binding to a DataGrid that
+        /// will already display that information from the column headings.  A case to leave it would be if you were
+        /// exporting the cross tab to a flat file or manually looping over it.
         /// </param>
         /// <param name="forceStringType">
-        ///     Whether or not to force all columns to be a string type.  Otherwise, the type will
-        ///     be determined by the variable that you insert into the data table.  The string type is desireable in cases where you
-        ///     want to make modifications to formatting of numbers and store them as a string.
+        /// Whether or not to force all columns to be a string type.  Otherwise, the type will
+        /// be determined by the variable that you insert into the data table.  The string type is desireable in cases where you
+        /// want to make modifications to formatting of numbers and store them as a string.
         /// </param>
         /// <remarks>
-        ///     This function assumes that the first column is a descriptive column of some sort.  An example would
-        ///     be an account number, unit code, person name, etc.
+        /// This function assumes that the first column is a descriptive column of some sort.  An example would
+        /// be an account number, unit code, person name, etc.
         /// </remarks>
         public static DataTable DataTableToCrossTab(DataTable sourceDataTable, bool removeFirstColumn, bool forceStringType)
         {
@@ -242,7 +241,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns the first non null value from the DataRowView as specified in the keyList.  If no non null value is found then a blank is returned.
+        /// Returns the first non null value from the DataRowView as specified in the keyList.  If no non null value is found then a blank is returned.
         /// </summary>
         /// <param name="drv"></param>
         /// <param name="keyList"></param>
@@ -266,7 +265,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns the first non null value from the DataRow as specified in the keyList.  If no non null value is found then a blank is returned.
+        /// Returns the first non null value from the DataRow as specified in the keyList.  If no non null value is found then a blank is returned.
         /// </summary>
         /// <param name="row"></param>
         /// <param name="keyList"></param>
@@ -284,7 +283,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns a DataTable containing the schema for the results of the executed SQL statement.
+        /// Returns a DataTable containing the schema for the results of the executed SQL statement.
         /// </summary>
         /// <param name="conn">An open database connection.</param>
         /// <param name="selectSql">A select command, e.g. Select Top 1 * From users or Select * From Users Limit 1</param>
@@ -294,7 +293,7 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Returns a DataTable containing the schema for the results of the executed SQL statement.
+        /// Returns a DataTable containing the schema for the results of the executed SQL statement.
         /// </summary>
         /// <param name="conn">An open database connection.</param>
         /// <param name="selectSql">A select command, e.g. Select Top 1 * From users or Select * From Users Limit 1</param>

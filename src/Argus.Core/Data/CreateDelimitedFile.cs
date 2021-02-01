@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2007-08-28
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Data;
 using System.IO;
 using System.Text;
@@ -19,15 +28,6 @@ namespace Argus.Data
     /// </remarks>
     public class CreateDelimitedFile
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  CreateDelimitedFile
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  08/28/2007
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
         private string _responseStreamFilename = "";
 
         /// <summary>

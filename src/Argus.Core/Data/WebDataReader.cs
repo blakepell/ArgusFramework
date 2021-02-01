@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2011-09-07
+ * @last updated      : 2021-01-26
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Collections.Specialized;
 using System.Data;
 using System.Net;
@@ -16,16 +25,6 @@ namespace Argus.Data
     /// </remarks>
     public class WebDataReader : IDataReader
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  WebDataReader
-        //      Organization:  http://www.blakepell.com    
-        //      Initial Date:  09/07/2011
-        //      Last Updated:  01/26/2021
-        //     Programmer(s):  Blake Pell, bpell@indiana.edu
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
         /// Constructor
         /// </summary>

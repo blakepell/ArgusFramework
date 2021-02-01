@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2015-01-03
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 using System.Data;
 using System.Linq;
 using System.Web;
@@ -8,24 +17,14 @@ using Newtonsoft.Json.Linq;
 namespace Argus.Data
 {
     /// <summary>
-    ///     Provides helper utilities to deal with JSON data.  Note: This code will require the JSON.Net assembly to be provided
-    ///     along with this library.
+    /// Provides helper utilities to deal with JSON data.  Note: This code will require the JSON.Net assembly to be provided
+    /// along with this library.
     /// </summary>
-    public class JsonUtilities
+    public static class JsonUtilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  JsonUtilities
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  01/03/2015
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Converts JSON that is not nested into a DataTable.  Typically this would be JSON that represents the contents of a table that
-        ///     is not nested.
+        /// Converts JSON that is not nested into a DataTable.  Typically this would be JSON that represents the contents of a table that
+        /// is not nested.
         /// </summary>
         /// <param name="json">The JSON for the table structure</param>
         /// <param name="tableName">The name of the table as defined in the JSON.  For this implementation the table name must be defined.</param>
@@ -49,7 +48,7 @@ namespace Argus.Data
             var dt = new DataTable(tableName);
 
             var root = JObject.Parse(json);
-            var items = (JArray)root[tableName];
+            var items = (JArray) root[tableName];
 
             if (items == null)
             {
@@ -64,12 +63,12 @@ namespace Argus.Data
 
                 if (columnsCreated == false)
                 {
-                    item = (JObject)items[i];
+                    item = (JObject) items[i];
                     jtoken = item.First;
 
                     while (jtoken != null)
                     {
-                        dt.Columns.Add(new DataColumn(((JProperty)jtoken).Name));
+                        dt.Columns.Add(new DataColumn(((JProperty) jtoken).Name));
                         jtoken = jtoken.Next;
                     }
 
@@ -77,7 +76,7 @@ namespace Argus.Data
                 }
 
                 // Add each of the columns into a new row then put that new row into the DataTable
-                item = (JObject)items[i];
+                item = (JObject) items[i];
                 jtoken = item.First;
 
                 // Create the new row, put the values into the columns then add the row to the DataTable
@@ -85,7 +84,7 @@ namespace Argus.Data
 
                 while (jtoken != null)
                 {
-                    dr[((JProperty)jtoken).Name] = ((JProperty)jtoken).Value.ToString();
+                    dr[((JProperty) jtoken).Name] = ((JProperty) jtoken).Value.ToString();
                     jtoken = jtoken.Next;
                 }
 
@@ -96,12 +95,12 @@ namespace Argus.Data
         }
 
         /// <summary>
-        ///     Converts a JSON string into an escaped QueryString
+        /// Converts a JSON string into an escaped QueryString
         /// </summary>
         /// <param name="json"></param>
         public static string JsonToQueryString(string json)
         {
-            var jObj = (JObject)JsonConvert.DeserializeObject(json);
+            var jObj = (JObject) JsonConvert.DeserializeObject(json);
 
             if (jObj == null)
             {
@@ -109,8 +108,8 @@ namespace Argus.Data
             }
 
             return string.Join("&",
-                       jObj.Children().Cast<JProperty>()
-                           .Select(jp => jp.Name + "=" + HttpUtility.UrlEncode(jp.Value.ToString())));
+                               jObj.Children().Cast<JProperty>()
+                                   .Select(jp => jp.Name + "=" + HttpUtility.UrlEncode(jp.Value.ToString())));
         }
     }
 }

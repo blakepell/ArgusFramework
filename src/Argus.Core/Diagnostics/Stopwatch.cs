@@ -1,44 +1,43 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2012-10-05
+ * @last updated      : 2016-04-05
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 
 namespace Argus.Diagnostics
 {
     /// <summary>
-    ///     A portable replacement for the .NET Stopwatch class that is not provided in all versions of the framework.
+    /// A portable replacement for the .NET Stopwatch class that is not provided in all versions of the framework.
     /// </summary>
     public class Stopwatch
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Stopwatch
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  10/05/2012
-        //      Last Updated:  04/05/2016
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     The elapsed number of ticks.
+        /// The elapsed number of ticks.
         /// </summary>
         private long _elapsedTicks;
 
         /// <summary>
-        ///     The time the Stopwatch started.
+        /// The time the Stopwatch started.
         /// </summary>
         private long _startTimestamp;
 
         /// <summary>
-        ///     The time elapsed as a TimeSpan that the Stopwatch was in the running state.
+        /// The time elapsed as a TimeSpan that the Stopwatch was in the running state.
         /// </summary>
         public TimeSpan Elapsed => new TimeSpan(this.ElapsedTicks);
 
         /// <summary>
-        ///     The time elapsed in milliseconds that the Stopwatch was in the running state.
+        /// The time elapsed in milliseconds that the Stopwatch was in the running state.
         /// </summary>
         public long ElapsedMilliseconds => this.ElapsedTicks / TimeSpan.TicksPerMillisecond;
 
         /// <summary>
-        ///     The time elapsed in Ticks that the Stopwatch was in the running state.
+        /// The time elapsed in Ticks that the Stopwatch was in the running state.
         /// </summary>
         /// <value></value>
         public long ElapsedTicks
@@ -57,17 +56,17 @@ namespace Argus.Diagnostics
         }
 
         /// <summary>
-        ///     Whether the Stopwatch is currently running or not.
+        /// Whether the Stopwatch is currently running or not.
         /// </summary>
         public bool IsRunning { get; set; }
 
         /// <summary>
-        ///     The elapsed ticks since the Stopwatch was last started.
+        /// The elapsed ticks since the Stopwatch was last started.
         /// </summary>
         private long ElapsedTicksSinceLastStart => DateTime.UtcNow.Ticks - _startTimestamp;
 
         /// <summary>
-        ///     Starts the Stopwatch.
+        /// Starts the Stopwatch.
         /// </summary>
         public void Start()
         {
@@ -79,7 +78,7 @@ namespace Argus.Diagnostics
         }
 
         /// <summary>
-        ///     Stops the Stopwatch.
+        /// Stops the Stopwatch.
         /// </summary>
         public void Stop()
         {
@@ -91,7 +90,7 @@ namespace Argus.Diagnostics
         }
 
         /// <summary>
-        ///     Resets and then starts the Stopwatch.
+        /// Resets and then starts the Stopwatch.
         /// </summary>
         public void Restart()
         {
@@ -100,7 +99,7 @@ namespace Argus.Diagnostics
         }
 
         /// <summary>
-        ///     Resets and stops the Stopwatch
+        /// Resets and stops the Stopwatch
         /// </summary>
         public void Reset()
         {

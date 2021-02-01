@@ -1,21 +1,19 @@
-﻿namespace Argus.Data
+﻿/*
+ * @initial date      : 2005-06-12
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ */
+
+namespace Argus.Data
 {
     /// <summary>
-    ///     Class with shared (static) methods to convert a number to it's english representation.
+    /// Class with shared (static) methods to convert a number to it's english representation.
     /// </summary>
-    public class NumberToEnglish
+    public static class NumberToEnglish
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  NumberToEnglish
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  Unknown
-        //      Last Updated:  11/17/2019
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Shared/static method to convert a number to it's english representation.
+        /// Shared/static method to convert a number to it's english representation.
         /// </summary>
         /// <param name="number"></param>
         public static string Convert(int number)

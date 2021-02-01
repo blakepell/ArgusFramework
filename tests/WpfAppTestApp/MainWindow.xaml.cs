@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Argus.Memory;
 
 namespace WpfAppTestApp
 {
@@ -23,6 +24,29 @@ namespace WpfAppTestApp
         public MainWindow()
         {
             InitializeComponent();
+
+
+            var op = new ObjectPool<Person>();
+            var p = op.Get();
+            p.FirstName = "Blake";
+            p.LastName = "Pell";
+            op.Return(p);
+            p.FirstName = "Edwardo";
+            op.Return(p);
+
+            var xy = op.Get();
+            
+
+            int x = 0;
+
         }
+
+
+        public class Person
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+        }
+
     }
 }

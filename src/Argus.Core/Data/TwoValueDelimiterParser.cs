@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2005-09-01
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT 
+ * @website           : http://www.blakepell.com
+ */
+
+using System;
 
 namespace Argus.Data
 {
@@ -13,16 +22,6 @@ namespace Argus.Data
     /// </remarks>
     public class TwoValueDelimiterParser
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  TwoValueDelimiterParser
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  09/01/2005
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         private string _queryValue = "";
         /// <summary>
         /// Constructor
