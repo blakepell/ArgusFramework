@@ -1,13 +1,14 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2020-02-27
- * @last updated      : 2021-01-31
+ * @last updated      : 2021-02-01
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
 
 using System.Collections.Concurrent;
+using System.Linq;
 
 namespace Argus.Memory
 {
@@ -34,11 +35,20 @@ namespace Argus.Memory
         public int Max { get; set; } = 10;
 
         /// <summary>
-        /// Releases an object back into the pool.
+        /// Returns an object back into the pool.
         /// </summary>
         /// <param name="item">The item to release back into the pool.</param>
-        public void Release(T item)
+        public void Return(T item)
         {
+            // Don't allow multiple references to the same object to live on the Pool.  We don't want to hand
+            // out what we think are unique object references and then find out they're being edited all over the
+            // place.
+            if (item == null || _items.Contains(item))
+            {
+                return;
+            }
+
+            // Only return the item the pool if the pool has spaces available.
             if (_counter < this.Max)
             {
                 _items.Add(item);
@@ -55,15 +65,10 @@ namespace Argus.Memory
             if (_items.TryTake(out var item))
             {
                 _counter--;
-
                 return item;
             }
-
-            var obj = new T();
-            _items.Add(obj);
-            _counter++;
-
-            return obj;
+            
+            return new T();
         }
 
         /// <summary>
@@ -84,7 +89,7 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        /// The number of items currently held into the <see cref="ConcurrentBag{T}" />.
+        /// The number of items currently available/idle in the <see cref="ConcurrentBag{T}" />.
         /// </summary>
         public int Count()
         {

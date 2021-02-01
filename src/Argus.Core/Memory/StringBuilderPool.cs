@@ -46,7 +46,6 @@ namespace Argus.Memory
             if (Pool.TryDequeue(out var sb))
             {
                 sb.Append(buf);
-
                 return sb;
             }
 
@@ -63,14 +62,13 @@ namespace Argus.Memory
             if (Pool.TryDequeue(out var sb))
             {
                 sb.Append(sbCopy);
-
                 return sb;
             }
 
-            var sbSpan = new StringBuilder();
-            sbSpan.Append(sbCopy);
+            var sbNew = new StringBuilder();
+            sbNew.Append(sbCopy);
 
-            return sbSpan;
+            return sbNew;
         }
 
         #if NETSTANDARD2_1 || NET5_0
