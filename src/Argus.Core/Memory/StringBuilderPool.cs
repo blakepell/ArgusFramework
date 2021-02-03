@@ -7,10 +7,10 @@
  * @website           : http://www.blakepell.com
  */
 
+using Argus.Extensions;
 using System;
 using System.Collections.Concurrent;
 using System.Text;
-using Argus.Extensions;
 
 namespace Argus.Memory
 {
