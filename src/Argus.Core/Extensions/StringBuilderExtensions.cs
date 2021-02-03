@@ -18,7 +18,7 @@ namespace Argus.Extensions
     /// </summary>
     public static class StringBuilderExtensions
     {
-        #if NET5_0
+#if NET5_0
         /// <summary>
         /// Finds the first index of a char in a <see cref="StringBuilder"/>.  If not match is found
         /// a -1 is returned.
@@ -45,7 +45,7 @@ namespace Argus.Extensions
 
             return -1;
         }
-        #endif
+#endif
 
         /// <summary>
         /// Calls the StringBuilder AppendFormat method and then also calls AppendLine to add the default line terminator to the end
@@ -78,7 +78,7 @@ namespace Argus.Extensions
             return sb;
         }
 
-        #if NETSTANDARD2_1 || NET5_0
+#if NETSTANDARD2_1 || NET5_0
         /// <summary>
         /// Appends the provided value if the condition is true.
         /// </summary>
@@ -94,7 +94,7 @@ namespace Argus.Extensions
 
             return sb;
         }
-        #endif
+#endif
 
         /// <summary>
         /// Appends the provided formatted text if the condition is true.
@@ -264,6 +264,48 @@ namespace Argus.Extensions
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Determines whether this instance of <see cref="StringBuilder" /> starts with the specified <see cref="char"/>.
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="value"></param>
+        /// <param name="ignoreCase"></param>
+        public static bool StartsWith(this StringBuilder sb, char value, bool ignoreCase = false)
+        {
+            if (sb.Length == 0)
+            {
+                return false;
+            }
+
+            if (ignoreCase)
+            {
+                return char.ToLower(sb[0]) == char.ToLower(value);
+            }
+
+            return sb[0] == value;
+        }
+
+        /// <summary>
+        /// Determines whether this instance of <see cref="StringBuilder" /> ends with the specified <see cref="char"/>.
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="value"></param>
+        /// <param name="ignoreCase"></param>
+        public static bool EndsWith(this StringBuilder sb, char value, bool ignoreCase = false)
+        {
+            if (sb.Length == 0)
+            {
+                return false;
+            }
+
+            if (ignoreCase)
+            {
+                return char.ToLower(sb[sb.Length - 1]) == char.ToLower(value);
+            }
+
+            return sb[sb.Length - 1] == value;
         }
 
         /// <summary>
