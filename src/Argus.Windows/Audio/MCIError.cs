@@ -1,25 +1,24 @@
-﻿namespace Argus.Audio
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2007-03-31
+ * @last updated      : 2019-11-19
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+namespace Argus.Audio
 {
     /// <summary>
-    ///     This is a lookup class to identify the MCI errors that may occur.
+    /// This is a lookup class to identify the MCI errors that may occur.
     /// </summary>
     /// <remarks>
-    ///     There's is an API that will also do this for us, We should consider using that in the future.
+    /// There's is an API that will also do this for us, We should consider using that in the future.
     /// </remarks>
     public class MCIError
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  MCIError
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  03/31/2007
-        //      Last Updated:  11/19/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     The device error enums
+        /// The device error enums
         /// </summary>
         public enum MCIERR
         {
@@ -102,7 +101,7 @@
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="errorNumber"></param>
         public MCIError(int errorNumber)
@@ -111,7 +110,7 @@
         }
 
         /// <summary>
-        ///     Returns the description for the value set in the ErrorNumber property.
+        /// Returns the description for the value set in the ErrorNumber property.
         /// </summary>
         private string ErrorDescription
         {
@@ -119,157 +118,157 @@
             {
                 switch (this.ErrorNumber)
                 {
-                    case (int)MCIERR.MCIERR_BAD_CONSTANT:
+                    case (int) MCIERR.MCIERR_BAD_CONSTANT:
                         return "Bad Constant";
-                    case (int)MCIERR.MCIERR_BAD_INTEGER:
+                    case (int) MCIERR.MCIERR_BAD_INTEGER:
                         return "Bad Integer";
-                    case (int)MCIERR.MCIERR_BAD_TIME_FORMAT:
+                    case (int) MCIERR.MCIERR_BAD_TIME_FORMAT:
                         return "Bad Time Format";
-                    case (int)MCIERR.MCIERR_BASE:
+                    case (int) MCIERR.MCIERR_BASE:
                         return "Base error";
-                    case (int)MCIERR.MCIERR_CANNOT_LOAD_DRIVER:
+                    case (int) MCIERR.MCIERR_CANNOT_LOAD_DRIVER:
                         return "Cannot load driver";
-                    case (int)MCIERR.MCIERR_CANNOT_USE_ALL:
+                    case (int) MCIERR.MCIERR_CANNOT_USE_ALL:
                         return "Cannot use all";
-                    case (int)MCIERR.MCIERR_CREATEWINDOW:
+                    case (int) MCIERR.MCIERR_CREATEWINDOW:
                         return "Create window";
-                    case (int)MCIERR.MCIERR_CUSTOM_DRIVER_BASE:
+                    case (int) MCIERR.MCIERR_CUSTOM_DRIVER_BASE:
                         return "Custom driver base";
-                    case (int)MCIERR.MCIERR_DEVICE_LENGTH:
+                    case (int) MCIERR.MCIERR_DEVICE_LENGTH:
                         return "Device length";
-                    case (int)MCIERR.MCIERR_DEVICE_LOCKED:
+                    case (int) MCIERR.MCIERR_DEVICE_LOCKED:
                         return "Device locked";
-                    case (int)MCIERR.MCIERR_DEVICE_NOT_INSTALLED:
+                    case (int) MCIERR.MCIERR_DEVICE_NOT_INSTALLED:
                         return "Device not installed";
-                    case (int)MCIERR.MCIERR_DEVICE_NOT_READY:
+                    case (int) MCIERR.MCIERR_DEVICE_NOT_READY:
                         return "Device not ready";
-                    case (int)MCIERR.MCIERR_DEVICE_OPEN:
+                    case (int) MCIERR.MCIERR_DEVICE_OPEN:
                         return "Device open";
-                    case (int)MCIERR.MCIERR_DEVICE_ORD_LENGTH:
+                    case (int) MCIERR.MCIERR_DEVICE_ORD_LENGTH:
                         return "Device ORD length";
-                    case (int)MCIERR.MCIERR_DEVICE_TYPE_REQUIRED:
+                    case (int) MCIERR.MCIERR_DEVICE_TYPE_REQUIRED:
                         return "Device type required";
-                    case (int)MCIERR.MCIERR_DRIVER:
+                    case (int) MCIERR.MCIERR_DRIVER:
                         return "Driver";
-                    case (int)MCIERR.MCIERR_DRIVER_INTERNAL:
+                    case (int) MCIERR.MCIERR_DRIVER_INTERNAL:
                         return "Driver Internal";
-                    case (int)MCIERR.MCIERR_DUPLICATE_ALIAS:
+                    case (int) MCIERR.MCIERR_DUPLICATE_ALIAS:
                         return "Duplicate alias";
-                    case (int)MCIERR.MCIERR_DUPLICATE_FLAGS:
+                    case (int) MCIERR.MCIERR_DUPLICATE_FLAGS:
                         return "Duplicate flags";
-                    case (int)MCIERR.MCIERR_EXTENSION_NOT_FOUND:
+                    case (int) MCIERR.MCIERR_EXTENSION_NOT_FOUND:
                         return "Extension not found";
-                    case (int)MCIERR.MCIERR_EXTRA_CHARACTERS:
+                    case (int) MCIERR.MCIERR_EXTRA_CHARACTERS:
                         return "Extra characters";
-                    case (int)MCIERR.MCIERR_FILE_NOT_FOUND:
+                    case (int) MCIERR.MCIERR_FILE_NOT_FOUND:
                         return "File not found";
-                    case (int)MCIERR.MCIERR_FILE_NOT_SAVED:
+                    case (int) MCIERR.MCIERR_FILE_NOT_SAVED:
                         return "File not saved";
-                    case (int)MCIERR.MCIERR_FILE_READ:
+                    case (int) MCIERR.MCIERR_FILE_READ:
                         return "File read";
-                    case (int)MCIERR.MCIERR_FILE_WRITE:
+                    case (int) MCIERR.MCIERR_FILE_WRITE:
                         return "File write";
-                    case (int)MCIERR.MCIERR_FILENAME_REQUIRED:
+                    case (int) MCIERR.MCIERR_FILENAME_REQUIRED:
                         return "Filename required";
-                    case (int)MCIERR.MCIERR_FLAGS_NOT_COMPATIBLE:
+                    case (int) MCIERR.MCIERR_FLAGS_NOT_COMPATIBLE:
                         return "Flags not compatible";
-                    case (int)MCIERR.MCIERR_GET_CD:
+                    case (int) MCIERR.MCIERR_GET_CD:
                         return "Get CD";
-                    case (int)MCIERR.MCIERR_HARDWARE:
+                    case (int) MCIERR.MCIERR_HARDWARE:
                         return "Hardware";
-                    case (int)MCIERR.MCIERR_ILLEGAL_FOR_AUTO_OPEN:
+                    case (int) MCIERR.MCIERR_ILLEGAL_FOR_AUTO_OPEN:
                         return "Illegal for auto open";
-                    case (int)MCIERR.MCIERR_INTERNAL:
+                    case (int) MCIERR.MCIERR_INTERNAL:
                         return "Internal";
-                    case (int)MCIERR.MCIERR_INVALID_DEVICE_ID:
+                    case (int) MCIERR.MCIERR_INVALID_DEVICE_ID:
                         return "Invalid Device ID";
-                    case (int)MCIERR.MCIERR_INVALID_DEVICE_NAME:
+                    case (int) MCIERR.MCIERR_INVALID_DEVICE_NAME:
                         return "Invalid Device Name";
-                    case (int)MCIERR.MCIERR_INVALID_FILE:
+                    case (int) MCIERR.MCIERR_INVALID_FILE:
                         return "Invalid file";
-                    case (int)MCIERR.MCIERR_MISSING_COMMAND_STRING:
+                    case (int) MCIERR.MCIERR_MISSING_COMMAND_STRING:
                         return "Missing command string";
-                    case (int)MCIERR.MCIERR_MISSING_DEVICE_NAME:
+                    case (int) MCIERR.MCIERR_MISSING_DEVICE_NAME:
                         return "Missing device name";
-                    case (int)MCIERR.MCIERR_MISSING_PARAMETER:
+                    case (int) MCIERR.MCIERR_MISSING_PARAMETER:
                         return "Missing parameter";
-                    case (int)MCIERR.MCIERR_MISSING_STRING_ARGUMENT:
+                    case (int) MCIERR.MCIERR_MISSING_STRING_ARGUMENT:
                         return "Missing string argument";
-                    case (int)MCIERR.MCIERR_MULTIPLE:
+                    case (int) MCIERR.MCIERR_MULTIPLE:
                         return "Multiple";
-                    case (int)MCIERR.MCIERR_MUST_USE_SHAREABLE:
+                    case (int) MCIERR.MCIERR_MUST_USE_SHAREABLE:
                         return "Must use shareable";
-                    case (int)MCIERR.MCIERR_NEW_REQUIRES_ALIAS:
+                    case (int) MCIERR.MCIERR_NEW_REQUIRES_ALIAS:
                         return "New requires alias";
-                    case (int)MCIERR.MCIERR_NO_CLOSING_QUOTE:
+                    case (int) MCIERR.MCIERR_NO_CLOSING_QUOTE:
                         return "No closing quote";
-                    case (int)MCIERR.MCIERR_NO_ELEMENT_ALLOWED:
+                    case (int) MCIERR.MCIERR_NO_ELEMENT_ALLOWED:
                         return "No element allowed";
-                    case (int)MCIERR.MCIERR_NO_INTEGER:
+                    case (int) MCIERR.MCIERR_NO_INTEGER:
                         return "No integer";
-                    case (int)MCIERR.MCIERR_NO_WINDOW:
+                    case (int) MCIERR.MCIERR_NO_WINDOW:
                         return "No window";
-                    case (int)MCIERR.MCIERR_NONAPPLICABLE_FUNCTION:
+                    case (int) MCIERR.MCIERR_NONAPPLICABLE_FUNCTION:
                         return "No applicable function";
-                    case (int)MCIERR.MCIERR_NOTIFY_ON_AUTO_OPEN:
+                    case (int) MCIERR.MCIERR_NOTIFY_ON_AUTO_OPEN:
                         return "Notify on auto open";
-                    case (int)MCIERR.MCIERR_NULL_PARAMETER_BLOCK:
+                    case (int) MCIERR.MCIERR_NULL_PARAMETER_BLOCK:
                         return "Null parameter block";
-                    case (int)MCIERR.MCIERR_OUT_OF_MEMORY:
+                    case (int) MCIERR.MCIERR_OUT_OF_MEMORY:
                         return "Out of memory";
-                    case (int)MCIERR.MCIERR_OUTOFRANGE:
+                    case (int) MCIERR.MCIERR_OUTOFRANGE:
                         return "Out of range";
-                    case (int)MCIERR.MCIERR_PARAM_OVERFLOW:
+                    case (int) MCIERR.MCIERR_PARAM_OVERFLOW:
                         return "Param overflow";
-                    case (int)MCIERR.MCIERR_PARSER_INTERNAL:
+                    case (int) MCIERR.MCIERR_PARSER_INTERNAL:
                         return "Parser internal";
-                    case (int)MCIERR.MCIERR_SEQ_DIV_INCOMPATIBLE:
+                    case (int) MCIERR.MCIERR_SEQ_DIV_INCOMPATIBLE:
                         return "Seq div incompatible";
-                    case (int)MCIERR.MCIERR_SEQ_NOMIDIPRESENT:
+                    case (int) MCIERR.MCIERR_SEQ_NOMIDIPRESENT:
                         return "Seq nomid present";
-                    case (int)MCIERR.MCIERR_SEQ_PORT_INUSE:
+                    case (int) MCIERR.MCIERR_SEQ_PORT_INUSE:
                         return "Seq Port in use";
-                    case (int)MCIERR.MCIERR_SEQ_PORT_MAPNODEVICE:
+                    case (int) MCIERR.MCIERR_SEQ_PORT_MAPNODEVICE:
                         return "Seq Port Map No Device";
-                    case (int)MCIERR.MCIERR_SEQ_PORT_MISCERROR:
+                    case (int) MCIERR.MCIERR_SEQ_PORT_MISCERROR:
                         return "Seq Port Misc Error";
-                    case (int)MCIERR.MCIERR_SEQ_PORT_NONEXISTENT:
+                    case (int) MCIERR.MCIERR_SEQ_PORT_NONEXISTENT:
                         return "Seq Port Nonexistent";
-                    case (int)MCIERR.MCIERR_SEQ_PORTUNSPECIFIED:
+                    case (int) MCIERR.MCIERR_SEQ_PORTUNSPECIFIED:
                         return "Seq Port Unspecified";
-                    case (int)MCIERR.MCIERR_SEQ_TIMER:
+                    case (int) MCIERR.MCIERR_SEQ_TIMER:
                         return "Seq Timer";
-                    case (int)MCIERR.MCIERR_SET_CD:
+                    case (int) MCIERR.MCIERR_SET_CD:
                         return "Set CD";
-                    case (int)MCIERR.MCIERR_SET_DRIVE:
+                    case (int) MCIERR.MCIERR_SET_DRIVE:
                         return "Set Drive";
-                    case (int)MCIERR.MCIERR_UNNAMED_RESOURCE:
+                    case (int) MCIERR.MCIERR_UNNAMED_RESOURCE:
                         return "Unnamed Resource";
-                    case (int)MCIERR.MCIERR_UNRECOGNIZED_COMMAND:
+                    case (int) MCIERR.MCIERR_UNRECOGNIZED_COMMAND:
                         return "Unrecognized Command";
-                    case (int)MCIERR.MCIERR_UNRECOGNIZED_KEYWORD:
+                    case (int) MCIERR.MCIERR_UNRECOGNIZED_KEYWORD:
                         return "Unrecognized Keyword";
-                    case (int)MCIERR.MCIERR_UNSUPPORTED_FUNCTION:
+                    case (int) MCIERR.MCIERR_UNSUPPORTED_FUNCTION:
                         return "Unsupported Function";
-                    case (int)MCIERR.MCIERR_WAVE_INPUTSINUSE:
+                    case (int) MCIERR.MCIERR_WAVE_INPUTSINUSE:
                         return "Wave input in use";
-                    case (int)MCIERR.MCIERR_WAVE_INPUTSUNSUITABLE:
+                    case (int) MCIERR.MCIERR_WAVE_INPUTSUNSUITABLE:
                         return "Wave inputs unsuitable";
-                    case (int)MCIERR.MCIERR_WAVE_INPUTUNSPECIFIED:
+                    case (int) MCIERR.MCIERR_WAVE_INPUTUNSPECIFIED:
                         return "Wave inputs unspecified";
-                    case (int)MCIERR.MCIERR_WAVE_OUTPUTSINUSE:
+                    case (int) MCIERR.MCIERR_WAVE_OUTPUTSINUSE:
                         return "Wave outputs in use";
-                    case (int)MCIERR.MCIERR_WAVE_OUTPUTSUNSUITABLE:
+                    case (int) MCIERR.MCIERR_WAVE_OUTPUTSUNSUITABLE:
                         return "Wave outputs unsuitable";
-                    case (int)MCIERR.MCIERR_WAVE_OUTPUTUNSPECIFIED:
+                    case (int) MCIERR.MCIERR_WAVE_OUTPUTUNSPECIFIED:
                         return "Wave outputs unspecified";
-                    case (int)MCIERR.MCIERR_WAVE_SETINPUTINUSE:
+                    case (int) MCIERR.MCIERR_WAVE_SETINPUTINUSE:
                         return "Wave set input in use";
-                    case (int)MCIERR.MCIERR_WAVE_SETINPUTUNSUITABLE:
+                    case (int) MCIERR.MCIERR_WAVE_SETINPUTUNSUITABLE:
                         return "Wave set input unsuitable";
-                    case (int)MCIERR.MCIERR_WAVE_SETOUTPUTINUSE:
+                    case (int) MCIERR.MCIERR_WAVE_SETOUTPUTINUSE:
                         return "Wave set output in use";
-                    case (int)MCIERR.MCIERR_WAVE_SETOUTPUTUNSUITABLE:
+                    case (int) MCIERR.MCIERR_WAVE_SETOUTPUTUNSUITABLE:
                         return "Wave set output unsuitable";
                     default:
                         return "Undefined";
@@ -278,9 +277,8 @@
         }
 
         /// <summary>
-        ///     The error number that the mciSendString API returned.
+        /// The error number that the mciSendString API returned.
         /// </summary>
         public int ErrorNumber { get; set; }
-
     }
 }

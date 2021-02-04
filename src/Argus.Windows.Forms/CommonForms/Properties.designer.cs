@@ -1,4 +1,11 @@
-﻿namespace Argus.Windows.Forms.CommonForms
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+namespace Argus.Windows.Forms.CommonForms
 {
     partial class Properties
     {

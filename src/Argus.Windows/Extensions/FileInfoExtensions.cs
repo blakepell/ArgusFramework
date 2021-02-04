@@ -1,25 +1,24 @@
-﻿using System.IO;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-04-06
+ * @last updated      : 2019-11-18
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.IO;
 using System.Security.Principal;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for <see cref="FileInfoExtensions" />
+    /// Extension methods for <see cref="FileInfoExtensions" />
     /// </summary>
     public static class FileInfoExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  FileInfoExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  04/06/2009
-        //      Last Updated:  11/18/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Returns the owner of the file.
+        /// Returns the owner of the file.
         /// </summary>
         /// <param name="fi"></param>
         public static string GetOwner(this FileInfo fi)

@@ -1,6 +1,15 @@
-﻿using NAudio.CoreAudioApi;
-using NAudio.Wave;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2013-07-26
+ * @last updated      : 2020-12-03
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
 using System;
+using NAudio.CoreAudioApi;
+using NAudio.Wave;
 
 namespace Argus.Audio.NAudio
 {
@@ -14,21 +23,19 @@ namespace Argus.Audio.NAudio
     /// for some folks.  In particular this version allows for the setting of the AudioDevice (not just the default) as well
     /// has the ability to get to get an audio level from the right and level channels (which you can use to determine if
     /// anything is playing or if there is silence).  The original blog post exists at:
-    /// 
     /// https://www.blakepell.com/2013-07-26-naudio-loopback-record-what-you-hear-through-the-speaker
     /// </remarks>
     public class LoopbackRecorder : IDisposable
     {
+        /// <summary>
+        /// Private variable for the <see cref="AudioDevice" /> property.
+        /// </summary>
+        private MMDevice _audioDevice;
 
-        /*********************************************************************************************************************
-         *
-         *            Class:  LoopbackRecorder
-         *     Organization:  http://www.blakepell.com
-         *     Initial Date:  07/26/2013
-         *     Last Updated:  12/03/2020
-         *    Programmer(s):  Blake Pell, blakepell@hotmail.com
-         *
-         *********************************************************************************************************************/
+        /// <summary>
+        /// Used to check redundant calls to <see cref="Dispose" />.
+        /// </summary>
+        private bool _disposed;
 
         private IWaveIn _waveIn;
         private WaveFileWriter _writer;
@@ -44,7 +51,9 @@ namespace Argus.Audio.NAudio
                 this.Devices = new MMDeviceEnumerator();
                 this.AudioDevice = this.Devices.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         /// <summary>
@@ -68,7 +77,82 @@ namespace Argus.Audio.NAudio
                     this.Devices = new MMDeviceEnumerator();
                 }
             }
-            catch { }
+            catch
+            {
+            }
+        }
+
+        /// <summary>
+        /// The name of the file that was set when StartRecording was called.  E.g. the current file
+        /// being written to.
+        /// </summary>
+        public string Filename { get; private set; } = "";
+
+        /// <summary>
+        /// Whether or not recording is currently happening.
+        /// </summary>
+        public bool IsRecording { get; private set; }
+
+        /// <summary>
+        /// A list of the available devices.
+        /// </summary>
+        public MMDeviceEnumerator Devices { get; private set; }
+
+        /// <summary>
+        /// The audio device that is currently in use.
+        /// </summary>
+        public MMDevice AudioDevice
+        {
+            get => _audioDevice;
+            set
+            {
+                // If the underlying audio device already exists when this is set then dispose of it
+                // before setting the new value.
+                _audioDevice?.Dispose();
+                _audioDevice = value;
+            }
+        }
+
+        /// <summary>
+        /// Returns the current audio level for the left channel that's playing between 1 and 100 for
+        /// the default audio device.
+        /// </summary>
+        public int LeftAudioLevel
+        {
+            get
+            {
+                if (this.AudioDevice != null)
+                {
+                    return (int) this.AudioDevice.AudioMeterInformation.PeakValues[0] * 100;
+                }
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Returns the current audio level for the right channel that's playing between 1 and 100
+        /// for the default audio device.
+        /// </summary>
+        public int RightAudioLevel
+        {
+            get
+            {
+                if (this.AudioDevice != null)
+                {
+                    return (int) this.AudioDevice.AudioMeterInformation.PeakValues[1] * 100;
+                }
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Disposes of all resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
         }
 
         /// <summary>
@@ -78,7 +162,7 @@ namespace Argus.Audio.NAudio
         public void StartRecording(string filename)
         {
             // If we are currently recording then go ahead and exit out.
-            if (IsRecording)
+            if (this.IsRecording)
             {
                 return;
             }
@@ -87,8 +171,8 @@ namespace Argus.Audio.NAudio
             _waveIn = new WasapiLoopbackCapture();
             _writer = new WaveFileWriter(filename, _waveIn.WaveFormat);
 
-            _waveIn.DataAvailable += OnDataAvailable;
-            _waveIn.RecordingStopped += OnRecordingStopped;
+            _waveIn.DataAvailable += this.OnDataAvailable;
+            _waveIn.RecordingStopped += this.OnRecordingStopped;
             _waveIn.StartRecording();
             this.IsRecording = true;
         }
@@ -119,7 +203,7 @@ namespace Argus.Audio.NAudio
                 return -1;
             }
 
-            return (int)(_writer.Length / _writer.WaveFormat.AverageBytesPerSecond);
+            return (int) (_writer.Length / _writer.WaveFormat.AverageBytesPerSecond);
         }
 
         /// <summary>
@@ -135,8 +219,8 @@ namespace Argus.Audio.NAudio
             _writer = null;
 
             // Remove the events on DataAvailable and RecordingStopped.
-            _waveIn.DataAvailable -= OnDataAvailable;
-            _waveIn.RecordingStopped -= OnRecordingStopped;
+            _waveIn.DataAvailable -= this.OnDataAvailable;
+            _waveIn.RecordingStopped -= this.OnRecordingStopped;
 
             // Dispose of the IWaveIn.
             _waveIn?.Dispose();
@@ -161,20 +245,7 @@ namespace Argus.Audio.NAudio
         }
 
         /// <summary>
-        /// Used to check redundant calls to <see cref="Dispose" />.
-        /// </summary>
-        private bool _disposed;
-
-        /// <summary>
-        /// Disposes of all resources.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-        }
-
-        /// <summary>
-        /// Protected implementation of <see cref="Dispose"/>.
+        /// Protected implementation of <see cref="Dispose" />.
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
@@ -202,76 +273,5 @@ namespace Argus.Audio.NAudio
             _disposed = true;
             this.IsRecording = false;
         }
-
-        /// <summary>
-        /// The name of the file that was set when StartRecording was called.  E.g. the current file 
-        /// being written to.
-        /// </summary>
-        public string Filename { get; private set; } = "";
-
-        /// <summary>
-        /// Whether or not recording is currently happening.
-        /// </summary>
-        public bool IsRecording { get; private set; }
-
-        /// <summary>
-        /// A list of the available devices.
-        /// </summary>
-        public MMDeviceEnumerator Devices { get; private set; }
-
-        /// <summary>
-        /// Private variable for the <see cref="AudioDevice"/> property.
-        /// </summary>
-        private MMDevice _audioDevice;
-
-        /// <summary>
-        /// The audio device that is currently in use.
-        /// </summary>
-        public MMDevice AudioDevice
-        {
-            get => _audioDevice;
-            set
-            {
-                // If the underlying audio device already exists when this is set then dispose of it
-                // before setting the new value.
-                _audioDevice?.Dispose();
-                _audioDevice = value;
-            }
-        }
-
-        /// <summary>
-        /// Returns the current audio level for the left channel that's playing between 1 and 100 for 
-        /// the default audio device.
-        /// </summary>
-        public int LeftAudioLevel
-        {
-            get
-            {
-                if (this.AudioDevice != null)
-                {
-                    return (int)this.AudioDevice.AudioMeterInformation.PeakValues[0] * 100;
-                }
-
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Returns the current audio level for the right channel that's playing between 1 and 100 
-        /// for the default audio device.
-        /// </summary>
-        public int RightAudioLevel
-        {
-            get
-            {
-                if (this.AudioDevice != null)
-                {
-                    return (int)this.AudioDevice.AudioMeterInformation.PeakValues[1] * 100;
-                }
-
-                return 0;
-            }
-        }
-
     }
 }

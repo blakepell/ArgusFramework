@@ -152,6 +152,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Argus.Windows.Uwp.licenseheader" />
     <None Include="Argus.Windows.Uwp.nuspec" />
     <None Include="CreateNuget.bat" />
   </ItemGroup>

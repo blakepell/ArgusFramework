@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2008-06-02
+ * @last updated      : 2019-03-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections;
 using System.Windows.Forms;
 using Argus.Extensions;
@@ -6,38 +15,27 @@ using Argus.Extensions;
 namespace Argus.Windows.Forms.Controls
 {
     /// <summary>
-    ///     Utility comparer that allows a WinForms ListView control to be sorted by column.
+    /// Utility comparer that allows a WinForms ListView control to be sorted by column.
     /// </summary>
-    /// <remarks></remarks>
     public class ListViewColumnSorter : IComparer
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  ListViewColumnSorter
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  06/02/2008
-        //      Last Updated:  03/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Object Compare
+        /// Object Compare
         /// </summary>
         public CaseInsensitiveComparer ObjectCompare { get; set; } = new CaseInsensitiveComparer();
 
         /// <summary>
-        ///     The sort column.
+        /// The sort column.
         /// </summary>
         public int SortColumn { get; set; } = 0;
 
         /// <summary>
-        ///     The sort order.
+        /// The sort order.
         /// </summary>
         public SortOrder Order { get; set; } = SortOrder.None;
 
         /// <summary>
-        ///     Compares to values.
+        /// Compares to values.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>

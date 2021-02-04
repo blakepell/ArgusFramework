@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-12-13
+ * @last updated      : 2019-11-18
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -6,22 +15,12 @@ using System.Windows.Forms;
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for <see cref="System.Windows.Forms.Form" />.
+    /// Extension methods for <see cref="System.Windows.Forms.Form" />.
     /// </summary>
     public static class FormExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  FormExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  12/13/2009
-        //      Last Updated:  11/18/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Pauses via a Task.Delay.
+        /// Pauses via a Task.Delay.
         /// </summary>
         /// <param name="form"></param>
         /// <param name="milliseconds"></param>
@@ -50,11 +49,9 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Causes the form to flash both the caption bar and the tray.
+        /// Causes the form to flash both the caption bar and the tray.
         /// </summary>
         /// <param name="frm"></param>
-        /// <remarks>
-        /// </remarks>
         public static void FlashForm(this Form frm)
         {
             var flash = new FLASHWINFO();

@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,7 +14,7 @@ using System.Text;
 namespace Argus.Graphics
 {
     /// <summary>
-    ///     Class to extract all icons from executable or DLLs.
+    /// Class to extract all icons from executable or DLLs.
     /// </summary>
     public class IconExtractor : IDisposable
     {
@@ -150,7 +155,7 @@ namespace Argus.Graphics
         #region Contructor/Destructor and relatives
 
         /// <summary>
-        ///     Load the specified executable file or DLL, and get ready to extract the icons.
+        /// Load the specified executable file or DLL, and get ready to extract the icons.
         /// </summary>
         /// <param name="filename">The name of a file from which icons will be extracted.</param>
         public IconExtractor(string filename)
@@ -236,7 +241,7 @@ namespace Argus.Graphics
 
             if (_iconCache != null)
             {
-                foreach (Icon i in _iconCache)
+                foreach (var i in _iconCache)
                 {
                     if (i != null)
                     {
@@ -259,7 +264,7 @@ namespace Argus.Graphics
         #region Public Methods
 
         /// <summary>
-        ///     Extract an icon from the loaded executable file or DLL.
+        /// Extract an icon from the loaded executable file or DLL.
         /// </summary>
         /// <param name="iconIndex">The zero-based index of the icon to be extracted.</param>
         /// <returns>A System.Drawing.Icon object which may consists of multiple icons.</returns>
@@ -286,7 +291,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Split an Icon consists of multiple icons into an array of Icon each consist of single icons.
+        /// Split an Icon consists of multiple icons into an array of Icon each consist of single icons.
         /// </summary>
         /// <param name="icon">The System.Drawing.Icon to be split.</param>
         /// <returns>An array of System.Drawing.Icon each consist of single icons.</returns>
@@ -306,7 +311,7 @@ namespace Argus.Graphics
                 srcBuf = stream.ToArray();
             }
 
-            List<Icon> splitIcons = new List<Icon>();
+            var splitIcons = new List<Icon>();
 
             {
                 int count = BitConverter.ToInt16(srcBuf, 4); // ICONDIR.idCount

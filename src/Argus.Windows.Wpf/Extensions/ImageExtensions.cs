@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -7,18 +14,8 @@ namespace Argus.Windows.Wpf.Extensions
 {
     public static class ImageExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  ImageExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  07/19/2010
-        //      Last Updated:  07/19/2010
-        //    Programmer(s):   Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Loads an image file into the Image control.
+        /// Loads an image file into the Image control.
         /// </summary>
         /// <param name="img"></param>
         /// <param name="filePath"></param>
@@ -41,7 +38,7 @@ namespace Argus.Windows.Wpf.Extensions
         }
 
         /// <summary>
-        ///     Loads an image file into the Image control.
+        /// Loads an image file into the Image control.
         /// </summary>
         /// <param name="img"></param>
         /// <param name="filePath"></param>

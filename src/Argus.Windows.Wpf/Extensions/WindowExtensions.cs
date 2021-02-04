@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -8,22 +15,12 @@ using System.Windows.Interop;
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for WPF Windows.
+    /// Extension methods for WPF Windows.
     /// </summary>
     public static class WindowExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  WindowExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  09/19/2019
-        //      Last Updated:  07/17/2020
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Determines whether the calling thread is the thread associated with the given <see cref="T:System.Windows.Window" />.
+        /// Determines whether the calling thread is the thread associated with the given <see cref="T:System.Windows.Window" />.
         /// </summary>
         /// <param name="window">The <see cref="T:System.Windows.Window" /> to be checked.</param>
         /// <returns><see langword="true" /> if the calling thread is the thread associated with this <see cref="T:System.Windows.Window" />; otherwise, <see langword="false" />.</returns>
@@ -38,16 +35,16 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Whether or not the current Window is being shown as a modal.
+        /// Whether or not the current Window is being shown as a modal.
         /// </summary>
         /// <param name="window"></param>
         public static bool IsModal(this Window window)
         {
-            return (bool)typeof(Window).GetField("_showingAsDialog", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(window);
+            return (bool) typeof(Window).GetField("_showingAsDialog", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(window);
         }
 
         /// <summary>
-        ///     Executes the specified <see cref="T:System.Action" /> synchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
+        /// Executes the specified <see cref="T:System.Action" /> synchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
         /// </summary>
         /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
         /// <param name="callback">A delegate to invoke through the window thread.</param>
@@ -74,7 +71,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Executes the specified <see cref="T:System.Func`1" /> synchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
+        /// Executes the specified <see cref="T:System.Func`1" /> synchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
         /// </summary>
         /// <typeparam name="TResult">The return value type of the specified delegate.</typeparam>
         /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
@@ -101,7 +98,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Executes the specified <see cref="T:System.Action" /> asynchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
+        /// Executes the specified <see cref="T:System.Action" /> asynchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
         /// </summary>
         /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
         /// <param name="callback">A delegate to invoke through the window thread.</param>
@@ -124,7 +121,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Executes the specified <see cref="T:System.Func`1" /> asynchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
+        /// Executes the specified <see cref="T:System.Func`1" /> asynchronously on the thread the given <see cref="T:System.Windows.Window" /> is associated with.
         /// </summary>
         /// <typeparam name="TResult">The return value type of the specified delegate.</typeparam>
         /// <param name="window">A <see cref="T:System.Windows.Window" />.</param>
@@ -171,11 +168,11 @@ namespace Argus.Extensions
         private const uint WM_SETICON = 0x0080;
 
         /// <summary>
-        ///     Removes the command icon from the upper left hand portion of the title bar.
+        /// Removes the command icon from the upper left hand portion of the title bar.
         /// </summary>
         /// <param name="window">The WPF Window</param>
         /// <example>
-        ///     this.RemoveIcon();
+        /// this.RemoveIcon();
         /// </example>
         public static void RemoveIcon(this Window window)
         {

@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2010-11-30
+ * @last updated      : 2019-11-22
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -8,23 +17,13 @@ using Argus.Extensions;
 namespace Argus.Windows
 {
     /// <summary>
-    ///     A class that represents a Window, or a child object of a Window.
+    /// A class that represents a Window, or a child object of a Window.
     /// </summary>
     /// <remarks>
-    ///     TODO - Test this, it took quite a bit of wrestling to get the messages and API calls converted.
+    /// TODO - Test this, it took quite a bit of wrestling to get the messages and API calls converted.
     /// </remarks>
     public class WindowWrapper
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  WindowWrapper
-        //      Organization:  http://www.blakepell.com  
-        //      Initial Date:  11/30/2010
-        //     Last Modified:  11/22/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************      
-
         #region "Windows API Declarations"
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -82,7 +81,7 @@ namespace Argus.Windows
             public int Right;
 
             /// <summary>
-            ///  y position of the lower-right corner
+            /// y position of the lower-right corner
             /// </summary>
             public int Bottom;
         }
@@ -106,7 +105,7 @@ namespace Argus.Windows
         private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, [Out] StringBuilder lParam);
 
         /// <summary>
-        ///     Used for minimzing the Window, does not destory the window though.
+        /// Used for minimizing the Window, does not destroy the window though.
         /// </summary>
         /// <param name="hWnd"></param>
         [DllImport("user32.dll", SetLastError = true)]
@@ -119,95 +118,94 @@ namespace Argus.Windows
         private static extern void GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
         /// <summary>
-        ///     Commands associated with the ShowWindow API and it's internal implementation in this class, SetWindowState.
+        /// Commands associated with the ShowWindow API and it's internal implementation in this class, SetWindowState.
         /// </summary>
         public enum ShowWindowCommand
         {
             /// <summary>
-            ///     Hides the window and activates another window.
+            /// Hides the window and activates another window.
             /// </summary>
             Hide = 0,
 
             /// <summary>
-            ///     Activates and displays a window. If the window is minimized or
-            ///     maximized, the system restores it to its original size and position.
-            ///     An application should specify this flag when displaying the window
-            ///     for the first time.
+            /// Activates and displays a window. If the window is minimized or
+            /// maximized, the system restores it to its original size and position.
+            /// An application should specify this flag when displaying the window
+            /// for the first time.
             /// </summary>
             Normal = 1,
 
             /// <summary>
-            ///     Activates the window and displays it as a minimized window.
+            /// Activates the window and displays it as a minimized window.
             /// </summary>
             ShowMinimized = 2,
 
             /// <summary>
-            ///     Maximizes the specified window.
+            /// Maximizes the specified window.
             /// </summary>
             Maximize = 3,
 
-            // is this the right value?
             /// <summary>
-            ///     Activates the window and displays it as a maximized window.
+            /// Activates the window and displays it as a maximized window.
             /// </summary>
             ShowMaximized = 3,
 
             /// <summary>
-            ///     Displays a window in its most recent size and position. This value
-            ///     is similar to Win32.ShowWindowCommand.Normal, except
-            ///     the window is not actived.
+            /// Displays a window in its most recent size and position. This value
+            /// is similar to Win32.ShowWindowCommand.Normal, except
+            /// the window is not activated.
             /// </summary>
             ShowNoActivate = 4,
 
             /// <summary>
-            ///     Activates the window and displays it in its current size and position.
+            /// Activates the window and displays it in its current size and position.
             /// </summary>
             Show = 5,
 
             /// <summary>
-            ///     Minimizes the specified window and activates the next top-level
-            ///     window in the Z order.
+            /// Minimizes the specified window and activates the next top-level
+            /// window in the Z order.
             /// </summary>
             Minimize = 6,
 
             /// <summary>
-            ///     Displays the window as a minimized window. This value is similar to
-            ///     Win32.ShowWindowCommand.ShowMinimized, except the
-            ///     window is not activated.
+            /// Displays the window as a minimized window. This value is similar to
+            /// Win32.ShowWindowCommand.ShowMinimized, except the
+            /// window is not activated.
             /// </summary>
             ShowMinNoActive = 7,
 
             /// <summary>
-            ///     Displays the window in its current size and position. This value is
-            ///     similar to Win32.ShowWindowCommand.Show, except the
-            ///     window is not activated.
+            /// Displays the window in its current size and position. This value is
+            /// similar to Win32.ShowWindowCommand.Show, except the
+            /// window is not activated.
             /// </summary>
             ShowNA = 8,
 
             /// <summary>
-            ///     Activates and displays the window. If the window is minimized or
-            ///     maximized, the system restores it to its original size and position.
-            ///     An application should specify this flag when restoring a minimized window.
+            /// Activates and displays the window. If the window is minimized or
+            /// maximized, the system restores it to its original size and position.
+            /// An application should specify this flag when restoring a minimized window.
             /// </summary>
             Restore = 9,
 
             /// <summary>
-            ///     Sets the show state based on the SW_* value specified in the
-            ///     STARTUPINFO structure passed to the CreateProcess function by the
-            ///     program that started the application.
+            /// Sets the show state based on the SW_* value specified in the
+            /// STARTUPINFO structure passed to the CreateProcess function by the
+            /// program that started the application.
             /// </summary>
             ShowDefault = 10,
 
             /// <summary>
-            ///     <b>Windows 2000/XP:</b> Minimizes a window, even if the thread
-            ///     that owns the window is not responding. This flag should only be
-            ///     used when minimizing windows from a different thread.
+            /// <b>Windows 2000/XP:</b> Minimizes a window, even if the thread
+            /// that owns the window is not responding. This flag should only be
+            /// used when minimizing windows from a different thread.
             /// </summary>
             ForceMinimize = 11
         }
 
         /// <summary>
-        ///     Messages for use with the SendMessage API
+        /// Messages for use with the SendMessage API
         /// </summary>
         public enum Messages : uint
         {
@@ -769,7 +767,7 @@ namespace Argus.Windows
         #region "Contructors"
 
         /// <summary>
-        ///     Constructor:  Loads the active window and return's it's parent in the case of an MDI form.
+        /// Constructor:  Loads the active window and return's it's parent in the case of an MDI form.
         /// </summary>
         public WindowWrapper()
         {
@@ -777,7 +775,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Construtor:  Loads the active window and gives the option of whether to return it's parent in the case of an MDI form.
+        /// Construtor:  Loads the active window and gives the option of whether to return it's parent in the case of an MDI form.
         /// </summary>
         /// <param name="returnParent"></param>
         public WindowWrapper(bool returnParent)
@@ -786,7 +784,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Constructor:  Loads a window based off of the handle specified.
+        /// Constructor:  Loads a window based off of the handle specified.
         /// </summary>
         /// <param name="handle"></param>
         public WindowWrapper(IntPtr handle)
@@ -795,7 +793,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Constructor:  Loads a window based off of the name of the window.
+        /// Constructor:  Loads a window based off of the name of the window.
         /// </summary>
         /// <param name="windowName"></param>
         public WindowWrapper(string windowName)
@@ -808,12 +806,12 @@ namespace Argus.Windows
         #region "Methods"
 
         /// <summary>
-        ///     Loads the Window from the handle.
+        /// Loads the Window from the handle.
         /// </summary>
         /// <param name="handle"></param>
         /// <remarks>
-        ///     The main logic for LoadWindow is implemented in this function.  All other LoadWindow overloads will call into this function
-        ///     after they have obtained the Window handle required based off their parameters.
+        /// The main logic for LoadWindow is implemented in this function.  All other LoadWindow overloads will call into this function
+        /// after they have obtained the Window handle required based off their parameters.
         /// </remarks>
         public void LoadWindow(IntPtr handle)
         {
@@ -828,7 +826,7 @@ namespace Argus.Windows
 
             // Load the window's text
             int windowLength = GetWindowTextLength(handle);
-            string buf = string.Empty.PadRight(windowLength + 1, (char)32);
+            string buf = string.Empty.PadRight(windowLength + 1, (char) 32);
 
             GetWindowText(handle, buf, windowLength + 1);
             this.Text = buf.SafeLeft(windowLength);
@@ -850,7 +848,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Loads the active window.
+        /// Loads the active window.
         /// </summary>
         /// <param name="returnParent">If true then the parent form will be loaded in the case of an MDI form.</param>
         public void LoadWindow(bool returnParent)
@@ -875,7 +873,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Loads the specified window based on the provided windowText.
+        /// Loads the specified window based on the provided windowText.
         /// </summary>
         /// <param name="windowText"></param>
         public void LoadWindow(string windowText)
@@ -885,8 +883,8 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Loads the specified window based on either the className, the windowText or both.  If one of the two items aren't
-        ///     needed then pass a null value in for that parameter.
+        /// Loads the specified window based on either the className, the windowText or both.  If one of the two items aren't
+        /// needed then pass a null value in for that parameter.
         /// </summary>
         /// <param name="className"></param>
         /// <param name="windowText"></param>
@@ -897,7 +895,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Initialize properties to an empty value set.
+        /// Initialize properties to an empty value set.
         /// </summary>
         private void InitializeEmpty()
         {
@@ -908,7 +906,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Sets the focus on the current window that is loaded and brings it to the foreground.
+        /// Sets the focus on the current window that is loaded and brings it to the foreground.
         /// </summary>
         public void ActivateWindow()
         {
@@ -919,7 +917,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Minimizes the current window via the CloseWindowAPI.
+        /// Minimizes the current window via the CloseWindowAPI.
         /// </summary>
         public void MinimizeWindow()
         {
@@ -930,7 +928,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Removes the window and any child windows it contains.
+        /// Removes the window and any child windows it contains.
         /// </summary>
         public void DestroyWindow()
         {
@@ -938,7 +936,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Sets the window state to the specified command option, this will allow for minimize, maximize, restore, changing of visisbility, etc.
+        /// Sets the window state to the specified command option, this will allow for minimize, maximize, restore, changing of visisbility, etc.
         /// </summary>
         /// <param name="cmd"></param>
         public void SetWindowState(ShowWindowCommand cmd)
@@ -950,7 +948,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Sets the position of the current window on the screen.
+        /// Sets the position of the current window on the screen.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -965,7 +963,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Sets the position of the current window on the screen.
+        /// Sets the position of the current window on the screen.
         /// </summary>
         /// <param name="loc"></param>
         /// <param name="sz"></param>
@@ -975,7 +973,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Sends a mouse click to the current handle.
+        /// Sends a mouse click to the current handle.
         /// </summary>
         public void Click()
         {
@@ -983,29 +981,29 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Enum representing the Left, Middle and Right mouse buttons.
+        /// Enum representing the Left, Middle and Right mouse buttons.
         /// </summary>
         public enum MouseButton
         {
             /// <summary>
-            ///     Left Mouse Button
+            /// Left Mouse Button
             /// </summary>
             Left,
 
             /// <summary>
-            ///     Middle Mouse Button
+            /// Middle Mouse Button
             /// </summary>
             Middle,
 
             /// <summary>
-            ///     Right Mouse Button
+            /// Right Mouse Button
             /// </summary>
             Right
         }
 
         /// <summary>
-        ///     Sends a mouse down message and a mouse up message at the specified coordinate.  The coordiante is not the coordinate on
-        ///     the screen, but where it lays on the form.
+        /// Sends a mouse down message and a mouse up message at the specified coordinate.  The coordinate is not the coordinate on
+        /// the screen, but where it lays on the form.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -1034,7 +1032,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Sets the title of the active window.
+        /// Sets the title of the active window.
         /// </summary>
         /// <param name="windowText"></param>
         public void SetWindowText(string windowText)
@@ -1099,7 +1097,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Returns the parent handle for the current Window.
+        /// Returns the parent handle for the current Window.
         /// </summary>
         public IntPtr GetParentHandle()
         {
@@ -1112,7 +1110,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Gets the handles to the child controls.
+        /// Gets the handles to the child controls.
         /// </summary>
         public List<IntPtr> GetChildHandles(bool recurse)
         {
@@ -1172,7 +1170,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Returns the GETTEXT value from the window/control.
+        /// Returns the GETTEXT value from the window/control.
         /// </summary>
         public string GetText()
         {
@@ -1195,7 +1193,7 @@ namespace Argus.Windows
         }
 
         /// <summary>
-        ///     Returns the GETTEXT value provided the handle
+        /// Returns the GETTEXT value provided the handle
         /// </summary>
         /// <param name="handle"></param>
         public static string GetText(IntPtr handle)
@@ -1223,28 +1221,28 @@ namespace Argus.Windows
         #region "Properties"
 
         /// <summary>
-        ///     Whether or not the recursive features will do so when the Handle value is equal to IntPtr.  In this case, it
-        ///     seems to recurse all controls currently in existence.
+        /// Whether or not the recursive features will do so when the Handle value is equal to IntPtr.  In this case, it
+        /// seems to recurse all controls currently in existence.
         /// </summary>
         public bool IgnoreRecursionOnZeroIntPtr { get; set; } = true;
 
         /// <summary>
-        ///     The handle to the currently loaded window.
+        /// The handle to the currently loaded window.
         /// </summary>
         public IntPtr Handle { get; private set; } = IntPtr.Zero;
 
         /// <summary>
-        ///     The currently loaded Window's caption.
+        /// The currently loaded Window's caption.
         /// </summary>
         public string Text { get; private set; } = "";
 
         /// <summary>
-        ///     The size of the loaded form.  Use the SetPosition method to change these dimensions.
+        /// The size of the loaded form.  Use the SetPosition method to change these dimensions.
         /// </summary>
         public Size Size { get; private set; } = new Size(0, 0);
 
         /// <summary>
-        ///     The location of the loaded form.  Use the SetPosition method to change this point.
+        /// The location of the loaded form.  Use the SetPosition method to change this point.
         /// </summary>
         public Point Location { get; private set; } = new Point(0, 0);
 

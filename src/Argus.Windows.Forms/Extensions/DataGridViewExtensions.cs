@@ -1,26 +1,25 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-12-13
+ * @last updated      : 2019-03-13
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Data;
 using System.Windows.Forms;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for <see cref="System.Windows.Forms.DataGridView" />.
+    /// Extension methods for <see cref="DataGridView" />.
     /// </summary>
     public static class DataGridViewExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  DataGridViewExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  12/13/2009
-        //      Last Updated:  03/13/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Converts a data grid view that's not databound (and one that is databound) into a data table.  If it's already data bound, there maybe an more efficient way to get a data table structure (e.g., if it's already bound to a data table).
+        /// Converts a data grid view that's not databound (and one that is databound) into a data table.  If it's already data bound, there maybe an more efficient way to get a data table structure (e.g., if it's already bound to a data table).
         /// </summary>
         /// <param name="dgv"></param>
         /// <param name="exportHeader"></param>

@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using Argus.Diagnostics;
@@ -8,9 +15,9 @@ using Microsoft.AspNetCore.Http;
 namespace Argus.AspNetCore.Environment
 {
     /// <summary>
-    ///     The resource methods that are used via the ResourceMonitorApi.  These methods are wired
-    ///     up in the "void Configure" of the Startup class of the site with:
-    ///     <code>
+    /// The resource methods that are used via the ResourceMonitorApi.  These methods are wired
+    /// up in the "void Configure" of the Startup class of the site with:
+    /// <code>
     ///     app.MapResourceMonitor();
     ///     app.MapResourceMonitor("Authorization", "an-example-key-value");
     /// </code>
@@ -18,7 +25,7 @@ namespace Argus.AspNetCore.Environment
     public class ResourceMonitorApi
     {
         /// <summary>
-        ///     Returns a response of "pong" to the requested "ping".
+        /// Returns a response of "pong" to the requested "ping".
         /// </summary>
         public static void Ping(IApplicationBuilder app)
         {
@@ -29,7 +36,7 @@ namespace Argus.AspNetCore.Environment
         }
 
         /// <summary>
-        ///     Returns the current server time.
+        /// Returns the current server time.
         /// </summary>
         /// <param name="app"></param>
         public static void ServerTime(IApplicationBuilder app)
@@ -41,7 +48,7 @@ namespace Argus.AspNetCore.Environment
         }
 
         /// <summary>
-        ///     Returns the machine name of the executing server.
+        /// Returns the machine name of the executing server.
         /// </summary>
         /// <param name="app"></param>
         public static void MachineName(IApplicationBuilder app)
@@ -53,7 +60,7 @@ namespace Argus.AspNetCore.Environment
         }
 
         /// <summary>
-        ///     Returns detailed machine information.
+        /// Returns detailed machine information.
         /// </summary>
         /// <param name="app"></param>
         public static void Detailed(IApplicationBuilder app)

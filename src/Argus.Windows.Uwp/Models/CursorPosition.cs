@@ -1,19 +1,26 @@
-﻿namespace Argus.Windows.Uwp.Models
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+namespace Argus.Windows.Uwp.Models
 {
     /// <summary>
-    ///     A cursor position for use with text editing controls.  Holds the data for the row, column and absolute position.
+    /// A cursor position for use with text editing controls.  Holds the data for the row, column and absolute position.
     /// </summary>
     public class CursorPosition
     {
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         public CursorPosition()
         {
         }
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="row">The current row the cursor is on in the text box.</param>
         /// <param name="column">The current column the cursor is on.</param>
@@ -26,17 +33,17 @@
         }
 
         /// <summary>
-        ///     The current row the cursor is on in the text box.
+        /// The current row the cursor is on in the text box.
         /// </summary>
         public int Row { get; set; } = 1;
 
         /// <summary>
-        ///     The current column the cursor is on.
+        /// The current column the cursor is on.
         /// </summary>
         public int Column { get; set; } = 1;
 
         /// <summary>
-        ///     The absolute position of where the cursor is within the entirety of the string.
+        /// The absolute position of where the cursor is within the entirety of the string.
         /// </summary>
         public int Position { get; set; } = 1;
     }

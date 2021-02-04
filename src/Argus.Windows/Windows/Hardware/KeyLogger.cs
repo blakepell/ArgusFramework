@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2006-06-09 (Based off VB6 code written in 1999)
+ * @last updated      : 2019-11-22
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -6,7 +15,7 @@ using System.Threading;
 namespace Argus.Windows.Hardware
 {
     /// <summary>
-    ///     An event driven key logger with support for including the active window caption when it changes.
+    /// An event driven key logger with support for including the active window caption when it changes.
     /// </summary>
     /// <code>
     /// // WinForms Example
@@ -33,17 +42,6 @@ namespace Argus.Windows.Hardware
     /// </code>
     public class KeyLogger : IDisposable
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  KeyLogger
-        //      Organization:  http://www.blakepell.com        
-        //      Initial Date:  06/09/2006
-        //      Last Updated:  11/22/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //           Remarks:  Based off of VB6 code written in 1999
-        //
-        //*********************************************************************************************************************
-
         private readonly object _messagesLock = new object();
 
         // To detect redundant calls
@@ -51,7 +49,7 @@ namespace Argus.Windows.Hardware
         private Thread _logThread;
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         public KeyLogger()
         {
@@ -59,7 +57,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     The Priority of the key logging thread.
+        /// The Priority of the key logging thread.
         /// </summary>
         public ThreadPriority ThreadPriority
         {
@@ -68,18 +66,18 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Whether or not to include the current caption of the active window when it changes
-        ///     in the buffer.
+        /// Whether or not to include the current caption of the active window when it changes
+        /// in the buffer.
         /// </summary>
         public bool IncludeCurrentWindowCaption { get; set; } = true;
 
         /// <summary>
-        ///     Whether or not to include mouse information when logging text.  The default value for this property is False.
+        /// Whether or not to include mouse information when logging text.  The default value for this property is False.
         /// </summary>
         public bool IncludeMouseEvents { get; set; } = false;
 
         /// <summary>
-        ///     Disposes of resources.
+        /// Disposes of resources.
         /// </summary>
         public void Dispose()
         {
@@ -103,12 +101,12 @@ namespace Argus.Windows.Hardware
         private static extern int GetParent(int hwnd);
 
         /// <summary>
-        ///     Event handler that's raised when data is received.
+        /// Event handler that's raised when data is received.
         /// </summary>
         public event EventHandler<InputEventArgs> DataReceived;
 
         /// <summary>
-        ///     Method to raise the DataReceived event.
+        /// Method to raise the DataReceived event.
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnDataReceived(InputEventArgs e)
@@ -118,7 +116,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Starts the key logger thread.
+        /// Starts the key logger thread.
         /// </summary>
         public void Start()
         {
@@ -126,7 +124,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Stops the key logger thread.
+        /// Stops the key logger thread.
         /// </summary>
         public void Stop()
         {
@@ -135,7 +133,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Whether or not the key logging thread is still active.
+        /// Whether or not the key logging thread is still active.
         /// </summary>
         public bool StillActive()
         {
@@ -143,7 +141,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Reads input from the keyboard.
+        /// Reads input from the keyboard.
         /// </summary>
         private void ReadKeyboard()
         {
@@ -653,7 +651,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Whether the right or left shift key is down (or caps lock is down).
+        /// Whether the right or left shift key is down (or caps lock is down).
         /// </summary>
         public bool IsShiftDown()
         {
@@ -674,7 +672,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Whether or not the caps lock key is down.
+        /// Whether or not the caps lock key is down.
         /// </summary>
         /// <remarks>TODO: This doesn't work</remarks>
         public bool IsCapsLockDown()
@@ -690,7 +688,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Returns the title/caption of the active window.
+        /// Returns the title/caption of the active window.
         /// </summary>
         /// <param name="returnParent">If true returns the parent's window title.</param>
         public string GetActiveWindowTitle(bool returnParent)
@@ -713,7 +711,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Returns the window title/caption given a handle.
+        /// Returns the window title/caption given a handle.
         /// </summary>
         /// <param name="hwnd"></param>
         public string GetWindowTitle(int hwnd)
@@ -727,7 +725,7 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Formats text for a provided event name.
+        /// Formats text for a provided event name.
         /// </summary>
         /// <param name="eventName"></param>
         /// <param name="eventText"></param>
@@ -737,9 +735,9 @@ namespace Argus.Windows.Hardware
         }
 
         /// <summary>
-        ///     Remove the backspace character string and the character previous to it.  Note, this doesn't work well if processed over
-        ///     an entire log of text since intermittent backspaces can be processed, say if a window changes and then changes back where
-        ///     the context changes (e.g. you jump from one text box to another).
+        /// Remove the backspace character string and the character previous to it.  Note, this doesn't work well if processed over
+        /// an entire log of text since intermittent backspaces can be processed, say if a window changes and then changes back where
+        /// the context changes (e.g. you jump from one text box to another).
         /// </summary>
         /// <param name="text"></param>
         public static string CleanupBackspaces(string text)
@@ -796,7 +794,7 @@ namespace Argus.Windows.Hardware
     }
 
     /// <summary>
-    ///     Input Event Arguments
+    /// Input Event Arguments
     /// </summary>
     public class InputEventArgs : EventArgs
     {

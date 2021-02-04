@@ -1,25 +1,24 @@
-﻿using System.Text;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-12-13
+ * @last updated      : 2019-03-13
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Text;
 using System.Windows.Forms;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for <see cref="System.Windows.Forms.WebBrowser" />.
+    /// Extension methods for <see cref="System.Windows.Forms.WebBrowser" />.
     /// </summary>
     public static class WebBrowserExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  WebBrowserExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  12/13/2009
-        //      Last Updated:  03/13/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Sets a specified element on all frames
+        /// Sets a specified element on all frames
         /// </summary>
         /// <param name="wb"></param>
         /// <param name="id"></param>
@@ -47,7 +46,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Clicks the HTML elements.
+        /// Clicks the HTML elements.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="wb"></param>
@@ -74,7 +73,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Sets an HTML element's Inner Text property
+        /// Sets an HTML element's Inner Text property
         /// </summary>
         /// <param name="wb"></param>
         /// <param name="id"></param>
@@ -102,8 +101,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns all HTML for inside all body tags in all frames of a WebBrowser control.  This is for particular use when parsing for
-        ///     text.
+        /// Returns all HTML for inside all body tags in all frames of a WebBrowser control.  This is for particular use when parsing for
+        /// text.
         /// </summary>
         /// <param name="wb"></param>
         public static string AllFramesBodyText(this WebBrowser wb)
@@ -124,7 +123,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Cuts the current selected text from the HtmlDocument and puts it on the clipboard.
+        /// Cuts the current selected text from the HtmlDocument and puts it on the clipboard.
         /// </summary>
         /// <param name="wb"></param>
         public static void Cut(this WebBrowser wb)
@@ -133,7 +132,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Copys the current selected text from the HtmlDocument and puts it on the clipboard.
+        /// Copys the current selected text from the HtmlDocument and puts it on the clipboard.
         /// </summary>
         /// <param name="wb"></param>
         public static void Copy(this WebBrowser wb)
@@ -142,7 +141,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Deletes the current selected text from the HtmlDocument.
+        /// Deletes the current selected text from the HtmlDocument.
         /// </summary>
         /// <param name="wb"></param>
         public static void Delete(this WebBrowser wb)
@@ -151,7 +150,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Pastes the contents of the clipboard into the current HtmlDocument
+        /// Pastes the contents of the clipboard into the current HtmlDocument
         /// </summary>
         /// <param name="wb"></param>
         public static void Paste(this WebBrowser wb)
@@ -160,7 +159,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Invokes the SaveAs dialog.
+        /// Invokes the SaveAs dialog.
         /// </summary>
         /// <param name="wb"></param>
         public static void SaveAs(this WebBrowser wb)
@@ -169,7 +168,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Selects all text on the current HtmlDocument.
+        /// Selects all text on the current HtmlDocument.
         /// </summary>
         /// <param name="wb"></param>
         public static void SelectAll(this WebBrowser wb)
@@ -178,7 +177,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Undo the previous command.
+        /// Undo the previous command.
         /// </summary>
         /// <param name="wb"></param>
         public static void Undo(this WebBrowser wb)
@@ -187,11 +186,11 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes any selection on the HtmlDocument
+        /// Removes any selection on the HtmlDocument
         /// </summary>
         /// <param name="wb"></param>
         /// <remarks>
-        ///     Runs the ExecCommand("Unselect")
+        /// Runs the ExecCommand("Unselect")
         /// </remarks>
         public static void Deselect(this WebBrowser wb)
         {
@@ -199,7 +198,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Opens the print dialog for the current document.
+        /// Opens the print dialog for the current document.
         /// </summary>
         /// <param name="wb"></param>
         public static void Print(this WebBrowser wb)
@@ -208,7 +207,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Sets the progress bar value, without using Windows Aero animation.
+        /// Sets the progress bar value, without using Windows Aero animation.
         /// </summary>
         public static void SetProgressNoAnimation(this ProgressBar pb, int value)
         {

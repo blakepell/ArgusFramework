@@ -1,25 +1,24 @@
-﻿using System.Drawing;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-12-13
+ * @last updated      : 2019-03-13
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for <see cref="System.Windows.Forms.RichTextBox" />.
+    /// Extension methods for <see cref="RichTextBox" />.
     /// </summary>
     public static class RichTextBoxExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  RichTextBoxExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  12/13/2009
-        //      Last Updated:  03/13/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Scrolls and places the caret at the end of the RichTextBox.
+        /// Scrolls and places the caret at the end of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
         public static void ScrollToEnd(this RichTextBox rtb)
@@ -29,7 +28,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Scrolls and places the caret at the beginning of the RichTextBox.
+        /// Scrolls and places the caret at the beginning of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
         public static void ScrollToBeginning(this RichTextBox rtb)
@@ -40,7 +39,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Appends text at the current cursor position.
+        /// Appends text at the current cursor position.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="text"></param>
@@ -51,7 +50,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Hightlights a word in the RichTextBox with the specified foreground and background colors.
+        /// Highlights a word in the RichTextBox with the specified foreground and background colors.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="word"></param>
@@ -74,7 +73,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Appends colored text to the current text of the RichTextBox.
+        /// Appends colored text to the current text of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="text"></param>
@@ -91,7 +90,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Appends colored text to the current text of the RichTextBox.
+        /// Appends colored text to the current text of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="text"></param>
@@ -110,7 +109,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Appends colored text to the current text of the RichTextBox.
+        /// Appends colored text to the current text of the RichTextBox.
         /// </summary>
         /// <param name="rtb"></param>
         /// <param name="text"></param>

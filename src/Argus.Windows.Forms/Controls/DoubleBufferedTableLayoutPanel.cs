@@ -1,22 +1,21 @@
-﻿using System.Windows.Forms;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-07-25
+ * @last updated      : 2019-03-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Windows.Forms;
 
 namespace Argus.Windows.Forms.Controls
 {
     /// <summary>
-    ///     A TableLayoutPanel that is double buffered for rendering performance.
+    /// A TableLayoutPanel that is double buffered for rendering performance.
     /// </summary>
     public class DoubleBufferedTableLayoutPanel : TableLayoutPanel
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  DoubleBufferedTableLayout
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  07/25/2009
-        //      Last Updated:  03/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
         /// Constructor
         /// </summary>

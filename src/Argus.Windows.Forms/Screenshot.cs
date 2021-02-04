@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2007-09-16
+ * @last updated      : 2016-0607
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -8,11 +17,11 @@ using GraphicsFx = System.Drawing.Graphics;
 namespace Argus.Windows.Forms
 {
     /// <summary>
-    ///     This class can be used to take a screenshot of the current window, the desktop, multiple desktops or specified
-    ///     sections of the desktop.  It returns all screenshots as a System.Drawing.Bitmap
+    /// This class can be used to take a screenshot of the current window, the desktop, multiple desktops or specified
+    /// sections of the desktop.  It returns all screenshots as a System.Drawing.Bitmap
     /// </summary>
     /// <remarks>
-    ///     <code>
+    /// <code>
     /// ' Example of GraphicsFx.CopyFromScreen with a MemoryStream
     /// Dim ms As New System.IO.MemoryStream
     /// Dim bm As New System.Drawing.Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height, PixelFormat.Format32bppArgb)
@@ -23,37 +32,27 @@ namespace Argus.Windows.Forms
     /// Return imageBytes
     /// </code>
     /// </remarks>
-    public class Screenshot
+    public static class Screenshot
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Screenshot
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  09/16/2007
-        //      Last Updated:  06/07/2016
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
 
         /// <summary>
-        ///     The method that is used to take the screenshot.
+        /// The method that is used to take the screenshot.
         /// </summary>
         public enum ScreenshotMethod
         {
             /// <summary>
-            ///     The BitBlt method using the BitBlt Windows API in the gdi32 library file.  Using the Windows API may provide
-            ///     benefits but also may break with future OS releases.
+            /// The BitBlt method using the BitBlt Windows API in the gdi32 library file.  Using the Windows API may provide
+            /// benefits but also may break with future OS releases.
             /// </summary>
-            /// <remarks></remarks>
             BitBlt,
 
             /// <summary>
-            ///     The CopyFromScreen method uses .Net's GraphicsFx class to take a screenshot.  This method uses all managed code
-            ///     from the .Net Framework and should be sheletered from changes in the OS.
+            /// The CopyFromScreen method uses .Net's GraphicsFx class to take a screenshot.  This method uses all managed code
+            /// from the .Net Framework and should be sheltered from changes in the OS.
             /// </summary>
             /// <remarks>
-            ///     At the writing of this code, the GraphicsFx.CopyFromScreen method had some issues with copying pixels in regards
-            ///     to Aero's transparency which is why both the BitBlt and this method are provided.
+            /// At the writing of this code, the GraphicsFx.CopyFromScreen method had some issues with copying pixels in regards
+            /// to Aero's transparency which is why both the BitBlt and this method are provided.
             /// </remarks>
             CopyFromScreen
         }
@@ -79,8 +78,8 @@ namespace Argus.Windows.Forms
         private static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
 
         /// <summary>
-        ///     Takes a screenshot of the primary screen and returns it as a Sysem.Drawing.Bitmap.
-        ///     This function uses the BitBlt Windows API to take the screenshot.
+        /// Takes a screenshot of the primary screen and returns it as a Sysem.Drawing.Bitmap.
+        /// This function uses the BitBlt Windows API to take the screenshot.
         /// </summary>
         public static Bitmap GetScreenshotPrimaryScreen()
         {
@@ -106,8 +105,8 @@ namespace Argus.Windows.Forms
         }
 
         /// <summary>
-        ///     Returns a list of bitmaps that contain a bitmap for every display screen.  This method uses the GraphicsFx.CopyFromScreen
-        ///     method.
+        /// Returns a list of bitmaps that contain a bitmap for every display screen.  This method uses the GraphicsFx.CopyFromScreen
+        /// method.
         /// </summary>
         public static List<Bitmap> GetScreenshotAllScreens()
         {
@@ -130,8 +129,8 @@ namespace Argus.Windows.Forms
         }
 
         /// <summary>
-        ///     Takes a screenshot of the current window and return it as a System.Drawing.Bitmap.
-        ///     This function uses the BitBlt Windows API to take the screenshot.
+        /// Takes a screenshot of the current window and return it as a System.Drawing.Bitmap.
+        /// This function uses the BitBlt Windows API to take the screenshot.
         /// </summary>
         public static Bitmap GetScreenshotCurrentWindow()
         {
@@ -167,9 +166,9 @@ namespace Argus.Windows.Forms
         }
 
         /// <summary>
-        ///     Takes a screenshot associated with the given handle (be it a window or control) and return it
-        ///     as a System.Drawing.Bitmap.
-        ///     This function uses the BitBlt Windows API to take the screenshot.
+        /// Takes a screenshot associated with the given handle (be it a window or control) and return it
+        /// as a System.Drawing.Bitmap.
+        /// This function uses the BitBlt Windows API to take the screenshot.
         /// </summary>
         /// <param name="handle"></param>
         public static Bitmap GetScreenshotByHandle(IntPtr handle)
@@ -205,8 +204,8 @@ namespace Argus.Windows.Forms
         }
 
         /// <summary>
-        ///     Takes a screenshot of the specified location and returns it as a System.Drawing.Bitmap.
-        ///     This function uses the BitBlt Windows API to take the screenshot.
+        /// Takes a screenshot of the specified location and returns it as a System.Drawing.Bitmap.
+        /// This function uses the BitBlt Windows API to take the screenshot.
         /// </summary>
         /// <param name="rectLoc"></param>
         public static Bitmap GetScreenshotByLocation(Rectangle rectLoc)
@@ -239,7 +238,7 @@ namespace Argus.Windows.Forms
         }
 
         /// <summary>
-        ///     Rectangle structure to pass to the Windows APIs
+        /// Rectangle structure to pass to the Windows APIs
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
         private struct RECT

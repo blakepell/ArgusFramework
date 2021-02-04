@@ -1,4 +1,13 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-01-08
+ * @last updated      : 2019-03-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Text;
@@ -7,12 +16,12 @@ using System.Windows.Forms;
 namespace Argus.Windows.Forms.Controls
 {
     /// <summary>
-    ///     Basic file opening dialog handling.  This will allow you to prompt the user with a dialog box and then return the file they
-    ///     select into an variable of Object type.  The class knows what type is in the Object because the programmer will specify it
-    ///     via the FileType property.  Supported types are Text, Binary and DataTable.  The binary type is read in as a byte array.
+    /// Basic file opening dialog handling.  This will allow you to prompt the user with a dialog box and then return the file they
+    /// select into an variable of Object type.  The class knows what type is in the Object because the programmer will specify it
+    /// via the FileType property.  Supported types are Text, Binary and DataTable.  The binary type is read in as a byte array.
     /// </summary>
     /// <remarks>
-    ///     <code>
+    /// <code>
     /// 
     /// ' This will open a file that we expect to be handled as text.
     /// var od = new OpenFileDialogHandler(OpenFileDialogHandler.FileTypes.Text);
@@ -25,18 +34,8 @@ namespace Argus.Windows.Forms.Controls
     /// </remarks>
     public class OpenFileDialogHandler
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  OpenFileDialogHandler
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  01/08/2009
-        //      Last Updated:  03/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Types of files that are supported.
+        /// Types of files that are supported.
         /// </summary>
         public enum FileTypes
         {
@@ -46,12 +45,12 @@ namespace Argus.Windows.Forms.Controls
         }
 
         /// <summary>
-        ///     A list of the file types that are supported.  E.g. "*.txt", "*.txt;*.sql", etc.
+        /// A list of the file types that are supported.  E.g. "*.txt", "*.txt;*.sql", etc.
         /// </summary>
         public List<string> FileTypeFilterList = new List<string>();
 
         /// <summary>
-        ///     Initializes, you have to tell it the type of file to open here.  Use the 'Open' procedure to handle the opening and the dialog.
+        /// Initializes, you have to tell it the type of file to open here.  Use the 'Open' procedure to handle the opening and the dialog.
         /// </summary>
         /// <param name="fileType"></param>
         public OpenFileDialogHandler(FileTypes fileType)
@@ -60,35 +59,35 @@ namespace Argus.Windows.Forms.Controls
         }
 
         /// <summary>
-        ///     The type of the file that you're going to open.
+        /// The type of the file that you're going to open.
         /// </summary>
         public FileTypes FileType { get; set; }
 
         /// <summary>
-        ///     An object that contains the data that's opened.  We've used object so that many different types of data can be put
-        ///     into it.  Since you know what you're reading in, you can then cast it.  If the user has specified an invalid file, it
-        ///     may have already failed by this point at which point you would handle the exception there.
+        /// An object that contains the data that's opened.  We've used object so that many different types of data can be put
+        /// into it.  Since you know what you're reading in, you can then cast it.  If the user has specified an invalid file, it
+        /// may have already failed by this point at which point you would handle the exception there.
         /// </summary>
         public object OpenedObject { get; set; }
 
         /// <summary>
-        ///     The full path to the file that was selected.
+        /// The full path to the file that was selected.
         /// </summary>
         public string SelectedFileFullPath { get; set; } = "";
 
         /// <summary>
-        ///     Just the file name that was selected without the full path.
+        /// Just the file name that was selected without the full path.
         /// </summary>
         public string SelectedFileName => Path.GetFileName(this.SelectedFileFullPath);
 
         /// <summary>
-        ///     The initial directory that the dialog should default to whenever it is invoked.
+        /// The initial directory that the dialog should default to whenever it is invoked.
         /// </summary>
         public string InitialDirectory { get; set; } = "";
 
         /// <summary>
-        ///     Displays an open dialog box and reads in the data in type you specified in the constructor.  It will put the data of the file
-        ///     the user selects in the 'OpenedObject' property.  You can simply cast that object to the property type you need it in.
+        /// Displays an open dialog box and reads in the data in type you specified in the constructor.  It will put the data of the file
+        /// the user selects in the 'OpenedObject' property.  You can simply cast that object to the property type you need it in.
         /// </summary>
         public void Open()
         {
@@ -142,7 +141,7 @@ namespace Argus.Windows.Forms.Controls
         }
 
         /// <summary>
-        ///     Returns a formatted list that can be used with the OpenFileDialog made up from values in the FileTypeList.
+        /// Returns a formatted list that can be used with the OpenFileDialog made up from values in the FileTypeList.
         /// </summary>
         private string FilterList()
         {

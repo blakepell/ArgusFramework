@@ -1,6 +1,11 @@
-﻿using Argus.Extensions;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
 using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,21 +19,8 @@ namespace Argus.Windows.Wpf.Controls
     /// </summary>
     public partial class Compass : UserControl
     {
-        public Compass()
-        {
-            InitializeComponent();
-            this.DataContext = this;
-
-            // Calculations that need to occur when default dependency properties change.
-            HeightProperty.OverrideMetadata(typeof(Compass), new FrameworkPropertyMetadata(0.0, new PropertyChangedCallback(HeightChanged)));
-            WidthProperty.OverrideMetadata(typeof(Compass), new FrameworkPropertyMetadata(0.0, new PropertyChangedCallback(WidthChanged)));
-            FontSizeProperty.OverrideMetadata(typeof(Compass), new FrameworkPropertyMetadata(20.0, new PropertyChangedCallback(FontSizeChanged)));
-
-            this.Angle = 0;
-        }
-
         /// <summary>
-        /// Specifc directions.
+        /// Specific directions.
         /// </summary>
         public enum Direction
         {
@@ -42,67 +34,173 @@ namespace Argus.Windows.Wpf.Controls
             Northwest = 315
         }
 
-        /// <summary>
-        /// Rotates the direction requested via <see cref="Direction"/>.
-        /// </summary>
-        /// <param name="angle"></param>
-        public void SetAngle(Direction angle)        
+        public static readonly DependencyProperty AngleProperty =
+            DependencyProperty.Register("Angle", typeof(double), typeof(Compass), new PropertyMetadata(0.0, AngleChanged));
+
+        public static readonly DependencyProperty EllipseFillColorProperty =
+            DependencyProperty.Register("EllipseFillColor", typeof(SolidColorBrush), typeof(Compass), new PropertyMetadata(Brushes.Black));
+
+        public static readonly DependencyProperty EllipseBorderColorProperty =
+            DependencyProperty.Register("EllipseBorderColor", typeof(SolidColorBrush), typeof(Compass), new PropertyMetadata(Brushes.Gray));
+
+        public static readonly DependencyProperty NeedleColorProperty =
+            DependencyProperty.Register("NeedleColor", typeof(SolidColorBrush), typeof(Compass), new PropertyMetadata(Brushes.Red));
+
+        public static readonly DependencyProperty LabelVisibleProperty =
+            DependencyProperty.Register("LabelVisible", typeof(Visibility), typeof(Compass), new PropertyMetadata(Visibility.Visible));
+
+        public static readonly DependencyProperty LabelForegroundColorProperty =
+            DependencyProperty.Register("LabelForegroundColor", typeof(SolidColorBrush), typeof(SolidColorBrush), new PropertyMetadata(Brushes.White));
+
+        public Compass()
         {
-            this.Angle = (int)angle;
+            this.InitializeComponent();
+            this.DataContext = this;
+
+            // Calculations that need to occur when default dependency properties change.
+            HeightProperty.OverrideMetadata(typeof(Compass), new FrameworkPropertyMetadata(0.0, HeightChanged));
+            WidthProperty.OverrideMetadata(typeof(Compass), new FrameworkPropertyMetadata(0.0, WidthChanged));
+            FontSizeProperty.OverrideMetadata(typeof(Compass), new FrameworkPropertyMetadata(20.0, FontSizeChanged));
+
+            this.Angle = 0;
         }
 
         /// <summary>
-        /// Rotates to the direction requested via a <see cref="string"/>.
+        /// The angle the needle is pointing.
+        /// </summary>
+        public double Angle
+        {
+            get => (double) this.GetValue(AngleProperty);
+            set
+            {
+                double angle = NormalizeAngle(value);
+                this.SetAngleDirection(angle);
+                this.SetValue(AngleProperty, angle);
+            }
+        }
+
+        /// <summary>
+        /// The fill color inside the compass.
+        /// </summary>
+        public SolidColorBrush EllipseFillColor
+        {
+            get => (SolidColorBrush) this.GetValue(EllipseFillColorProperty);
+            set => this.SetValue(EllipseFillColorProperty, value);
+        }
+
+        /// <summary>
+        /// The border color of the compass.
+        /// </summary>
+        public SolidColorBrush EllipseBorderColor
+        {
+            get => (SolidColorBrush) this.GetValue(EllipseBorderColorProperty);
+            set => this.SetValue(EllipseBorderColorProperty, value);
+        }
+
+        /// <summary>
+        /// The color of the directional needle.
+        /// </summary>
+        public SolidColorBrush NeedleColor
+        {
+            get => (SolidColorBrush) this.GetValue(NeedleColorProperty);
+            set => this.SetValue(NeedleColorProperty, value);
+        }
+
+        /// <summary>
+        /// Whether or not the label with the direction is visible.
+        /// </summary>
+        public Visibility LabelVisible
+        {
+            get => (Visibility) this.GetValue(LabelVisibleProperty);
+            set => this.SetValue(LabelVisibleProperty, value);
+        }
+
+        /// <summary>
+        /// The foreground color of the directional label.
+        /// </summary>
+        public SolidColorBrush LabelForegroundColor
+        {
+            get => (SolidColorBrush) this.GetValue(LabelForegroundColorProperty);
+            set => this.SetValue(LabelForegroundColorProperty, value);
+        }
+
+        /// <summary>
+        /// The duration the animation should take.
+        /// </summary>
+        public double Duration { get; set; } = 0.25;
+
+        /// <summary>
+        /// Whether or not the animation of the angle line moving is enabled.
+        /// </summary>
+        public bool EnableAnimation { get; set; } = true;
+
+        /// <summary>
+        /// Rotates the direction requested via <see cref="Direction" />.
+        /// </summary>
+        /// <param name="angle"></param>
+        public void SetAngle(Direction angle)
+        {
+            this.Angle = (int) angle;
+        }
+
+        /// <summary>
+        /// Rotates to the direction requested via a <see cref="string" />.
         /// </summary>
         /// <param name="direction"></param>
         public void SetAngle(string direction)
         {
             if (direction.Equals("north", StringComparison.Ordinal) || direction.Equals("n", StringComparison.Ordinal))
             {
-                SetAngle(Direction.North);
+                this.SetAngle(Direction.North);
+
                 return;
             }
 
             if (direction.Equals("northeast", StringComparison.Ordinal) || direction.Equals("ne", StringComparison.Ordinal))
             {
-                SetAngle(Direction.Northeast);
+                this.SetAngle(Direction.Northeast);
+
                 return;
             }
 
             if (direction.Equals("east", StringComparison.Ordinal) || direction.Equals("e", StringComparison.Ordinal))
             {
-                SetAngle(Direction.East);
+                this.SetAngle(Direction.East);
+
                 return;
             }
 
             if (direction.Equals("southeast", StringComparison.Ordinal) || direction.Equals("se", StringComparison.Ordinal))
             {
-                SetAngle(Direction.Southeast);
+                this.SetAngle(Direction.Southeast);
+
                 return;
             }
 
             if (direction.Equals("south", StringComparison.Ordinal) || direction.Equals("s", StringComparison.Ordinal))
             {
-                SetAngle(Direction.South);
+                this.SetAngle(Direction.South);
+
                 return;
             }
 
             if (direction.Equals("southwest", StringComparison.Ordinal) || direction.Equals("sw", StringComparison.Ordinal))
             {
-                SetAngle(Direction.Southwest);
+                this.SetAngle(Direction.Southwest);
+
                 return;
             }
 
             if (direction.Equals("west", StringComparison.Ordinal) || direction.Equals("w", StringComparison.Ordinal))
             {
-                SetAngle(Direction.West);
+                this.SetAngle(Direction.West);
+
                 return;
             }
 
             if (direction.Equals("northwest", StringComparison.Ordinal) || direction.Equals("nw", StringComparison.Ordinal))
             {
-                SetAngle(Direction.Northwest);
-                return;
+                this.SetAngle(Direction.Northwest);
             }
         }
 
@@ -112,7 +210,7 @@ namespace Argus.Windows.Wpf.Controls
         /// <param name="angle"></param>
         public void SetAngle(double angle)
         {
-            this.Angle = (int)angle;
+            this.Angle = (int) angle;
         }
 
         /// <summary>
@@ -179,23 +277,24 @@ namespace Argus.Windows.Wpf.Controls
         /// <param name="angle"></param>
         public static double NormalizeAngle(double angle)
         {
-            double times = System.Math.Floor(angle / 360);
+            double times = Math.Floor(angle / 360);
             double reduction = times * 360;
+
             return angle - reduction;
         }
 
         /// <summary>
-        /// Update all elements when the <see cref="Height"/> dependency property changes.
+        /// Update all elements when the <see cref="Height" /> dependency property changes.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void HeightChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var control = (Compass)sender;
+            var control = (Compass) sender;
 
             // Update the height of all the elements
-            control.Canvas1.Height = (double)e.NewValue;
-            control.Ellipse1.Height = (double)e.NewValue;
+            control.Canvas1.Height = (double) e.NewValue;
+            control.Ellipse1.Height = (double) e.NewValue;
             control.Rotation.CenterY = control.Canvas1.Height / 2;
 
             // Update the needle position and height
@@ -205,16 +304,16 @@ namespace Argus.Windows.Wpf.Controls
         }
 
         /// <summary>
-        /// Update all elements when the <see cref="Width"/> dependency property changes.
+        /// Update all elements when the <see cref="Width" /> dependency property changes.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void WidthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var control = (Compass)sender;
+            var control = (Compass) sender;
 
-            control.Canvas1.Width = (double)e.NewValue;
-            control.Ellipse1.Width = (double)e.NewValue;
+            control.Canvas1.Width = (double) e.NewValue;
+            control.Ellipse1.Width = (double) e.NewValue;
             control.Rotation.CenterX = control.Canvas1.Width / 2;
 
             // Update the needle position and height
@@ -224,32 +323,15 @@ namespace Argus.Windows.Wpf.Controls
         }
 
         /// <summary>
-        /// Update all elements when the <see cref="Width"/> dependency property changes.
+        /// Update all elements when the <see cref="Width" /> dependency property changes.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void FontSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var control = (Compass)sender;
-            control.LabelDirection.FontSize = (double)e.NewValue;
+            var control = (Compass) sender;
+            control.LabelDirection.FontSize = (double) e.NewValue;
         }
-
-        /// <summary>
-        /// The angle the needle is pointing.
-        /// </summary>
-        public double Angle
-        {
-            get { return (double)GetValue(AngleProperty); }
-            set
-            {
-                double angle = NormalizeAngle(value);
-                SetAngleDirection(angle);
-                SetValue(AngleProperty, angle);
-            }
-        }
-
-        public static readonly DependencyProperty AngleProperty =
-            DependencyProperty.Register("Angle", typeof(double), typeof(Compass), new PropertyMetadata(0.0, new PropertyChangedCallback(AngleChanged)));
 
         /// <summary>
         /// Performs animation when the Angle property changes.
@@ -258,7 +340,7 @@ namespace Argus.Windows.Wpf.Controls
         /// <param name="e"></param>
         private static async void AngleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var control = (Compass)sender;
+            var control = (Compass) sender;
 
             // Ditch out, not enabled.
             if (!control.EnableAnimation)
@@ -266,12 +348,12 @@ namespace Argus.Windows.Wpf.Controls
                 return;
             }
 
-            double oldValue = (double)e.OldValue;
-            double newValue = (double)e.NewValue;
+            double oldValue = (double) e.OldValue;
+            double newValue = (double) e.NewValue;
 
             // This makes the value go the shortest route 350-10 being 20 degrees vs. 350 to 10 being 140.  This is
             // pretty hacky, should probably use a Storyboard.
-            if ((oldValue - newValue) > 180)
+            if (oldValue - newValue > 180)
             {
                 // Calculate the time that each segment should run so it's mostly smooth.
                 double amountBefore = 360 - oldValue;
@@ -282,91 +364,18 @@ namespace Argus.Windows.Wpf.Controls
                 var durationOne = TimeSpan.FromSeconds(control.Duration * percentBefore);
                 var durationTwo = TimeSpan.FromSeconds(control.Duration * percentAfter);
 
-                control.Rotation.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(oldValue, 360.0,  durationOne));
+                control.Rotation.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(oldValue, 360.0, durationOne));
                 await Task.Delay(durationOne);
                 control.Rotation.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation(0, newValue, durationTwo));
+
                 return;
             }
 
             if (control.EnableAnimation)
             {
                 var duration = TimeSpan.FromSeconds(control.Duration);
-                control.Rotation.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation((double)e.NewValue, duration));
+                control.Rotation.BeginAnimation(RotateTransform.AngleProperty, new DoubleAnimation((double) e.NewValue, duration));
             }
         }
-
-        /// <summary>
-        /// The fill color inside the compass.
-        /// </summary>
-        public SolidColorBrush EllipseFillColor
-        {
-            get { return (SolidColorBrush)GetValue(EllipseFillColorProperty); }
-            set { SetValue(EllipseFillColorProperty, value); }
-        }
-
-        public static readonly DependencyProperty EllipseFillColorProperty =
-            DependencyProperty.Register("EllipseFillColor", typeof(SolidColorBrush), typeof(Compass), new PropertyMetadata(Brushes.Black));
-
-        /// <summary>
-        /// The border color of the compass.
-        /// </summary>
-        public SolidColorBrush EllipseBorderColor
-        {
-            get { return (SolidColorBrush)GetValue(EllipseBorderColorProperty); }
-            set { SetValue(EllipseBorderColorProperty, value); }
-        }
-
-        public static readonly DependencyProperty EllipseBorderColorProperty =
-            DependencyProperty.Register("EllipseBorderColor", typeof(SolidColorBrush), typeof(Compass), new PropertyMetadata(Brushes.Gray));
-
-        /// <summary>
-        /// The color of the directional needle.
-        /// </summary>
-        public SolidColorBrush NeedleColor
-        {
-            get { return (SolidColorBrush)GetValue(NeedleColorProperty); }
-            set { SetValue(NeedleColorProperty, value); }
-        }
-
-        public static readonly DependencyProperty NeedleColorProperty =
-            DependencyProperty.Register("NeedleColor", typeof(SolidColorBrush), typeof(Compass), new PropertyMetadata(Brushes.Red));
-
-
-
-        /// <summary>
-        /// Whether or not the label with the direction is visible.
-        /// </summary>
-        public Visibility LabelVisible
-        {
-            get { return (Visibility)GetValue(LabelVisibleProperty); }
-            set { SetValue(LabelVisibleProperty, value); }
-        }
-
-        public static readonly DependencyProperty LabelVisibleProperty =
-            DependencyProperty.Register("LabelVisible", typeof(Visibility), typeof(Compass), new PropertyMetadata(Visibility.Visible));
-
-
-        /// <summary>
-        /// The foreground color of the directional label.
-        /// </summary>
-        public SolidColorBrush LabelForegroundColor
-        {
-            get { return (SolidColorBrush)GetValue(LabelForegroundColorProperty); }
-            set { SetValue(LabelForegroundColorProperty, value); }
-        }
-
-        public static readonly DependencyProperty LabelForegroundColorProperty =
-            DependencyProperty.Register("LabelForegroundColor", typeof(SolidColorBrush), typeof(SolidColorBrush), new PropertyMetadata(Brushes.White));
-
-        /// <summary>
-        /// The duration the animation should take.
-        /// </summary>
-        public double Duration { get; set; } = 0.25;
-
-        /// <summary>
-        /// Whether or not the animation of the angle line moving is enabled.
-        /// </summary>
-        public bool EnableAnimation { get; set; } = true;
-
     }
 }

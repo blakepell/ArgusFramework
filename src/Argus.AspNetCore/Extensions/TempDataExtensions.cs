@@ -1,25 +1,22 @@
-﻿using System.Text.Json;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="ITempDataDictionary"/>.
+    /// Extension methods for <see cref="ITempDataDictionary" />.
     /// </summary>
     public static class TempDataExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  TempDataExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  06/07/2017
-        //      Last Updated:  11/17/2019
-        //    Programmer(s):   Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Puts an object into the TempData by first serializing it to JSON.
+        /// Puts an object into the TempData by first serializing it to JSON.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="tempData"></param>
@@ -31,7 +28,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Gets an object from the TempData by deserializing it from JSON.
+        /// Gets an object from the TempData by deserializing it from JSON.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="tempData"></param>

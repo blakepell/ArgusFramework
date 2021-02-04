@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Markup;
@@ -12,7 +19,7 @@ namespace Argus.Windows.Uwp.Controls
         private bool _showAsFont = true;
 
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         public FontComboBox()
         {
@@ -28,17 +35,17 @@ namespace Argus.Windows.Uwp.Controls
         }
 
         /// <summary>
-        ///     Gets the FontFamily for the SelectedItem
+        /// Gets the FontFamily for the SelectedItem
         /// </summary>
         public FontFamily SelectedFontFamily => new FontFamily((string) this.SelectedValue);
 
         /// <summary>
-        ///     The list of the fonts currently on the system.
+        /// The list of the fonts currently on the system.
         /// </summary>
         public List<string> Fonts { get; set; }
 
         /// <summary>
-        ///     Whether or not the text in the ComboBox should be displayed as the font that it is.
+        /// Whether or not the text in the ComboBox should be displayed as the font that it is.
         /// </summary>
         public bool ShowAsFont
         {
@@ -51,8 +58,8 @@ namespace Argus.Windows.Uwp.Controls
         }
 
         /// <summary>
-        ///     Loaded event where we can setup the initial state of the form and have available to us the
-        ///     properties the caller set in their Xaml.
+        /// Loaded event where we can setup the initial state of the form and have available to us the
+        /// properties the caller set in their Xaml.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -72,7 +79,7 @@ namespace Argus.Windows.Uwp.Controls
         }
 
         /// <summary>
-        ///     Sets up or changes the ItemTemplate based off of properties set on this class.
+        /// Sets up or changes the ItemTemplate based off of properties set on this class.
         /// </summary>
         private void SetupItemTemplate()
         {

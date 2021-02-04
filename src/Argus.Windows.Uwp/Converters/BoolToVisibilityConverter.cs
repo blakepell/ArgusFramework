@@ -1,11 +1,18 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
 namespace Argus.Windows.Uwp.Converters
 {
     /// <summary>
-    ///     Converts between bool and visibility.
+    /// Converts between bool and visibility.
     /// </summary>
     public class BooleanToVisibilityConverter : IValueConverter
     {

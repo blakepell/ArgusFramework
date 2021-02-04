@@ -1,24 +1,23 @@
-﻿using System.Windows.Forms;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-12-13
+ * @last updated      : 2019-03-13
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Windows.Forms;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for <see cref="System.Windows.Forms.ToolStripProgressBar" />.
+    /// Extension methods for <see cref="System.Windows.Forms.ToolStripProgressBar" />.
     /// </summary>
     public static class ToolStripProgressBarExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  DataGridViewExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  12/13/2009
-        //      Last Updated:  03/13/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Sets the progress bar value, without using Windows Aero animation.
+        /// Sets the progress bar value, without using Windows Aero animation.
         /// </summary>
         /// <remarks>This is kind of a hack, but it works.</remarks>
         public static void SetProgressNoAnimation(this ToolStripProgressBar pb, int value)

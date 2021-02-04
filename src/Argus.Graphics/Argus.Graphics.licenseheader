@@ -1,0 +1,10 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+/*
+ * @author            : %UserDisplayName%
+ * @website           : http://www.blakepell.com
+ * @initial date      : %CreationYear%-%CreationMonth%-%CreationDay%
+ * @last updated      : %CurrentYear%-%CurrentMonth%-%CurrentDay%
+ * @copyright         : Copyright (c) 2003-%CurrentYear%, All rights reserved.
+ * @license           : MIT
+ */

@@ -1,24 +1,21 @@
-﻿using System.Drawing;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Drawing;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for dealing with Colors in WPF.
+    /// Extension methods for dealing with Colors in WPF.
     /// </summary>
     public static class WpfColorExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  WpfColorExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  08/30/2012
-        //      Last Updated:  11/17/2019
-        //    Programmer(s):   Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Converts a <see cref="System.Windows.Media.Color" /> to a <see cref="System.Drawing.Color" />.
+        /// Converts a <see cref="System.Windows.Media.Color" /> to a <see cref="System.Drawing.Color" />.
         /// </summary>
         /// <param name="color"></param>
         public static Color ToSystemDrawingColor(this System.Windows.Media.Color color)
@@ -27,7 +24,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Converts a <see cref="System.Drawing.Color" /> to a <see cref="System.Windows.Media.Color" />.
+        /// Converts a <see cref="System.Drawing.Color" /> to a <see cref="System.Windows.Media.Color" />.
         /// </summary>
         /// <param name="color"></param>
         public static System.Windows.Media.Color ToWindowsMediaColor(this Color color)

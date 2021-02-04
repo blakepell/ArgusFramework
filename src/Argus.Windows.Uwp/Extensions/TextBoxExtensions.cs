@@ -1,4 +1,11 @@
-﻿using System.ComponentModel;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Windows.UI.Xaml;
@@ -9,12 +16,12 @@ using Argus.Windows.Uwp.Models;
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     TextBox extension methods.
+    /// TextBox extension methods.
     /// </summary>
     public static class TextBoxExtensions
     {
         /// <summary>
-        ///     Inserts text into the TextBox at the current selection point.
+        /// Inserts text into the TextBox at the current selection point.
         /// </summary>
         /// <param name="text">The text to insert into the TextBox.</param>
         /// <param name="setFocus">Whether the TextBox should be set with the focus after the insertion.</param>
@@ -29,7 +36,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes the empty lines in a text box.
+        /// Removes the empty lines in a text box.
         /// </summary>
         /// <param name="tb"></param>
         public static void RemoveEmptyLines(this TextBox tb)
@@ -38,7 +45,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Removes the empty lines in a text box.
+        /// Removes the empty lines in a text box.
         /// </summary>
         /// <param name="tb"></param>
         /// <param name="treatWhiteSpaceAsEmpty">Whether or not to remove lines that only have whitespace.</param>
@@ -69,7 +76,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Goes to the specified line number.
+        /// Goes to the specified line number.
         /// </summary>
         /// <param name="lineNumber"></param>
         public static void GotoLine(this TextBox tb, int lineNumber)
@@ -101,7 +108,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Sorts the lines in a list alphabetically in either ascending or descending order.
+        /// Sorts the lines in a list alphabetically in either ascending or descending order.
         /// </summary>
         /// <param name="tb"></param>
         /// <param name="order"></param>
@@ -122,7 +129,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the number of lines in the text box.
+        /// Returns the number of lines in the text box.
         /// </summary>
         /// <remarks>This performed better for me than iterating over the characters.</remarks>
         public static int LineCount(this TextBox tb)
@@ -133,7 +140,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns the current column position on the current line the cursor is on.
+        /// Returns the current column position on the current line the cursor is on.
         /// </summary>
         public static CursorPosition CursorPosition(this TextBox tb)
         {
@@ -169,7 +176,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Appends text to each line in the document.
+        /// Appends text to each line in the document.
         /// </summary>
         /// <param name="tb"></param>
         /// <param name="appendText"></param>
@@ -192,7 +199,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Prepends text to each line in the document.
+        /// Prepends text to each line in the document.
         /// </summary>
         /// <param name="tb"></param>
         /// <param name="prependText"></param>
@@ -215,7 +222,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Scrolls to the end of the TextBox.
+        /// Scrolls to the end of the TextBox.
         /// </summary>
         public static void ScrollToEnd(this TextBox tb, bool setFocus)
         {
@@ -245,7 +252,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Scrolls to the start of the TextBox.
+        /// Scrolls to the start of the TextBox.
         /// </summary>
         public static void ScrollToStart(this TextBox tb, bool setFocus)
         {
@@ -275,7 +282,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Scrolls to the caret in the TextBox.
+        /// Scrolls to the caret in the TextBox.
         /// </summary>
         /// <param name="tb"></param>
         public static void ScrollToCaret(this TextBox tb, bool setFocus)
@@ -314,7 +321,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Clears any selected text in the TextBox.
+        /// Clears any selected text in the TextBox.
         /// </summary>
         /// <param name="tb"></param>
         public static void ClearSelection(this TextBox tb)
@@ -323,7 +330,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Sets the cursor to the end of the TextBox.
+        /// Sets the cursor to the end of the TextBox.
         /// </summary>
         /// <param name="tb"></param>
         public static void CaretToEnd(this TextBox tb)

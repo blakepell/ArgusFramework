@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @last updated      : 2021-02-04
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
@@ -6,7 +14,7 @@ using System.Windows.Forms;
 namespace Argus.Windows.Forms
 {
     /// <summary>
-    ///     The ability to send toast notifications through the NotifyIcon Windows Forms class.
+    /// The ability to send toast notifications through the NotifyIcon Windows Forms class.
     /// </summary>
     public class Toast : IDisposable
     {

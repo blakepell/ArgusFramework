@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -8,7 +15,7 @@ using Windows.Storage.Streams;
 namespace Argus.Windows.Uwp
 {
     /// <summary>
-    ///     Wrapper utilities for dealing with the Clipboard in UWP.
+    /// Wrapper utilities for dealing with the Clipboard in UWP.
     /// </summary>
     public static class Clipboard
     {
@@ -22,9 +29,8 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     TODO - Test This.
+        /// TODO - Test This.
         /// </summary>
-        /// <returns></returns>
         public static async Task<string> GetTextAsync()
         {
             var dp = global::Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();

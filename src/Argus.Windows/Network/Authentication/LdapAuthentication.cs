@@ -1,24 +1,23 @@
-﻿using System.DirectoryServices;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : Unknown
+ * @last updated      : 2016-06-03
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.DirectoryServices;
 
 namespace Argus.Network.Authentication
 {
     /// <summary>
-    ///     Shared methods for validating and managing user credentials against an LDAP provider.
+    /// Shared methods for validating and managing user credentials against an LDAP provider.
     /// </summary>
     public class LdapAuthentication
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  AdsAuthentication
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  Unknown
-        //      Last Updated:  06/03/2016
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Validates user credentials via the managed Active Directory objects by trying to run a simple query against the AD.
+        /// Validates user credentials via the managed Active Directory objects by trying to run a simple query against the AD.
         /// </summary>
         /// <param name="domain"></param>
         /// <param name="username"></param>

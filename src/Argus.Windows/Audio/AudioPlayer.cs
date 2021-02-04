@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2007-03-31
+ * @last updated      : 2019-11-19
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -7,34 +16,24 @@ using Argus.Extensions;
 namespace Argus.Audio
 {
     /// <summary>
-    ///     This class is a wrapper for the Windows API calls to play wave, midi or mp3 files.  Although this is .Net Standard 2 compliant
-    ///     it requires PInvokes to the Windows API and will fail in environments like Linux, Windows Universal Apps, Server environments, etc.
+    /// This class is a wrapper for the Windows API calls to play wave, midi or mp3 files.  Although this is .Net Standard 2 compliant
+    /// it requires PInvokes to the Windows API and will fail in environments like Linux, Windows Universal Apps, Server environments, etc.
     /// </summary>
     /// <remarks>
-    ///     This class was originally designed for use in traditional Windows apps long before the invent of .Net Standard.  It is highly
-    ///     recommended to use a library like NAudio for advanced audio capability.
+    /// This class was originally designed for use in traditional Windows apps long before the invent of .Net Standard.  It is highly
+    /// recommended to use a library like NAudio for advanced audio capability.
     /// </remarks>
     public class AudioPlayer
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  AudioPlayer
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  03/31/2007
-        //      Last Updated:  11/19/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         public AudioPlayer()
         {
         }
 
         /// <summary>
-        ///     Constructor:  Location is the filename of the media to play.  Wave files, mp3 files and midi files are the supported formats.
+        /// Constructor:  Location is the filename of the media to play.  Wave files, mp3 files and midi files are the supported formats.
         /// </summary>
         /// <param name="filePath">File path of the media to play.</param>
         public AudioPlayer(string filePath)
@@ -43,14 +42,14 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Halt the program until the .wav file is done playing.  Be careful, this will lock the entire program up until the
-        ///     file is done playing.  It behaves as if the Windows Sleep API is called while the file is playing (and maybe it is, I don't
-        ///     actually know, I'm just theorizing).  :P
+        /// Halt the program until the .wav file is done playing.  Be careful, this will lock the entire program up until the
+        /// file is done playing.  It behaves as if the Windows Sleep API is called while the file is playing (and maybe it is, I don't
+        /// actually know, I'm just theorizing).  :P
         /// </summary>
         public bool Wait { get; set; } = false;
 
         /// <summary>
-        ///     Sets the audio file's time format via the mciSendString API.
+        /// Sets the audio file's time format via the mciSendString API.
         /// </summary>
         public int Milliseconds
         {
@@ -74,7 +73,7 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Gets the status of the current playback file via the mciSendString API.
+        /// Gets the status of the current playback file via the mciSendString API.
         /// </summary>
         public string Status
         {
@@ -91,7 +90,7 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Gets the file size of the current audio file.
+        /// Gets the file size of the current audio file.
         /// </summary>
         public long FileSize
         {
@@ -109,7 +108,7 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Gets the channels of the file via the mciSendString API.
+        /// Gets the channels of the file via the mciSendString API.
         /// </summary>
         public int Channels
         {
@@ -128,7 +127,7 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Used for debugging purposes.
+        /// Used for debugging purposes.
         /// </summary>
         public string Debug
         {
@@ -142,12 +141,12 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Whether or not the current playback is paused.
+        /// Whether or not the current playback is paused.
         /// </summary>
         public bool IsPaused { get; set; }
 
         /// <summary>
-        ///     The current filename of the file that is to be played back.
+        /// The current filename of the file that is to be played back.
         /// </summary>
         public string Filename { get; set; }
 
@@ -155,7 +154,7 @@ namespace Argus.Audio
         private static extern int mciSendString(string command, StringBuilder buffer, int bufferSize, IntPtr hwndCallback);
 
         /// <summary>
-        ///     Plays the file that is specified as the filename.
+        /// Plays the file that is specified as the filename.
         /// </summary>
         public void Play()
         {
@@ -213,7 +212,7 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Pause the current play back.
+        /// Pause the current play back.
         /// </summary>
         public void Pause()
         {
@@ -222,7 +221,7 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Resume the current play back if it is currently paused.
+        /// Resume the current play back if it is currently paused.
         /// </summary>
         public void Resume()
         {
@@ -231,7 +230,7 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Stop the current file if it's playing.
+        /// Stop the current file if it's playing.
         /// </summary>
         public void Stop()
         {
@@ -239,7 +238,7 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        ///     Close the file.
+        /// Close the file.
         /// </summary>
         public void Close()
         {

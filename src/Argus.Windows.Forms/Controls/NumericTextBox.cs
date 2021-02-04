@@ -1,28 +1,27 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-07-25
+ * @last updated      : 2019-03-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Windows.Forms;
 
 namespace Argus.Windows.Forms.Controls
 {
     /// <summary>
-    ///     Text box that only accepts numeric values.
+    /// Text box that only accepts numeric values.
     /// </summary>
     /// <remarks>
-    ///     The style ES_NUMBER only allows numeric characters enforced by Windows.  We however have to handle
-    ///     those characters that are pasted in therefore we will make it require the same criteria.  This does
-    ///     not handle decimal points.
+    /// The style ES_NUMBER only allows numeric characters enforced by Windows.  We however have to handle
+    /// those characters that are pasted in therefore we will make it require the same criteria.  This does
+    /// not handle decimal points.
     /// </remarks>
     public class NumericTextBox : TextBox
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  NumericTextBox
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  07/25/2009
-        //      Last Updated:  03/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-        
         private const int ES_NUMBER = 0x2000;
 
         protected override CreateParams CreateParams

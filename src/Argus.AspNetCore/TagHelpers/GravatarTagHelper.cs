@@ -1,4 +1,9 @@
-﻿using System.Globalization;
+﻿/*
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +12,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace Argus.AspNetCore.TagHelpers
 {
     /// <summary>
-    ///     <img gravatar-email="@User.GetEmail()" gravatar-size="30" />
+    /// <img gravatar-email="@User.GetEmail()" gravatar-size="30" />
     /// </summary>
     [HtmlTargetElement("img", Attributes = EmailAttributeName)]
     public class GravatarTagHelper : TagHelper

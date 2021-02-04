@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -12,7 +19,7 @@ using Windows.UI.Xaml.Media;
 namespace Argus.Windows.Uwp
 {
     /// <summary>
-    ///     Supported dialog results for use with the Dialog Helper.
+    /// Supported dialog results for use with the Dialog Helper.
     /// </summary>
     public enum DialogResult
     {
@@ -22,26 +29,24 @@ namespace Argus.Windows.Uwp
     }
 
     /// <summary>
-    ///     Dialog box helpers for common scenarios.
+    /// Dialog box helpers for common scenarios.
     /// </summary>
     public static class Dialog
     {
         /// <summary>
-        ///     Display a message box.
+        /// Display a message box.
         /// </summary>
         /// <param name="message"></param>
-        /// <returns></returns>
         public static async Task Show(string message)
         {
             await Show(message, Package.Current.DisplayName);
         }
 
         /// <summary>
-        ///     Display a message box.
+        /// Display a message box.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="title"></param>
-        /// <returns></returns>
         public static async Task Show(string message, string title)
         {
             var dialog = new ContentDialog
@@ -55,21 +60,19 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Shows a yes/no dialog box that will return true for yes and false for no.
+        /// Shows a yes/no dialog box that will return true for yes and false for no.
         /// </summary>
         /// <param name="message"></param>
-        /// <returns></returns>
         public static async Task<DialogResult> ShowYesNo(string message)
         {
             return await ShowYesNo(message, Package.Current.DisplayName);
         }
 
         /// <summary>
-        ///     Shows a yes/no dialog box that will return true for yes and false for no.
+        /// Shows a yes/no dialog box that will return true for yes and false for no.
         /// </summary>
         /// <param name="title"></param>
         /// <param name="message"></param>
-        /// <returns></returns>
         public static async Task<DialogResult> ShowYesNo(string message, string title)
         {
             var dialog = new ContentDialog
@@ -107,21 +110,19 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Shows a yes/no dialog box that will return true for yes and false for no.
+        /// Shows a yes/no dialog box that will return true for yes and false for no.
         /// </summary>
         /// <param name="message"></param>
-        /// <returns></returns>
         public static async Task<DialogResult> ShowYesNoCancel(string message)
         {
             return await ShowYesNoCancel(message, Package.Current.DisplayName);
         }
 
         /// <summary>
-        ///     Shows a yes/no dialog box that will return true for yes and false for no.
+        /// Shows a yes/no dialog box that will return true for yes and false for no.
         /// </summary>
         /// <param name="title"></param>
         /// <param name="message"></param>
-        /// <returns></returns>
         public static async Task<DialogResult> ShowYesNoCancel(string message, string title)
         {
             var dialog = new ContentDialog
@@ -166,33 +167,30 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Shows an input box to get a string value in return.
+        /// Shows an input box to get a string value in return.
         /// </summary>
         /// <param name="message"></param>
-        /// <returns></returns>
         public static async Task<string> ShowInput(string message)
         {
             return await ShowInput(message, "", Package.Current.DisplayName);
         }
 
         /// <summary>
-        ///     Shows an input box to get a string value in return.
+        /// Shows an input box to get a string value in return.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="defaultValue"></param>
-        /// <returns></returns>
         public static async Task<string> ShowInput(string message, string defaultValue)
         {
             return await ShowInput(message, defaultValue, Package.Current.DisplayName);
         }
 
         /// <summary>
-        ///     Shows an simple input box to get a string value in return.
+        /// Shows an simple input box to get a string value in return.
         /// </summary>
         /// <param name="title"></param>
         /// <param name="message"></param>
         /// <param name="defaultValue"></param>
-        /// <returns></returns>
         public static async Task<string> ShowInput(string message, string defaultValue, string title)
         {
             var dialog = new ContentDialog
@@ -253,33 +251,30 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Shows an password input dialog box.
+        /// Shows an password input dialog box.
         /// </summary>
         /// <param name="message"></param>
-        /// <returns></returns>
         public static async Task<string> ShowInputPassword(string message)
         {
             return await ShowInputPassword(message, Package.Current.DisplayName, true);
         }
 
         /// <summary>
-        ///     Shows an password input dialog box.
+        /// Shows an password input dialog box.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="title"></param>
-        /// <returns></returns>
         public static async Task<string> ShowInputPassword(string message, string title)
         {
             return await ShowInputPassword(message, title, true);
         }
 
         /// <summary>
-        ///     Shows an password input dialog box.
+        /// Shows an password input dialog box.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="title"></param>
         /// <param name="allowPeek"></param>
-        /// <returns></returns>
         public static async Task<string> ShowInputPassword(string message, string title, bool allowPeek)
         {
             var dialog = new ContentDialog
@@ -327,10 +322,9 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Shows the open file picker and returns the selected file (or null).  This uses the default location as the
-        ///     Documents Library.
+        /// Shows the open file picker and returns the selected file (or null).  This uses the default location as the
+        /// Documents Library.
         /// </summary>
-        /// <returns></returns>
         public static async Task<StorageFile> ShowOpenPicker()
         {
             var picker = new FileOpenPicker
@@ -344,12 +338,11 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Shows the open file picker and returns the selected file (or null).  This uses the default location as the
-        ///     Documents Library.
+        /// Shows the open file picker and returns the selected file (or null).  This uses the default location as the
+        /// Documents Library.
         /// </summary>
         /// <param name="fileTypeFilters"></param>
         /// <param name="defaultLocation"></param>
-        /// <returns></returns>
         public static async Task<StorageFile> ShowOpenPicker(List<string> fileTypeFilters, PickerLocationId defaultLocation)
         {
             var picker = new FileOpenPicker
@@ -366,10 +359,9 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Shows the save file picker and returns the selected file (or null).  This uses the default location as the
-        ///     Documents Library.
+        /// Shows the save file picker and returns the selected file (or null).  This uses the default location as the
+        /// Documents Library.
         /// </summary>
-        /// <returns></returns>
         public static async Task<StorageFile> ShowSavePicker()
         {
             var picker = new FileSavePicker
@@ -384,10 +376,9 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Shows the save file picker and returns the selected file (or null).  This uses the default location as the
-        ///     Documents Library.
+        /// Shows the save file picker and returns the selected file (or null).  This uses the default location as the
+        /// Documents Library.
         /// </summary>
-        /// <returns></returns>
         public static async Task<StorageFile> ShowSavePicker(string fileTypeCategory, List<string> fileTypeChoices, PickerLocationId defaultLocation)
         {
             var picker = new FileSavePicker
@@ -402,12 +393,11 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Shows a page as a ContentDialog.
+        /// Shows a page as a ContentDialog.
         /// </summary>
         /// <param name="page"></param>
         /// <param name="title"></param>
         /// <param name="showCancel"></param>
-        /// <returns></returns>
         public static async Task<ContentDialogResult> ShowPage(Page page, string title, bool showCancel = true)
         {
             var d = new ContentDialog
@@ -426,8 +416,8 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Returns whether a ContentDialog is open or not.  This uses VisualTreeHelper.GetOpenPopups to look
-        ///     for ContentDialog's that are open.
+        /// Returns whether a ContentDialog is open or not.  This uses VisualTreeHelper.GetOpenPopups to look
+        /// for ContentDialog's that are open.
         /// </summary>
         public static bool IsContentDialogOpen()
         {

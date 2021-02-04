@@ -1,11 +1,18 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using Windows.UI.Xaml.Controls;
 
 namespace Argus.Extensions
 {
     public static class ListViewExtensions
     {
         /// <summary>
-        ///     Scrolls to the last record in a ListView.
+        /// Scrolls to the last record in a ListView.
         /// </summary>
         /// <param name="lv"></param>
         public static void ScrollToEnd(this ListView lv)
@@ -20,7 +27,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Scrolls the ListView up by one page based on the size of the ListView.
+        /// Scrolls the ListView up by one page based on the size of the ListView.
         /// </summary>
         /// <param name="lv"></param>
         public static void PageUp(this ListView lv)
@@ -30,7 +37,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Scrolls the ListView down by one page based on the size of the ListView.
+        /// Scrolls the ListView down by one page based on the size of the ListView.
         /// </summary>
         /// <param name="lv"></param>
         public static void PageDown(this ListView lv)

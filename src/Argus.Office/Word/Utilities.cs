@@ -1,26 +1,25 @@
-﻿using System.IO;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2013-09-04
+ * @last updated      : 2013-09-04
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.IO;
 using System.Xml;
 using Argus.IO.Compression;
 
 namespace Argus.Office.Word
 {
     /// <summary>
-    ///     Reads the rough contents of a MS Word docx file.
+    /// Reads the rough contents of a MS Word docx file.
     /// </summary>
     public static class Utilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Utilities
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  09/04/2013
-        //      Last Updated:  09/04/2013
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Reads the contents of a docx file back into a single string with no formatting.
+        /// Reads the contents of a docx file back into a single string with no formatting.
         /// </summary>
         /// <param name="filename"></param>
         public static string ReadDocx(string filename)

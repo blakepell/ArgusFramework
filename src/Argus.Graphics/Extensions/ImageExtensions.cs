@@ -1,26 +1,25 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2010-02-04
+ * @last updated      : 2020-10-23
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
 namespace Argus.Extensions
 {
     /// <summary>
-    ///     Extension methods for Image objects.
+    /// Extension methods for Image objects.
     /// </summary>
     public static class ImageExtensions
     {
-        //*********************************************************************************************************************
-        //
-        //            Module:  ImageExtensions
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  02/04/2010
-        //      Last Updated:  10/23/2020
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Determines if a Bitmap is a single color.
+        /// Determines if a Bitmap is a single color.
         /// </summary>
         /// <param name="bm"></param>
         public static bool IsSingleColor(this Bitmap bm)
@@ -50,8 +49,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Returns a hash that identify like images based on a downscaled mapping of pixels
-        ///     above or below the a median brightness threshold.
+        /// Returns a hash that identify like images based on a down scaled mapping of pixels
+        /// above or below the a median brightness threshold.
         /// </summary>
         /// <param name="bmp"></param>
         public static string MedianBrightnessHash(this Bitmap bmp)
@@ -59,7 +58,7 @@ namespace Argus.Extensions
             float sum = 0;
             var sb = new StringBuilder();
 
-            // Create new image downscaled to 16x16 pixels.
+            // Create new image down scaled to 16x16 pixels.
             using var bmpMin = new Bitmap(bmp, new Size(16, 16));
 
             // Calculate the median brightness of the image.
@@ -96,7 +95,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Counts the unique colors in a <see cref="Bitmap"/>.
+        /// Counts the unique colors in a <see cref="Bitmap" />.
         /// </summary>
         /// <param name="bmp"></param>
         public static int CountColors(this Bitmap bmp)
@@ -113,6 +112,5 @@ namespace Argus.Extensions
 
             return colors.Count;
         }
-
     }
 }

@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.ExtendedExecution;
@@ -10,19 +17,19 @@ using Windows.UI.Xaml.Controls;
 namespace Argus.Windows.Uwp
 {
     /// <summary>
-    ///     Windows Universal Utilities
+    /// Windows Universal Utilities
     /// </summary>
     public static class Utilities
     {
         /// <summary>
-        ///     Makes a request to Windows to not have this App suspend when minimized or the computer is locked.  This
-        ///     will work for computers plugged in but may still be suspended on battery powered computers.  An exception
-        ///     is thrown from this method if the request is denied.
+        /// Makes a request to Windows to not have this App suspend when minimized or the computer is locked.  This
+        /// will work for computers plugged in but may still be suspended on battery powered computers.  An exception
+        /// is thrown from this method if the request is denied.
         /// </summary>
         /// <remarks>
-        ///     The session object is returned which should be held onto by the caller.  The caller can wire up the
-        ///     Revoked event to handle what to do if the extended session is revoked by Windows:
-        ///     <code>
+        /// The session object is returned which should be held onto by the caller.  The caller can wire up the
+        /// Revoked event to handle what to do if the extended session is revoked by Windows:
+        /// <code>
         ///     session.Revoked += SessionRevoked;
         /// </code>
         /// </remarks>
@@ -48,11 +55,10 @@ namespace Argus.Windows.Uwp
         }
 
         /// <summary>
-        ///     Opens a page given the page type as a new window.  It should be noted this runs in a new thread
-        ///     and any binding from another thread likely thrown an exception.
+        /// Opens a page given the page type as a new window.  It should be noted this runs in a new thread
+        /// and any binding from another thread likely thrown an exception.
         /// </summary>
         /// <param name="t"></param>
-        /// <returns></returns>
         public static async Task<bool> OpenPageAsWindowAsync(Type t)
         {
             var view = CoreApplication.CreateNewView();

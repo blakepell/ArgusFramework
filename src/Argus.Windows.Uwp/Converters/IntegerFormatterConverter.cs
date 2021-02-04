@@ -1,16 +1,23 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using Windows.UI.Xaml.Data;
 using Argus.Extensions;
 
 namespace Argus.Windows.Uwp.Converters
 {
     /// <summary>
-    ///     Formats an integer with commas in the decimal place.
+    /// Formats an integer with commas in the decimal place.
     /// </summary>
     public class IntegerFormatterConverter : IValueConverter
     {
         /// <summary>
-        ///     Converts to the string representation with commas.
+        /// Converts to the string representation with commas.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>
@@ -30,7 +37,7 @@ namespace Argus.Windows.Uwp.Converters
         }
 
         /// <summary>
-        ///     Converts back to the integer format.
+        /// Converts back to the integer format.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>

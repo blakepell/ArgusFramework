@@ -1,31 +1,28 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2009-04-07
+ * @last updated      : 2019-11-18
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace Argus.Network
 {
     /// <summary>
-    ///     Class to deal with network connectivity.
+    /// Class to deal with network connectivity.
     /// </summary>
     public static class Connectivity
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Connectivity
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  04/07/2009
-        //      Last Updated:  11/18/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
-        #region IsInternetAvailable
-
         [DllImport("wininet.dll")]
         private static extern bool InternetGetConnectedState(out int Description, int ReservedValue);
 
         /// <summary>
-        ///     Determines via the Windows API InternetGetConnectedState whether the Internet is connected or not.  This will check
-        ///     for more than the availability of a network.
+        /// Determines via the Windows API InternetGetConnectedState whether the Internet is connected or not.  This will check
+        /// for more than the availability of a network.
         /// </summary>
         /// <remarks>This will return a NotSupportedException on non Windows systems.</remarks>
         /// <exception cref="PlatformNotSupportedException"></exception>
@@ -40,7 +37,5 @@ namespace Argus.Network
 
             return InternetGetConnectedState(out desc, 0);
         }
-
-        #endregion
     }
 }

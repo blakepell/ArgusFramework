@@ -1,4 +1,11 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using Windows.UI.Xaml.Controls;
 
 namespace Argus.Windows.Uwp.Controls
 {

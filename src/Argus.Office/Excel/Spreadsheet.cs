@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell, Dave Demuelenaere
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2016-04-27
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -10,26 +19,15 @@ using DocumentFormat.OpenXml.Spreadsheet;
 namespace Argus.Office.Excel
 {
     /// <summary>
-    ///     Excel Spreadsheet creation from various sources including DataReader's, DataTable's and IEnumerable.
+    /// Excel Spreadsheet creation from various sources including DataReader's, DataTable's and IEnumerable.
     /// </summary>
     /// <remarks>
-    ///     This class uses and requires Microsoft's OpenXml library which is included via a Nuget feed.
+    /// This class uses and requires Microsoft's OpenXml library which is included via a Nuget feed.
     /// </remarks>
     public class Spreadsheet : IDisposable
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Spreadsheet
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  04/27/2016
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //                     Dave DeMeulenaere, dmdemeul@iu.edu
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
-        ///     Constructor
+        /// Constructor
         /// </summary>
         /// <param name="destinationPath">The location where the file will be stored.</param>
         public Spreadsheet(string destinationPath)
@@ -48,26 +46,26 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Provides a key/pair lookup to swap out database column names for a friendly names.  The key should correspond
-        ///     to the field name the query returns and the value should be the name to swap in it's place.  E.g. a key of
-        ///     "log_time" might map to "Log Time".
+        /// Provides a key/pair lookup to swap out database column names for a friendly names.  The key should correspond
+        /// to the field name the query returns and the value should be the name to swap in it's place.  E.g. a key of
+        /// "log_time" might map to "Log Time".
         /// </summary>
         public Dictionary<string, string> ColumnHeaderMap { get; set; }
 
         private int SheetId { get; set; }
 
         /// <summary>
-        ///     The underlying spreadsheet document.
+        /// The underlying spreadsheet document.
         /// </summary>
         public SpreadsheetDocument ExcelDocument { get; set; }
 
         /// <summary>
-        ///     This is the OpenXmlWriter that will handle the outer portion of the spreadsheet.
+        /// This is the OpenXmlWriter that will handle the outer portion of the spreadsheet.
         /// </summary>
         private OpenXmlWriter Writer { get; }
 
         /// <summary>
-        ///     IDisposable implementation.
+        /// IDisposable implementation.
         /// </summary>
         public void Dispose()
         {
@@ -87,8 +85,8 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Adds a sheet to the current spreadsheet from an IDataReader (this writes via a stream and supports
-        ///     large spreadsheets).
+        /// Adds a sheet to the current spreadsheet from an IDataReader (this writes via a stream and supports
+        /// large spreadsheets).
         /// </summary>
         /// <param name="dr"></param>
         /// <param name="workSheetName"></param>
@@ -258,7 +256,7 @@ namespace Argus.Office.Excel
         //}
 
         /// <summary>
-        ///     Adds a sheet to the current spreadsheet from a DataTable.
+        /// Adds a sheet to the current spreadsheet from a DataTable.
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="workSheetName"></param>
@@ -268,7 +266,7 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Adds a sheet based off on an IEnumerable list.
+        /// Adds a sheet based off on an IEnumerable list.
         /// </summary>
         /// <param name="data"></param>
         /// <param name="workSheetName"></param>
@@ -374,7 +372,7 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Adds a sheet based off <see cref="SheetData" />.
+        /// Adds a sheet based off <see cref="SheetData" />.
         /// </summary>
         /// <param name="sheetData"></param>
         /// <param name="workSheetName"></param>
@@ -424,7 +422,7 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Adds a blank sheet with a specified name
+        /// Adds a blank sheet with a specified name
         /// </summary>
         public void AddSheet(string workSheetName)
         {
@@ -433,7 +431,7 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Adds a blank sheet in with the default name.
+        /// Adds a blank sheet in with the default name.
         /// </summary>
         public void AddSheet()
         {
@@ -443,7 +441,7 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Returns a spreadsheet <see cref="Cell" /> with its type set according to the .NET type of the data.
+        /// Returns a spreadsheet <see cref="Cell" /> with its type set according to the .NET type of the data.
         /// </summary>
         /// <param name="type">A .NET data type.</param>
         /// <param name="value">The CellValue for the returned <see cref="Cell" /></param>
@@ -531,13 +529,13 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Checks whether a worksheet name is valid or not, if a worksheet name is invalid an Exception will
-        ///     be thrown with information as to why the name is invalid.  If the worksheet name is valid this method
-        ///     will silently succeed.
+        /// Checks whether a worksheet name is valid or not, if a worksheet name is invalid an Exception will
+        /// be thrown with information as to why the name is invalid.  If the worksheet name is valid this method
+        /// will silently succeed.
         /// </summary>
         /// <remarks>
-        ///     The underlying Excel library will fail with a non descript error message if any of these rules are
-        ///     violated, this attempts to isolate those and let the caller know which rule they broke.
+        /// The underlying Excel library will fail with a non descript error message if any of these rules are
+        /// violated, this attempts to isolate those and let the caller know which rule they broke.
         /// </remarks>
         /// <param name="worksheetName"></param>
         private void ValidateWorksheetName(string worksheetName)
@@ -554,7 +552,7 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Checks whether a worksheet name is valid or not.
+        /// Checks whether a worksheet name is valid or not.
         /// </summary>
         /// <param name="worksheetName"></param>
         public static bool WorksheetNameIsValid(string worksheetName)
@@ -568,8 +566,8 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Private lookup for the column header map that checks for whether it's set (not null) and then
-        ///     returns either the found mapped value or the passed in key if it is not found.
+        /// Private lookup for the column header map that checks for whether it's set (not null) and then
+        /// returns either the found mapped value or the passed in key if it is not found.
         /// </summary>
         /// <param name="key"></param>
         private string ColumnHeaderLookup(string key)
@@ -586,7 +584,7 @@ namespace Argus.Office.Excel
         }
 
         /// <summary>
-        ///     Closes and disposes of all resources.  The object will need to be re-instantiated after this usage.
+        /// Closes and disposes of all resources.  The object will need to be re-instantiated after this usage.
         /// </summary>
         public void Close()
         {

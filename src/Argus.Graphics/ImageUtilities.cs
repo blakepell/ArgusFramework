@@ -1,26 +1,25 @@
-﻿using Argus.Extensions;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2007-11-20
+ * @last updated      : 2021-02-04
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using Argus.Extensions;
 
 namespace Argus.Graphics
 {
     /// <summary>
-    ///     Various image utilities
+    /// Various image utilities
     /// </summary>
-    public class ImageUtilities
+    public static class ImageUtilities
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  ImageUtils
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  11/20/2007
-        //      Last Updated:  10/07/2020
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         /// <summary>
         /// Calculates the percentage match based on the images median brightness calculation.  This will return
         /// a percentage as an int between 0 and 100.
@@ -42,11 +41,11 @@ namespace Argus.Graphics
                 }
             }
 
-            return (match / 64) * 100;
+            return match / 64 * 100;
         }
 
         /// <summary>
-        ///     Extracts operating system's associated icon (in the highest resolution possible) for a given file and returns it as an Image object.
+        /// Extracts operating system's associated icon (in the highest resolution possible) for a given file and returns it as an Image object.
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns>Returns a <see cref="Image" /> of the associated icon.</returns>
@@ -59,7 +58,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Adds a border around a bitmap.  The new bitmap will be larger than the original because of the border that is added.
+        /// Adds a border around a bitmap.  The new bitmap will be larger than the original because of the border that is added.
         /// </summary>
         /// <param name="bm"></param>
         /// <param name="borderColor"></param>
@@ -115,13 +114,13 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Gets the codec info for the specified ImageFormat.
+        /// Gets the codec info for the specified ImageFormat.
         /// </summary>
         /// <param name="format"></param>
         /// <returns>Returns a <see cref="ImageCodecInfo" /> if found, otherwise a null will be returned.</returns>
         /// <remarks>
-        ///     This method was from the MSDN public library located at:
-        ///     <seealso>https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.encoder.quality?redirectedfrom=MSDN&view=netframework-4.8</seealso>
+        /// This method was from the MSDN public library located at:
+        /// <seealso>https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.encoder.quality?redirectedfrom=MSDN&view=netframework-4.8</seealso>
         /// </remarks>
         public static ImageCodecInfo GetEncoderInfo(ImageFormat format)
         {
@@ -143,7 +142,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Converts a Bitmap to greyscale.
+        /// Converts a Bitmap to greyscale.
         /// </summary>
         /// <param name="bm"></param>
         public static void ConvertToGreyscale(Bitmap bm)
@@ -160,7 +159,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Converts a Bitmap to sepia tone.
+        /// Converts a Bitmap to sepia tone.
         /// </summary>
         /// <param name="bm"></param>
         public static void ConvertToSepia(Bitmap bm)
@@ -195,7 +194,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Converts a Bitmap to black and white.
+        /// Converts a Bitmap to black and white.
         /// </summary>
         /// <param name="bm"></param>
         public static void ConvertToBlackWhite(Bitmap bm)
@@ -204,9 +203,9 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Converts a Bitmap to black and white.  A tolerance property will determine when to use black or white.  For example, if a pixels
-        ///     brightness is greater than .5 then White will be used, otherwise black.  Adjusting this will change the black/white balance of the
-        ///     photo.
+        /// Converts a Bitmap to black and white.  A tolerance property will determine when to use black or white.  For example, if a pixels
+        /// brightness is greater than .5 then White will be used, otherwise black.  Adjusting this will change the black/white balance of the
+        /// photo.
         /// </summary>
         /// <param name="bm"></param>
         /// <param name="tolerance"></param>
@@ -233,7 +232,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Inverts the color of each pixel in a Bitmap
+        /// Inverts the color of each pixel in a Bitmap
         /// </summary>
         /// <param name="bm"></param>
         public static void ConvertToInverted(Bitmap bm)
@@ -250,8 +249,8 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Converts a TIFF file into a JPEG or multiple JPEGs depending on how many frames exist in the TIFF.  An array of the files created
-        ///     will be returned.
+        /// Converts a TIFF file into a JPEG or multiple JPEGs depending on how many frames exist in the TIFF.  An array of the files created
+        /// will be returned.
         /// </summary>
         /// <param name="fileName"></param>
         public static string[] ConvertTiffToJpeg(string fileName)
@@ -281,7 +280,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Loads an <see cref="Image" /> from a byte array.
+        /// Loads an <see cref="Image" /> from a byte array.
         /// </summary>
         /// <param name="b">A byte array containing information for the <see cref="Image" />.</param>
         public static Image ImageFromByteArray(byte[] b)
@@ -293,7 +292,7 @@ namespace Argus.Graphics
         }
 
         /// <summary>
-        ///     Loads an <see cref="Bitmap" /> from a byte array.
+        /// Loads an <see cref="Bitmap" /> from a byte array.
         /// </summary>
         /// <param name="b">A byte array containing information for the <see cref="Bitmap" />.</param>
         public static Bitmap BitmapFromByteArray(byte[] b)

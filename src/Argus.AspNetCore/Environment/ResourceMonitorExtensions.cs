@@ -1,17 +1,24 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
 namespace Argus.AspNetCore.Environment
 {
     /// <summary>
-    ///     Extension methods for use with the <see cref="ResourceMonitorApi" />.  This will handle wiring
-    ///     up the resources monitor API's.  Either all resources can be added to be served or they can
-    ///     be added one by one for the ones that are needed.
+    /// Extension methods for use with the <see cref="ResourceMonitorApi" />.  This will handle wiring
+    /// up the resources monitor API's.  Either all resources can be added to be served or they can
+    /// be added one by one for the ones that are needed.
     /// </summary>
     public static class ResourceMonitorExtensions
     {
         /// <summary>
-        ///     Maps all of the routes available for resource monitoring.
+        /// Maps all of the routes available for resource monitoring.
         /// </summary>
         /// <param name="app"></param>
         public static void MapResourceMonitor(this IApplicationBuilder app)
@@ -22,8 +29,8 @@ namespace Argus.AspNetCore.Environment
         }
 
         /// <summary>
-        ///     Maps all the routes available for resource monitoring if a provided key and value match.  It is important
-        ///     that when this method is used that it is done so over HTTPS.
+        /// Maps all the routes available for resource monitoring if a provided key and value match.  It is important
+        /// that when this method is used that it is done so over HTTPS.
         /// </summary>
         /// <param name="app"></param>
         /// <param name="keyName"></param>
@@ -47,7 +54,7 @@ namespace Argus.AspNetCore.Environment
         }
 
         /// <summary>
-        ///     Validates a key/value against a provided key that should be in the HttpContext.Request.
+        /// Validates a key/value against a provided key that should be in the HttpContext.Request.
         /// </summary>
         /// <param name="context">The HttpContext for use with Requests header/query string/form values.</param>
         /// <param name="keyName">The name of the key to check.</param>

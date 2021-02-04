@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Argus.AspNetCore.Filters
 {
     /// <summary>
-    ///     Attribute that will check that an API key has been provided.
+    /// Attribute that will check that an API key has been provided.
     /// </summary>
     public class RequireApiKey : Attribute, IAuthorizationFilter
     {
@@ -16,9 +23,9 @@ namespace Argus.AspNetCore.Filters
         private readonly string _unauthorizedMessage = "Error - Unauthorized";
 
         /// <summary>
-        ///     Constructor (compares against the authorization header/querystring/form field value).  This requires that the Configuration
-        ///     has been setup in the Startup and that the service has been registered via:
-        ///     <code>services.AddSingleton&lt;IConfigurationRoot&gt;(Configuration);</code>
+        /// Constructor (compares against the authorization header/querystring/form field value).  This requires that the Configuration
+        /// has been setup in the Startup and that the service has been registered via:
+        /// <code>services.AddSingleton&lt;IConfigurationRoot&gt;(Configuration);</code>
         /// </summary>
         /// <param name="apiKeyName">The name of the setting in the config that holds the API key to validate.</param>
         public RequireApiKey(string apiKeyName)
@@ -28,9 +35,9 @@ namespace Argus.AspNetCore.Filters
         }
 
         /// <summary>
-        ///     Constructor (compares against the authorization header/querystring/form field value).  This requires that the Configuration
-        ///     has been setup in the Startup and that the service has been registered via:
-        ///     <code>services.AddSingleton&lt;IConfigurationRoot&gt;(Configuration);</code>
+        /// Constructor (compares against the authorization header/querystring/form field value).  This requires that the Configuration
+        /// has been setup in the Startup and that the service has been registered via:
+        /// <code>services.AddSingleton&lt;IConfigurationRoot&gt;(Configuration);</code>
         /// </summary>
         /// <param name="apiKeyName">The name of the setting in the config that holds the API key to validate.</param>
         /// <param name="queryField">The name of the header/querystring/form element to compare the key value to.</param>
@@ -41,9 +48,9 @@ namespace Argus.AspNetCore.Filters
         }
 
         /// <summary>
-        ///     Constructor (compares against the authorization header/querystring/form field value).  This requires that the Configuration
-        ///     has been setup in the Startup and that the service has been registered via:
-        ///     <code>services.AddSingleton&lt;IConfigurationRoot&gt;(Configuration);</code>
+        /// Constructor (compares against the authorization header/querystring/form field value).  This requires that the Configuration
+        /// has been setup in the Startup and that the service has been registered via:
+        /// <code>services.AddSingleton&lt;IConfigurationRoot&gt;(Configuration);</code>
         /// </summary>
         /// <param name="apiKeyName">The name of the setting in the config that holds the API key to validate.</param>
         /// <param name="queryField">The name of the header/querystring/form element to compare the key value to.</param>
@@ -56,7 +63,7 @@ namespace Argus.AspNetCore.Filters
         }
 
         /// <summary>
-        ///     API Key Validation Event
+        /// API Key Validation Event
         /// </summary>
         /// <param name="context"></param>
         public void OnAuthorization(AuthorizationFilterContext context)

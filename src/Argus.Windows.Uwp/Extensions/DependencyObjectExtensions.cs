@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
@@ -7,11 +14,10 @@ namespace Argus.Extensions
     public static class DependencyObjectExtensions
     {
         /// <summary>
-        ///     Finds the first child of a specifc type in the DependencyObject visual tree.
+        /// Finds the first child of a specific type in the DependencyObject visual tree.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="root"></param>
-        /// <returns></returns>
         public static T FindFirstChildOfType<T>(this DependencyObject root) where T : class
         {
             var queue = new Queue<DependencyObject>();
@@ -39,11 +45,10 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        ///     Finds all of the children of a specifc type in the DependencyObject visual tree.
+        /// Finds all of the children of a specific type in the DependencyObject visual tree.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="root"></param>
-        /// <returns></returns>
         public static List<T> FindChildrenOfType<T>(this DependencyObject root) where T : class
         {
             var children = new List<T>();

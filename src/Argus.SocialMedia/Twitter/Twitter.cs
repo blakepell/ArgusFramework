@@ -1,4 +1,13 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2017-08-25
+ * @last updated      : 2019-11-17
+ * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @license           : MIT
+ */
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Tweetinvi;
@@ -8,20 +17,10 @@ using Tweetinvi.Parameters;
 namespace Argus.SocialMedia.Twitter
 {
     /// <summary>
-    ///     A wrapper around Tweetinvi for common use cases including custom code for working with data from Twitter.
+    /// A wrapper around Tweetinvi for common use cases including custom code for working with data from Twitter.
     /// </summary>
     public class Twitter
     {
-        //*********************************************************************************************************************
-        //
-        //             Class:  Twitter
-        //      Organization:  http://www.blakepell.com
-        //      Initial Date:  08/25/2017
-        //      Last Updated:  11/17/2019
-        //     Programmer(s):  Blake Pell, blakepell@hotmail.com
-        //
-        //*********************************************************************************************************************
-
         #region Constructors
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace Argus.SocialMedia.Twitter
         #region Searching
 
         /// <summary>
-        ///     Returns the entire list of requested tweets on a user's timeline.
+        /// Returns the entire list of requested tweets on a user's timeline.
         /// </summary>
         /// <param name="username"></param>
         /// <param name="excludeReplies"></param>
@@ -95,7 +94,7 @@ namespace Argus.SocialMedia.Twitter
         }
 
         /// <summary>
-        ///     Returns the latest 40 tweets.  Excluding replies and/or retweets will lower the number returned.
+        /// Returns the latest 40 tweets.  Excluding replies and/or retweets will lower the number returned.
         /// </summary>
         /// <param name="username"></param>
         /// <param name="excludeReplies"></param>
@@ -116,7 +115,7 @@ namespace Argus.SocialMedia.Twitter
         #region Tweeting
 
         /// <summary>
-        ///     Tweet's a message.
+        /// Tweet's a message.
         /// </summary>
         /// <param name="message"></param>
         public void Tweet(string message)
@@ -125,7 +124,7 @@ namespace Argus.SocialMedia.Twitter
         }
 
         /// <summary>
-        ///     Tweet's a message as a reply to another tweet.
+        /// Tweet's a message as a reply to another tweet.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="replyTweetId"></param>
@@ -135,7 +134,7 @@ namespace Argus.SocialMedia.Twitter
         }
 
         /// <summary>
-        ///     Retweets a tweet.
+        /// Retweets a tweet.
         /// </summary>
         /// <param name="tweetId"></param>
         public void Retweet(long tweetId)
@@ -144,7 +143,7 @@ namespace Argus.SocialMedia.Twitter
         }
 
         /// <summary>
-        ///     Retweets a tweet with an additional message.
+        /// Retweets a tweet with an additional message.
         /// </summary>
         /// <param name="tweetId"></param>
         /// <param name="message"></param>
@@ -160,7 +159,7 @@ namespace Argus.SocialMedia.Twitter
         #region Trends
 
         /// <summary>
-        ///     Return trending topics on the Earth.
+        /// Return trending topics on the Earth.
         /// </summary>
         public List<ITrend> TrendingTweets()
         {
@@ -168,7 +167,7 @@ namespace Argus.SocialMedia.Twitter
         }
 
         /// <summary>
-        ///     Returns trending topics for a specified WOEID (Where On Earth Identifier)
+        /// Returns trending topics for a specified WOEID (Where On Earth Identifier)
         /// </summary>
         /// <param name="woeId"></param>
         public List<ITrend> TrendingTweets(long woeId)
@@ -177,7 +176,7 @@ namespace Argus.SocialMedia.Twitter
         }
 
         /// <summary>
-        ///     Returns all of the trends near a given latitude and longitude
+        /// Returns all of the trends near a given latitude and longitude
         /// </summary>
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
@@ -207,7 +206,7 @@ namespace Argus.SocialMedia.Twitter
         #region Utilities
 
         /// <summary>
-        ///     Returns all of the hashtags in a provided set of text.
+        /// Returns all of the hashtags in a provided set of text.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="includeHashtag">Whether to include the hashtag character in each entry.</param>
@@ -262,7 +261,7 @@ namespace Argus.SocialMedia.Twitter
         }
 
         /// <summary>
-        ///     Returns all of the @ usernames in a provided set of text.
+        /// Returns all of the @ usernames in a provided set of text.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="includeAt">Whether to include the @ character in each entry.</param>
@@ -317,7 +316,7 @@ namespace Argus.SocialMedia.Twitter
         }
 
         /// <summary>
-        ///     Removes Hashtags from the provided text.
+        /// Removes Hashtags from the provided text.
         /// </summary>
         /// <param name="text"></param>
         public static string RemoveHashtags(string text)
@@ -334,7 +333,7 @@ namespace Argus.SocialMedia.Twitter
         }
 
         /// <summary>
-        ///     Removes users from the provided text.
+        /// Removes users from the provided text.
         /// </summary>
         /// <param name="text"></param>
         public static string RemoveUsers(string text)
