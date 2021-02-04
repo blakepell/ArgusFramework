@@ -279,7 +279,7 @@ namespace Argus.Extensions
         /// a string replace.
         /// </summary>
         /// <param name="s"></param>
-        public static string RemoveLineEndings(string s)
+        public static string RemoveLineEndings(this string s)
         {
             int len = s.Length;
             var output = new char[len];
