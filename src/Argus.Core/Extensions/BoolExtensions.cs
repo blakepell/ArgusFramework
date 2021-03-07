@@ -15,7 +15,7 @@ namespace Argus.Extensions
     public static class BoolExtensions
     {
         /// <summary>
-        /// Returns a True only if the value is true.  Null is considered false.
+        /// Returns a true only if the value is true.  Null is considered false.
         /// </summary>
         /// <param name="value"></param>
         public static bool IsTrue(this bool? value)
@@ -29,17 +29,27 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a False if the value is False or null.
+        /// Returns a true if the value is False or null.
         /// </summary>
         /// <param name="value"></param>
         public static bool IsFalse(this bool? value)
         {
-            if (value.GetValueOrDefault(false))
+            if (!value.GetValueOrDefault(false))
             {
                 return true;
             }
 
             return false;
         }
+
+        /// <summary>
+        /// Returns a bool, true if true and false if false or null.
+        /// </summary>
+        /// <param name="value"></param>
+        public static bool ToBool(this bool? value)
+        {
+            return value.GetValueOrDefault(false);
+        }
+
     }
 }

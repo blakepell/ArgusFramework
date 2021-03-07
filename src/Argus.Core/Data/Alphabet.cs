@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-02-10
- * @last updated      : 2021-01-29
+ * @last updated      : 2021-02-06
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -28,12 +28,11 @@ namespace Argus.Data
     /// <list>
     /// <item>
     /// EOA will return True when the value is equal to "z", not when the last record has been read.  Since the list can
-    /// restart at the beginning there is technically no end to the list.  Be careful when using a Do While and the EOA property in
-    /// knowing what is happening.
+    /// restart at the beginning there is technically no end to the list.
     /// </item>
     /// </list>
     /// </remarks>
-    public class AlphabetLetter
+    public class AlphabetLetter : IEquatable<AlphabetLetter>
     {
         /// <summary>
         /// Constructor:  Initializes the letter with a Char.  The Char must be an alpha letter, if not, an exception will be thrown.
@@ -76,7 +75,7 @@ namespace Argus.Data
             get => _value;
             set
             {
-                if (!char.IsLetter(_value))
+                if (!char.IsLetter(value))
                 {
                     throw new Exception($"'{_value}' is not a valid letter.");
                 }
@@ -91,18 +90,26 @@ namespace Argus.Data
         public int NumericValue => GetNumericValueOfLetter(this.Value);
 
         /// <summary>
-        /// Returns the current character code value of the letter.  All AlphabetLetters are lower case and therefore will
-        /// return the lower case character code.
+        /// Returns the current character code value of the letter.
         /// </summary>
         public int CharacterCodeValue => Convert.ToInt32(this.Value);
 
         /// <summary>
-        /// Operator support for setting a string equal to an AlphabetLetter
+        /// Operator support for setting a <see cref="string"/> equal to an <see cref="AlphabetLetter"/>.
         /// </summary>
         /// <param name="a"></param>
         public static implicit operator string(AlphabetLetter a)
         {
             return a.ToString();
+        }
+
+        /// <summary>
+        /// Operator support for setting a <see cref="char"/> equal to the value of the <see cref="AlphabetLetter"/>.
+        /// </summary>
+        /// <param name="a"></param>
+        public static implicit operator char(AlphabetLetter a)
+        {
+            return a.Value;
         }
 
         /// <summary>
@@ -112,6 +119,15 @@ namespace Argus.Data
         public static implicit operator AlphabetLetter(string s)
         {
             return new AlphabetLetter(s[0]);
+        }
+
+        /// <summary>
+        /// Operator support for setting an AlphabetLetter equal to a <see cref="char"/>.
+        /// </summary>
+        /// <param name="c"></param>
+        public static implicit operator AlphabetLetter(char c)
+        {
+            return new AlphabetLetter(c);
         }
 
         /// <summary>
@@ -367,8 +383,7 @@ namespace Argus.Data
         /// </summary>
         public void Next()
         {
-            var a = this.GetNextLetter();
-            this.Value = a.Value;
+            this.Value = this.GetNextLetter().Value;
         }
 
         /// <summary>
@@ -376,8 +391,7 @@ namespace Argus.Data
         /// </summary>
         public void Previous()
         {
-            var a = this.GetPreviousLetter();
-            this.Value = a.Value;
+            this.Value = this.GetPreviousLetter().Value;
         }
 
         /// <summary>
@@ -388,6 +402,73 @@ namespace Argus.Data
         {
             return this.Value == 'z';
         }
+
+        /// <summary>
+        /// Equals implementation for comparing two <see cref="AlphabetLetter"/> objects.
+        /// </summary>
+        /// <param name="other"></param>
+        public bool Equals(AlphabetLetter other)
+        {
+            return this.Value == other?.Value;
+        }
+
+        /// <summary>
+        /// Equals implementation for comparing two <see cref="AlphabetLetter"/> objects.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <param name="caseSensitive">If the comparison should be case sensitive.</param>
+        public bool Equals(AlphabetLetter other, bool caseSensitive)
+        {
+            if (caseSensitive)
+            {
+                return Equals(other);
+            }
+            
+            return char.Equals(char.ToLower(this.Value), char.ToLower((other.Value)));
+        }
+
+        /// <summary>
+        /// Equals implementation for comparing an object to the <see cref="AlphabetLetter"/>.
+        /// </summary>
+        /// <param name="obj"></param>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is AlphabetLetter))
+            {
+                return false;
+            }
+
+            return Equals((AlphabetLetter) obj);
+        }
+
+        /// <inheritdoc cref="GetHashCode"/>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        /// <summary>
+        /// Equality support for ==
+        /// </summary>
+        /// <param name="letter1"></param>
+        /// <param name="letter2"></param>
+        /// <returns>A true or a false based on the comparison.  A null value of either forces a return of false.</returns>
+        public static bool operator ==(AlphabetLetter letter1, AlphabetLetter letter2)
+        {
+            return letter1.Equals(letter2);
+        }
+
+        /// <summary>
+        /// Equality support for !=
+        /// </summary>
+        /// <param name="letter1"></param>
+        /// <param name="letter2"></param>
+        /// <returns>A true or a false based on the comparison.  A null value of either forces a return of true.</returns>
+        public static bool operator !=(AlphabetLetter letter1, AlphabetLetter letter2)
+        {
+            return !letter1.Equals(letter2);
+        }
+
     }
 
     /// <summary>
@@ -400,14 +481,14 @@ namespace Argus.Data
         /// </summary>
         public static List<AlphabetLetter> AlphabetList()
         {
-            var returnList = new List<AlphabetLetter>();
+            var list = new List<AlphabetLetter>();
 
-            for (int x = 1; x <= 26; x++)
+            for (int i = 1; i <= 26; i++)
             {
-                returnList.Add(new AlphabetLetter(x));
+                list.Add(new AlphabetLetter(i));
             }
 
-            return returnList;
+            return list;
         }
 
         /// <summary>
@@ -415,15 +496,14 @@ namespace Argus.Data
         /// </summary>
         public static List<char> AlphabetStringList()
         {
-            var returnList = new List<char>();
+            var list = new List<char>();
 
-            for (int x = 1; x <= 26; x++)
+            for (int i = 1; i <= 26; i++)
             {
-                var a = new AlphabetLetter(x);
-                returnList.Add(a.Value);
+                list.Add(new AlphabetLetter(i).Value);
             }
 
-            return returnList;
+            return list;
         }
 
         /// <summary>

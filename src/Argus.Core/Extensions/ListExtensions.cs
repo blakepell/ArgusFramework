@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2012-11-19
- * @last updated      : 2019-11-17
+ * @last updated      : 2021-02-07
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Argus.Extensions
@@ -62,13 +63,13 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns the first non null value in the list.  If no non null values are found a null is returned.
+        /// Returns the first non null value in the list.  If no non null values are found default(T) is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="lst"></param>
-        public static object Coalesce<T>(this List<T> lst)
+        public static T Coalesce<T>(this List<T> lst)
         {
-            foreach (object obj in lst)
+            foreach (T obj in lst)
             {
                 if (obj != null)
                 {
@@ -76,7 +77,7 @@ namespace Argus.Extensions
                 }
             }
 
-            return null;
+            return default(T);
         }
 
         /// <summary>
@@ -86,9 +87,9 @@ namespace Argus.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="lst"></param>
         /// <param name="defaultValue"></param>
-        public static object Coalesce<T>(this List<T> lst, object defaultValue)
+        public static T Coalesce<T>(this List<T> lst, T defaultValue)
         {
-            foreach (object obj in lst)
+            foreach (T obj in lst)
             {
                 if (obj != null)
                 {
@@ -100,45 +101,49 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Will concatenate all items in a string list.  The optional delimiter can be used to put a space in or any other delimiter required.
+        /// Populates a list with the contents of a delimited string.  This will remove blank entries from the list if they exist.
         /// </summary>
-        /// <param name="lst"></param>
-        /// <param name="delimiter"></param>
-        public static string ToConcatString(this List<string> lst, string delimiter)
+        /// <param name="list">The source list.</param>
+        /// <param name="buf">The text that should be split.</param>
+        /// <param name="delimiter">The delimiter to split on.</param>
+        /// <param name="removeEmptyEntries">If empty entries should be removed from the list.</param>
+        /// <param name="clearListFirst">If the list should be cleared first.</param>
+        public static List<string> FromDelimitedString(this List<string> list, string buf, string delimiter, bool removeEmptyEntries = true, bool clearListFirst = false)
         {
-            var sb = new StringBuilder();
-
-            foreach (string item in lst)
+            if (clearListFirst && list.Count > 0)
             {
-                sb.AppendFormat("{0}{1}", item, delimiter);
+                list.Clear();
             }
 
-            return sb.ToString();
-        }
+            string[] items;
 
-        /// <summary>
-        /// Populates a list with the contents of a delimited string.  Note: This will remove blank entries from the list if they exist.
-        /// </summary>
-        /// <param name="ls"></param>
-        /// <param name="buf"></param>
-        /// <param name="delimiter"></param>
-        public static List<string> FromDelimitedString(this List<string> ls, string buf, string delimiter)
-        {
-            var items = buf.Split(delimiter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            var itemList = items.ToList();
-
-            // Remove delimiter and then remove blank entries.
-            for (int x = itemList.Count - 1; x >= 0; x += -1)
+            if (removeEmptyEntries)
             {
-                itemList[x] = itemList[x].Trim(delimiter.ToCharArray());
+                items = buf.Split(delimiter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            }
+            else
+            {
+                items = buf.Split(delimiter.ToCharArray());
+            }
 
-                if (string.IsNullOrWhiteSpace(itemList[x]))
+            list.AddRange(items);
+
+            // Get out, we're done.
+            if (!removeEmptyEntries)
+            {
+                return list;
+            }
+
+            // Because RemoveEmptyEntries leaves entries with whitespace, let's remove those.
+            for (int x = list.Count - 1; x >= 0; x--)
+            {
+                if (string.IsNullOrWhiteSpace(list[x]))
                 {
-                    itemList.RemoveAt(x);
+                    list.RemoveAt(x);
                 }
             }
 
-            return itemList;
+            return list;
         }
 
         /// <summary>
@@ -146,20 +151,35 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="ls"></param>
         /// <param name="delimiter"></param>
-        /// <remarks>
-        /// </remarks>
         public static string ToDelimitedString(this List<string> ls, string delimiter)
         {
             var sb = new StringBuilder();
 
             foreach (string buf in ls)
             {
-                sb.Append(buf);
-                sb.Append(delimiter);
+                sb.Append(buf).Append(delimiter);
             }
 
             // The final delimiter is trimmed off since there is no record after that item
             return sb.ToString().Trim(delimiter);
+        }
+
+        /// <summary>
+        /// Returns a delimited string from the list.
+        /// </summary>
+        /// <param name="ls"></param>
+        /// <param name="delimiter"></param>
+        public static string ToDelimitedString(this List<string> ls, char delimiter)
+        {
+            var sb = new StringBuilder();
+
+            foreach (string buf in ls)
+            {
+                sb.Append(buf).Append(delimiter);
+            }
+
+            // The final delimiter is trimmed off since there is no record after that item
+            return sb.TrimEnd(delimiter).ToString();
         }
 
         /// <summary>
@@ -168,8 +188,6 @@ namespace Argus.Extensions
         /// <param name="ls"></param>
         /// <param name="delimiter"></param>
         /// <param name="wrapCharacter">A character to append and prepend to each item.  As an example, this would be used for wrapping SQL parameters with single quotes.</param>
-        /// <remarks>
-        /// </remarks>
         public static string ToDelimitedString(this List<string> ls, string delimiter, string wrapCharacter)
         {
             var sb = new StringBuilder();
@@ -189,7 +207,7 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="ls"></param>
         /// <param name="order"></param>
-        public static void Sort(this List<string> ls, ListSortDirection order)
+        public static void StringSort(this List<string> ls, ListSortDirection order)
         {
             if (order == ListSortDirection.Ascending)
             {

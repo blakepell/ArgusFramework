@@ -44,6 +44,15 @@ namespace Argus.Extensions
         }
 
         /// <summary>
+        /// Returns the last day of the month for the date.
+        /// </summary>
+        /// <param name="d"></param>
+        public static DateTime LastDayOfMonth(this DateTime d)
+        {
+            return new DateTime(d.Year, d.Month, DateTime.DaysInMonth(d.Year, d.Month));
+        }
+
+        /// <summary>
         /// Returns the first date of the year for the date specified (e.g. 1/1/2001 for a date that falls in 2001).
         /// </summary>
         /// <param name="d"></param>
@@ -68,15 +77,6 @@ namespace Argus.Extensions
         public static string ToShortDatePaddedString(this DateTime d)
         {
             return $"{MonthTwoCharacters(d)}/{DayTwoCharacters(d)}/{d.Year}";
-        }
-
-        /// <summary>
-        /// Returns the last day of the month for the date.
-        /// </summary>
-        /// <param name="d"></param>
-        public static DateTime LastDayOfMonth(this DateTime d)
-        {
-            return new DateTime(d.Year, d.Month, DateTime.DaysInMonth(d.Year, d.Month));
         }
 
         /// <summary>
@@ -128,9 +128,9 @@ namespace Argus.Extensions
             int years = DateTime.Now.Year - birthDate.Year;
 
             // Take another year off if it's before the birth date in the current year
-            if ((DateTime.Now.Month < birthDate.Month) | ((DateTime.Now.Month == birthDate.Month) & (DateTime.Now.Day < birthDate.Day)))
+            if ((DateTime.Now.Month < birthDate.Month) || ((DateTime.Now.Month == birthDate.Month) && (DateTime.Now.Day < birthDate.Day)))
             {
-                years = years - 1;
+                years--;
             }
 
             return years;
@@ -159,7 +159,6 @@ namespace Argus.Extensions
             return !IsWeekend(d);
         }
 
-        #if NETSTANDARD2_0
         /// <summary>
         /// Returns the Unix timestamp for the specified date.
         /// </summary>
@@ -171,10 +170,9 @@ namespace Argus.Extensions
 
             return Convert.ToInt64(unixTimeSpan.TotalSeconds);
         }
-        #endif
 
         /// <summary>
-        /// Retuns a file friendly format of this name in YYYY-MM-DD format.  If the includeTime parameter is true then the format
+        /// Returns a file friendly format of this name in YYYY-MM-DD format.  If the includeTime parameter is true then the format
         /// will be YYYY-MM-DD-HH.MM.SS.MS
         /// </summary>
         /// <param name="d"></param>
@@ -220,7 +218,7 @@ namespace Argus.Extensions
         /// <param name="d"></param>
         public static string ToSqlServerTimeStamp(this DateTime d)
         {
-            return $"{d:yyyy - MM - dd} {d.Hour:D2}:{d.Minute:D2}:{d.Second:D2}";
+            return $"{d:yyyy-MM-dd} {d.Hour:D2}:{d.Minute:D2}:{d.Second:D2}";
         }
 
         /// <summary>

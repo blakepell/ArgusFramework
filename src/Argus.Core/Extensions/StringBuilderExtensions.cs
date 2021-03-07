@@ -336,7 +336,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Removes the range of characters from the specified index to the end of <see cref="StringBuilder" />.
+        /// Removes the range of characters from the specified zero based index to the end of <see cref="StringBuilder" />.
         /// </summary>
         /// <param name="sb">A <see cref="StringBuilder" /> to remove from.</param>
         /// <param name="startIndex">The zero-based position to begin deleting characters.</param>

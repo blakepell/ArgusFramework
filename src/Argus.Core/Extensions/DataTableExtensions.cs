@@ -526,12 +526,13 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a delimeted string of the DataRow.  Leave the lineTerminator blank if you don't want it at the end of the record.
+        /// Returns a delimited string of the DataRow.  Leave the lineTerminator blank if you don't want it at the end of the record.
         /// The delimiter will be escaped in any field with a \d code.
         /// </summary>
         /// <param name="dr"></param>
         /// <param name="delimiter"></param>
-        public static string ToString(this DataRow dr, string delimiter, string lineTerminator)
+        /// <param name="lineTerminator"></param>
+        public static string ToString(this DataRow dr, string delimiter, string lineTerminator = "")
         {
             var sb = new StringBuilder();
 
@@ -549,8 +550,8 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a tab delimited string of the DataRow.  A carriage return/line feed will be used as the line terminiator.
-        /// Todo: Test this one.  The tab chars are a bit different in C#.
+        /// Returns a tab delimited string of the DataRow.  A carriage return/line feed will be used as the
+        /// line terminator.  Tabs are escaped to \t.
         /// </summary>
         /// <param name="dr"></param>
         public static string ToString(this DataRow dr)

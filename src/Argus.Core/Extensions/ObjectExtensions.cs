@@ -10,6 +10,11 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Net.Sockets;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -42,33 +47,6 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns the Description attribute that is attached to the object.
-        /// </summary>
-        /// <param name="value"></param>
-        public static string DescriptionAttribute(this object value)
-        {
-            var type = value.GetType();
-            string name = Enum.GetName(type, value);
-
-            if (name != null)
-            {
-                var field = type.GetField(name);
-
-                if (field != null)
-                {
-                    var attr = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
-
-                    if (attr != null)
-                    {
-                        return attr.Description;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Converts a serializable object into it's XML representation.  This makes a call to the Argus.Utilities.Serialization.ObjectToXML function.
         /// Due to issues with generics, this will need to be re-read in with Argus.Utilities.Serialization and not from an extension since the (Of T)
         /// needs to be specified and cannot be obtained with GetType.  If an object cannot be serialized this method will throw an exception.
@@ -96,18 +74,20 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="xml"></param>
-        public static void FromXml<T>(this object obj, string xml)
+        public static T FromXml<T>(this T obj, string xml)
         {
             if (string.IsNullOrEmpty(xml))
             {
                 throw new ArgumentException("XML cannot be null/empty");
             }
 
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
+            using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(xml)))
             {
                 var serializer = new XmlSerializer(typeof(T));
-                obj = (T) serializer.Deserialize(stream);
+                var temp = (T) serializer.Deserialize(stream);
             }
+
+            return obj;
         }
     }
 }

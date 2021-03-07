@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2008-05-07
- * @last updated      : 2019-11-17
+ * @last updated      : 2021-02-06
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -72,57 +72,6 @@ namespace Argus.Data
             }
 
             return dt;
-        }
-
-        /// <summary>
-        /// This will try to open a database connection.  If the connection fails because of a timeout it will attempt to connect
-        /// 2 more times.
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <remarks>
-        /// An exception will be thrown only if the connection passed is is null or the connection fails to connect 3 times.
-        /// </remarks>
-        public static void OpenDbConnection(IDbConnection conn)
-        {
-            if (conn == null)
-            {
-                throw new Exception("The connection object is null.");
-            }
-
-            switch (conn.State)
-            {
-                case ConnectionState.Open:
-                    return;
-                case ConnectionState.Connecting:
-                case ConnectionState.Broken:
-                case ConnectionState.Fetching:
-                case ConnectionState.Executing:
-                    conn.Close();
-
-                    break;
-            }
-
-            int tries = 0;
-
-            while (tries <= 3)
-            {
-                tries += 1;
-
-                try
-                {
-                    conn.Open();
-
-                    return;
-                }
-                catch
-                {
-                    // Throw the exception on the third try
-                    if (tries >= 3)
-                    {
-                        throw;
-                    }
-                }
-            }
         }
 
         /// <summary>

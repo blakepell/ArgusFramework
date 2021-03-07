@@ -15,7 +15,6 @@ namespace Argus.Data.Range
     /// <summary>
     /// An integer range
     /// </summary>
-    /// <remarks>Add Interval support so the range can be run for intervals of a number and not just by 1's.</remarks>
     public class IntRange : RangeBase<int>
     {
         /// <summary>

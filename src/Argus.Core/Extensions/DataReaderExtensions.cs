@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-01-26
- * @last updated      : 2019-11-17
+ * @last updated      : 2021-02-07
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -10,6 +10,7 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Argus.Data;
@@ -21,40 +22,6 @@ namespace Argus.Extensions
     /// </summary>
     public static class DataReaderExtensions
     {
-        /// <summary>
-        /// Returns the specified value from a data reader and performs IsNull checks and additional checks to make sure
-        /// that the data reader is valid.
-        /// </summary>
-        /// <param name="dr"></param>
-        /// <param name="field">The database field to return.</param>
-        public static string GetValue(this IDataReader dr, string field)
-        {
-            if (dr == null || dr.IsClosed)
-            {
-                return "";
-            }
-
-            try
-            {
-                if (dr[field] == null || dr[field] == DBNull.Value)
-                {
-                    return "";
-                }
-
-                try
-                {
-                    return dr[field].ToString().Equals("(null)", StringComparison.OrdinalIgnoreCase) ? "" : dr[field].ToString();
-                }
-                catch
-                {
-                    return "";
-                }
-            }
-            catch
-            {
-                return $"(Invalid Field: {field})";
-            }
-        }
 
         /// <summary>
         /// Returns the specified value from a data reader and performs IsNull checks and additional checks to make sure
@@ -64,18 +31,18 @@ namespace Argus.Extensions
         /// <param name="field">The database field to return.</param>
         /// <param name="defaultValue">A default value to return if the data value is null (or blank if specified)</param>
         /// <param name="defaultIncludesBlanks">Whether or not to return the default value specified if the data field is blank.</param>
-        public static string GetValue(this IDataReader dr, string field, string defaultValue, bool defaultIncludesBlanks)
+        public static string GetValue(this IDataReader dr, string field, string defaultValue = "", bool defaultIncludesBlanks = true)
         {
             if (dr == null || dr.IsClosed)
             {
-                return "";
+                return defaultValue;
             }
 
             try
             {
                 if (dr[field] == null || dr[field] == DBNull.Value)
                 {
-                    return "";
+                    return defaultValue;
                 }
 
                 try
@@ -99,7 +66,7 @@ namespace Argus.Extensions
             }
             catch
             {
-                return $"(Invalid Field: {field})";
+                return defaultValue;
             }
         }
 
@@ -112,7 +79,6 @@ namespace Argus.Extensions
         public static string ToString(this IDataReader dr, string fieldDelimiter)
         {
             var cdf = new CreateDelimitedFile(false, fieldDelimiter);
-
             return cdf.ToString(dr);
         }
 
@@ -136,7 +102,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns a DataTable with the contents of the IDataReader.  The source DataReader will be closed after the
+        /// Returns a <see cref="DataTable"/> with the contents of the <see cref="IDataReader"/>.  The source <see cref="IDataReader"/> will be closed after the
         /// DataTable is loaded.
         /// </summary>
         /// <param name="dr"></param>
@@ -169,29 +135,34 @@ namespace Argus.Extensions
         {
             var sb = new StringBuilder();
 
-            sb.AppendFormat("<table border=\"0\" class=\"{0}\">", tableCssClass);
-            sb.AppendFormat("<tr class=\"{0}\">", tableRowCssClass);
+            string tableClass = string.IsNullOrWhiteSpace(tableCssClass) ? "" : $"class=\"{tableCssClass}\"";
+            string tableHeaderClass = string.IsNullOrWhiteSpace(tableHeaderCssClass) ? "" : $"class=\"{tableHeaderCssClass}\"";
+            string tableRowClass = string.IsNullOrWhiteSpace(tableRowCssClass) ? "" : $"class=\"{tableRowCssClass}\"";
+            string tableDataClass = string.IsNullOrWhiteSpace(tableDataCssClass) ? "" : $"class=\"{tableDataCssClass}\"";
+
+            sb.AppendFormat("<table border=\"0\" {0}>", tableClass);
+            sb.AppendFormat("<tr {0}>", tableRowClass);
 
             for (int x = 0; x <= dr.FieldCount - 1; x++)
             {
-                sb.AppendFormat("<th class=\"{0}\">{1}</th>", tableHeaderCssClass, dr.GetName(x));
+                sb.AppendFormat("<th {0}>{1}</th>", tableHeaderClass, dr.GetName(x));
             }
 
             sb.Append("</tr>");
 
             while (dr.Read())
             {
-                sb.AppendFormat("<tr class=\"{0}\">", tableRowCssClass);
+                sb.AppendFormat("<tr {0}>", tableRowClass);
 
                 for (int x = 0; x <= dr.FieldCount - 1; x++)
                 {
-                    if (dr[x] != null)
+                    if (dr[x] != null && dr[x] == DBNull.Value)
                     {
-                        sb.AppendFormat("<td class=\"{0}\">{1}</td>", tableDataCssClass, dr[x]);
+                        sb.AppendFormat("<td {0}>{1}</td>", tableDataClass, dr[x]);
                     }
                     else
                     {
-                        sb.AppendFormat("<td class=\"{0}\"></td>", tableDataCssClass);
+                        sb.AppendFormat("<td {0}></td>", tableDataClass);
                     }
                 }
 
@@ -200,19 +171,29 @@ namespace Argus.Extensions
 
             sb.Append("</table>");
 
+            // Cleanup tags if nothing was provided for the CSS classes for them.
+            sb.Replace("<table border=\"0\" >", "<table border=\"0\">");
+            sb.Replace("<tr >", "<tr>");
+            sb.Replace("<th >", "<th>");
+            sb.Replace("<td >", "<td>");
+
             // Get rid of the empty CSS classes
             return sb.ToString().Replace("class=\"\"", "");
         }
 
         /// <summary>
         /// This extension takes the current row the IDataReader is on and outputs a string array of it's values.  This expects that the DataReader is open
-        /// and on the row needing to be outputed.
+        /// and on the row needing to be outputted.
         /// </summary>
         /// <param name="dr"></param>
         public static string[] ToStringArray(this IDataReader dr)
         {
             var values = new string[dr.FieldCount - 1];
-            dr.GetValues(values);
+
+            for (int i = 0; i < dr.FieldCount; i++)
+            {
+                values[i] = dr[i].ToString();
+            }
 
             return values;
         }
@@ -277,7 +258,7 @@ namespace Argus.Extensions
                         {
                             // If the caller wants to convert all the date times to a short date then check the type and
                             // convert if it's a DateTime, otherwise just dump the string.
-                            if (convertDateTimeToShortDate && dr[i].GetType() == typeof(DateTime))
+                            if (convertDateTimeToShortDate && dr[i] is DateTime)
                             {
                                 value = DateTime.Parse(dr[i].ToString()).ToShortDateString();
                             }
@@ -365,7 +346,7 @@ namespace Argus.Extensions
                     {
                         // If the caller wants to convert all the date times to a short date then check the type and
                         // convert if it's a DateTime, otherwise just dump the string.
-                        if (convertDateTimeToShortDate && dr[i].GetType() == typeof(DateTime))
+                        if (convertDateTimeToShortDate && dr[i] is DateTime)
                         {
                             value = DateTime.Parse(dr[i].ToString()).ToShortDateString();
                         }
@@ -449,7 +430,7 @@ namespace Argus.Extensions
                         {
                             // If the caller wants to convert all the date times to a short date then check the type and
                             // convert if it's a DateTime, otherwise just dump the string.
-                            if (convertDateTimeToShortDate && dr[i].GetType() == typeof(DateTime))
+                            if (convertDateTimeToShortDate && dr[i] is DateTime)
                             {
                                 value = DateTime.Parse(dr[i].ToString()).ToShortDateString();
                             }
@@ -521,7 +502,7 @@ namespace Argus.Extensions
                     {
                         // If the caller wants to convert all the date times to a short date then check the type and
                         // convert if it's a DateTime, otherwise just dump the string.
-                        if (convertDateTimeToShortDate && dr[i].GetType() == typeof(DateTime))
+                        if (convertDateTimeToShortDate && dr[i] is DateTime)
                         {
                             value = DateTime.Parse(dr[i].ToString()).ToShortDateString();
                         }

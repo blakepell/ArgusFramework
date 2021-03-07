@@ -170,11 +170,11 @@ namespace Argus.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="span">A reference to the span</param>
-        /// <param name="seperator">A seperator that delimits the values</param>
+        /// <param name="separator">A separator that delimits the values</param>
         /// <returns>The first split value</returns>
-        public static ReadOnlySpan<T> SplitNext<T>(this ref ReadOnlySpan<T> span, T seperator) where T : IEquatable<T>
+        public static ReadOnlySpan<T> SplitNext<T>(this ref ReadOnlySpan<T> span, T separator) where T : IEquatable<T>
         {
-            int pos = span.IndexOf(seperator);
+            int pos = span.IndexOf(separator);
 
             if (pos > -1)
             {
@@ -198,12 +198,7 @@ namespace Argus.Extensions
         /// <param name="value"></param>
         public static bool IsNullOrEmpty(this ReadOnlySpan<char> value)
         {
-            if (value == null || value.IsEmpty)
-            {
-                return true;
-            }
-
-            return false;
+            return value == null || value.IsEmpty;
         }
 
         /// <summary>
@@ -216,7 +211,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Trimes Whitespace off of a ReadOnlySpan.
+        /// Trims Whitespace off of a ReadOnlySpan.
         /// </summary>
         /// <param name="content"></param>
         /// <param name="startAt"></param>
@@ -238,6 +233,7 @@ namespace Argus.Extensions
         /// <param name="endIndex"></param>
         /// <param name="start"></param>
         /// <param name="end"></param>
+        /// <remarks>Do not make public.</remarks>
         private static void WhitespaceIndexes(this ref ReadOnlySpan<char> content, out int startIndex, out int endIndex, int start = 0, int? end = null)
         {
             int contentStartsAt = start;

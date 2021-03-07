@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2009-06-30
- * @last updated      : 2019-11-17
+ * @last updated      : 2021-02-06
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -48,7 +48,6 @@ namespace Argus.Data
         public static IDataReader GetTestDataReader(int numberOfRecords)
         {
             var dt = GetTestDataTable(numberOfRecords);
-
             return dt.CreateDataReader();
         }
 
@@ -70,17 +69,18 @@ namespace Argus.Data
 
         /// <summary>
         /// Returns a specified number of records as a string.  The strings fields are 'Guid' of System.String, 'Random Number' of
-        /// System.Int32 and 'Date' of System.DataTime.  The string will be tab delimited.
+        /// System.Int32 and 'Date' of System.DataTime.  The default delimiter is a tab but can be overriden.
         /// </summary>
         /// <param name="numberOfRecords"></param>
-        public static string GetFlatFile(int numberOfRecords)
+        /// <param name="delimiter"></param>
+        public static string GetFlatFile(int numberOfRecords, char delimiter = '\t')
         {
             var rnd = new Random();
             var sb = new StringBuilder();
 
             for (int x = 1; x <= numberOfRecords; x++)
             {
-                sb.AppendFormat("{0}\t{1}\t{2}\r\n", Guid.NewGuid().ToString(), rnd.Next(10000), DateTime.Now);
+                sb.AppendFormat("{1}{0}{2}{0}{3}\r\n", delimiter, Guid.NewGuid().ToString(), rnd.Next(10000), DateTime.Now);
             }
 
             return sb.ToString();

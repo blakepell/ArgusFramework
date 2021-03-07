@@ -65,6 +65,7 @@ namespace Argus.Extensions
             return prop?.GetValue(@this, null);
         }
 
+#if NETSTANDARD2_0
         /// <summary>
         /// Returns a set of items off of the end of the IEnumerable.
         /// </summary>
@@ -75,6 +76,7 @@ namespace Argus.Extensions
         {
             return source.Skip(System.Math.Max(0, source.Count() - itemCount));
         }
+#endif
 
         /// <summary>
         /// Executes an action for each item in the IEnumerable.

@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2020-11-21
+ * @last updated      : 2021-03-06
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -17,6 +17,7 @@ using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using Argus.Cryptography;
+using Cysharp.Text;
 
 namespace Argus.Extensions
 {
@@ -95,7 +96,7 @@ namespace Argus.Extensions
         /// <param name="startIndex"></param>
         public static string SafeSubstring(this string str, int startIndex)
         {
-            if (startIndex > str.Length)
+            if (string.IsNullOrEmpty(str) || startIndex > str.Length)
             {
                 return "";
             }
@@ -111,7 +112,7 @@ namespace Argus.Extensions
         /// <param name="length"></param>
         public static string SafeSubstring(this string str, int startIndex, int length)
         {
-            if (startIndex > str.Length)
+            if (string.IsNullOrEmpty(str) || startIndex > str.Length || length <= 0)
             {
                 return "";
             }
@@ -209,7 +210,7 @@ namespace Argus.Extensions
             return !string.IsNullOrEmpty(str) && str.StartsWith(c);
         }
 
-        #if NETSTANDARD2_1 || NET5_0
+#if NETSTANDARD2_1 || NET5_0
         /// <summary>
         ///     Returns true if the specified <see cref="char"/> is found at the end of the string.
         /// </summary>
@@ -217,9 +218,14 @@ namespace Argus.Extensions
         /// <param name="c"></param>
         public static bool SafeEndsWith(this string str, char c)
         {
+            if (string.IsNullOrEmpty(str))
+            {
+                return false;
+            }
+
             return str.Length > 0 && str[^1].Equals(c);
         }
-        #else
+#else
         /// <summary>
         /// Returns true if the specified <see cref="char" /> is found at the end of the string.
         /// </summary>
@@ -227,6 +233,11 @@ namespace Argus.Extensions
         /// <param name="c"></param>
         public static bool SafeEndsWith(this string str, char c)
         {
+            if (string.IsNullOrEmpty(str))
+            {
+                return false;
+            }
+
             return str.Length > 0 && str[str.Length - 1].Equals(c);
         }
         #endif
@@ -244,13 +255,13 @@ namespace Argus.Extensions
 
         /// <summary>
         /// Deletes the specified number of characters from the left hand side of the string.  If the number to delete is longer than
-        /// the length of the string then a blank string will be returned.
+        /// the length of the string then a blank string will be returned.  If the string provided is null a blank string will be returned.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
         public static string DeleteLeft(this string str, int length)
         {
-            if (length > str.Length)
+            if (string.IsNullOrEmpty(str) || length > str.Length)
             {
                 return "";
             }
@@ -260,13 +271,13 @@ namespace Argus.Extensions
 
         /// <summary>
         /// Deletes the specified number of characters from the right hand side of the string.  If the number to delete is longer than
-        /// the length of the string then a blank string will be returned.
+        /// the length of the string then a blank string will be returned.  If the string provided is null a blank string will be returned.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
         public static string DeleteRight(this string str, int length)
         {
-            if (length > str.Length)
+            if (string.IsNullOrEmpty(str) || length > str.Length)
             {
                 return "";
             }
@@ -275,8 +286,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Removes all line endings from a string using a char array for performance vs.
-        /// a string replace.
+        /// Removes all line endings from a string.
         /// </summary>
         /// <param name="s"></param>
         public static string RemoveLineEndings(this string s)
@@ -315,76 +325,18 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Trims whitespace from the beginning and ending of a string (coupling both Trim and replacing tabs)
-        /// </summary>
-        /// <param name="buf"></param>
-        /// <param name="includeLineTerminators">Whether or not to trim off the line terminators also.</param>
-        public static string TrimWhitespace(this string buf, bool includeLineTerminators)
-        {
-            if (includeLineTerminators)
-            {
-                char[] chars = {' ', '\t', '\r', '\n'};
-
-                return buf.Trim(chars);
-            }
-            else
-            {
-                char[] chars = {' ', '\t'};
-
-                return buf.Trim(chars);
-            }
-        }
-
-        /// <summary>
-        /// Trims whitespace from the beginning of a string (coupling both Trim and replacing tabs)
-        /// </summary>
-        /// <param name="buf"></param>
-        /// <param name="includeLineTerminators">Whether or not to trim off the line terminators also.</param>
-        public static string TrimWhitespaceStart(this string buf, bool includeLineTerminators)
-        {
-            if (includeLineTerminators)
-            {
-                char[] chars = {' ', '\t', '\r', '\n'};
-
-                return buf.TrimStart(chars);
-            }
-            else
-            {
-                char[] chars = {' ', '\t'};
-
-                return buf.TrimStart(chars);
-            }
-        }
-
-        /// <summary>
-        /// Trims whitespace from the beginning of a string (coupling both Trim and replacing tabs)
-        /// </summary>
-        /// <param name="buf"></param>
-        /// <param name="includeLineTerminators">Whether or not to trim off the line terminators also.</param>
-        public static string TrimWhitespaceEnd(this string buf, bool includeLineTerminators)
-        {
-            if (includeLineTerminators)
-            {
-                char[] chars = {' ', '\t', '\r', '\n'};
-
-                return buf.TrimEnd(chars);
-            }
-            else
-            {
-                char[] chars = {' ', '\t'};
-
-                return buf.TrimEnd(chars);
-            }
-        }
-
-        /// <summary>
         /// Removes all trailing occurrences of the specified string.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="trimStr"></param>
         public static string TrimEnd(this string str, string trimStr)
         {
-            return str.TrimEnd(trimStr.ToCharArray());
+            if (str.EndsWith(trimStr))
+            {
+                return str.DeleteRight(trimStr.Length);
+            }
+
+            return str;
         }
 
         /// <summary>
@@ -394,7 +346,12 @@ namespace Argus.Extensions
         /// <param name="trimStr"></param>
         public static string TrimStart(this string str, string trimStr)
         {
-            return str.TrimStart(trimStr.ToCharArray());
+            if (str.StartsWith(trimStr))
+            {
+                return str.DeleteLeft(trimStr.Length);
+            }
+
+            return str;
         }
 
         /// <summary>
@@ -404,48 +361,39 @@ namespace Argus.Extensions
         /// <param name="trimStr"></param>
         public static string Trim(this string str, string trimStr)
         {
-            return str.Trim(trimStr.ToCharArray());
+            if (str.StartsWith(trimStr))
+            {
+                str = str.DeleteLeft(trimStr.Length);
+            }
+
+            if (str.EndsWith(trimStr))
+            {
+                str = str.DeleteRight(trimStr.Length);
+            }
+
+            return str;
         }
 
         /// <summary>
         /// Trims whitespace from the beginning and ending of each line in a string if it contains multiple lines.
         /// </summary>
         /// <param name="buf"></param>
-        /// <param name="includeLineTerminators">
-        /// Whether or not to trim off the line terminators also.  If true, this will
-        /// remove the line terminator from the string.
-        /// </param>
-        public static string TrimEachLineWhitespace(this string buf, bool includeLineTerminators)
+        public static string TrimEachLineWhitespace(this string buf)
         {
-            char[] charsWithLineTerminators = {' ', '\t', '\r', '\n'};
-            char[] charsWithoutLineTerminators = {' ', '\t'};
             var sb = new StringBuilder();
 
-            var lines = buf.Split('\n');
-
-            foreach (string line in lines)
+            foreach (string line in buf.Split('\n'))
             {
-                if (includeLineTerminators)
-                {
-                    sb.Append(line.Trim(charsWithLineTerminators));
-                }
-                else
-                {
-                    sb.AppendLine(line.Trim(charsWithoutLineTerminators));
-                }
+                sb.AppendLine(line.Trim());
+            }
+
+            // If the original string didn't have a newline at the end, remove the final \r\n
+            if (!buf.EndsWith(Environment.NewLine))
+            {
+                sb.TrimEnd('\r', '\n');
             }
 
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// Trims whitespace from the beginning and ending of each line in a string if it contains multiple lines.  This overload will not
-        /// remove line terminators.
-        /// </summary>
-        /// <param name="buf"></param>
-        public static string TrimEachLineWhitespace(this string buf)
-        {
-            return TrimEachLineWhitespace(buf, false);
         }
 
         /// <summary>
@@ -1618,6 +1566,7 @@ namespace Argus.Extensions
             return strArray.Length >= wordNumber ? strArray[wordNumber - 1] : string.Empty;
         }
 
+#if NETSTANDARD2_0
         /// <summary>
         /// Removes the word from the string at the given index
         /// </summary>
@@ -1649,6 +1598,95 @@ namespace Argus.Extensions
 
             return newString;
         }
+#endif
+
+#if !NETSTANDARD2_0
+        /// <summary>
+        /// Removes the word from the string at the given index
+        /// </summary>
+        public static string RemoveWord(string value, int wordNumber)
+        {
+            var span = value.AsSpan();
+
+            int count = 0;
+
+            using (var sb = ZString.CreateStringBuilder())
+            {
+                while (span.Length > 0)
+                {
+                    var word = span.SplitNext(' ');
+
+                    // Skip empty words, this kind of mimics StringSplitOptions.RemoveEmptyEntries.
+                    if (word.Length == 0)
+                    {
+                        continue;
+                    }
+
+                    if (count == wordNumber - 1)
+                    {
+                        count++;
+                        continue;
+                    }
+
+                    sb.Append(word);
+                    sb.Append(' ');
+                    count++;
+                }
+
+                // Strip off the last space
+                if (sb.Length > 0)
+                {
+                    return sb.AsSpan().Left(sb.Length - 1).ToString();
+                }
+
+                // Length was zero, return an empty string.
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Removes the word from the string at the given index
+        /// </summary>
+        public static ReadOnlySpan<char> RemoveWordNewAsSpan(string value, int wordNumber)
+        {
+            var span = value.AsSpan();
+
+            int count = 0;
+
+            using (var sb = ZString.CreateStringBuilder())
+            {
+                while (span.Length > 0)
+                {
+                    var word = span.SplitNext(' ');
+
+                    // Skip empty words, this kind of mimics StringSplitOptions.RemoveEmptyEntries.
+                    if (word.Length == 0)
+                    {
+                        continue;
+                    }
+
+                    if (count == wordNumber - 1)
+                    {
+                        count++;
+                        continue;
+                    }
+
+                    sb.Append(word);
+                    sb.Append(' ');
+                    count++;
+                }
+
+                // Strip off the last space
+                if (sb.Length > 0)
+                {
+                    return sb.AsSpan().Left(sb.Length - 1);
+                }
+
+                // Length was zero, return an empty span.
+                return ReadOnlySpan<char>.Empty;
+            }
+        }
+        #endif
 
         /// <summary>
         /// Returns the word count in the current string accounting for whitespace.
@@ -1714,7 +1752,7 @@ namespace Argus.Extensions
             return value.Length > 0 && value[0].Equals(c);
         }
 
-        #if NETSTANDARD2_0
+#if NETSTANDARD2_0
         /// <summary>
         /// If the current string ends with a specific <see cref="char" />.  0 length strings return false.
         /// </summary>
@@ -1724,7 +1762,7 @@ namespace Argus.Extensions
         {
             return value.Length > 0 && value[value.Length - 1].Equals(c);
         }
-        #else
+#else
         /// <summary>
         ///     If the current string ends with a specific <see cref="char"/>.  0 length strings return false.
         /// </summary>
@@ -1734,8 +1772,8 @@ namespace Argus.Extensions
         {
             return value.Length > 0 && value[^1].Equals(c);
         }
-        #endif
-        #if NETSTANDARD2_0
+#endif
+#if NETSTANDARD2_0
         /// <summary>
         /// Returns a string between the first occurrence of two markers with assumption that the end marker
         /// falls after the begin marker.
@@ -1756,8 +1794,8 @@ namespace Argus.Extensions
 
             return str.Substring(pos1, pos2);
         }
-        #endif
-        #if NETSTANDARD2_1 || NET5_0
+#endif
+#if NETSTANDARD2_1 || NET5_0
         /// <summary>
         /// Returns a string between the first occurrence of two markers.
         /// </summary>
@@ -1789,7 +1827,7 @@ namespace Argus.Extensions
 
             return span.Slice(pos1, pos2).ToString();
         }
-        #endif
+#endif
 
         /// <summary>
         /// Encrypts a string with AES encryption.

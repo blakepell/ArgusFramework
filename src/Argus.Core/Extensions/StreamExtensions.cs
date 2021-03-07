@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2019-11-16
+ * @last updated      : 2021-02-12
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -49,16 +49,15 @@ namespace Argus.Extensions
         /// Converts a Stream into a Base64 encoded string.
         /// </summary>
         /// <param name="s"></param>
-        /// <remarks>
-        /// Stream does not have a ToArray, we will leverage the MemoryStream
-        /// method to easily return Base64 for the Stream.
-        /// </remarks>
         public static string ToBase64(this Stream s)
         {
-            var ms = new MemoryStream();
+            // The position of the Stream needs to be returned to 0 if it's not
+            // already there.
+            s.Position = 0;
+            using var ms = new MemoryStream();
             s.CopyTo(ms);
 
-            return ToBase64(ms);
+            return Convert.ToBase64String(ms.ToArray());
         }
     }
 }
