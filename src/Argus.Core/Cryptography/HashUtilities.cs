@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2018-06-12
- * @last updated      : 2020-04-28
+ * @last updated      : 2021-03-07
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -10,6 +10,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Cysharp.Text;
 
 namespace Argus.Cryptography
 {
@@ -26,14 +27,15 @@ namespace Argus.Cryptography
         /// <param name="enc"></param>
         public static string CreateHash(string str, HashAlgorithm crypt, Encoding enc)
         {
-            var hash = new StringBuilder();
-
-            foreach (byte theByte in crypt.ComputeHash(enc.GetBytes(str)))
+            using (var sb = ZString.CreateStringBuilder())
             {
-                hash.Append(theByte.ToString("x2"));
-            }
+                foreach (byte theByte in crypt.ComputeHash(enc.GetBytes(str)))
+                {
+                    sb.Append(theByte.ToString("x2"));
+                }
 
-            return hash.ToString();
+                return sb.ToString();
+            }
         }
 
         /// <summary>
@@ -43,14 +45,15 @@ namespace Argus.Cryptography
         /// <param name="crypt"></param>
         public static string CreateHash(byte[] b, HashAlgorithm crypt)
         {
-            var hash = new StringBuilder();
-
-            foreach (byte theByte in crypt.ComputeHash(b))
+            using (var sb = ZString.CreateStringBuilder())
             {
-                hash.Append(theByte.ToString("x2"));
-            }
+                foreach (byte theByte in crypt.ComputeHash(b))
+                {
+                    sb.Append(theByte.ToString("x2"));
+                }
 
-            return hash.ToString();
+                return sb.ToString();
+            }
         }
 
         /// <summary>
@@ -60,14 +63,15 @@ namespace Argus.Cryptography
         /// <param name="crypt"></param>
         public static string CreateHash(Stream s, HashAlgorithm crypt)
         {
-            var hash = new StringBuilder();
-
-            foreach (byte theByte in crypt.ComputeHash(s))
+            using (var sb = ZString.CreateStringBuilder())
             {
-                hash.Append(theByte.ToString("x2"));
-            }
+                foreach (byte theByte in crypt.ComputeHash(s))
+                {
+                    sb.Append(theByte.ToString("x2"));
+                }
 
-            return hash.ToString();
+                return sb.ToString();
+            }
         }
 
         /// <summary>

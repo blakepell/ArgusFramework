@@ -240,7 +240,7 @@ namespace Argus.Extensions
 
             return str.Length > 0 && str[str.Length - 1].Equals(c);
         }
-        #endif
+#endif
 
         /// <summary>
         /// Simulates the same functionality provide by the traditional 1 based index Mid function.
@@ -1230,13 +1230,13 @@ namespace Argus.Extensions
         /// <returns>A new string with characters corresponding to invalid XML ASCII codes removed.</returns>
         public static string ToValidXmlAsciiCharacters(this string input)
         {
-            var validCodes = new[] {0, 9, 10, 13, 32};
+            var validCodes = new[] { 0, 9, 10, 13, 32 };
 
             for (int i = 0; i <= 32; i++)
             {
                 if (!validCodes.Contains(i))
                 {
-                    input = input.Replace(Convert.ToString((char) i), "");
+                    input = input.Replace(Convert.ToString((char)i), "");
                 }
             }
 
@@ -1529,6 +1529,7 @@ namespace Argus.Extensions
             return value.Split(' ').ToList();
         }
 
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the first word in the string
         /// </summary>
@@ -1565,6 +1566,85 @@ namespace Argus.Extensions
 
             return strArray.Length >= wordNumber ? strArray[wordNumber - 1] : string.Empty;
         }
+#endif
+
+#if !NETSTANDARD2_0
+        /// <summary>
+        /// Gets the first word in the string
+        /// </summary>
+        /// <param name="value"></param>
+        public static string FirstWord(this string value)
+        {
+            return value.ParseWord(1, ' ');
+        }
+
+        /// <summary>
+        /// Gets the second word in the string
+        /// </summary>
+        /// <param name="value"></param>
+        public static string SecondWord(this string value)
+        {
+            return value.ParseWord(2, ' ');
+        }
+
+        /// <summary>
+        /// Gets the third word in the string
+        /// </summary>
+        /// <param name="value"></param>
+        public static string ThirdWord(this string value)
+        {
+            return value.ParseWord(3, ' ');
+        }
+
+        /// <summary>
+        /// Parses the given word from the string
+        /// </summary>
+        public static string ParseWord(this string value, int wordNumber, string delimiter)
+        {
+            var strArray = value.Split(delimiter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+            return strArray.Length >= wordNumber ? strArray[wordNumber - 1] : string.Empty;
+        }
+
+        /// <summary>
+        /// Parses the given word from the string
+        /// </summary>
+        public static string ParseWord(this string value, int wordNumber, char delimiter = ' ')
+        {
+            return ParseWordAsSpan(value, wordNumber, delimiter).ToString();
+        }
+
+        /// <summary>
+        /// Parses the given word from the string
+        /// </summary>
+        public static ReadOnlySpan<char> ParseWordAsSpan(this string value, int wordNumber, char delimiter = ' ')
+        {
+            var span = value.AsSpan();
+            int count = 1;
+
+            while (span.Length > 0)
+            {
+                var word = span.SplitNext(delimiter);
+
+                // Skip empty words, this kind of mimics StringSplitOptions.RemoveEmptyEntries.
+                if (word.Length == 0)
+                {
+                    continue;
+                }
+
+                if (count == wordNumber)
+                {
+                    return word;
+                }
+
+                count++;
+            }
+
+            // Length was zero, return an empty string.
+            return ReadOnlySpan<char>.Empty;
+        }
+
+#endif
 
 #if NETSTANDARD2_0
         /// <summary>
@@ -1575,11 +1655,11 @@ namespace Argus.Extensions
             var strArray = value.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
             string newString = string.Empty;
-            int count = 0;
+            int count = 1;
 
             foreach (string str in strArray)
             {
-                if (count == wordNumber - 1)
+                if (count == wordNumber)
                 {
                     count++;
 
@@ -1604,11 +1684,11 @@ namespace Argus.Extensions
         /// <summary>
         /// Removes the word from the string at the given index
         /// </summary>
-        public static string RemoveWord(string value, int wordNumber)
+        public static string RemoveWord(this string value, int wordNumber)
         {
             var span = value.AsSpan();
 
-            int count = 0;
+            int count = 1;
 
             using (var sb = ZString.CreateStringBuilder())
             {
@@ -1622,7 +1702,7 @@ namespace Argus.Extensions
                         continue;
                     }
 
-                    if (count == wordNumber - 1)
+                    if (count == wordNumber)
                     {
                         count++;
                         continue;
@@ -1647,11 +1727,11 @@ namespace Argus.Extensions
         /// <summary>
         /// Removes the word from the string at the given index
         /// </summary>
-        public static ReadOnlySpan<char> RemoveWordNewAsSpan(string value, int wordNumber)
+        public static ReadOnlySpan<char> RemoveWordNewAsSpan(this string value, int wordNumber)
         {
             var span = value.AsSpan();
 
-            int count = 0;
+            int count = 1;
 
             using (var sb = ZString.CreateStringBuilder())
             {
@@ -1665,7 +1745,7 @@ namespace Argus.Extensions
                         continue;
                     }
 
-                    if (count == wordNumber - 1)
+                    if (count == wordNumber)
                     {
                         count++;
                         continue;
@@ -1679,14 +1759,16 @@ namespace Argus.Extensions
                 // Strip off the last space
                 if (sb.Length > 0)
                 {
-                    return sb.AsSpan().Left(sb.Length - 1);
+                    Span<char> spanChar = new char[sb.Length - 1];
+                    sb.AsSpan().Left(sb.Length - 1).TryCopyTo(spanChar);
+                    return spanChar;
                 }
 
                 // Length was zero, return an empty span.
                 return ReadOnlySpan<char>.Empty;
             }
         }
-        #endif
+#endif
 
         /// <summary>
         /// Returns the word count in the current string accounting for whitespace.

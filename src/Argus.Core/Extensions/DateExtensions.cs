@@ -2,12 +2,13 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2019-07-17
+ * @last updated      : 2021-03-07
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
 
 using System;
+using Cysharp.Text;
 
 namespace Argus.Extensions
 {
@@ -76,7 +77,7 @@ namespace Argus.Extensions
         /// <param name="d"></param>
         public static string ToShortDatePaddedString(this DateTime d)
         {
-            return $"{MonthTwoCharacters(d)}/{DayTwoCharacters(d)}/{d.Year}";
+            return $"{MonthTwoCharacters(d)}/{DayTwoCharacters(d)}/{d.Year.ToString()}";
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace Argus.Extensions
                 case 12:
                     return "December";
                 default:
-                    return $"Invalid Month - {d.Month}";
+                    return $"Invalid Month - {d.Month.ToString()}";
             }
         }
 
@@ -177,30 +178,37 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="d"></param>
         /// <param name="includeTime"></param>
-        public static string ToFileNameFriendlyFormat(this DateTime d, bool includeTime)
+        public static string ToFileNameFriendlyFormat(this DateTime d, bool includeTime = false)
         {
-            // Adding the leading 0 to the day or month
-            string month = d.Month.ToString();
-            string day = d.Day.ToString();
-
-            if (d.Month < 10)
+            using (var sb = ZString.CreateStringBuilder())
             {
-                month = "0" + month;
+                sb.Append(d.Year);
+                sb.Append('.');
+
+                if (d.Month < 10)
+                {
+                    sb.Append('0');
+                }
+
+                sb.Append(d.Month);
+                sb.Append('.');
+
+                if (d.Day < 10)
+                {
+                    sb.Append('0');
+                }
+
+                sb.Append(d.Day);
+
+                if (!includeTime)
+                {
+                    return sb.ToString();
+                }
+
+                sb.AppendFormat("-{0}.{1}.{2}.{3}", d.Hour, d.Minute, d.Second, d.Millisecond);
+
+                return sb.ToString();
             }
-
-            if (d.Day < 10)
-            {
-                day = "0" + day;
-            }
-
-            string buf = $"{d.Year.ToString().Trim()}-{month}-{day}";
-
-            if (includeTime)
-            {
-                buf += $"-{d.Hour.ToString()}.{d.Minute.ToString()}.{d.Second.ToString()}.{d.Millisecond.ToString()}";
-            }
-
-            return buf;
         }
 
         /// <summary>
@@ -246,7 +254,7 @@ namespace Argus.Extensions
         /// <remarks>The base class library does not include this commonly used method off of date, so it is being provided here as an extension.</remarks>
         public static string ToShortDateString(this DateTime d)
         {
-            return $"{d.Month}/{d.Day}/{d.Year}";
+            return $"{d.Month.ToString()}/{d.Day.ToString()}/{d.Year.ToString()}";
         }
 
         /// <summary>
