@@ -183,7 +183,7 @@ namespace Argus.Extensions
             using (var sb = ZString.CreateStringBuilder())
             {
                 sb.Append(d.Year);
-                sb.Append('.');
+                sb.Append('-');
 
                 if (d.Month < 10)
                 {
@@ -191,7 +191,7 @@ namespace Argus.Extensions
                 }
 
                 sb.Append(d.Month);
-                sb.Append('.');
+                sb.Append('-');
 
                 if (d.Day < 10)
                 {
