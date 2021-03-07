@@ -2,12 +2,11 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2021-02-14
- * @last updated      : 2021-02-14
+ * @last updated      : 2021-03-07
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
 
-using System.Text;
 using Argus.Extensions;
 using Xunit;
 
