@@ -25,7 +25,7 @@ namespace Argus.UnitTests
         [Fact]
         public void Right()
         {
-            string buf = "This is a test".Left(4);
+            string buf = "This is a test".Right(4);
             Assert.Equal("test", buf);
         }
 
