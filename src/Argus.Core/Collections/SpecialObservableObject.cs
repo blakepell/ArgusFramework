@@ -41,59 +41,16 @@ namespace Argus.Collections
         private List<T> Snapshot { get; set; }
 
         /// <summary>
-        /// This will allow us to get an Enumerator that is a snapshot if the collection has changed
-        /// but use the cached copy if it has not.  This is useful when programs need to iterate over
-        /// the records but want to avoid enumeration changed exceptions.
-        /// </summary>
-        private void CreateSnapshot()
-        {
-            // If someone is currently enumerating the snapshot we're not going to update it or alter
-            // the changed flag.  They get the slightly out of date Snapshot so their instance in time
-            // iteration can continue.
-            if (_enumeratingSnapshot)
-            {
-                return;
-            }
-
-            if (this.Snapshot == null || _changed)
-            {
-                this.Snapshot = this.ToList();
-                _changed = false;
-            }
-        }
-
-        /// <summary>
-        /// Enumerates over a Snapshot.  The CreateSnapshot must have been called prior.
-        /// </summary>
-        public IEnumerator<T> EnumerateSnapshot()
-        {
-            // If the Snapshot hasn't been created, has changed AND there isn't a currently
-            // enumeration happening then update the cached snapshot.  All enumerations on
-            // the snapshot are forced through here so we know when we can and can't update
-            // the underlying cached list.
-            this.CreateSnapshot();
-
-            _enumeratingSnapshot = true;
-
-            try
-            {
-                foreach (T item in this.Snapshot)
-                {
-                    yield return item;
-                }
-            }
-            finally
-            {
-                _enumeratingSnapshot = false;
-            }
-        }
-
-        /// <summary>
         /// Delegate for when a list item changes.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public delegate void ListItemChangedEventHandler(object sender, PropertyChangedEventArgs e);
+
+        /// <summary>
+        /// Event that is raised when a list item changes, including properties.
+        /// </summary>
+        public event ListItemChangedEventHandler ListItemChanged;
 
         /// <summary>
         /// Constructor
@@ -161,6 +118,54 @@ namespace Argus.Collections
         }
 
         /// <summary>
+        /// This will allow us to get an Enumerator that is a snapshot if the collection has changed
+        /// but use the cached copy if it has not.  This is useful when programs need to iterate over
+        /// the records but want to avoid enumeration changed exceptions.
+        /// </summary>
+        private void CreateSnapshot()
+        {
+            // If someone is currently enumerating the snapshot we're not going to update it or alter
+            // the changed flag.  They get the slightly out of date Snapshot so their instance in time
+            // iteration can continue.
+            if (_enumeratingSnapshot)
+            {
+                return;
+            }
+
+            if (this.Snapshot == null || _changed)
+            {
+                this.Snapshot = this.ToList();
+                _changed = false;
+            }
+        }
+
+        /// <summary>
+        /// Enumerates over a Snapshot.  The CreateSnapshot must have been called prior.
+        /// </summary>
+        public IEnumerator<T> EnumerateSnapshot()
+        {
+            // If the Snapshot hasn't been created, has changed AND there isn't a currently
+            // enumeration happening then update the cached snapshot.  All enumerations on
+            // the snapshot are forced through here so we know when we can and can't update
+            // the underlying cached list.
+            this.CreateSnapshot();
+
+            _enumeratingSnapshot = true;
+
+            try
+            {
+                foreach (T item in this.Snapshot)
+                {
+                    yield return item;
+                }
+            }
+            finally
+            {
+                _enumeratingSnapshot = false;
+            }
+        }
+
+        /// <summary>
         /// Implements a comparable version of the Linq Find which searches via index and not IEnumerable and can
         /// offer performance improvements over FirstOrDefault when searching in memory objects.
         /// </summary>
@@ -183,14 +188,12 @@ namespace Argus.Collections
             return default;
         }
 
+        /// <summary>
+        /// Raised when a property on one of the items in the collection changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListItemPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            this.OnListItemChanged(this, e);
-        }
-
-        public event ListItemChangedEventHandler ListItemChanged;
-
-        private void OnListItemChanged(object sender, PropertyChangedEventArgs e)
         {
             this.ListItemChanged?.Invoke(this, e);
         }
