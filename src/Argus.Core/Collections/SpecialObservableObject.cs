@@ -41,6 +41,12 @@ namespace Argus.Collections
         private List<T> Snapshot { get; set; }
 
         /// <summary>
+        /// Whether or not the current Snapshot is outdated compared to the <see cref="Snapshot"/>
+        /// cached copy.
+        /// </summary>
+        public bool SnapshotOutdated => _changed;
+
+        /// <summary>
         /// Delegate for when a list item changes.
         /// </summary>
         /// <param name="sender"></param>
