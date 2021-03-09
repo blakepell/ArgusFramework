@@ -15,7 +15,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 
-namespace Argus.ComponentModel
+namespace Argus.Collections
 {
     /// <summary>
     /// A collection which is observable including to the property level.  The collection offers
