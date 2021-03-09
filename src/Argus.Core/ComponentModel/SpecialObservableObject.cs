@@ -2,25 +2,92 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2019-11-15
- * @last updated      : 2021-01-29
+ * @last updated      : 2021-03-09
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Argus.ComponentModel
 {
     /// <summary>
-    /// A collection which is observable.
+    /// A collection which is observable including to the property level.  The collection offers
+    /// an <see cref="EnumerateSnapshot"/> function to allow for iteration over a cached static
+    /// list that won't be updated while any enumeration is outstanding on it.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class SpecialObservableCollection<T> : ObservableCollection<T>, IDisposable
     {
+        /// <summary>
+        /// Whether this collection has had records added, deleted or moved.
+        /// </summary>
+        private bool _changed = false;
+
+        /// <summary>
+        /// Indicates whether the Snapshot is currently being enumerated.
+        /// </summary>
+        private bool _enumeratingSnapshot = false;
+
+        /// <summary>
+        /// Internal snapshot that can be enumerated over.
+        /// </summary>
+        private List<T> Snapshot { get; set; }
+
+        /// <summary>
+        /// This will allow us to get an Enumerator that is a snapshot if the collection has changed
+        /// but use the cached copy if it has not.  This is useful when programs need to iterate over
+        /// the records but want to avoid enumeration changed exceptions.
+        /// </summary>
+        private void CreateSnapshot()
+        {
+            // If someone is currently enumerating the snapshot we're not going to update it or alter
+            // the changed flag.  They get the slightly out of date Snapshot so their instance in time
+            // iteration can continue.
+            if (_enumeratingSnapshot)
+            {
+                return;
+            }
+
+            if (this.Snapshot == null || _changed)
+            {
+                this.Snapshot = this.ToList();
+                _changed = false;
+            }
+        }
+
+        /// <summary>
+        /// Enumerates over a Snapshot.  The CreateSnapshot must have been called prior.
+        /// </summary>
+        public IEnumerator<T> EnumerateSnapshot()
+        {
+            // If the Snapshot hasn't been created, has changed AND there isn't a currently
+            // enumeration happening then update the cached snapshot.  All enumerations on
+            // the snapshot are forced through here so we know when we can and can't update
+            // the underlying cached list.
+            this.CreateSnapshot();
+
+            _enumeratingSnapshot = true;
+
+            try
+            {
+                foreach (T item in this.Snapshot)
+                {
+                    yield return item;
+                }
+            }
+            finally
+            {
+                _enumeratingSnapshot = false;
+            }
+        }
+
         /// <summary>
         /// Delegate for when a list item changes.
         /// </summary>
@@ -43,6 +110,19 @@ namespace Argus.ComponentModel
         /// <param name="e"></param>
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Remove:
+                case NotifyCollectionChangedAction.Reset:
+                    // Set the changed so the next time the EnumerateSnapshot is called it knows
+                    // if CreateSnapshot needs to be refreshed (otherwise it will use the cached
+                    // copy).
+                    _changed = true;
+                    break;
+            }
+
             this.AddOrRemoveListToPropertyChanged(e.NewItems, true);
             this.AddOrRemoveListToPropertyChanged(e.OldItems, false);
         }
