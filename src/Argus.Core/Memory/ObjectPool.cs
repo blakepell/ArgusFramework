@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2020-02-27
- * @last updated      : 2021-02-03
+ * @last updated      : 2021-03-17
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -52,7 +52,10 @@ namespace Argus.Memory
         public int CounterReusedObjects { get; private set; } = 0;
 
         /// <summary>
-        /// Returns an object back into the pool.
+        /// Returns an object back into the pool.  If the item is not returned to the pool and
+        /// it implements <see cref="IDisposable"/> then Dispose() will be called.  If an exception
+        /// occurs in a <see cref="ReturnAction"/> the item is not returned to the pool and the item
+        /// is Disposed of if it implements <see cref="IDisposable"/> before the exception is rethrown.
         /// </summary>
         /// <param name="item">The item to release back into the pool.</param>
         public void Return(T item)
@@ -68,10 +71,27 @@ namespace Argus.Memory
             // Only return the item the pool if the pool has spaces available.
             if (_counter < this.Max)
             {
-                this.ReturnAction?.Invoke(item);
+                try
+                {
+                    // If this can't run, dispose of the item and then re-throw the exception
+                    // so the caller can handle it as they see fit (and they know it occurred).
+                    this.ReturnAction?.Invoke(item);
+                }
+                catch
+                {
+                    DisposeItem(item);
+                    throw;
+                }
+
                 _items.Add(item);
                 _counter++;
+
+                return;
             }
+
+            // If item gets here it was not returned to the pool, as a result, if it needs
+            // to be disposed of then we're going to do that before it goes into the ether.
+            this.DisposeItem(item);
         }
 
         /// <summary>
@@ -88,7 +108,12 @@ namespace Argus.Memory
             }
 
             this.CounterNewObjects++;
-            return new T();
+            var newItem = new T();
+
+            // Invoke the init action if it needs to be initialized.
+            this.InitAction?.Invoke(newItem);
+
+            return newItem;
         }
 
         /// <summary>
@@ -105,6 +130,21 @@ namespace Argus.Memory
             // inside of the loop.
             while (_items.TryTake(out var item))
             {
+                this.DisposeItem(item);
+            }
+        }
+
+        /// <summary>
+        /// Disposes of the item <see cref="T"/> if it is <see cref="IDisposable"/>.
+        /// </summary>
+        /// <param name="item"></param>
+        private void DisposeItem(T item)
+        {
+            // If item gets here it was not returned to the pool, as a result, if it needs
+            // to be disposed of then we're going to do that before it goes into the ether.
+            if (item is IDisposable d)
+            {
+                d?.Dispose();
             }
         }
 
@@ -121,5 +161,10 @@ namespace Argus.Memory
         /// when an item is returned to the pool.
         /// </summary>
         public Action<T> ReturnAction { get; set; }
+
+        /// <summary>
+        /// An action that will be invoked as the first step after a new <see cref="T"/> is initialized.
+        /// </summary>
+        public Action<T> InitAction { get; set; }
     }
 }
