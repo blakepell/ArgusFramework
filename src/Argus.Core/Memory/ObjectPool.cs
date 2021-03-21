@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2020-02-27
- * @last updated      : 2021-03-17
+ * @last updated      : 2021-03-21
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -131,6 +131,23 @@ namespace Argus.Memory
             while (_items.TryTake(out var item))
             {
                 this.DisposeItem(item);
+            }
+        }
+
+        /// <summary>
+        /// Invokes an action on all items in the underlying <see cref="ConcurrentBag{T}"/>.
+        /// </summary>
+        /// <param name="action"></param>
+        public void InvokeAll(Action<T> action)
+        {
+            if (action == null)
+            {
+                return;
+            }
+
+            foreach (var item in _items)
+            {
+                action.Invoke(item);
             }
         }
 
