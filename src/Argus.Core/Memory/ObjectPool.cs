@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2020-02-27
- * @last updated      : 2021-03-21
+ * @last updated      : 2021-04-04
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -28,11 +28,6 @@ namespace Argus.Memory
         /// Holds the objects in the pool.
         /// </summary>
         private readonly ConcurrentBag<T> _items = new ConcurrentBag<T>();
-
-        /// <summary>
-        /// The current internal counter of how many objects are in the ConcurrentBag.
-        /// </summary>
-        private int _counter;
 
         /// <summary>
         /// The maximum number of objects we will hold in the Pool.  Anything over this number is created and
@@ -69,7 +64,7 @@ namespace Argus.Memory
             }
 
             // Only return the item the pool if the pool has spaces available.
-            if (_counter < this.Max)
+            if (_items.Count < this.Max)
             {
                 try
                 {
@@ -84,7 +79,6 @@ namespace Argus.Memory
                 }
 
                 _items.Add(item);
-                _counter++;
 
                 return;
             }
@@ -103,7 +97,6 @@ namespace Argus.Memory
             if (_items.TryTake(out var item))
             {
                 this.CounterReusedObjects++;
-                _counter--;
                 return item;
             }
 
@@ -170,7 +163,7 @@ namespace Argus.Memory
         /// </summary>
         public int Count()
         {
-            return _counter;
+            return _items.Count;
         }
 
         /// <summary>
