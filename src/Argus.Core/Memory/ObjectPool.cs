@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2020-02-27
- * @last updated      : 2021-04-04
+ * @last updated      : 2021-04-22
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using Argus.Math;
 
 namespace Argus.Memory
 {
@@ -21,6 +22,10 @@ namespace Argus.Memory
     /// If the <see cref="CounterNewObjects"/> counter is considerably higher than the <see cref="CounterReusedObjects"/> then it
     /// is possible that the pool <see cref="Max"/> is set too low.  In some cases the speed at which incoming requests might be
     /// occurring might outpace a small pool size.  Increasing the ceiling might allow a considerably better reuse rate.
+    ///
+    /// The pool by default creates objects on demand.  To initially load a set of objects for the pool the <see cref="Fill()" /> method
+    /// can be called.  The Fill method will honor the <see cref="InitAction"/> when creating the objects so that <see cref="Action"/>
+    /// should be set before calling <see cref="Fill()"/>.
     /// </remarks>
     public class ObjectPool<T> where T : new()
     {
@@ -164,6 +169,51 @@ namespace Argus.Memory
         public int Count()
         {
             return _items.Count;
+        }
+
+        /// <summary>
+        /// Fills the <see cref="ObjectPool{T}"/> to the number of items specified in the <see cref="Max"/>
+        /// property.  Fill ensures that the <see cref="InitAction"/> is called if one was set.
+        /// </summary>
+        public void Fill()
+        {
+            this.Fill(this.Max);
+        }
+
+        /// <summary>
+        /// Fills the <see cref="ObjectPool{T}"/> will the specified number of items up until
+        /// the value set in the <see cref="Max"/> property.  Fill ensures that the <see cref="InitAction"/>
+        /// is called if one was set.
+        /// </summary>
+        /// <param name="count">The number of items to fill.  The fill will cease processing if it
+        /// exceeds the value set in the <see cref="Max"/> property.
+        /// </param>
+        public void Fill(int count)
+        {
+            if (count <= 0)
+            {
+                return;
+            }
+
+            // Honor the maximum specified.  Use the Get() to have the item initialized
+            // correctly by calling InitAction if one was set.
+            int actualCount = MathUtilities.Clamp(1, count, this.Max);
+            var list = new T[actualCount];
+
+            // Save all of the items created or returned in an array that we will return
+            // in the end.  If this is used just after the object was created they will
+            // all be new items.  If for some reason it was called after the pool has been
+            // in use we would effectively just request the items and return them back.
+            for (int i = 0; i < actualCount; i++)
+            {
+                list[i] = this.Get();
+            }
+
+            // Return the items to the pool.
+            foreach (T item in list)
+            {
+                this.Return(item);
+            }
         }
 
         /// <summary>
