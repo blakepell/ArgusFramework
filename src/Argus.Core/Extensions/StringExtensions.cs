@@ -2,11 +2,13 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2021-03-06
+ * @last updated      : 2021-04-22
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
 
+using Argus.Cryptography;
+using Cysharp.Text;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,8 +18,6 @@ using System.Net;
 using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
-using Argus.Cryptography;
-using Cysharp.Text;
 
 namespace Argus.Extensions
 {
@@ -1191,7 +1191,7 @@ namespace Argus.Extensions
         /// <param name="str"></param>
         public static bool IsGuid(this string str)
         {
-            if (str != null && Guid.TryParse(str, out var testGuid))
+            if (str != null && Guid.TryParse(str, out _))
             {
                 return true;
             }
@@ -1208,7 +1208,7 @@ namespace Argus.Extensions
         {
             if (requireDashes)
             {
-                return str.Contains("-") & IsGuid(str);
+                return str.Contains('-') && IsGuid(str);
             }
 
             return IsGuid(str);
