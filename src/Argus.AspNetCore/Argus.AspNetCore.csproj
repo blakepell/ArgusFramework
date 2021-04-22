@@ -5,11 +5,11 @@
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <PackageId>Argus.AspNetCore</PackageId>
     <Title>Argus.AspNetCore</Title>
-    <Version>2020.3.31.1</Version>
+    <Version>2021.4.22.1</Version>
     <Authors>Blake Pell</Authors>
     <Company>http://www.blakepell.com</Company>
     <Product>Argus Framework - ASP.NET Core Library</Product>
-    <Copyright>2016-2020</Copyright>
+    <Copyright>2016-2021</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>Argus Framework - ASP.NET Core Library</Description>
     <PackageTags>aspnetcore</PackageTags>
