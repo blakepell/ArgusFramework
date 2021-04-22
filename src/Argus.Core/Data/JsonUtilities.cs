@@ -1,13 +1,14 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2015-01-03
- * @last updated      : 2019-11-17
+ * @last updated      : 2021-04-22
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
@@ -111,5 +112,77 @@ namespace Argus.Data
                                jObj.Children().Cast<JProperty>()
                                    .Select(jp => jp.Name + "=" + HttpUtility.UrlEncode(jp.Value.ToString())));
         }
+
+        /// <summary>
+        /// Flattens an untyped JSON object and returns its values in a dictionary.
+        ///
+        /// Object In:
+        /// 
+        /// ```
+        /// {
+        ///     id: 123,
+        ///     birth_date: '11/20/1975',
+        ///     name: {
+        ///         first: 'Joe',
+        ///         last: 'Schmoe'
+        ///     },
+        ///     other_val: false,
+        ///     foods: ['Tacos', 'Ice Cream']
+        /// }
+        /// ```
+        ///
+        /// Out:
+        ///
+        /// ```
+        /// id: 123
+        /// birth_date: '11/20/1975'
+        /// name.first: 'Joe'
+        /// name.last: 'Schmoe'
+        /// other_val: false
+        /// foods.0: 'Tacos'
+        /// foods.1: 'Ice Cream'
+        /// </summary>
+        /// <param name="json">JSON string</param>
+        public static Dictionary<string, object> DeserializeAndFlatten(string json)
+        {
+            var dict = new Dictionary<string, object>();
+            var token = JToken.Parse(json);
+            FillDictionaryFromJToken(dict, token, "");
+            return dict;
+        }
+
+        private static void FillDictionaryFromJToken(Dictionary<string, object> dict, JToken token, string prefix)
+        {
+            switch (token.Type)
+            {
+                case JTokenType.Object:
+                    foreach (var prop in token.Children<JProperty>())
+                    {
+                        FillDictionaryFromJToken(dict, prop.Value, Join(prefix, prop.Name));
+                    }
+
+                    break;
+
+                case JTokenType.Array:
+                    int index = 0;
+                    foreach (var value in token.Children())
+                    {
+                        FillDictionaryFromJToken(dict, value, Join(prefix, index.ToString()));
+                        index++;
+                    }
+
+                    break;
+
+                default:
+                    dict.Add(prefix, ((JValue)token).Value);
+                    break;
+            }
+        }
+
+        private static string Join(string prefix, string name)
+        {
+            return string.IsNullOrEmpty(prefix) ? name : $"{prefix}.{name}";
+        }
+
     }
 }
