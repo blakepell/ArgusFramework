@@ -133,7 +133,8 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        /// Invokes an action on all items in the underlying <see cref="ConcurrentBag{T}"/>.
+        /// Invokes an action on all items in the underlying <see cref="ConcurrentBag{T}"/>.  This executes
+        /// the action without removing the items from the underlying <see cref="ConcurrentBag{T}"/>.
         /// </summary>
         /// <param name="action"></param>
         public void InvokeAll(Action<T> action)
@@ -146,6 +147,38 @@ namespace Argus.Memory
             foreach (var item in _items)
             {
                 action.Invoke(item);
+            }
+        }
+
+        /// <summary>
+        /// Invokes an action on all items in the underlying <see cref="ConcurrentBag{T}"/> first
+        /// checking out each item so that it can't be accessed by other callers.  The items will
+        /// be returned in a batch after the action has been run against all of them.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <remarks>
+        /// There is a chance that a new item could be created via Get after all of the items are
+        /// removed and that item wouldn't be included in this call.  This function does not block
+        /// getting new items.
+        /// </remarks>
+        public void InvokeAllWithCheckout(Action<T> action)
+        {
+            int count = _items.Count;
+            var items = new T[_items.Count];
+
+            // Remove the items one by one and run the action for them.  Don't return
+            // them in this loop since we don't want to return one and then get that
+            // reference immediately back.
+            for (int i = 0; i < count; i++)
+            {
+                items[i] = this.Get();
+                action.Invoke(items[i]);
+            }
+
+            // Now that all of the actions have been run, return them.
+            foreach (var item in items)
+            {
+                this.Return(item);
             }
         }
 
