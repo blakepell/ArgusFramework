@@ -90,7 +90,7 @@ namespace Argus.Data
         {
             try
             {
-                if (string.IsNullOrEmpty(_queryValue) == true)
+                if (string.IsNullOrEmpty(_queryValue))
                 {
                     return "";
                 }
@@ -111,7 +111,7 @@ namespace Argus.Data
         {
             try
             {
-                if (string.IsNullOrEmpty(_queryValue) == true)
+                if (string.IsNullOrEmpty(_queryValue))
                 {
                     return "";
                 }

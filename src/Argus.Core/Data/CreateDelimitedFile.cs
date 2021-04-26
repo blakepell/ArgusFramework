@@ -16,11 +16,11 @@ namespace Argus.Data
 {
     /// <summary>
     ///     This file will take a DataReader that implements IDataReader and export it's contents to a file
-    ///     or to a return string.  I will dynamically find out what's in the recordset and use the field names
-    ///     listed in the recordset as the header row (which can be disabled).
+    ///     or to a return string.  I will dynamically find out what's in the record set and use the field names
+    ///     listed in the record set as the header row (which can be disabled).
     /// </summary>
     /// <remarks>
-    ///     StringBuilder is used for speed.  Also, once the DataReader has been iteriated through once
+    ///     StringBuilder is used for speed.  Also, once the DataReader has been iterated through once
     ///     it won't be able to return to the beginning (the DataReader is forward only).  That means if you call
     ///     toString then you'll need to refresh the DataReader before calling the ExportToFile.  If you only want
     ///     to call it once then consider caching the StringBuilder in a property.  Using a DataTable does not have
@@ -111,7 +111,6 @@ namespace Argus.Data
             var dr = dt.CreateDataReader();
             this.ExportToFile(dr, filePath);
             dr.Close();
-            dr = null;
         }
 
         /// <summary>

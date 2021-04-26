@@ -7,13 +7,12 @@
  * @license           : MIT
  */
 
+using Argus.Data;
 using System;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using Argus.Data;
 
 namespace Argus.Extensions
 {

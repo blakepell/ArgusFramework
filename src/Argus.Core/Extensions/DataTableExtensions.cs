@@ -199,7 +199,7 @@ namespace Argus.Extensions
         /// <param name="dt"></param>
         /// <param name="orderBy"></param>
         /// <remarks>
-        /// This extension will sort the records in the DataTable by the supplied orderBy string.  This is similiar
+        /// This extension will sort the records in the DataTable by the supplied orderBy string.  This is similar
         /// to SQL only the Order By clause is not needed.  This works by setting the Sort property on the
         /// DataTable.DefaultView object.  An exception will occur if the supplied string includes fields that
         /// do not exist in the DataTable's schema.

@@ -65,7 +65,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Whether or not the path poitns to a valid video file deteremined by the extension.
+        /// Whether or not the path points to a valid video file determined by the extension.
         /// </summary>
         /// <param name="filepath"></param>
         public static bool IsVideo(string filepath)
@@ -100,7 +100,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Whether or not the path poitns to a valid audio file deteremined by the extension.
+        /// Whether or not the path poitns to a valid audio file determined by the extension.
         /// </summary>
         /// <param name="filePath"></param>
         public static bool IsAudio(string filePath)

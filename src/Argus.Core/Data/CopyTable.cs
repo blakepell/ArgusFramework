@@ -133,7 +133,6 @@ namespace Argus.Data
                     cmdDelete.CommandText = $"delete from {destinationTableName}";
                     cmdDelete.ExecuteNonQuery();
                     cmdDelete.Dispose();
-                    cmdDelete = null;
 
                     break;
                 }
@@ -150,7 +149,6 @@ namespace Argus.Data
                     cmdDelete.CommandText = $"truncate table {destinationTableName}";
                     cmdDelete.ExecuteNonQuery();
                     cmdDelete.Dispose();
-                    cmdDelete = null;
 
                     break;
                 }
@@ -222,7 +220,6 @@ namespace Argus.Data
             }
 
             dr.Close();
-            dr = null;
 
             if (this.UseTransaction)
             {
@@ -247,6 +244,7 @@ namespace Argus.Data
         /// <summary>
         /// Copies the data from a source IDataReader to a destination table with the same schema.  This assumes that the IDataReader is open and not read.
         /// </summary>
+        /// <param name="dr">The source DataReader used to copy into the destination.</param>
         /// <param name="destinationConnection">The destination connection.  This should at a minimum be initialized but it can either be opened or not at this point.</param>
         /// <param name="destinationTableName">The name of the destination table, the schema of which should match the source table.</param>
         public void ExecuteCopyTable(IDataReader dr, IDbConnection destinationConnection, string destinationTableName)
@@ -283,7 +281,6 @@ namespace Argus.Data
                     cmdDelete.CommandText = $"delete from {destinationTableName}";
                     cmdDelete.ExecuteNonQuery();
                     cmdDelete.Dispose();
-                    cmdDelete = null;
 
                     break;
                 }
@@ -300,7 +297,6 @@ namespace Argus.Data
                     cmdDelete.CommandText = $"truncate table {destinationTableName}";
                     cmdDelete.ExecuteNonQuery();
                     cmdDelete.Dispose();
-                    cmdDelete = null;
 
                     break;
                 }
@@ -370,7 +366,6 @@ namespace Argus.Data
             }
 
             dr.Close();
-            dr = null;
 
             if (this.UseTransaction)
             {

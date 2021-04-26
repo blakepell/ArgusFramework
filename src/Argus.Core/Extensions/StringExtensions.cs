@@ -456,7 +456,7 @@ namespace Argus.Extensions
 
         /// <summary>
         /// Removes non-numeric characters from a string.  An option is available to allow for a period and/or comma in case this is used with
-        /// a money value or number that requires a decimal place or a value that requires keeping it's formatting with commas and peroids only.
+        /// a money value or number that requires a decimal place or a value that requires keeping it's formatting with commas and periods only.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="allowPeriod">If true, any periods will be left, if false, all periods will also be removed.</param>
@@ -1865,8 +1865,8 @@ namespace Argus.Extensions
         /// <param name="endMarker"></param>
         public static string Between(this string str, string beginMarker, string endMarker)
         {
-            int pos1 = str.IndexOf(beginMarker) + beginMarker.Length;
-            int pos2 = str.Substring(pos1).IndexOf(endMarker);
+            int pos1 = str.IndexOf(beginMarker, StringComparison.Ordinal) + beginMarker.Length;
+            int pos2 = str.Substring(pos1).IndexOf(endMarker, StringComparison.Ordinal);
 
             // Nope, we got nothing.
             if (pos2 <= pos1)

@@ -288,15 +288,17 @@ namespace Argus.Data
         /// Formats a percent with a % sign, - sign for negatives and groups digits
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="decimalPlaces"></param>
         public static string FormatPercent(double value, int decimalPlaces)
         {
-            return value.ToString("N" + decimalPlaces);
+            return value.ToString($"N{decimalPlaces.ToString()}");
         }
 
         /// <summary>
         /// Formats a percent with a % sign, - sign for negatives and groups digits
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="decimalPlaces"></param>
         public static string FormatPercent(string value, int decimalPlaces)
         {
             value = value.Replace("%", "");

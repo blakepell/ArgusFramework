@@ -122,7 +122,7 @@ namespace Argus.Data
             var fields = lines[0].Split(deliminator.ToCharArray());
             int fieldCount = fields.GetUpperBound(0);
 
-            // field count has to be consistant
+            // field count has to be consistent
             // Loop and find the max length for each field
             var fieldLength = new int[fieldCount + 1];
 

@@ -134,7 +134,7 @@ namespace Argus.Data
         /// </param>
         /// <param name="forceStringType">
         /// Whether or not to force all columns to be a string type.  Otherwise, the type will
-        /// be determined by the variable that you insert into the data table.  The string type is desireable in cases where you
+        /// be determined by the variable that you insert into the data table.  The string type is desirable in cases where you
         /// want to make modifications to formatting of numbers and store them as a string.
         /// </param>
         /// <remarks>
@@ -270,9 +270,7 @@ namespace Argus.Data
             }
 
             cmd.Dispose();
-            cmd = null;
             dr.Close();
-            dr = null;
 
             return dt;
         }

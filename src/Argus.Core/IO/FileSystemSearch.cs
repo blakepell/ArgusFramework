@@ -179,11 +179,12 @@ namespace Argus.IO
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    // This is expensive but necceary if we don't want this to bomb everytime we come upon a folder
+                    // This is expensive but necessary if we don't want this to bomb every time we come upon a folder
                     // that we don't have permission to.
                 }
                 catch
                 {
+                    // Ignored
                 }
             }
 

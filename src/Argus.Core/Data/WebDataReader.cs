@@ -62,7 +62,7 @@ namespace Argus.Data
         /// <param name="queryStringData">QueryString values to be sent at the end of the Url.</param>
         /// <param name="cd">The credentials that should be used to authenticate to the web page.  A null set of credentials should be used for sites that don't need authentication.
         /// </param>
-        public WebDataReader(string url, string delimiter, bool firstRowContainsHeaders, NameValueCollection formData, NameValueCollection queryStringData, System.Net.ICredentials cd)
+        public WebDataReader(string url, string delimiter, bool firstRowContainsHeaders, NameValueCollection formData, NameValueCollection queryStringData, ICredentials cd)
         {
             this.Url = url;
             this.Delimiter = delimiter;

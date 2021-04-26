@@ -61,7 +61,7 @@ namespace Argus.Extensions
         /// <param name="fi"></param>
         private static byte[] ReadFile(FileInfo fi)
         {
-            byte[] fileContents = null;
+            byte[] fileContents;
 
             using (var fs = File.Open(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {

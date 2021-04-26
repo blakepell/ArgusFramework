@@ -67,7 +67,7 @@ namespace Argus.Network
             // Force it to always be negative
             hoursThreshold = System.Math.Abs(hoursThreshold) * -1;
 
-            string fileName = "";
+            string fileName;
 
             if (string.IsNullOrWhiteSpace(this.OverrideFilename))
             {

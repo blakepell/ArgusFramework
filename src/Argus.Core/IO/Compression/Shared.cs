@@ -37,9 +37,8 @@ namespace Argus.IO.Compression
 
         protected internal static int ReadSignature(Stream s)
         {
-            int n = 0;
             var sig = new byte[4];
-            n = s.Read(sig, 0, sig.Length);
+            int n = s.Read(sig, 0, sig.Length);
 
             if (n != sig.Length)
             {
@@ -62,12 +61,11 @@ namespace Argus.IO.Compression
             targetBytes[2] = (byte) ((SignatureToFind & 0x0000FF00) >> 8);
             targetBytes[3] = (byte) (SignatureToFind & 0x000000FF);
             var batch = new byte[BATCH_SIZE];
-            int n = 0;
             bool success = false;
 
             do
             {
-                n = s.Read(batch, 0, batch.Length);
+                int n = s.Read(batch, 0, batch.Length);
 
                 if (n != 0)
                 {

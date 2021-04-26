@@ -228,7 +228,7 @@ namespace Argus.Cryptography
             var saltBytes = Encoding.ASCII.GetBytes(this.Salt);
             byte[] decrypted;
 
-            int decryptedByteCount = 0;
+            int decryptedByteCount;
 
             using (var cipher = new T())
             {
@@ -296,8 +296,6 @@ namespace Argus.Cryptography
             var saltBytes = Encoding.ASCII.GetBytes(this.Salt);
             byte[] decrypted;
 
-            int decryptedByteCount = 0;
-
             using (var cipher = new T())
             {
                 var passwordBytes = new PasswordDeriveBytes(password, saltBytes, "SHA512", 2);
@@ -315,7 +313,7 @@ namespace Argus.Cryptography
                             using (var reader = new CryptoStream(from, decryptor, CryptoStreamMode.Read))
                             {
                                 decrypted = new byte[value.Length];
-                                decryptedByteCount = reader.Read(decrypted, 0, decrypted.Length);
+                                _ = reader.Read(decrypted, 0, decrypted.Length);
                             }
                         }
                     }

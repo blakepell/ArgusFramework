@@ -284,12 +284,11 @@ namespace Argus.Data
 
             foreach (string line in lines)
             {
-                int fieldCount = 0;
                 var fields = line.Split(this.Delimiter.ToCharArray());
-                fieldCount = fields.GetUpperBound(0);
-                // field count has to be consistant
+                int fieldCount = fields.GetUpperBound(0);
+                // field count has to be consistent
 
-                // Create the columns in the datatable if they don't exist
+                // Create the columns in the DataTable if they don't exist
                 if (columnsCreated == false)
                 {
                     for (int counter = 0; counter <= fieldCount; counter++)
