@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2020-02-27
- * @last updated      : 2021-04-22
+ * @last updated      : 2021-06-18
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -24,8 +24,7 @@ namespace Argus.Memory
     /// occurring might outpace a small pool size.  Increasing the ceiling might allow a considerably better reuse rate.
     ///
     /// The pool by default creates objects on demand.  To initially load a set of objects for the pool the <see cref="Fill()" /> method
-    /// can be called.  The Fill method will honor the <see cref="InitAction"/> when creating the objects so that <see cref="Action"/>
-    /// should be set before calling <see cref="Fill()"/>.
+    /// can be called.  The Fill method will honor the <see cref="GetAction"/> when creating the objects.
     /// </remarks>
     public class ObjectPool<T> where T : new()
     {
@@ -94,13 +93,15 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        /// Gets an object from the pool if one is available.  If an object is not available a new object
-        /// is created and returned.
+        /// Gets an object from the pool if one is available.  If it is the initial creation of
+        /// the object <see cref="GetAction"/> will indicate that it is the initialize instantiation
+        /// of the object.
         /// </summary>
         public T Get()
         {
             if (_items.TryTake(out var item))
             {
+                this.GetAction?.Invoke(item, false);
                 this.CounterReusedObjects++;
                 return item;
             }
@@ -108,8 +109,8 @@ namespace Argus.Memory
             this.CounterNewObjects++;
             var newItem = new T();
 
-            // Invoke the init action if it needs to be initialized.
-            this.InitAction?.Invoke(newItem);
+            // Invoke the the GetAction
+            this.GetAction?.Invoke(newItem, true);
 
             return newItem;
         }
@@ -206,7 +207,7 @@ namespace Argus.Memory
 
         /// <summary>
         /// Fills the <see cref="ObjectPool{T}"/> to the number of items specified in the <see cref="Max"/>
-        /// property.  Fill ensures that the <see cref="InitAction"/> is called if one was set.
+        /// property.  Fill ensures that the <see cref="GetAction"/> is called if one was set.
         /// </summary>
         public void Fill()
         {
@@ -215,7 +216,7 @@ namespace Argus.Memory
 
         /// <summary>
         /// Fills the <see cref="ObjectPool{T}"/> will the specified number of items up until
-        /// the value set in the <see cref="Max"/> property.  Fill ensures that the <see cref="InitAction"/>
+        /// the value set in the <see cref="Max"/> property.  Fill ensures that the <see cref="GetAction"/>
         /// is called if one was set.
         /// </summary>
         /// <param name="count">The number of items to fill.  The fill will cease processing if it
@@ -256,8 +257,10 @@ namespace Argus.Memory
         public Action<T> ReturnAction { get; set; }
 
         /// <summary>
-        /// An action that will be invoked as the first step after a new <see cref="T"/> is initialized.
+        /// An action that can be invoked to execute code when an item is retrieved from the memory
+        /// pool.  If it's a new object the bool value of (T, bool) will be true otherwise false if
+        /// it was an existing item.
         /// </summary>
-        public Action<T> InitAction { get; set; }
+        public Action<T, bool> GetAction { get; set; }
     }
 }
