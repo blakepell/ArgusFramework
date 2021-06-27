@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2009-04-06
- * @last updated      : 2019-11-18
+ * @last updated      : 2021-06-26
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -34,7 +34,10 @@ namespace Argus.Extensions
         /// <param name="fi"></param>
         public static string CreateSha256Hash(this FileInfo fi)
         {
-            return HashUtilities.Sha256Hash(ReadFile(fi));
+            using (var fs = File.Open(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                return HashUtilities.Sha256Hash(fs);
+            }
         }
 
         /// <summary>
@@ -43,7 +46,10 @@ namespace Argus.Extensions
         /// <param name="fi"></param>
         public static string CreateSha512Hash(this FileInfo fi)
         {
-            return HashUtilities.Sha512Hash(ReadFile(fi));
+            using (var fs = File.Open(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                return HashUtilities.Sha512Hash(fs);
+            }
         }
 
         /// <summary>
@@ -52,25 +58,10 @@ namespace Argus.Extensions
         /// <param name="fi"></param>
         public static string CreateMD5(this FileInfo fi)
         {
-            return HashUtilities.MD5Hash(ReadFile(fi));
-        }
-
-        /// <summary>
-        /// This opens up a string that is able to read a locked file if the file is locked but shareable.
-        /// </summary>
-        /// <param name="fi"></param>
-        private static byte[] ReadFile(FileInfo fi)
-        {
-            byte[] fileContents;
-
             using (var fs = File.Open(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                int fileLength = Convert.ToInt32(fs.Length);
-                fileContents = new byte[fileLength];
-                fs.Read(fileContents, 0, fileLength);
+                return HashUtilities.MD5Hash(fs);
             }
-
-            return fileContents;
         }
     }
 }
