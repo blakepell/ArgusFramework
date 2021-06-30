@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2018-06-12
- * @last updated      : 2021-03-07
+ * @last updated      : 2021-06-30
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -10,6 +10,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Argus.Extensions;
 using Cysharp.Text;
 
 namespace Argus.Cryptography
@@ -287,6 +288,40 @@ namespace Argus.Cryptography
             var crypt = new MD5CryptoServiceProvider();
 
             return CreateHash(s, crypt);
+        }
+
+        /// <summary>
+        /// Returns the CRC32 (Cyclic redundancy check) hash for the specified <see cref="string"/>.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="enc"></param>
+        public static uint CRC32(string str, Encoding enc)
+        {
+            using var ms = str.ToMemoryStream(enc);
+            var crypt = new Argus.IO.Compression.CRC32();
+            return crypt.GetCrc32(ms);
+        }
+
+        /// <summary>
+        /// Returns the CRC32 (Cyclic redundancy check) hash for the specified <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="s"></param>
+        public static uint CRC32(Stream s)
+        {
+            var crypt = new Argus.IO.Compression.CRC32();
+            return crypt.GetCrc32(s);
+        }
+
+        /// <summary>
+        /// Returns the CRC32 (Cyclic redundancy check) hash for the specified <see cref="byte"/> array.
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static uint CRC32(byte[] b)
+        {
+            using var ms = new MemoryStream(b);
+            var crypt = new Argus.IO.Compression.CRC32();
+            return crypt.GetCrc32(ms);
         }
     }
 }
