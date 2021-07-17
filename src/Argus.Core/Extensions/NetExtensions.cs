@@ -2,13 +2,14 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2011-09-29
- * @last updated      : 2021-02-07
+ * @last updated      : 2021-07-17
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
 
 using System;
 using System.IO;
+using System.Net.Sockets;
 
 namespace Argus.Extensions
 {
@@ -25,5 +26,36 @@ namespace Argus.Extensions
         {
             return Path.GetFileName(uri.LocalPath);
         }
+
+        /// <summary>
+        /// A check of whether the TCP/IP connection is still open by peeking.
+        /// </summary>
+        public static bool IsConnected(this TcpClient client)
+        {
+            try
+            {
+                if (!client.Connected)
+                {
+                    return false;
+                }
+
+                if (client.Client.Poll(0, SelectMode.SelectRead))
+                {
+                    var buf = new byte[1];
+
+                    if (client.Client.Receive(buf, SocketFlags.Peek) == 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }
