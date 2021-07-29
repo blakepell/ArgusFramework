@@ -17,19 +17,13 @@ namespace Argus.ComponentModel
     /// properties.
     /// </summary>
     /// <example>
-    /// <code>
+    ///     <code>
     ///         private int _length = 0;
     ///     
     ///         public int Length
     ///         {
-    ///             get
-    ///             {
-    ///                 return _length;
-    ///             }
-    ///             set
-    ///             {
-    ///                 Set(ref _length, value, "Length");
-    ///             }
+    ///             get =&gt; _length;
+    ///             set =&gt; Set(ref _length, value, "Length");
     ///         }
     ///     </code>
     /// </example>
@@ -59,7 +53,7 @@ namespace Argus.ComponentModel
         }
 
         /// <summary>
-        /// OnPropertyChanged
+        /// OnPropertyChanged Event.
         /// </summary>
         /// <param name="propertyName"></param>
         protected void OnPropertyChanged(string propertyName)
