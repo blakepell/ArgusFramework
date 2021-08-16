@@ -67,12 +67,14 @@ namespace Argus.Configuration
         {
             string loadFile = Path.Combine(this.DirectoryPath, this.Filename);
 
+            // Creates a blank copy of the settings if the specified file
+            // does not exist.
             if (!File.Exists(loadFile))
             {
-                throw new FileNotFoundException($"File not found: '{loadFile}'");
+                this.Save(default(T), this.Filename);
             }
 
-            string json = File.ReadAllText(this.Filename);
+            string json = File.ReadAllText(loadFile);
             return JsonConvert.DeserializeObject<T>(json);
         }
 
