@@ -1,239 +1,152 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2006-12-10
- * @last updated      : 2019-11-17
+ * @last updated      : 2021-09-16
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Argus.Extensions;
+using System.Linq;
 
 namespace Argus.IO
 {
     /// <summary>
-    /// Search the file system for all directories or files in a given path.
+    /// Searches the file system but also handles common exceptions that cause the .NET
+    /// provided enumerable to fail in cases such as accessing junctions, symbolic links, etc.
     /// </summary>
-    public class FileSystemSearch
+    public class FileSystemSearch : IEnumerable<FileSystemInfo>
     {
-        private readonly List<string> _directoryList = new List<string>();
-        private readonly List<string> _fileList = new List<string>();
-        private string _baseDirectory;
+        /// <summary>
+        /// The <see cref="DirectoryInfo"/> of the root directory to search.
+        /// </summary>
+        private readonly DirectoryInfo _root;
+
+        /// <summary>
+        /// A list of the search patterns that should be searched if multiple patterns exist.
+        /// </summary>
+        private readonly string[] _patterns;
+
+        /// <summary>
+        /// Whether the search should look in the top directory only or recurse through
+        /// all of the folders in the tree.
+        /// </summary>
+        private readonly SearchOption _option;
+
+        /// <summary>
+        /// Constructor: All files in a directory or directory tree.
+        /// </summary>
+        /// <param name="directoryPath">The path to the directory to search.</param>
+        /// <param name="option">Whether to search only the top directory or all directories.</param>
+        public FileSystemSearch(string directoryPath, SearchOption option)
+        {
+            _root = new DirectoryInfo(directoryPath);
+            _patterns = new[] { "*" };
+            _option = option;
+        }
+
+        /// <summary>
+        /// Constructor: All files that meet a pattern in a directory or directory tree.
+        /// </summary>
+        /// <param name="directoryPath">The path to the directory to search.</param>
+        /// <param name="pattern">The pattern to search, e.g. "*"</param>
+        /// <param name="option">Whether to search only the top directory or all directories.</param>
+        public FileSystemSearch(string directoryPath, string pattern, SearchOption option)
+        {
+            _root = new DirectoryInfo(directoryPath);
+            _patterns = new[] { pattern };
+            _option = option;
+        }
+
+        /// <summary>
+        /// Constructor: All files that meet a pattern in a directory or directory tree.
+        /// </summary>
+        /// <param name="root">The directory to search via a <see cref="DirectoryInfo"/></param>
+        /// <param name="pattern">The pattern to search, e.g. "*"</param>
+        /// <param name="option">Whether to search only the top directory or all directories.</param>
+        public FileSystemSearch(DirectoryInfo root, string pattern, SearchOption option)
+        {
+            _root = root;
+            _patterns = new [] { pattern };
+            _option = option;
+        }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="baseDirectory"></param>
-        public FileSystemSearch(string baseDirectory)
+        /// <param name="root">The directory to search via a <see cref="DirectoryInfo"/></param>
+        /// <param name="patterns">A list of patterns to to search, e.g. "*"</param>
+        /// <param name="option">Whether to search only the top directory or all directories.</param>
+        public FileSystemSearch(DirectoryInfo root, string[] patterns, SearchOption option)
         {
-            this.BaseDirectory = baseDirectory;
+            _root = root;
+            _patterns = patterns;
+            _option = option;
         }
 
         /// <summary>
-        /// The number of directories that were found in the search.
-        /// </summary>
-        public int DirectoryCount => _directoryList.Count;
-
-        /// <summary>
-        /// The number of files that were found in the search.
-        /// </summary>
-        public int FileCount => _fileList.Count;
-
-        /// <summary>
-        /// The base directory that you want to start the search at.  The searcher will recurse through all sub directories
-        /// of this folder.
-        /// </summary>
-        public string BaseDirectory
-        {
-            get => _baseDirectory;
-            set
-            {
-                bool uncPath = false;
-
-                if (value.Length >= 2)
-                {
-                    if (value.Left(2) == "\\\\")
-                    {
-                        uncPath = true;
-                    }
-                }
-
-                // Cleanup
-                value = value.Replace("\\\\", "\\");
-
-                // Replace UNC path if it was one
-                if (uncPath)
-                {
-                    value = "\\" + value;
-                }
-
-                this.Clear();
-
-                // This will throw exception if the directory doesn't exist 
-                var di = new DirectoryInfo(value);
-
-                _baseDirectory = value;
-            }
-        }
-
-        /// <summary>
-        /// Processes and returns a string list containing values that have the full path to the directories in them.
+        /// Returns an enumerable of <see cref="FileSystemInfo"/> patterns for the search criteria.
         /// </summary>
         /// <returns></returns>
-        /// <remarks>
-        /// The entries are cached between runs.  The cache is only cleared if the Clear procedure is called or the base
-        /// directory path changes.  I.e. If you run the same base directory again, it will not reprocess unless you manually
-        /// clear it first.
-        /// </remarks>
-        public List<string> GetAllDirectories()
+        public IEnumerator<FileSystemInfo> GetEnumerator()
         {
-            // If already populated, no need to reget them.  If the base directory changes the list will clear
-            if (_directoryList.Count == 0)
+            if (_root == null || !_root.Exists)
             {
-                this.GetDirectories(_baseDirectory);
+                yield break;
             }
 
-            return _directoryList;
-        }
+            IEnumerable<FileSystemInfo> matches = new List<FileSystemInfo>();
 
-        /// <summary>
-        /// Returns the System.IO.DirectoryInfo objects for all found entries.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// The entries are cached between runs.  The cache is only cleared if the Clear procedure is called or the base
-        /// directory path changes.  I.e. If you run the same base directory again, it will not reprocess unless you manually
-        /// clear it first.
-        /// </remarks>
-        public List<DirectoryInfo> GetAllDirectoriesDirectoryInfo()
-        {
-            var dirs = this.GetAllDirectories();
-            var dirsFi = new List<DirectoryInfo>();
-
-            foreach (string buf in dirs)
-            {
-                var di = new DirectoryInfo(buf);
-                dirsFi.Add(di);
-            }
-
-            return dirsFi;
-        }
-
-        /// <summary>
-        /// Returns the System.IO.FileInfo objects for all found entries.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// The entries are cached between runs.  The cache is only cleared if the Clear procedure is called or the base
-        /// directory path changes.  I.e. If you run the same base directory again, it will not reprocess unless you manually
-        /// clear it first.
-        /// </remarks>
-        public List<FileInfo> GetAllFilesFileInfo()
-        {
-            var files = this.GetAllFiles();
-            var filesFi = new List<FileInfo>();
-
-            foreach (string buf in files)
-            {
-                var fi = new FileInfo(buf);
-                filesFi.Add(fi);
-            }
-
-            return filesFi;
-        }
-
-        /// <summary>
-        /// Returns a list of strings with all of the full paths to the files in them.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// The entries are cached between runs.  The cache is only cleared if the Clear procedure is called or the base
-        /// directory path changes.  I.e. If you run the same base directory again, it will not reprocess unless you manually
-        /// clear it first.
-        /// </remarks>
-        public List<string> GetAllFiles()
-        {
-            if (_directoryList.Count == 0)
-            {
-                this.GetDirectories(_baseDirectory);
-            }
-
-            if (_fileList.Count > 0)
-            {
-                return _fileList;
-            }
-
-            foreach (string dirName in _directoryList)
-            {
-                var di = new DirectoryInfo(dirName);
-
-                try
-                {
-                    foreach (var Fi in di.GetFiles())
-                    {
-                        _fileList.Add(Fi.FullName);
-                    }
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    // This is expensive but necessary if we don't want this to bomb every time we come upon a folder
-                    // that we don't have permission to.
-                }
-                catch
-                {
-                    // Ignored
-                }
-            }
-
-            return _fileList;
-        }
-
-        /// <summary>
-        /// Internal procedure used for recursing through directories.
-        /// </summary>
-        /// <param name="path"></param>
-        private void GetDirectories(string path)
-        {
             try
             {
-                var arrDir = Directory.GetDirectories(path);
-
-                if (_directoryList.Contains(path) == false)
+                foreach (var pattern in _patterns)
                 {
-                    _directoryList.Add(path);
-                }
-
-                foreach (string subDir in arrDir)
-                {
-                    if (_directoryList.Contains(subDir) == false)
-                    {
-                        _directoryList.Add(subDir);
-                    }
-
-                    this.GetDirectories(subDir);
+                    // All directories but filter the files.
+                    matches = matches.Concat(_root.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+                                     .Concat(_root.EnumerateFiles(pattern, SearchOption.TopDirectoryOnly));
                 }
             }
-            catch
+            catch (UnauthorizedAccessException)
             {
-                // The user probably doesn't have access to this directory hence the error, eat it, the error I mean.
-                // Figure out a way to catch this error though so it doesn't take all the time creating the exception.
+                yield break;
+            }
+            catch (PathTooLongException)
+            {
+                yield break;
+            }
+            catch (IOException)
+            {
+                // "The symbolic link cannot be followed because its type is disabled."
+                // "The specified network name is no longer available."
+                yield break;
+            }
+
+            foreach (var file in matches)
+            {
+                yield return file;
+            }
+
+            if (_option == SearchOption.AllDirectories)
+            {
+                foreach (var dir in _root.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+                {
+                    var fileSystemInfos = new FileSystemSearch(dir, _patterns, _option);
+
+                    foreach (var match in fileSystemInfos)
+                    {
+                        yield return match;
+                    }
+                }
             }
         }
 
-        /// <summary>
-        /// Clears the directory and file lists.
-        /// </summary>
-        /// <remarks>
-        /// This can be called if you want to clear the cached results and re-run the code for the same
-        /// base directory that was previously run.
-        /// </remarks>
-        public void Clear()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            _directoryList.Clear();
-            _fileList.Clear();
+            return GetEnumerator();
         }
     }
 }
