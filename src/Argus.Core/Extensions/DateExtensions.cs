@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2021-03-07
+ * @last updated      : 2021-09-17
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -352,6 +352,18 @@ namespace Argus.Extensions
 
             // Compare the month end calculated to the date passed in
             return tempDate == actualMonthEnd;
+        }
+
+        /// <summary>
+        /// Returns an true or false based on whether the date in between the two provided
+        /// dates (an inclusive comparison).
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        public static bool Between(this DateTime d, DateTime startDate, DateTime endDate)
+        {
+            return d >= startDate && d <= endDate;
         }
     }
 }
