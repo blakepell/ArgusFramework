@@ -31,7 +31,7 @@ namespace Argus.UnitTests
         public void DateRangeIntervalMonth()
         {
             var range = new DateRange(DateTime.Parse("1/1/2021"), DateTime.Parse("12/31/2021"));
-            range.Interval = Data.Range.DateRange.DateInterval.Month;
+            range.Interval = Argus.Data.Range.DateRange.DateInterval.Month;
             var list = range.ToList();
 
             Assert.Equal(12, list.Count);
@@ -43,7 +43,7 @@ namespace Argus.UnitTests
         public void DateRangeIntervalWeek()
         {
             var range = new DateRange(DateTime.Parse("1/1/2021"), DateTime.Parse("12/31/2021"));
-            range.Interval = Data.Range.DateRange.DateInterval.Week;
+            range.Interval = Argus.Data.Range.DateRange.DateInterval.Week;
             var list = range.ToList();
 
             Assert.Equal(53, list.Count);
@@ -55,7 +55,7 @@ namespace Argus.UnitTests
         public void DateRangeIntervalYear()
         {
             var range = new DateRange(DateTime.Parse("7/1/2021"), DateTime.Parse("7/1/2025"));
-            range.Interval = Data.Range.DateRange.DateInterval.Year;
+            range.Interval = Argus.Data.Range.DateRange.DateInterval.Year;
             var list = range.ToList();
 
             Assert.Equal(5, list.Count);
