@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2020-02-27
- * @last updated      : 2021-01-31
+ * @last updated      : 2021-09-19
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -15,11 +15,31 @@ using System.Text;
 namespace Argus.Memory
 {
     /// <summary>
-    /// A thread safe static pool of StringBuilders.
+    /// A thread safe static pool of <see cref="StringBuilder"/> objects.
     /// </summary>
     public static class StringBuilderPool
     {
+        /// <summary>
+        /// The default <see cref="StringBuilder"/> capacity.  If not specified when the StringBuilder
+        /// is created the default size is 16 characters.
+        /// </summary>
+        private const int DefaultStringBuilderCapacity = 512;
+
+        /// <summary>
+        /// The maximum <see cref="StringBuilder"/> size that is retained.  This helps to limit any
+        /// <see cref="StringBuilder"/> storage that might have acquired a large amount of memory.
+        /// </summary>
+        private const int MaxBuilderSize = 4096;
+
+        /// <summary>
+        /// The maximum number of <see cref="StringBuilder"/> objects that will be pooled at
+        /// any one time.
+        /// </summary>
         private const int MaxPooledStringBuilders = 64;
+
+        /// <summary>
+        /// The <see cref="ConcurrentQueue"/> of stored <see cref="StringBuilder"/> objects.
+        /// </summary>
         private static readonly ConcurrentQueue<StringBuilder> Pool = new ConcurrentQueue<StringBuilder>();
 
         /// <summary>
@@ -71,7 +91,7 @@ namespace Argus.Memory
             return sbNew;
         }
 
-        #if NETSTANDARD2_1 || NET5_0
+#if NETSTANDARD2_1 || NET5_0 || NET6_0
         /// <summary>
         /// Returns a StringBuilder from the pool and populates it with the specified ReadOnlySpan.  If no
         /// StringBuilder is available a new one will be allocated and returned.        
@@ -89,15 +109,17 @@ namespace Argus.Memory
             sbSpan.Append(span);
             return sbSpan;
         }
-        #endif
+#endif
 
         /// <summary>
-        /// Returns a StringBuilder to the pool and clears its contents.
+        /// Returns a <see cref="StringBuilder"/> to the pool and clears its contents.  If the pool
+        /// is full or the <see cref="StringBuilder"/> is above the max capacity we allow it will
+        /// be discarded.
         /// </summary>
         /// <param name="sb"></param>
         public static void Return(StringBuilder sb)
         {
-            if (Pool.Count > MaxPooledStringBuilders)
+            if (Pool.Count > MaxPooledStringBuilders || sb.Capacity > MaxBuilderSize)
             {
                 return;
             }
