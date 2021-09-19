@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2006-12-10
- * @last updated      : 2021-09-16
+ * @last updated      : 2021-09-19
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -21,6 +21,11 @@ namespace Argus.IO
     /// </summary>
     public class FileSystemSearch : IEnumerable<FileSystemInfo>
     {
+        /// <summary>
+        /// If directories should be included.
+        /// </summary>
+        public bool IncludeDirectories { get; set; } = true;
+
         /// <summary>
         /// The <see cref="DirectoryInfo"/> of the root directory to search.
         /// </summary>
@@ -127,6 +132,13 @@ namespace Argus.IO
 
             foreach (var file in matches)
             {
+                // Skip reparse points and optionally directories.
+                if (file.Attributes.HasFlag(FileAttributes.ReparsePoint)
+                    || (!this.IncludeDirectories && file.Attributes.HasFlag(FileAttributes.Directory)))
+                {
+                    continue;
+                }
+
                 yield return file;
             }
 
@@ -138,6 +150,13 @@ namespace Argus.IO
 
                     foreach (var match in fileSystemInfos)
                     {
+                        // Skip reparse points and optionally directories.
+                        if (match.Attributes.HasFlag(FileAttributes.ReparsePoint)
+                            || (!this.IncludeDirectories && match.Attributes.HasFlag(FileAttributes.Directory)))
+                        {
+                            continue;
+                        }
+
                         yield return match;
                     }
                 }
