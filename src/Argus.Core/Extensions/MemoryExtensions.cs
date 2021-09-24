@@ -261,7 +261,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Whether an entire string is alphanumeric.
+        /// Whether an entire ReadOnlySpan&lt;char&gt; is alphanumeric.
         /// </summary>
         /// <param name="span"></param>
         public static bool IsAlphaNumeric(this ReadOnlySpan<char> span)
@@ -269,6 +269,23 @@ namespace Argus.Extensions
             foreach (var c in span)
             {
                 if (!c.IsLetterOrDigit())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Whether an entire ReadOnlySpan&lt;char&gt; contains numeric characters.
+        /// </summary>
+        /// <param name="span"></param>
+        public static bool IsNumeric(this ReadOnlySpan<char> span)
+        {
+            foreach (var c in span)
+            {
+                if (!c.IsDigit())
                 {
                     return false;
                 }
