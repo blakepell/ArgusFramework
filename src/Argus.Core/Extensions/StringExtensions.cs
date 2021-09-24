@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2021-04-22
+ * @last updated      : 2021-09-24
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -1644,6 +1644,24 @@ namespace Argus.Extensions
             return ReadOnlySpan<char>.Empty;
         }
 
+        /// <summary>
+        /// Whether an entire string is alphanumeric.
+        /// </summary>
+        /// <param name="value"></param>
+        public static bool IsAlphaNumeric(this string value)
+        {
+            var span = value.AsSpan();
+
+            foreach (var c in span)
+            {
+                if (!c.IsLetterOrDigit())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 #endif
 
 #if NETSTANDARD2_0
