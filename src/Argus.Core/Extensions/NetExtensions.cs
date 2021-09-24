@@ -2,13 +2,14 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2011-09-29
- * @last updated      : 2021-07-17
+ * @last updated      : 2021-09-24
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
 
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 
 namespace Argus.Extensions
@@ -57,5 +58,18 @@ namespace Argus.Extensions
             return true;
         }
 
+        /// <summary>
+        /// Returns the IP Address from the <see cref="EndPoint"/>.
+        /// </summary>
+        /// <param name="endPoint"></param>
+        public static string ToIpAddressString(this EndPoint endPoint)
+        {
+            if (endPoint is IPEndPoint ipEndPoint)
+            {
+                return ipEndPoint.Address.ToString();
+            }
+
+            return "N/A";
+        }
     }
 }
