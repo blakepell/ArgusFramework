@@ -186,5 +186,16 @@ namespace Argus.UnitTests
             Assert.False("1: This is a test".IsNumeric());
         }
 
+        [Fact]
+        public void IsAlphaNumeric()
+        {
+            Assert.True("lucypell".IsAlphaNumeric());
+            Assert.True("lucypell12".IsAlphaNumeric());
+            Assert.True("LucyPell".IsAlphaNumeric());
+            Assert.True("LucyPell19".IsAlphaNumeric());
+            Assert.False("lucy pell".IsAlphaNumeric());
+            Assert.False("lucy-pell".IsAlphaNumeric());
+            Assert.False("@LucyPell19".IsAlphaNumeric());
+        }
     }
 }

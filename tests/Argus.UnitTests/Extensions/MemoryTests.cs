@@ -142,5 +142,17 @@ namespace Argus.UnitTests
             span.TrimWhitespace();
             Assert.True(span.Equals("Blake Pell", StringComparison.Ordinal));
         }
+
+        [Fact]
+        public void IsAlphaNumeric()
+        {
+            Assert.True("lucypell".AsSpan().IsAlphaNumeric());
+            Assert.True("lucypell12".AsSpan().IsAlphaNumeric());
+            Assert.True("LucyPell".AsSpan().IsAlphaNumeric());
+            Assert.True("LucyPell19".AsSpan().IsAlphaNumeric());
+            Assert.False("lucy pell".AsSpan().IsAlphaNumeric());
+            Assert.False("lucy-pell".AsSpan().IsAlphaNumeric());
+            Assert.False("@LucyPell19".AsSpan().IsAlphaNumeric());
+        }
     }
 }
