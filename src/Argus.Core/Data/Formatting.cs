@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2008-04-02
- * @last updated      : 2019-11-17
+ * @last updated      : 2021-09-26
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -339,6 +339,26 @@ namespace Argus.Data
             }
 
             return $"{length:0.##} {sizes[order]}";
+        }
+
+        /// <summary>
+        /// Formats a file size if the length (total number of bytes) are passed in.  This will list sizes up
+        /// to and including terabytes.
+        /// </summary>
+        /// <param name="length"></param>
+        public static string FormattedFileSize(long length)
+        {
+            return FormattedFileSize((double)length);
+        }
+
+        /// <summary>
+        /// Formats a file size if the length (total number of bytes) are passed in.  This will list sizes up
+        /// to and including terabytes.
+        /// </summary>
+        /// <param name="length"></param>
+        public static string FormattedFileSize(int length)
+        {
+            return FormattedFileSize((double)length);
         }
 
         /// <summary>
