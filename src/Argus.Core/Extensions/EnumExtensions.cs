@@ -42,7 +42,7 @@ namespace Argus.Extensions
             {
                 return (enumValue.AsUInt() & bit.AsUInt()) != 0;
             }
-
+            
             throw new Exception("Type mismatch.");
         }
 
@@ -52,7 +52,7 @@ namespace Argus.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="enumValue"></param>
         /// <param name="bit"></param>
-        public static T BitSet<T>(this T enumValue, T bit) where T : Enum
+        public static T SetBit<T>(this T enumValue, T bit) where T : Enum
         {
             if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<ulong>())
             {
