@@ -40,15 +40,103 @@ namespace Argus.Extensions
             }
             else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<uint>())
             {
-                return (enumValue.AsUInt() & bit.AsInt()) != 0;
+                return (enumValue.AsUInt() & bit.AsUInt()) != 0;
             }
-            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<short>())
+
+            throw new Exception("Type mismatch.");
+        }
+
+        /// <summary>
+        /// Sets a bit based off of the <see cref="Enum"/> provided and returns an updated <see cref="Enum"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumValue"></param>
+        /// <param name="bit"></param>
+        public static T BitSet<T>(this T enumValue, T bit) where T : Enum
+        {
+            if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<ulong>())
             {
-                return (enumValue.AsShort() & bit.AsInt()) != 0;
+                var result = (enumValue.AsULong() | bit.AsULong());
+                return Unsafe.As<ulong, T>(ref result);
             }
-            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<ushort>())
+            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<long>())
             {
-                return (enumValue.AsUShort() & bit.AsInt()) != 0;
+                var result = (enumValue.AsLong() | bit.AsLong());
+                return Unsafe.As<long, T>(ref result);
+            }
+            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<int>())
+            {
+                var result = (enumValue.AsInt() | bit.AsInt());
+                return Unsafe.As<int, T>(ref result);
+            }
+            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<uint>())
+            {
+                var result = (enumValue.AsUInt() | bit.AsUInt());
+                return Unsafe.As<uint, T>(ref result);
+            }
+
+            throw new Exception("Type mismatch.");
+        }
+
+        /// <summary>
+        /// Removes a bit from the <see cref="Enum"/> provided and returns an updated <see cref="Enum"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumValue"></param>
+        /// <param name="bit"></param>
+        public static T RemoveBit<T>(this T enumValue, T bit) where T : Enum
+        {
+            if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<ulong>())
+            {
+                var result = (enumValue.AsULong() & ~bit.AsULong());
+                return Unsafe.As<ulong, T>(ref result);
+            }
+            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<long>())
+            {
+                var result = (enumValue.AsLong() & ~bit.AsLong());
+                return Unsafe.As<long, T>(ref result);
+            }
+            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<int>())
+            {
+                var result = (enumValue.AsInt() & ~bit.AsInt());
+                return Unsafe.As<int, T>(ref result);
+            }
+            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<uint>())
+            {
+                var result = (enumValue.AsUInt() & ~bit.AsUInt());
+                return Unsafe.As<uint, T>(ref result);
+            }
+
+            throw new Exception("Type mismatch.");
+        }
+
+        /// <summary>
+        /// Removes a bit from the <see cref="Enum"/> provided and returns an updated <see cref="Enum"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumValue"></param>
+        /// <param name="bit"></param>
+        public static T ToggleBit<T>(this T enumValue, T bit) where T : Enum
+        {
+            if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<ulong>())
+            {
+                var result = (enumValue.AsULong() ^ bit.AsULong());
+                return Unsafe.As<ulong, T>(ref result);
+            }
+            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<long>())
+            {
+                var result = (enumValue.AsLong() ^ bit.AsLong());
+                return Unsafe.As<long, T>(ref result);
+            }
+            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<int>())
+            {
+                var result = (enumValue.AsInt() ^ bit.AsInt());
+                return Unsafe.As<int, T>(ref result);
+            }
+            else if (Unsafe.SizeOf<T>() == Unsafe.SizeOf<uint>())
+            {
+                var result = (enumValue.AsUInt() ^ bit.AsUInt());
+                return Unsafe.As<uint, T>(ref result);
             }
 
             throw new Exception("Type mismatch.");
@@ -133,38 +221,6 @@ namespace Argus.Extensions
             }
 
             return Unsafe.As<TEnum, uint>(ref enumValue);
-        }
-
-        /// <summary>
-        /// Casts the generic enum to a <see cref="short"/>.  An exception will be thrown if the <see cref="Enum"/>
-        /// does not have a matching SizeOf.
-        /// </summary>
-        /// <typeparam name="TEnum"></typeparam>
-        /// <param name="enumValue"></param>
-        public static short AsShort<TEnum>(this TEnum enumValue) where TEnum : Enum
-        {
-            if (Unsafe.SizeOf<TEnum>() != Unsafe.SizeOf<short>())
-            {
-                throw new Exception("Type mismatch.");
-            }
-
-            return Unsafe.As<TEnum, short>(ref enumValue);
-        }
-
-        /// <summary>
-        /// Casts the generic enum to a <see cref="ushort"/>.  An exception will be thrown if the <see cref="Enum"/>
-        /// does not have a matching SizeOf.
-        /// </summary>
-        /// <typeparam name="TEnum"></typeparam>
-        /// <param name="enumValue"></param>
-        public static ushort AsUShort<TEnum>(this TEnum enumValue) where TEnum : Enum
-        {
-            if (Unsafe.SizeOf<TEnum>() != Unsafe.SizeOf<ushort>())
-            {
-                throw new Exception("Type mismatch.");
-            }
-
-            return Unsafe.As<TEnum, ushort>(ref enumValue);
         }
 
         /// <summary>
