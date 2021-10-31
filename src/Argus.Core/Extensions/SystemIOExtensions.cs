@@ -7,10 +7,9 @@
  * @license           : MIT
  */
 
-using System;
-using System.IO;
 using Argus.Cryptography;
 using Argus.Data;
+using System.IO;
 
 namespace Argus.Extensions
 {

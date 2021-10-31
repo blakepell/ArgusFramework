@@ -7,13 +7,11 @@
  * @license           : MIT
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using Argus.IO;
 using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Argus.Configuration
 {
@@ -117,7 +115,7 @@ namespace Argus.Configuration
         public void Save<T>(T objectToSave, string filename)
         {
             this.Filename = filename;
-            this.Save<T>(objectToSave);
+            this.Save(objectToSave);
         }
 
         /// <summary>

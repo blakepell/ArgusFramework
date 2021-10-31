@@ -11,7 +11,7 @@ namespace Argus.Data.SemanticLibrary
 {
     public static class WordScraper
     {
-        private static readonly char[] p = new char[1] {(char) 247};
+        private static readonly char[] p = new char[] {(char) 247};
         private static string ps;
         public static Regex RegWordCount = new Regex(@"\b\S+?\b", RegexOptions.Compiled);
         private static readonly Regex regtwo = new Regex(@"am|an|as|at|ax|be|by|do|go|he|if|in|is|it|me|my|no|of|on|or|ox|so|to|up|us|we|a|i", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -49,7 +49,7 @@ namespace Argus.Data.SemanticLibrary
                                                           + @"(?=(\s|$))", RegexOptions.Compiled);
 
         private static readonly Regex splitcase = new Regex(@"(^|[A-Z\.])[a-z0-9]+?(?=(\.|[A-Z]|$))", RegexOptions.Compiled);
-        private static readonly char[] trim = new char[11] {(char) 247, ' ', '\t', '\n', '\r', '[', ']', '(', ')', '{', '}'}; //trim word
+        private static readonly char[] trim = new char[] {(char) 247, ' ', '\t', '\n', '\r', '[', ']', '(', ')', '{', '}'}; //trim word
 
         /// <summary>
         /// Removes non-meaningful words and breaks text into paragraphs.
