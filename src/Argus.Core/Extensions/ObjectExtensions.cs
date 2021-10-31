@@ -79,9 +79,9 @@ namespace Argus.Extensions
             {
                 var serializer = new XmlSerializer(typeof(T));
                 var temp = (T) serializer.Deserialize(stream);
-            }
 
-            return obj;
+                return temp;
+            }
         }
     }
 }
