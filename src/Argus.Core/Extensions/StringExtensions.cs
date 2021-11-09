@@ -210,7 +210,7 @@ namespace Argus.Extensions
             return !string.IsNullOrEmpty(str) && str.StartsWith(c);
         }
 
-#if NETSTANDARD2_1 || NET5_0
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
         /// <summary>
         ///     Returns true if the specified <see cref="char"/> is found at the end of the string.
         /// </summary>
@@ -1895,7 +1895,7 @@ namespace Argus.Extensions
             return str.Substring(pos1, pos2);
         }
 #endif
-#if NETSTANDARD2_1 || NET5_0
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
         /// <summary>
         /// Returns a string between the first occurrence of two markers.
         /// </summary>

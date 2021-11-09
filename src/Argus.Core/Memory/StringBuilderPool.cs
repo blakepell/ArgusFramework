@@ -91,7 +91,7 @@ namespace Argus.Memory
             return sbNew;
         }
 
-#if NETSTANDARD2_1 || NET5_0 || NET6_0
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
         /// <summary>
         /// Returns a StringBuilder from the pool and populates it with the specified ReadOnlySpan.  If no
         /// StringBuilder is available a new one will be allocated and returned.        

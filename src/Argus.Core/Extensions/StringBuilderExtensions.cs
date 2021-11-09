@@ -18,7 +18,7 @@ namespace Argus.Extensions
     /// </summary>
     public static class StringBuilderExtensions
     {
-#if NET5_0
+#if NET5_0_OR_GREATER
         /// <summary>
         /// Finds the first index of a char in a <see cref="StringBuilder"/>.  If not match is found
         /// a -1 is returned.
@@ -78,7 +78,7 @@ namespace Argus.Extensions
             return sb;
         }
 
-#if NETSTANDARD2_1 || NET5_0
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
         /// <summary>
         /// Appends the provided value if the condition is true.
         /// </summary>

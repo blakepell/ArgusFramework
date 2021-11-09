@@ -37,7 +37,7 @@ namespace Argus.IO
             return default;
         }
 
-#if NETSTANDARD2_1 || NET5_0
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
         /// <summary>
         /// Reads and deserializes a JSON file into the specified generic object.
         /// </summary>
@@ -76,7 +76,7 @@ namespace Argus.IO
             File.WriteAllText(Path.Combine(folderPath, fileName), fileContent, Encoding.UTF8);
         }
 
-#if NETSTANDARD2_1 || NET5_0
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
         /// <summary>
         /// Serializes an object and saves the JSON file to the file system.
         /// </summary>

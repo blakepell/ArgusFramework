@@ -7,7 +7,7 @@
  * @license           : MIT
  */
 
-#if NETSTANDARD2_1 || NET5_0
+#if NETSTANDARD2_1 || NET5_0 || NET6_0
 using System;
 
 namespace Argus.Extensions
