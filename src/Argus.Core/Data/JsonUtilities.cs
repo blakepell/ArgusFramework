@@ -43,49 +43,44 @@ namespace Argus.Data
         ///   ]
         /// }
         ///  </code>
-        public static DataTable JsonToDataTable(string json, string tableName)
+        public static DataTable JsonToDataTableNew(string json, string tableName)
         {
-            bool columnsCreated = false;
             var dt = new DataTable(tableName);
-
             var root = JObject.Parse(json);
-            var items = (JArray) root[tableName];
+            var items = root[tableName] as JArray;
 
-            if (items == null)
+            if (items == null || items.Count == 0)
             {
                 return dt;
             }
 
+            // We know we have at least the first item, we'll use that to create the
+            // properties on the DataTable.
+            JObject item = items[0] as JObject;
+            JProperty jprop;
+
+            // Create the columns
+            foreach (var p in item.Properties())
+            {
+                dt.Columns.Add(new DataColumn(p.Name));
+            }
+
+            JToken jtoken;
+            JObject obj;
+
             for (int i = 0; i <= items.Count - 1; i++)
             {
-                // Create the columns once
-                var item = default(JObject);
-                var jtoken = default(JToken);
-
-                if (columnsCreated == false)
-                {
-                    item = (JObject) items[i];
-                    jtoken = item.First;
-
-                    while (jtoken != null)
-                    {
-                        dt.Columns.Add(new DataColumn(((JProperty) jtoken).Name));
-                        jtoken = jtoken.Next;
-                    }
-
-                    columnsCreated = true;
-                }
-
-                // Add each of the columns into a new row then put that new row into the DataTable
-                item = (JObject) items[i];
-                jtoken = item.First;
-
                 // Create the new row, put the values into the columns then add the row to the DataTable
                 var dr = dt.NewRow();
 
+                // Add each of the columns into a new row then put that new row into the DataTable
+                obj = items[i] as JObject;
+                jtoken = obj.First;
+
                 while (jtoken != null)
                 {
-                    dr[((JProperty) jtoken).Name] = ((JProperty) jtoken).Value.ToString();
+                    jprop = jtoken as JProperty;
+                    dr[jprop.Name] = jprop.Value.ToString();
                     jtoken = jtoken.Next;
                 }
 
