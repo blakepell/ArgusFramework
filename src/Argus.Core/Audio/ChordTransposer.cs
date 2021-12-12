@@ -19,9 +19,14 @@ namespace Argus.Audio
     public static class ChordTransposer
     {
         /// <summary>
-        /// A list of the chords.
+        /// A list of the chords (with sharps)
         /// </summary>
         private static readonly string[] _baseChords = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+
+        /// <summary>
+        /// A list of the chords (with flats)
+        /// </summary>
+        private static readonly string[] _baseChordsFlat = { "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" };
 
         /// <summary>
         /// Transposes the chord into another chord.
@@ -53,6 +58,7 @@ namespace Argus.Audio
             }
 
             string baseChord;
+            bool flat = false;
 
             // This will mostly work.  We're going to look at the first or first and second
             // characters to determine what the chord/note is to shift.  Anything else after
@@ -61,18 +67,28 @@ namespace Argus.Audio
             {
                 baseChord = chord.Substring(0, 2).ToUpper();
             }
+            else if (chord.Length > 1 && chord[1] == 'b')
+            {
+                flat = true;
+                baseChord = $"{chord.Substring(0, 1).ToUpper()}b";
+            }
             else
             {
                 baseChord = chord.Substring(0, 1).ToUpper();
             }
 
-            int index = Array.IndexOf(_baseChords, baseChord);
+            int index;
+            int newIndex;
 
-            // 12 being the length of the base chords array
-            var newIndex = (index + increment + 12) % 12;
+            if (flat)
+            {
+                index = Array.IndexOf(_baseChordsFlat, baseChord);
+                newIndex = (index + increment + 12) % 12;
+                return $"{_baseChordsFlat[newIndex]}{chord.Substring(baseChord.Length)}";
+            }
 
-            // This returns the new chord, but then anything after the base of it so it preserves
-            // the 'm' in Am and 'm7' in 'Em7', etc.
+            index = Array.IndexOf(_baseChords, baseChord);
+            newIndex = (index + increment + 12) % 12;
             return $"{_baseChords[newIndex]}{chord.Substring(baseChord.Length)}";
         }
 
