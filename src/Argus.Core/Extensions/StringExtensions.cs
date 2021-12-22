@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2021-09-24
+ * @last updated      : 2022-12-22
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -1996,5 +1996,47 @@ namespace Argus.Extensions
 
             return singularForm;
         }
+
+        /// <summary>
+        /// Converts a camel cased string to snake case. Works for upper and lower camel case.
+        /// Example: 'FirstName' to 'first_name'
+        /// </summary>
+        /// <param name="str"></param>
+        public static string CamelToSnakeCase(this string str)
+        {
+            return Regex.Replace(str, "[A-Z]", "_$0").TrimStart('_').ToLower();
+        }
+
+        /// <summary>
+        /// Converts a snake case string to camel case. Default is upper camel case.
+        /// Example: 'first_name' to 'FirstName'
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="lowerFirst">If true, first letter will be left lower case. Default is false.</param>
+        public static string SnakeToCamelCase(this string str, bool lowerFirst = false)
+        {
+            var parts = str.Split('_');
+            var sb = new StringBuilder();
+
+            if (!lowerFirst)
+            {
+                foreach (var p in parts)
+                {
+                    sb.Append(char.ToUpper(p[0])).Append(p.Substring(1));
+                }
+            }
+            else
+            {
+                sb.Append(parts[0]);
+
+                for (var i = 1; i < parts.Length; i++)
+                {
+                    sb.Append(char.ToUpper(parts[i][0])).Append(parts[i].Substring(1));
+                }
+            }
+
+            return sb.ToString();
+        }
+
     }
 }

@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2021-02-14
- * @last updated      : 2021-03-07
+ * @last updated      : 2021-12-22
  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
  * @license           : MIT
  */
@@ -197,5 +197,24 @@ namespace Argus.UnitTests
             Assert.False("lucy-pell".IsAlphaNumeric());
             Assert.False("@LucyPell19".IsAlphaNumeric());
         }
+
+        [Fact]
+        public void SnakeToCamelCase()
+        {
+            Assert.True("person_first_name".SnakeToCamelCase().Equals("PersonFirstName"));
+            Assert.True("first_name".SnakeToCamelCase().Equals("FirstName"));
+            Assert.True("fIrst_name".SnakeToCamelCase().Equals("FIrstName"));
+            Assert.True("name".SnakeToCamelCase().Equals("Name"));
+        }
+
+        [Fact]
+        public void CamelToSnakeToCamelCase()
+        {
+            Assert.True("FirstName".CamelToSnakeCase().Equals("first_name"));
+            Assert.True("firstName".CamelToSnakeCase().Equals("first_name"));
+            Assert.True("first_name".CamelToSnakeCase().Equals("first_name"));
+            Assert.True("name".CamelToSnakeCase().Equals("name"));
+        }
+
     }
 }
