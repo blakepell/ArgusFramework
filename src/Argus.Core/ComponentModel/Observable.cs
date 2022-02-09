@@ -1,11 +1,11 @@
-﻿ /*
-  * @author            : Blake Pell
-  * @initial date      : 2019-11-15
-  * @last updated      : 2021-01-31
-  * @copyright         : Copyright (c) 2003-2021, All rights reserved.
-  * @license           : MIT
-  * @website           : http://www.blakepell.com
-  */
+﻿/*
+ * @author            : Blake Pell
+ * @initial date      : 2019-11-15
+ * @last updated      : 2021-01-31
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
+ * @license           : MIT
+ * @website           : http://www.blakepell.com
+ */
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;

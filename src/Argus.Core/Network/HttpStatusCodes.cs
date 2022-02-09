@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @initial date      : 2018-12-12
  * @last updated      : 2018-12-12
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */

@@ -3,7 +3,7 @@
  * @website           : http://www.blakepell.com
  * @initial date      : 2020-02-12
  * @last updated      : 2021-09-24
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 

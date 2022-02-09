@@ -3,11 +3,10 @@
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-07-03
  * @last updated      : 2020-06-25
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
-using System.Collections.Generic;
 using Argus.Data;
 using Argus.Math;
 

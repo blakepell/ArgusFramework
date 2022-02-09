@@ -2,15 +2,11 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2009-06-17
- * @last updated      : 2019-11-17
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @last updated      : 2022-02-09
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
 using Argus.Data;
 
 namespace Argus.Extensions
@@ -228,19 +224,19 @@ namespace Argus.Extensions
                 switch (formatType)
                 {
                     case FormatFieldTypes.Dollars:
-                        row[columnIndex] = Formatting.FormatDollars(row[columnIndex].ToString());
+                        row[columnIndex] = Argus.Data.Formatting.FormatDollars(row[columnIndex].ToString());
 
                         break;
                     case FormatFieldTypes.EmailLink:
-                        row[columnIndex] = Formatting.ReturnMailLink(row[columnIndex].ToString());
+                        row[columnIndex] = Argus.Data.Formatting.ReturnMailLink(row[columnIndex].ToString());
 
                         break;
                     case FormatFieldTypes.Link:
-                        row[columnIndex] = Formatting.ReturnLinkHtml(row[columnIndex].ToString(), true, true);
+                        row[columnIndex] = Argus.Data.Formatting.ReturnLinkHtml(row[columnIndex].ToString(), true, true);
 
                         break;
                     case FormatFieldTypes.CleanupNumber:
-                        row[columnIndex] = Formatting.CleanupNumber(row[columnIndex].ToString());
+                        row[columnIndex] = Argus.Data.Formatting.CleanupNumber(row[columnIndex].ToString());
 
                         break;
                     case FormatFieldTypes.NumberWithFormattingNoDecimal:
@@ -252,19 +248,19 @@ namespace Argus.Extensions
 
                         break;
                     case FormatFieldTypes.PercentWithNoDecimal:
-                        row[columnIndex] = Formatting.FormatPercent(row[columnIndex].ToString(), 0);
+                        row[columnIndex] = Argus.Data.Formatting.FormatPercent(row[columnIndex].ToString(), 0);
 
                         break;
                     case FormatFieldTypes.PercentWithTwoDecimals:
-                        row[columnIndex] = Formatting.FormatPercent(row[columnIndex].ToString(), 2);
+                        row[columnIndex] = Argus.Data.Formatting.FormatPercent(row[columnIndex].ToString(), 2);
 
                         break;
                     case FormatFieldTypes.PhoneNumber:
-                        row[columnIndex] = Formatting.FormatPhoneNumber(row[columnIndex].ToString());
+                        row[columnIndex] = Argus.Data.Formatting.FormatPhoneNumber(row[columnIndex].ToString());
 
                         break;
                     case FormatFieldTypes.ZipCode:
-                        row[columnIndex] = Formatting.FormatZipCode(row[columnIndex].ToString());
+                        row[columnIndex] = Argus.Data.Formatting.FormatZipCode(row[columnIndex].ToString());
 
                         break;
                     case FormatFieldTypes.ShortDate:

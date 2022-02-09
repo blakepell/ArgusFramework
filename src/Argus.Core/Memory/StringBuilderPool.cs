@@ -2,15 +2,13 @@
  * @author            : Blake Pell
  * @initial date      : 2020-02-27
  * @last updated      : 2021-09-19
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
 
 using Argus.Extensions;
-using System;
 using System.Collections.Concurrent;
-using System.Text;
 
 namespace Argus.Memory
 {

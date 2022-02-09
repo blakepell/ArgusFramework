@@ -1,7 +1,7 @@
 ﻿/*
  * @initial date      : 2005-06-12
  * @last updated      : 2019-11-17
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  */
 

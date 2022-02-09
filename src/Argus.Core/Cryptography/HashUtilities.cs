@@ -3,15 +3,13 @@
  * @website           : http://www.blakepell.com
  * @initial date      : 2018-06-12
  * @last updated      : 2021-06-30
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using Argus.Extensions;
 using Cysharp.Text;
+using System.Security.Cryptography;
 
 namespace Argus.Cryptography
 {

@@ -2,13 +2,10 @@
  * @author            : Microsoft, Blake Pell
  * @initial date      : 2021-10-03
  * @last updated      : 2021-10-03
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  */
 
-using Newtonsoft.Json;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Argus.IO

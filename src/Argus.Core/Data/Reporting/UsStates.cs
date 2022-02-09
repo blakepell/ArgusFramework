@@ -3,19 +3,16 @@
  * @website           : http://www.blakepell.com
  * @initial date      : 2009-03-27
  * @last updated      : 2021-01-31
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
-
-using System;
-using System.Collections.Generic;
 
 namespace Argus.Data.Reporting
 {
     /// <summary>
     /// Utilities for US States
     /// </summary>
-    #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public static class UsStates
     {
 

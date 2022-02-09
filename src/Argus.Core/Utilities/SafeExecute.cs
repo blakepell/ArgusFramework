@@ -3,8 +3,6 @@
  * @reference         : https://weblog.west-wind.com/posts/2018/Jun/16/Explicitly-Ignoring-Exceptions-in-C</remarks>
  */
 
-using System;
-
 namespace Argus.Utilities
 {
     /// <summary>

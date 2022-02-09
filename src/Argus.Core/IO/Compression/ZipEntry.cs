@@ -13,8 +13,6 @@
 //
 // Tue, 27 Mar 2007  15:30
 
-using System;
-using System.IO;
 using System.IO.Compression;
 
 namespace Argus.IO.Compression

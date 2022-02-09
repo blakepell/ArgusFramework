@@ -1,11 +1,9 @@
 ﻿/*
  * @author            : Dave DeMeulenaere
  * @last updated      : 2016-05-26
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
-
-using System;
 
 namespace Argus.Extensions
 {

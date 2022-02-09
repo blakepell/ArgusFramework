@@ -2,16 +2,13 @@
  * @author            : Blake Pell
  * @initial date      : 2008-04-02
  * @last updated      : 2021-09-26
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 using Argus.Extensions;
+using System.Text.RegularExpressions;
 
 namespace Argus.Data
 {

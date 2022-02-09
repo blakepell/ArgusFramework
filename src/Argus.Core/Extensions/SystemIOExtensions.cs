@@ -2,14 +2,13 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2009-04-06
- * @last updated      : 2021-06-26
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @last updated      : 2022-02-09
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
 using Argus.Cryptography;
 using Argus.Data;
-using System.IO;
 
 namespace Argus.Extensions
 {
@@ -24,7 +23,7 @@ namespace Argus.Extensions
         /// <param name="fi"></param>
         public static string FormattedFileSize(this FileInfo fi)
         {
-            return Formatting.FormattedFileSize(fi.Length);
+            return Argus.Data.Formatting.FormattedFileSize(fi.Length);
         }
 
         /// <summary>

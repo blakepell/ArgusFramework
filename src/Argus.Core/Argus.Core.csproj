@@ -9,13 +9,13 @@
     <Company>http://www.blakepell.com</Company>
     <Product>Argus Framework - Common Library</Product>
     <Description>Argus Framework - Common Library</Description>
-    <Copyright>2003-2021</Copyright>
+    <Copyright>2003-2022</Copyright>
     <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>2021.12.12.1</Version>
-    <AssemblyVersion>2021.12.12.1</AssemblyVersion>
-    <FileVersion>2021.12.12.1</FileVersion>
+    <Version>2022.2.9.1</Version>
+    <AssemblyVersion>2022.2.9.1</AssemblyVersion>
+    <FileVersion>2022.2.9.1</FileVersion>
     <PackageIconUrl></PackageIconUrl>
     <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
     <PackageTags>argus</PackageTags>
@@ -25,9 +25,41 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="ZString" Version="2.4.3" />
+    <PackageReference Include="ZString" Version="2.4.4" />
   </ItemGroup>
 
   <ItemGroup>

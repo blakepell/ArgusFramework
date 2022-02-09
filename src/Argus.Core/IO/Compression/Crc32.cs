@@ -24,8 +24,6 @@
 // Thu, 30 Mar 2006  13:58
 // 
 
-using System.IO;
-
 namespace Argus.IO.Compression
 {
     /// <summary>

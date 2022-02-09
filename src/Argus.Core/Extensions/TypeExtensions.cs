@@ -3,11 +3,9 @@
  * @website           : http://www.blakepell.com
  * @initial date      : 2016-01-17
  * @last updated      : 2019-11-17
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
-
-using System;
 
 namespace Argus.Extensions
 {

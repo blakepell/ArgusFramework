@@ -2,16 +2,10 @@
  * @author            : Blake Pell
  * @initial date      : 2011-09-07
  * @last updated      : 2021-01-26
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
-
-using System;
-using System.Collections.Specialized;
-using System.Data;
-using System.Net;
-using System.Text;
 
 namespace Argus.Data
 {

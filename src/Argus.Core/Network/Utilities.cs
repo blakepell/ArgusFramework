@@ -2,14 +2,11 @@
  * @author            : Blake Pell
  * @initial date      : 2009-04-07
  * @last updated      : 2020-10-23
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
 
-using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Argus.Network

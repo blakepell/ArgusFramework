@@ -3,9 +3,6 @@
  * @license           : MIT
  */
 
-using System;
-using System.Diagnostics;
-
 namespace Argus.Data.RegEx
 {
     /// <summary>

@@ -3,14 +3,10 @@
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-03-08
  * @last updated      : 2017-09-19
- * @copyright         : Copyright (c) 2003-2021, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
-using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace Argus.Extensions
