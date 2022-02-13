@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2022-12-22
+ * @last updated      : 2022-02-13
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -2031,5 +2031,43 @@ namespace Argus.Extensions
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates a slug from the provided string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="maxLength">The length the slug should be truncated at.</param>
+        /// <remarks>Valid characters are letters, digits and spaces (which will be converted to dashes).</remarks>
+        public static string GenerateSlug(this string str, int maxLength = 128)
+        {
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                return string.Empty;
+            }
+
+            // No white space at the start or end of the string.
+            str = str.Trim();
+
+            var builder = new StringBuilder(maxLength);
+
+            for (int i = 0; i <= str.Length - 1; i++)
+            {
+                if (i > maxLength)
+                {
+                    break;
+                }
+
+                if (char.IsLetterOrDigit(str, i))
+                {
+                    builder.Append(char.ToLower(str[i]));
+                }
+
+                if (str[i] == ' ')
+                {
+                    builder.Append('-');
+                }
+            }
+
+            return builder.ToString();
+        }
     }
 }
