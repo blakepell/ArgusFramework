@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net461;net45;net35;netcoreapp3.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <Version>2021.11.9.1</Version>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net462;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <Version>2022.3.1.1</Version>
     <Authors>Blake Pell</Authors>
     <Company>https://www.blakepell.com</Company>
     <Product>Argus Framework - NAudio Utilities</Product>
@@ -19,7 +19,7 @@
     <AssemblyName>Argus.Audio.NAudio</AssemblyName>
     <PackageReleaseNotes></PackageReleaseNotes>
     <LangVersion>8.0</LangVersion>
-    <AssemblyVersion>2021.11.9.1</AssemblyVersion>
+    <AssemblyVersion>2022.3.1.1</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
