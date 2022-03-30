@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29318.209
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreTestSite", "tests\AspNetCoreTestSite\AspNetCoreTestSite.csproj", "{CAAEC7DB-9112-44E4-9692-E434FC45824F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{56160BAD-F64E-410B-88C3-B385A8200FBE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{06A25C01-C8FB-4AD6-88F4-21ABA07A9F78}"
@@ -47,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Audio.NAudio", "src\A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.UnitTests", "tests\Argus.UnitTests\Argus.UnitTests.csproj", "{234B10D8-3250-4339-A693-71B27927A139}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{BA9A0FF4-6AE1-4056-BDD4-3EBAAA4DEFC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{BA9A0FF4-6AE1-4056-BDD4-3EBAAA4DEFC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,26 +61,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|ARM.Build.0 = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|x64.Build.0 = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Debug|x86.Build.0 = Debug|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|ARM.ActiveCfg = Release|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|ARM.Build.0 = Release|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|ARM64.Build.0 = Release|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|x64.ActiveCfg = Release|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|x64.Build.0 = Release|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|x86.ActiveCfg = Release|Any CPU
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F}.Release|x86.Build.0 = Release|Any CPU
 		{1F816CD0-7DBD-4D2E-B397-7F90F3764C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F816CD0-7DBD-4D2E-B397-7F90F3764C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F816CD0-7DBD-4D2E-B397-7F90F3764C23}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -388,7 +366,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CAAEC7DB-9112-44E4-9692-E434FC45824F} = {56160BAD-F64E-410B-88C3-B385A8200FBE}
 		{797578C6-37F9-46F8-A2FE-EE2418B6F1B8} = {56160BAD-F64E-410B-88C3-B385A8200FBE}
 		{06B7E4DB-B178-43BE-BFFD-6B0BD6F63028} = {56160BAD-F64E-410B-88C3-B385A8200FBE}
 		{AA33F11B-39F5-4364-81DD-9D8588F398BF} = {56160BAD-F64E-410B-88C3-B385A8200FBE}
