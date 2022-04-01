@@ -2,13 +2,14 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2022-02-13
+ * @last updated      : 2022-04-01
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
 using Argus.Cryptography;
 using Cysharp.Text;
+using System.ComponentModel;
 using System.Globalization;
 using System.Security;
 
@@ -1376,20 +1377,6 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Whether the string is a valid DateTime.
-        /// </summary>
-        /// <param name="input"></param>
-        public static bool IsDateTime(this string input)
-        {
-            if (!string.IsNullOrEmpty(input))
-            {
-                return DateTime.TryParse(input, out var dt);
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Converts a string into it's hexadecimal representation.
         /// </summary>
         /// <param name="value">String to turn into hexadecimal.</param>
@@ -2068,6 +2055,216 @@ namespace Argus.Extensions
             }
 
             return builder.ToString();
+        }
+
+        /// <summary>
+        /// Returns an <see cref="int"/> via <see cref="int.TryParse(string, out int)" />.  0 is
+        /// returned if the value does not convert.
+        /// </summary>
+        /// <param name="value"></param>
+        public static int AsInt(this string value)
+        {
+            return AsInt(value, 0);
+        }
+
+        /// <summary>
+        /// Returns an <see cref="int"/> via <see cref="int.TryParse(string, out int)" />.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        public static int AsInt(this string value, int defaultValue)
+        {
+            return Int32.TryParse(value, out int result) ? result : defaultValue;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="decimal"/> for the specified string.
+        /// </summary>
+        /// <param name="value"></param>
+        public static decimal AsDecimal(this string value)
+        {
+            return As<Decimal>(value);
+        }
+        
+        /// <summary>
+        /// Returns a <see cref="decimal"/> for the specified string.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        public static decimal AsDecimal(this string value, decimal defaultValue)
+        {
+            return As<Decimal>(value, defaultValue);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="float"/> for the specified string.
+        /// </summary>
+        /// <param name="value"></param>
+        public static float AsFloat(this string value)
+        {
+            return AsFloat(value, default(float));
+        }
+
+        /// <summary>
+        /// Returns a <see cref="float"/> for the specified string.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        public static float AsFloat(this string value, float defaultValue)
+        {
+            return Single.TryParse(value, out float result) ? result : defaultValue;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="DateTime"/> for the specified string.
+        /// </summary>
+        /// <param name="value"></param>
+        public static DateTime AsDateTime(this string value)
+        {
+            return AsDateTime(value, default(DateTime));
+        }
+
+        /// <summary>
+        /// Returns a <see cref="DateTime"/> for the specified string.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        public static DateTime AsDateTime(this string value, DateTime defaultValue)
+        {
+            return DateTime.TryParse(value, out DateTime result) ? result : defaultValue;
+        }
+
+        /// <summary>
+        /// Attempts to return a value of the specified generic type converted via <see cref="TypeConverter"/>.  If
+        /// a conversion fails the default for the generic type will be returned.
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="value"></param>
+        /// <remarks>This assumes the value will always parse.</remarks>
+        public static TValue As<TValue>(this string value)
+        {
+            try
+            {
+                var converter = TypeDescriptor.GetConverter(typeof(TValue));
+
+                if (converter.CanConvertFrom(typeof(string)))
+                {
+                    return (TValue)converter.ConvertFrom(value);
+                }
+
+                // Try the other direction
+                converter = TypeDescriptor.GetConverter(typeof(string));
+
+                if (converter.CanConvertTo(typeof(TValue)))
+                {
+                    return (TValue)converter.ConvertTo(value, typeof(TValue));
+                }
+            }
+            catch { }
+
+            return default;
+        }
+
+        /// <summary>
+        /// Attempts to return a value of the specified generic type converted via <see cref="TypeConverter"/>.
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        /// <remarks>This assumes the value will always parse.</remarks>
+        public static TValue As<TValue>(this string value, TValue defaultValue)
+        {
+            try
+            {
+                var converter = TypeDescriptor.GetConverter(typeof(TValue));
+
+                if (converter.CanConvertFrom(typeof(string)))
+                {
+                    return (TValue)converter.ConvertFrom(value);
+                }
+                
+                // Try the other direction
+                converter = TypeDescriptor.GetConverter(typeof(string));
+                
+                if (converter.CanConvertTo(typeof(TValue)))
+                {
+                    return (TValue)converter.ConvertTo(value, typeof(TValue));
+                }
+            }
+            catch { }
+            
+            return defaultValue;
+        }
+
+        /// <summary>
+        /// If the string will parse as a <see cref="bool"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        public static bool IsBool(this string value)
+        {
+            return bool.TryParse(value, out bool result);
+        }
+
+        /// <summary>
+        /// If the string will parse as a <see cref="System.Int32"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        public static bool IsInt(this string value)
+        {
+            return Int32.TryParse(value, out int result);
+        }
+
+        /// <summary>
+        /// If the string will parse as a <see cref="decimal"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        public static bool IsDecimal(this string value)
+        {
+            return Is<decimal>(value);
+        }
+
+        /// <summary>
+        /// If the string will parse as a <see cref="float"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        public static bool IsFloat(this string value)
+        {
+            float result;
+            return Single.TryParse(value, out result);
+        }
+
+        /// <summary>
+        /// If the string will parse as a <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        public static bool IsDateTime(this string value)
+        {
+            return DateTime.TryParse(value, out DateTime result);
+        }
+
+        /// <summary>
+        /// Attempts to determine if the value is of the specified generic type via <see cref="TypeConverter"/>.
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="value"></param>
+        public static bool Is<TValue>(this string value)
+        {
+            var converter = TypeDescriptor.GetConverter(typeof(TValue));
+            
+            if (converter != null)
+            {
+                try
+                {
+                    if ((value == null) || converter.CanConvertFrom(null, value.GetType()))
+                    {
+                        converter.ConvertFrom(null, CultureInfo.CurrentCulture, value);
+                        return true;
+                    }
+                }
+                catch { }
+            }
+            
+            return false;
         }
     }
 }
