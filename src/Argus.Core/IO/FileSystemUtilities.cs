@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2010-07-07
- * @last updated      : 2019-11-17
+ * @last updated      : 2022-04-01
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -172,6 +172,37 @@ namespace Argus.IO
             catch
             {
                 // eat error
+            }
+        }
+
+        /// <summary>
+        /// Deletes a directory and all of its contents.
+        /// </summary>
+        /// <param name="dirPath"></param>
+        public static void DirectoryTreeDelete(string dirPath)
+        {
+            foreach (var subDirectoryPath in Directory.EnumerateDirectories(dirPath))
+            {
+                DirectoryTreeDelete(subDirectoryPath);
+            }
+
+            try
+            {
+                foreach (var filePath in Directory.EnumerateFiles(dirPath))
+                {
+                    var fileInfo = new FileInfo(filePath)
+                    {
+                        Attributes = FileAttributes.Normal
+                    };
+                    
+                    fileInfo.Delete();
+                }
+                
+                Directory.Delete(dirPath);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to delete directory \"{dirPath}\" => {e.Message}", e);
             }
         }
 
