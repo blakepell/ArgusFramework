@@ -3,9 +3,6 @@
  * @license           : MIT
  */
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Argus.AspNetCore.Memory

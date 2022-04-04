@@ -5,12 +5,11 @@
  * @license           : MIT
  */
 
-using System;
-using System.Runtime.InteropServices;
-using System.Text.Json;
 using Argus.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System.Runtime.InteropServices;
+using System.Text.Json;
 
 namespace Argus.AspNetCore.Environment
 {

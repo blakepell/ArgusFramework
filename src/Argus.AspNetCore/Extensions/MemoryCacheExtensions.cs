@@ -5,7 +5,6 @@
  * @license           : MIT
  */
 
-using System;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Argus.Extensions

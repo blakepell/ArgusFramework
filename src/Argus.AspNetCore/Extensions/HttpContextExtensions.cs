@@ -5,7 +5,6 @@
  * @license           : MIT
  */
 
-using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 namespace Argus.Extensions

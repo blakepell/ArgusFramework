@@ -3,11 +3,11 @@
  * @license           : MIT
  */
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Argus.AspNetCore.TagHelpers
 {
@@ -49,8 +49,6 @@ namespace Argus.AspNetCore.TagHelpers
             using (var md5 = MD5.Create())
             {
                 var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(this.EmailAddress));
-
-
                 var sb = new StringBuilder();
 
                 for (int i = 0; i < hash.Length; i++)
