@@ -17,6 +17,26 @@ namespace Argus.Extensions
     public static class ObjectExtensions
     {
         /// <summary>
+        /// If any object is a nullable object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        public static bool IsNullable<T>(this T obj)
+        {
+            return default(T) == null;
+        }
+
+        /// <summary>
+        /// If the object is a nullable value type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        static bool IsNullableValueType<T>(this T obj)
+        {
+            return default(T) == null && typeof(T).BaseType != null && "ValueType".Equals(typeof(T).BaseType.Name);
+        }
+
+        /// <summary>
         /// Serializes an object into it's JSON (JavaScript Object Notation) representation.
         /// </summary>
         /// <param name="obj"></param>

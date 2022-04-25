@@ -2,10 +2,12 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2021-01-27
+ * @last updated      : 2022-04-09
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
+
+using Cysharp.Text;
 
 namespace Argus.Extensions
 {
@@ -15,6 +17,23 @@ namespace Argus.Extensions
     public static class StringBuilderExtensions
     {
 #if NET5_0_OR_GREATER
+        /// <summary>
+        /// Creates a <see cref="Utf16ValueStringBuilder"/> from the chunks of the <see cref="StringBuilder"/>.  The 
+        /// <see cref="Utf16ValueStringBuilder"/> must be disposed of when it is no longer needed.
+        /// </summary>
+        /// <param name="sb"></param>
+        public static Utf16ValueStringBuilder ToUtf16ValueStringBuilder(this StringBuilder sb)
+        {
+            var zsb = ZString.CreateStringBuilder();
+            
+            foreach (ReadOnlyMemory<char> chunk in sb.GetChunks())
+            {
+                zsb.Append(chunk.Span);
+            }
+            
+            return zsb;
+        }
+
         /// <summary>
         /// Finds the first index of a char in a <see cref="StringBuilder"/>.  If not match is found
         /// a -1 is returned.
