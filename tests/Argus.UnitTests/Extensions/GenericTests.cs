@@ -45,7 +45,7 @@ namespace Argus.UnitTests
         {
             var p = new Person();
             p.LastName = "Pell";
-            Assert.Equal("Pell", p.Get("LastName"));
+            Assert.Equal("Pell", p.Get<string>("LastName"));
         }
 
         [Fact]

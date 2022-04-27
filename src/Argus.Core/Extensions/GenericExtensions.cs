@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2014-01-02
- * @last updated      : 2021-01-27
+ * @last updated      : 2022-04-17
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -32,32 +32,6 @@ namespace Argus.Extensions
         public static bool IsNull<T>(this T? obj) where T : struct
         {
             return !obj.HasValue;
-        }
-
-        /// <summary>
-        /// Sets a property's value via reflection.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="this"></param>
-        /// <param name="propertyName"></param>
-        /// <param name="value"></param>
-        public static void Set<T>(this T @this, string propertyName, object value)
-        {
-            var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-            prop?.SetValue(@this, value, null);
-        }
-
-        /// <summary>
-        /// Get's a property value via reflection as an object.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="this"></param>
-        /// <param name="propertyName"></param>
-        public static object Get<T>(this T @this, string propertyName)
-        {
-            var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-
-            return prop?.GetValue(@this, null);
         }
 
 #if NETSTANDARD2_0

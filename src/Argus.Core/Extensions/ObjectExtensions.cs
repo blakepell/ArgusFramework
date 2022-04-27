@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-03-08
- * @last updated      : 2017-09-19
+ * @last updated      : 2022-04-17
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -16,6 +16,32 @@ namespace Argus.Extensions
     /// </summary>
     public static class ObjectExtensions
     {
+        /// <summary>
+        /// Sets a property's value via reflection.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        public static void Set<T>(this T obj, string propertyName, object value)
+        {
+            var prop = obj.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            prop?.SetValue(obj, value, null);
+        }
+
+        /// <summary>
+        /// Gets a property value via reflection for an object and attempts to use Convert.ChangeType
+        /// to change it into the correct type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="propertyName"></param>
+        public static T Get<T>(this object obj, string propertyName)
+        {
+            var prop = obj.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            return (T)Convert.ChangeType(prop?.GetValue(obj, null), typeof(T));
+        }
+
         /// <summary>
         /// If any object is a nullable object.
         /// </summary>
@@ -94,9 +120,7 @@ namespace Argus.Extensions
             using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(xml)))
             {
                 var serializer = new XmlSerializer(typeof(T));
-                var temp = (T) serializer.Deserialize(stream);
-
-                return temp;
+                return (T) serializer.Deserialize(stream);
             }
         }
     }
