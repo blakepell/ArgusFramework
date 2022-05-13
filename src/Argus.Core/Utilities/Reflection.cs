@@ -49,12 +49,7 @@ namespace Argus.Utilities
             var attributes = TypeDescriptor.GetProperties(t)[propertyName].Attributes;
 
             // Only show the properties that can be set and whether it's browsable or not.                        
-            if (attributes[typeof(BrowsableAttribute)].Equals(BrowsableAttribute.Yes))
-            {
-                return true;
-            }
-
-            return false;
+            return attributes[typeof(BrowsableAttribute)].Equals(BrowsableAttribute.Yes);
         }
 
         /// <summary>
@@ -80,13 +75,13 @@ namespace Argus.Utilities
 
             var attributes = TypeDescriptor.GetProperties(t)[propertyName].Attributes;
 
-            // Only show the properties that can be set and whether it's browsable or not.                        
-            if (attributes[typeof(BrowsableAttribute)].Equals(BrowsableAttribute.Yes) & pi.CanWrite)
+            if (pi?.CanWrite == null)
             {
-                return true;
+                return false;
             }
-
-            return false;
+            
+            // Only show the properties that can be set and whether it's browsable or not.                        
+            return attributes[typeof(BrowsableAttribute)].Equals(BrowsableAttribute.Yes) & pi.CanWrite;
         }
 
         /// <summary>

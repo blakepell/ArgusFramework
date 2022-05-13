@@ -36,9 +36,9 @@ namespace Argus.Memory
         private const int MaxPooledStringBuilders = 64;
 
         /// <summary>
-        /// The <see cref="ConcurrentQueue"/> of stored <see cref="StringBuilder"/> objects.
+        /// The <see cref="ConcurrentQueue{T}"/> of stored <see cref="StringBuilder"/> objects.
         /// </summary>
-        private static readonly ConcurrentQueue<StringBuilder> Pool = new ConcurrentQueue<StringBuilder>();
+        private static readonly ConcurrentQueue<StringBuilder> Pool = new();
 
         /// <summary>
         /// Returns a StringBuilder from the pool.  If no StringBuilder is available a new one will
@@ -46,12 +46,7 @@ namespace Argus.Memory
         /// </summary>
         public static StringBuilder Take()
         {
-            if (Pool.TryDequeue(out var sb))
-            {
-                return sb;
-            }
-
-            return new StringBuilder();
+            return Pool.TryDequeue(out var sb) ? sb : new StringBuilder();
         }
 
         /// <summary>

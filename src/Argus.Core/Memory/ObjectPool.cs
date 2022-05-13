@@ -9,6 +9,7 @@
 
 using Argus.Math;
 using System.Collections.Concurrent;
+// ReSharper disable UnusedMember.Global
 
 namespace Argus.Memory
 {
@@ -29,7 +30,7 @@ namespace Argus.Memory
         /// <summary>
         /// Holds the objects in the pool.
         /// </summary>
-        private readonly ConcurrentBag<T> _items = new ConcurrentBag<T>();
+        private readonly ConcurrentBag<T> _items = new();
 
         /// <summary>
         /// The maximum number of objects we will hold in the Pool.  Anything over this number is created and
@@ -41,12 +42,12 @@ namespace Argus.Memory
         /// The number of new objects that were created, either because the pool limit wasn't met or
         /// because the requests can in while the pool was at it's max limit.
         /// </summary>
-        public int CounterNewObjects { get; private set; } = 0;
+        public int CounterNewObjects { get; private set; }
 
         /// <summary>
         /// The number of times an object from the pool was reused.
         /// </summary>
-        public int CounterReusedObjects { get; private set; } = 0;
+        public int CounterReusedObjects { get; private set; }
 
         /// <summary>
         /// Returns an object back into the pool.  If the item is not returned to the pool and
@@ -87,7 +88,7 @@ namespace Argus.Memory
 
             // If item gets here it was not returned to the pool, as a result, if it needs
             // to be disposed of then we're going to do that before it goes into the ether.
-            this.DisposeItem(item);
+            DisposeItem(item);
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace Argus.Memory
             // inside of the loop.
             while (_items.TryTake(out var item))
             {
-                this.DisposeItem(item);
+                DisposeItem(item);
             }
         }
 
@@ -142,7 +143,7 @@ namespace Argus.Memory
             {
                 return;
             }
-
+            
             foreach (var item in _items)
             {
                 action.Invoke(item);
@@ -185,14 +186,12 @@ namespace Argus.Memory
         /// Disposes of the item <see cref="T"/> if it is <see cref="IDisposable"/>.
         /// </summary>
         /// <param name="item"></param>
-        private void DisposeItem(T item)
+        private static void DisposeItem(T item)
         {
             // If item gets here it was not returned to the pool, as a result, if it needs
             // to be disposed of then we're going to do that before it goes into the ether.
-            if (item is IDisposable d)
-            {
-                d?.Dispose();
-            }
+            var d = item as IDisposable;
+            d?.Dispose();
         }
 
         /// <summary>

@@ -25,12 +25,7 @@ namespace Argus.Math
                 return max;
             }
 
-            if (value < min)
-            {
-                return min;
-            }
-
-            return value;
+            return value < min ? min : value;
         }
     }
 }

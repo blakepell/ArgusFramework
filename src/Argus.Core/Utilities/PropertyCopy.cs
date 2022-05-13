@@ -82,9 +82,10 @@ namespace Argus.Utilities
         /// We could build a DynamicMethod, but that's significantly more work :) Please mail
         /// me if you really need this...
         /// </summary>
-        private static readonly List<PropertyInfo> sourceProperties = new List<PropertyInfo>();
+        private static readonly List<PropertyInfo> sourceProperties = new();
 
-        private static readonly List<PropertyInfo> targetProperties = new List<PropertyInfo>();
+        private static readonly List<PropertyInfo> targetProperties = new();
+        
         private static readonly Exception initializationException;
 
         static PropertyCopier()
@@ -110,7 +111,7 @@ namespace Argus.Utilities
 
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             return creator(source);
@@ -125,7 +126,7 @@ namespace Argus.Utilities
 
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             for (int i = 0; i < sourceProperties.Count; i++)
@@ -150,22 +151,22 @@ namespace Argus.Utilities
 
                 if (targetProperty == null)
                 {
-                    throw new ArgumentException("Property " + sourceProperty.Name + " is not present and accessible in " + typeof(TTarget).FullName);
+                    throw new ArgumentException($"Property {sourceProperty.Name} is not present and accessible in {typeof(TTarget).FullName}");
                 }
 
                 if (!targetProperty.CanWrite)
                 {
-                    throw new ArgumentException("Property " + sourceProperty.Name + " is not writable in " + typeof(TTarget).FullName);
+                    throw new ArgumentException($"Property {sourceProperty.Name} is not writable in {typeof(TTarget).FullName}");
                 }
 
                 if ((targetProperty.GetSetMethod().Attributes & MethodAttributes.Static) != 0)
                 {
-                    throw new ArgumentException("Property " + sourceProperty.Name + " is static in " + typeof(TTarget).FullName);
+                    throw new ArgumentException($"Property {sourceProperty.Name} is static in {typeof(TTarget).FullName}");
                 }
 
                 if (!targetProperty.PropertyType.IsAssignableFrom(sourceProperty.PropertyType))
                 {
-                    throw new ArgumentException("Property " + sourceProperty.Name + " has an incompatible type in " + typeof(TTarget).FullName);
+                    throw new ArgumentException($"Property {sourceProperty.Name} has an incompatible type in {typeof(TTarget).FullName}");
                 }
 
                 bindings.Add(Expression.Bind(targetProperty, Expression.Property(sourceParameter, sourceProperty)));

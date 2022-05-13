@@ -12,6 +12,7 @@ using Cysharp.Text;
 using System.ComponentModel;
 using System.Globalization;
 using System.Security;
+using System.Security.Cryptography;
 
 namespace Argus.Extensions
 {
