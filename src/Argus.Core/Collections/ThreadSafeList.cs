@@ -28,7 +28,7 @@ namespace Argus.Collections
         /// The lock mechanism with support for recursion which allows <see cref="GetEnumerator"/> to be called without
         /// a <see cref="LockRecursionException"/> being thrown.
         /// </summary>
-        private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+        private ReaderWriterLockSlim _lock = new(LockRecursionPolicy.SupportsRecursion);
 
         /// <summary>
         /// Constructor

@@ -105,4 +105,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Argus.Core\Argus.Core.csproj" />
+  </ItemGroup>
+
 </Project>

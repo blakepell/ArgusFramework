@@ -2,12 +2,12 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2020-02-12
- * @last updated      : 2021-09-24
+ * @last updated      : 2022-05-24
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
-#if NETSTANDARD2_1 || NET5_0 || NET6_0
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
 using System;
 
 namespace Argus.Extensions

@@ -2203,7 +2203,7 @@ namespace Argus.Extensions
         /// <param name="value"></param>
         public static bool IsBool(this string value)
         {
-            return bool.TryParse(value, out bool result);
+            return bool.TryParse(value, out bool _);
         }
 
         /// <summary>
@@ -2212,7 +2212,7 @@ namespace Argus.Extensions
         /// <param name="value"></param>
         public static bool IsInt(this string value)
         {
-            return Int32.TryParse(value, out int result);
+            return int.TryParse(value, out int _);
         }
 
         /// <summary>
@@ -2221,7 +2221,7 @@ namespace Argus.Extensions
         /// <param name="value"></param>
         public static bool IsDecimal(this string value)
         {
-            return Is<decimal>(value);
+            return decimal.TryParse(value, out decimal _);
         }
 
         /// <summary>
@@ -2230,8 +2230,7 @@ namespace Argus.Extensions
         /// <param name="value"></param>
         public static bool IsFloat(this string value)
         {
-            float result;
-            return Single.TryParse(value, out result);
+            return float.TryParse(value, out float _);
         }
 
         /// <summary>
@@ -2240,7 +2239,7 @@ namespace Argus.Extensions
         /// <param name="value"></param>
         public static bool IsDateTime(this string value)
         {
-            return DateTime.TryParse(value, out DateTime result);
+            return DateTime.TryParse(value, out DateTime _);
         }
 
         /// <summary>

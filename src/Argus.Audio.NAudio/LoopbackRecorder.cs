@@ -2,12 +2,13 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2013-07-26
- * @last updated      : 2020-12-03
+ * @last updated      : 2022-05-13
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 
@@ -25,7 +26,8 @@ namespace Argus.Audio.NAudio
     /// anything is playing or if there is silence).  The original blog post exists at:
     /// https://www.blakepell.com/2013-07-26-naudio-loopback-record-what-you-hear-through-the-speaker
     /// </remarks>
-    public class LoopbackRecorder : IDisposable
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    public sealed class LoopbackRecorder : IDisposable
     {
         /// <summary>
         /// Private variable for the <see cref="AudioDevice" /> property.
@@ -33,8 +35,8 @@ namespace Argus.Audio.NAudio
         private MMDevice _audioDevice;
 
         /// <summary>
-        /// Used to check redundant calls to <see cref="Dispose" />.
-        /// </summary>
+        /// Used to check redundant calls to <see cref="Dispose()" />.
+        /// </summary>s
         private bool _disposed;
 
         private IWaveIn _waveIn;
@@ -53,6 +55,7 @@ namespace Argus.Audio.NAudio
             }
             catch
             {
+                // For better or worse, we're ignoring exceptions in the constructor.
             }
         }
 
@@ -79,6 +82,7 @@ namespace Argus.Audio.NAudio
             }
             catch
             {
+                // For better or worse, we're ignoring exceptions in the constructor.
             }
         }
 
@@ -245,10 +249,10 @@ namespace Argus.Audio.NAudio
         }
 
         /// <summary>
-        /// Protected implementation of <see cref="Dispose" />.
+        /// Protected implementation of <see cref="Dispose()" />.
         /// </summary>
         /// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
+        public void Dispose(bool disposing)
         {
             if (_disposed)
             {

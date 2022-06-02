@@ -55,9 +55,7 @@ namespace Argus.Utilities
         /// <param name="strDate"></param>
         public static bool IsValidDateTime(string strDate)
         {
-            DateTime tempDate;
-
-            return DateTime.TryParse(strDate, out tempDate);
+            return DateTime.TryParse(strDate, out _);
         }
 
         /// <summary>
@@ -87,12 +85,7 @@ namespace Argus.Utilities
             if (startDate.Date == endDate.Date)
             {
                 // If the times are equal, just show the date and time of one otherwise show the range.
-                if (startDate.TimeOfDay.Ticks == endDate.TimeOfDay.Ticks)
-                {
-                    return $"{startDate.ToShortDateString()} {startDate.ToShortTimeString()}";
-                }
-
-                return $"{startDate.ToShortDateString()} {startDate.ToShortTimeString()} to {endDate.ToShortTimeString()}";
+                return startDate.TimeOfDay.Ticks == endDate.TimeOfDay.Ticks ? $"{startDate.ToShortDateString()} {startDate.ToShortTimeString()}" : $"{startDate.ToShortDateString()} {startDate.ToShortTimeString()} to {endDate.ToShortTimeString()}";
             }
 
             // Dates are different, but if they are both at midnight exactly don't show the time
