@@ -7,7 +7,9 @@
   * @website           : http://www.blakepell.com
   */
 
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Argus.IO
 {
@@ -45,7 +47,34 @@ namespace Argus.IO
 
         [DllImport("user32", CharSet = CharSet.Ansi, SetLastError = true)]
         private static extern int GetParent(int hwnd);
-        
+
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hwnd, ref Rect rectangle);
+
+        /// <summary>
+        /// A rectangle for use with the WinAPI.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Rect
+        {
+            /// <summary>
+            /// x position of upper-left corner
+            /// </summary>
+            public int Left;
+            /// <summary>
+            /// y position of upper-left corner
+            /// </summary>
+            public int Top;
+            /// <summary>
+            /// x position of lower-right corner
+            /// </summary>
+            public int Right;
+            /// <summary>
+            /// y position of lower-right corner
+            /// </summary>
+            public int Bottom;
+        }
+
         /// <summary>
         /// Finds whether the specified window currently exists or not.
         /// </summary>
@@ -147,7 +176,7 @@ namespace Argus.IO
         public static void SetWindowPositionSize(string windowName, int x, int y, int width, int height)
         {
             var hWndInsertAfter = IntPtr.Zero;
-            SetWindowPos(FindWindow((string)null, windowName), hWndInsertAfter, x, y,width,height, 0U);
+            SetWindowPos(FindWindow((string)null, windowName), hWndInsertAfter, x, y, width, height, 0U);
         }
 
         /// <summary>Sets the position and the size of the active window.</summary>
@@ -158,7 +187,18 @@ namespace Argus.IO
         public static void SetWindowPositionSize(int x, int y, int width, int height)
         {
             var hWndInsertAfter = IntPtr.Zero;
-            SetWindowPos(FindWindow((string)null, GetActiveWindowTitle(true)), hWndInsertAfter, x, y,width, height, 0U);
+            SetWindowPos(FindWindow((string)null, GetActiveWindowTitle(true)), hWndInsertAfter, x, y, width, height, 0U);
+        }
+
+        /// <summary>
+        /// Returns the window position for the given handle.
+        /// </summary>
+        /// <param name="hwnd"></param>
+        public static Rect GetWindowPosition(IntPtr hwnd)
+        {
+            var rect = new Rect();
+            GetWindowRect(hwnd, ref rect);
+            return rect;
         }
     }
 }
