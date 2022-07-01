@@ -8,6 +8,7 @@
  */
 
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace Argus.Extensions
 {

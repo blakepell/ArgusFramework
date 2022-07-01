@@ -8,6 +8,7 @@
  */
 
 using Argus.IO;
+using Newtonsoft.Json;
 
 namespace Argus.Configuration
 {
