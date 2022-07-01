@@ -6,18 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    <PackageReference Include="ZString" Version="2.4.4" />
+    <PackageReference Include="NetCoreServer" Version="5.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Argus.Core\Argus.Core.csproj" />
+    <ProjectReference Include="..\src\Argus.Core\Argus.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="test.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="test2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
