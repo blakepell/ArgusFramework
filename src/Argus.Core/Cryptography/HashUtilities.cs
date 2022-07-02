@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2018-06-12
- * @last updated      : 2021-06-30
+ * @last updated      : 2022-07-01
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -89,8 +89,7 @@ namespace Argus.Cryptography
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
         public static string Sha1Hash(string str, Encoding enc)
         {
-            var crypt = new SHA1Managed();
-
+            using var crypt = SHA1.Create();
             return CreateHash(str, crypt, enc);
         }
 
@@ -100,8 +99,7 @@ namespace Argus.Cryptography
         /// <param name="b"></param>
         public static string Sha1Hash(byte[] b)
         {
-            var crypt = new SHA1Managed();
-
+            using var crypt = SHA1.Create();
             return CreateHash(b, crypt);
         }
 
@@ -111,8 +109,7 @@ namespace Argus.Cryptography
         /// <param name="s"></param>
         public static string Sha1Hash(Stream s)
         {
-            var crypt = new SHA1Managed();
-
+            using var crypt = SHA1.Create();
             return CreateHash(s, crypt);
         }
 
@@ -132,8 +129,7 @@ namespace Argus.Cryptography
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
         public static string Sha384Hash(string str, Encoding enc)
         {
-            var crypt = new SHA384Managed();
-
+            using var crypt = SHA384.Create();
             return CreateHash(str, crypt, enc);
         }
 
@@ -143,8 +139,7 @@ namespace Argus.Cryptography
         /// <param name="b"></param>
         public static string Sha384Hash(byte[] b)
         {
-            var crypt = new SHA384Managed();
-
+            using var crypt = SHA384.Create();
             return CreateHash(b, crypt);
         }
 
@@ -152,10 +147,9 @@ namespace Argus.Cryptography
         /// Returns a SHA384 hash for the inputted string.
         /// </summary>
         /// <param name="s"></param>
-        public static string Sha384Hash(Stream s)
+        public static string Sha384(Stream s)
         {
-            var crypt = new SHA384Managed();
-
+            using var crypt = SHA384.Create();
             return CreateHash(s, crypt);
         }
 
@@ -175,8 +169,7 @@ namespace Argus.Cryptography
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
         public static string Sha256Hash(string str, Encoding enc)
         {
-            var crypt = new SHA256Managed();
-
+            using var crypt = SHA256.Create();
             return CreateHash(str, crypt, enc);
         }
 
@@ -186,8 +179,7 @@ namespace Argus.Cryptography
         /// <param name="b"></param>
         public static string Sha256Hash(byte[] b)
         {
-            var crypt = new SHA256Managed();
-
+            using var crypt = SHA256.Create();
             return CreateHash(b, crypt);
         }
 
@@ -197,8 +189,7 @@ namespace Argus.Cryptography
         /// <param name="s"></param>
         public static string Sha256Hash(Stream s)
         {
-            var crypt = new SHA256Managed();
-
+            using var crypt = SHA256.Create();
             return CreateHash(s, crypt);
         }
 
@@ -218,8 +209,7 @@ namespace Argus.Cryptography
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
         public static string Sha512Hash(string str, Encoding enc)
         {
-            var crypt = new SHA512Managed();
-
+            using var crypt = SHA512.Create();
             return CreateHash(str, crypt, enc);
         }
 
@@ -229,8 +219,7 @@ namespace Argus.Cryptography
         /// <param name="b"></param>
         public static string Sha512Hash(byte[] b)
         {
-            var crypt = new SHA512Managed();
-
+            using var crypt = SHA512.Create();
             return CreateHash(b, crypt);
         }
 
@@ -240,8 +229,7 @@ namespace Argus.Cryptography
         /// <param name="s"></param>
         public static string Sha512Hash(Stream s)
         {
-            var crypt = new SHA512Managed();
-
+            using var crypt = SHA512.Create();
             return CreateHash(s, crypt);
         }
 
@@ -261,8 +249,7 @@ namespace Argus.Cryptography
         /// <param name="enc">The Encoding to use when reading the bytes from the input string.</param>
         public static string MD5Hash(string str, Encoding enc)
         {
-            var crypt = new MD5CryptoServiceProvider();
-
+            using var crypt = MD5.Create();
             return CreateHash(str, crypt, enc);
         }
 
@@ -272,8 +259,7 @@ namespace Argus.Cryptography
         /// <param name="b"></param>
         public static string MD5Hash(byte[] b)
         {
-            var crypt = new MD5CryptoServiceProvider();
-
+            using var crypt = MD5.Create();
             return CreateHash(b, crypt);
         }
 
@@ -283,8 +269,7 @@ namespace Argus.Cryptography
         /// <param name="s"></param>
         public static string MD5Hash(Stream s)
         {
-            var crypt = new MD5CryptoServiceProvider();
-
+            using var crypt = MD5.Create();
             return CreateHash(s, crypt);
         }
 

@@ -2,13 +2,17 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-03-08
- * @last updated      : 2022-04-17
+ * @last updated      : 2022-07-01
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
+#if NET6_0
+using System.Text.Json;
+#endif
+
+using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace Argus.Extensions
 {
@@ -63,25 +67,67 @@ namespace Argus.Extensions
             return default(T) == null && typeof(T).BaseType != null && "ValueType".Equals(typeof(T).BaseType.Name);
         }
 
+
+#if NET5_0_OR_GREATER
         /// <summary>
-        /// Serializes an object into it's JSON (JavaScript Object Notation) representation.
+        /// Serializes an object into it's JSON representation.
         /// </summary>
         /// <param name="obj"></param>
         public static string ToJson(this object obj)
         {
-            return JsonConvert.SerializeObject(obj);
+            return JsonSerializer.Serialize(obj);
         }
 
         /// <summary>
-        /// Serializes an object into it's JSON (JavaScript Object Notation) representation.  This method is using
-        /// Microsoft's JavaScriptSerializer.
+        /// Serializes an object into it's JSON representation.
         /// </summary>
         /// <param name="obj"></param>
-        /// <param name="recursionDepth"></param>
-        public static string ToJson(this object obj, int recursionDepth)
+        public static string ToJson<T>(this T obj)
         {
-            return JsonConvert.SerializeObject(obj, null, Formatting.None, new JsonSerializerSettings {MaxDepth = recursionDepth});
+            return JsonSerializer.Serialize(obj);
         }
+
+        /// <summary>
+        /// Serializes an object into it's JSON representation.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="writeIndented"></param>
+        /// <returns></returns>
+        public static string ToJson<T>(this T obj, bool writeIndented)
+        {
+            return JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = writeIndented });
+        }
+#endif
+
+#if NET6_0
+        /// <summary>
+        /// Serializes an object into it's JSON representation.
+        /// </summary>
+        /// <param name="obj"></param>
+        public static async Task<string> ToJsonAsync<T>(this T obj)
+        {
+            using var s = new MemoryStream();
+            await JsonSerializer.SerializeAsync(s, obj);
+            s.Position = 0;
+            using var reader = new StreamReader(s);
+            return await reader.ReadToEndAsync();
+        }
+
+        /// <summary>
+        /// Serializes an object into it's JSON representation.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="writeIndented"></param>
+        public static async Task<string> ToJsonAsync<T>(this T obj, bool writeIndented)
+        {
+            using var s = new MemoryStream();
+            await JsonSerializer.SerializeAsync(s, obj, new JsonSerializerOptions { WriteIndented = writeIndented });
+            s.Position = 0;
+            using var reader = new StreamReader(s);
+            return await reader.ReadToEndAsync();
+        }
+#endif
 
         /// <summary>
         /// Converts a serializable object into it's XML representation.  This makes a call to the Argus.Utilities.Serialization.ObjectToXML function.

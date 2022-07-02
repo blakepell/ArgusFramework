@@ -69,7 +69,7 @@ namespace Argus.IO
         /// <summary>
         /// The file to write to.
         /// </summary>
-        public string LogFile { get; set; } = "";
+        public string LogFile { get; set; }
 
         /// <summary>
         /// The underlying FileStream.
@@ -160,7 +160,7 @@ namespace Argus.IO
         public static string FormatLogMessage(string msg, bool escapeTab)
         {
             // In case data is logged it is clear what a tab character is in it.
-            if (escapeTab && msg.Contains("\t"))
+            if (escapeTab && msg.Contains('\t'))
             {
                 msg = msg.Replace("\t", "\\t");
             }

@@ -1,13 +1,11 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2010-03-01
- * @last updated      : 2010-03-01
+ * @last updated      : 2022-07-01
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
-
-using Argus.Extensions;
 
 namespace Argus.IO
 {
@@ -20,8 +18,7 @@ namespace Argus.IO
     public static class FileExtensionUtilities
     {
         /// <summary>
-        /// Returns the file extension, minus the period in lower case.  The file path can be either a location URL or a web hyper reference.  Reference
-        /// System.IO.Path for managed .Net Framework file methods.
+        /// Returns the lower case file extension, minus the period.
         /// </summary>
         /// <param name="filePath"></param>
         public static string GetFileExtension(string filePath)
@@ -31,9 +28,9 @@ namespace Argus.IO
                 return "";
             }
 
-            return Path.GetExtension(filePath).Trim(".").ToLower();
+            return Path.GetExtension(filePath).Trim('.').ToLower();
         }
-
+        
         /// <summary>
         /// Whether or not the path points to a valid image file determined by the extension.
         /// </summary>
@@ -45,9 +42,7 @@ namespace Argus.IO
                 return false;
             }
 
-            string extension = GetFileExtension(filePath);
-
-            switch (extension.ToLower())
+            switch (GetFileExtension(filePath))
             {
                 case "jpg":
                 case "jpeg":
@@ -57,6 +52,8 @@ namespace Argus.IO
                 case "tif":
                 case "ico":
                 case "bmp":
+                case "svg":
+                case "webp":
                     return true;
                 default:
                     return false;
@@ -74,9 +71,7 @@ namespace Argus.IO
                 return false;
             }
 
-            string extension = GetFileExtension(filepath);
-
-            switch (extension.ToLower())
+            switch (GetFileExtension(filepath))
             {
                 case "3g2":
                 case "3gp":
@@ -99,7 +94,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Whether or not the path poitns to a valid audio file determined by the extension.
+        /// Whether or not the path points to a valid audio file as determined by the extension.
         /// </summary>
         /// <param name="filePath"></param>
         public static bool IsAudio(string filePath)
@@ -109,9 +104,7 @@ namespace Argus.IO
                 return false;
             }
 
-            string extension = GetFileExtension(filePath);
-
-            switch (extension.ToLower())
+            switch (GetFileExtension(filePath))
             {
                 case "aac":
                 case "aif":

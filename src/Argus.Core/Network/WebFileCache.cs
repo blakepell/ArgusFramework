@@ -65,17 +65,7 @@ namespace Argus.Network
             // Force it to always be negative
             hoursThreshold = System.Math.Abs(hoursThreshold) * -1;
 
-            string fileName;
-
-            if (string.IsNullOrWhiteSpace(this.OverrideFilename))
-            {
-                fileName = $"{this.SaveLocation}{FileSystemUtilities.ExtractFileName(uri)}";
-            }
-            else
-            {
-                fileName = $"{this.SaveLocation}{this.OverrideFilename}";
-            }
-
+            string fileName = string.IsNullOrWhiteSpace(this.OverrideFilename) ? $"{this.SaveLocation}{FileSystemUtilities.ExtractFileName(uri)}" : $"{this.SaveLocation}{this.OverrideFilename}";
             var fileInfo = new FileInfo(fileName);
 
             if (File.Exists(fileName)
@@ -88,9 +78,9 @@ namespace Argus.Network
 
                     using (var response = await hc.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead))
                     {
-                        using (var s = await response.Content.ReadAsStreamAsync())
+                        await using (var s = await response.Content.ReadAsStreamAsync())
                         {
-                            using (var fs = File.Open(fileName, FileMode.Create))
+                            await using (var fs = File.Open(fileName, FileMode.Create))
                             {
                                 await s.CopyToAsync(fs);
                             }
