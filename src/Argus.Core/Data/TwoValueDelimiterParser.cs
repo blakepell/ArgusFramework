@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2005-09-01
- * @last updated      : 2019-11-17
+ * @last updated      : 2022-07-02
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -15,12 +15,14 @@ namespace Argus.Data
     /// </summary>
     /// <remarks>
     /// The value that should be parsed can be passed in via the constructor, set with the Reload method or
-    /// set with an = operator if the value you're setting it equal to is a string.  This by design will split
-    /// a string like it's a key pair and not more values.
+    /// set with an = operator if the value you're setting it equal to is a string (using Reload does not
+    /// create a new instance of the TwoValueDelimiterParser).  This by design will split a string like
+    /// it's a key pair and not more values.
     /// </remarks>
     public class TwoValueDelimiterParser
     {
-        private string _queryValue = "";
+        private string _queryValue;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -28,13 +30,6 @@ namespace Argus.Data
         public TwoValueDelimiterParser(string delimitedText)
         {
             _queryValue = delimitedText;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public TwoValueDelimiterParser()
-        {
         }
 
         /// <summary>
@@ -76,51 +71,69 @@ namespace Argus.Data
         }
 
         /// <summary>
-        /// The deliminator to split the value on.
+        /// The deliminator to split the value on.  The default value is ','
         /// </summary>
-        /// <remarks>The default value is an underscore (e.g. '_') character.</remarks>
-        public string Delimiter { get; set; } = "_";
+        public char Delimiter { get; set; } = ',';
 
         /// <summary>
         /// The left hand value.
         /// </summary>
-        public string Value1()
+        public string LeftValue()
         {
-            try
-            {
-                if (string.IsNullOrEmpty(_queryValue))
-                {
-                    return "";
-                }
+            return this.LeftValueAsSpan().ToString();
+        }
 
-                string[] buf = _queryValue.Split(this.Delimiter.ToCharArray());
-                return buf[0];
-            }
-            catch
+        /// <summary>
+        /// The left hand value.
+        /// </summary>
+        public ReadOnlySpan<char> LeftValueAsSpan()
+        {
+            if (_queryValue == null)
             {
-                return "";
+                return ReadOnlySpan<char>.Empty;
             }
+
+            var span = _queryValue.AsSpan();
+
+            if (span.IndexOf(this.Delimiter) == -1)
+            {
+                return ReadOnlySpan<char>.Empty;
+            }
+
+            var leftSide = span.Slice(0, _queryValue.IndexOf(this.Delimiter));
+
+            return leftSide;
         }
 
         /// <summary>
         /// The right hand value.
         /// </summary>
-        public string Value2()
+        public string RightValue()
         {
-            try
-            {
-                if (string.IsNullOrEmpty(_queryValue))
-                {
-                    return "";
-                }
+            return this.RightValueAsSpan().ToString();
+        }
 
-                string[] buf = _queryValue.Split(this.Delimiter.ToCharArray());
-                return buf[1];
-            }
-            catch
+        /// <summary>
+        /// The right hand value.
+        /// </summary>
+        public ReadOnlySpan<char> RightValueAsSpan()
+        {
+            if (_queryValue == null)
             {
-                return "";
+                return ReadOnlySpan<char>.Empty;
             }
+
+            var span = _queryValue.AsSpan();
+
+            if (span.IndexOf(this.Delimiter) == -1)
+            {
+                return ReadOnlySpan<char>.Empty;
+            }
+
+            int index = span.IndexOf(this.Delimiter);
+            var rightSide = span.Slice(index + 1);
+
+            return rightSide;
         }
     }
 }
