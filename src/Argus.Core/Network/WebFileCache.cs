@@ -78,9 +78,9 @@ namespace Argus.Network
 
                     using (var response = await hc.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead))
                     {
-                        await using (var s = await response.Content.ReadAsStreamAsync())
+                        using (var s = await response.Content.ReadAsStreamAsync())
                         {
-                            await using (var fs = File.Open(fileName, FileMode.Create))
+                            using (var fs = File.Open(fileName, FileMode.Create))
                             {
                                 await s.CopyToAsync(fs);
                             }

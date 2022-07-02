@@ -10,7 +10,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Argus.IO
+namespace Argus.Memory
 {
     /// <summary>
     /// Dependency Injection.  Common services that can be injected into the places they
@@ -114,7 +114,7 @@ namespace Argus.IO
         /// <summary>
         /// Internal reference for the <see cref="AppServices"/> instance.
         /// </summary>
-        private static AppServices? _instance;
+        private static AppServices _instance;
 
         /// <summary>
         /// Lock object used by <see cref="GetInstance"/>.
