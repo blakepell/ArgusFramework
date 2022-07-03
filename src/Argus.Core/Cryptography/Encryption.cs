@@ -317,7 +317,7 @@ namespace Argus.Cryptography
                 }
                 catch
                 {
-                    return new byte[0];
+                    return Array.Empty<byte>();
                 }
 
                 cipher.Clear();
