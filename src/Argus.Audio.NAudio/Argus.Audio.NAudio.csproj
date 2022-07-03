@@ -1,112 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net472;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <Version>2022.3.1.1</Version>
-    <Authors>Blake Pell</Authors>
-    <Company>https://www.blakepell.com</Company>
-    <Product>Argus Framework - NAudio Utilities</Product>
-    <Description>NAudio utilities including a LoopbackRecorder to allow for easy recording of what is coming through your soundcard.</Description>
-    <Copyright>2003-2022</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/blakepell/ArgusFramework/blob/master/src/Argus.Audio.NAudio/README.md</PackageProjectUrl>
-    <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
-    <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>naudio loopback recorder recording argus</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <RootNamespace>Argus.Audio.NAudio</RootNamespace>
-    <AssemblyName>Argus.Audio.NAudio</AssemblyName>
-    <PackageReleaseNotes></PackageReleaseNotes>
-    <LangVersion>8.0</LangVersion>
-    <AssemblyVersion>2022.3.1.1</AssemblyVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net472;netcoreapp3.1;net6.0</TargetFrameworks>
+		<Version>2022.7.3.1</Version>
+		<AssemblyVersion>2022.7.3.1</AssemblyVersion>
+		<Authors>Blake Pell</Authors>
+		<Company>https://www.blakepell.com</Company>
+		<Product>Argus Framework - NAudio Utilities</Product>
+		<Description>NAudio utilities including a LoopbackRecorder to allow for easy recording of what is coming through your soundcard.</Description>
+		<Copyright>2003-2022</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/blakepell/ArgusFramework/blob/master/src/Argus.Audio.NAudio/README.md</PackageProjectUrl>
+		<PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
+		<RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>naudio loopback recorder recording argus</PackageTags>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<RootNamespace>Argus.Audio.NAudio</RootNamespace>
+		<AssemblyName>Argus.Audio.NAudio</AssemblyName>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="NAudio" Version="2.1.0" />
+	</ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.0|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.0|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net35|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net35|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NAudio" Version="2.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\assets\Argus-Logo-Purple-64.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Argus.Core\Argus.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\assets\Argus-Logo-Purple-64.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>
