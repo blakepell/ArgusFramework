@@ -89,8 +89,7 @@ namespace Argus.Extensions
                 case ConnectionState.Broken:
                 case ConnectionState.Fetching:
                 case ConnectionState.Executing:
-                    conn.Close();
-
+                    await conn.CloseAsync();
                     break;
             }
 
