@@ -1,17 +1,15 @@
 ﻿/*
   * @author            : Blake Pell
   * @initial date      : 2007-06-09
-  * @last updated      : 2022-06-10
+  * @last updated      : 2022-07-03
   * @copyright         : Copyright (c) 2003-2022, All rights reserved.
   * @license           : MIT
   * @website           : http://www.blakepell.com
   */
 
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 
-namespace Argus.IO
+namespace Argus.Windows
 {
     /// <summary>
     /// This class exposes shared methods that will interact with different Windows through the Windows API.
@@ -86,7 +84,7 @@ namespace Argus.IO
         /// exist, IntPtr.Zero is returned.
         /// </summary>
         /// <param name="name"></param>
-        public static IntPtr GetWindowHandle(string name) => FindWindow((string)null, name);
+        public static IntPtr GetWindowHandle(string name) => FindWindow(null, name);
 
         /// <summary>
         /// Returns the title of the active window.  If returnParent is true then the parent window is
@@ -142,7 +140,7 @@ namespace Argus.IO
         /// </summary>
         /// <param name="windowTitle"></param>
         /// <param name="exactMatch"></param>
-        public static Process? GetProcessByWindowTitle(string windowTitle, bool exactMatch)
+        public static Process GetProcessByWindowTitle(string windowTitle, bool exactMatch)
         {
             var proc = !exactMatch ? Process.GetProcesses().FirstOrDefault(x => x.MainWindowTitle.Contains(windowTitle)) : Process.GetProcesses().FirstOrDefault(x => x.MainWindowTitle.Equals(windowTitle, StringComparison.Ordinal));
             return proc;
@@ -176,7 +174,7 @@ namespace Argus.IO
         public static void SetWindowPositionSize(string windowName, int x, int y, int width, int height)
         {
             var hWndInsertAfter = IntPtr.Zero;
-            SetWindowPos(FindWindow((string)null, windowName), hWndInsertAfter, x, y, width, height, 0U);
+            SetWindowPos(FindWindow(null, windowName), hWndInsertAfter, x, y, width, height, 0U);
         }
 
         /// <summary>Sets the position and the size of the active window.</summary>
@@ -187,7 +185,7 @@ namespace Argus.IO
         public static void SetWindowPositionSize(int x, int y, int width, int height)
         {
             var hWndInsertAfter = IntPtr.Zero;
-            SetWindowPos(FindWindow((string)null, GetActiveWindowTitle(true)), hWndInsertAfter, x, y, width, height, 0U);
+            SetWindowPos(FindWindow(null, GetActiveWindowTitle(true)), hWndInsertAfter, x, y, width, height, 0U);
         }
 
         /// <summary>

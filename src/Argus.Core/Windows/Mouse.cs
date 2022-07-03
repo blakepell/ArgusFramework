@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2007-06-09
- * @last updated      : 2022-06-04
+ * @last updated      : 2022-07-03
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -11,7 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace Argus.IO
+namespace Argus.Windows
 {
     /// <summary>
     /// This class offers access to mouse information and manipulation procedures
