@@ -13,8 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Argus.Memory
 {
     /// <summary>
-    /// Dependency Injection.  Common services that can be injected into the places they
-    /// need to be used without having to manage passing references to things like the Conveyor.
+    /// Dependency Injection.
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class AppServices
