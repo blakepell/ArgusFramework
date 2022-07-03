@@ -3,10 +3,6 @@
  * @license           : MIT
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
 namespace Argus.Data.SemanticLibrary
 {
     public static class WordScraper

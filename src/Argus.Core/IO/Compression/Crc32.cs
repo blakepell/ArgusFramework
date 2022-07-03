@@ -47,15 +47,15 @@ namespace Argus.IO.Compression
                 // This is the official polynomial used by CRC32 in PKZip.
                 // Often the polynomial is shown reversed as 0x04C11DB7.
                 uint dwPolynomial = 0xEDB88320;
-                uint i, j;
+                uint i;
 
                 crc32Table = new uint[256];
 
-                uint dwCrc;
-
                 for (i = 0; i < 256; i++)
                 {
-                    dwCrc = i;
+                    uint dwCrc = i;
+
+                    uint j;
 
                     for (j = 8; j > 0; j--)
                     {
@@ -100,8 +100,7 @@ namespace Argus.IO.Compression
         {
             unchecked
             {
-                uint crc32Result;
-                crc32Result = 0xFFFFFFFF;
+                uint crc32Result = 0xFFFFFFFF;
                 var buffer = new byte[BUFFER_SIZE];
                 int readSize = BUFFER_SIZE;
 

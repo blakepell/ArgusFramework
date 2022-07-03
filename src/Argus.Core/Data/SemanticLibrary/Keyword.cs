@@ -3,8 +3,6 @@
  * @license           : MIT
  */
 
-using System.Collections.Generic;
-
 namespace Argus.Data.SemanticLibrary
 {
     public class KeywordAnalysis

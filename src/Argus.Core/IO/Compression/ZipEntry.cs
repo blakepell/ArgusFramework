@@ -696,7 +696,7 @@ namespace Argus.IO.Compression
             int commentLength = 0;
 
             // File (entry) Comment Length
-            if (this.Comment == null || this.Comment.Length == 0)
+            if (string.IsNullOrEmpty(this.Comment))
             {
                 // no comment!
                 bytes[i++] = 0;
@@ -1013,7 +1013,6 @@ namespace Argus.IO.Compression
         internal void Write(Stream s)
         {
             var bytes = new byte[4096];
-            int n;
 
             // write the header:
             this.WriteHeader(s, bytes);
@@ -1053,6 +1052,8 @@ namespace Argus.IO.Compression
             {
                 // rely on the compressed data we created in WriteHeader
                 _UnderlyingMemoryStream.Position = 0;
+
+                int n;
 
                 while ((n = _UnderlyingMemoryStream.Read(bytes, 0, bytes.Length)) != 0)
                 {

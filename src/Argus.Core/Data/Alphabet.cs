@@ -429,12 +429,12 @@ namespace Argus.Data
         /// <param name="obj"></param>
         public override bool Equals(object obj)
         {
-            if (!(obj is AlphabetLetter))
+            if (!(obj is AlphabetLetter letter))
             {
                 return false;
             }
 
-            return Equals((AlphabetLetter) obj);
+            return Equals(letter);
         }
 
         /// <inheritdoc cref="GetHashCode"/>

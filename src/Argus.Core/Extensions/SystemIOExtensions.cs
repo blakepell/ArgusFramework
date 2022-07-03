@@ -8,7 +8,6 @@
  */
 
 using Argus.Cryptography;
-using Argus.Data;
 
 namespace Argus.Extensions
 {

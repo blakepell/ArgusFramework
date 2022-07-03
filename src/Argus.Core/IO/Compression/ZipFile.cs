@@ -866,7 +866,7 @@ namespace Argus.IO.Compression
             bytes[i++] = (byte) ((StartOffset & 0xFF000000) >> 24);
 
             // zip archive comment 
-            if (this.Comment == null || this.Comment.Length == 0)
+            if (string.IsNullOrEmpty(this.Comment))
             {
                 // no comment!
                 bytes[i++] = 0;
@@ -1111,7 +1111,7 @@ namespace Argus.IO.Compression
 
             ReadCentralDirectoryFooter(zf);
 
-            if (zf.Verbose && zf.Comment != null && zf.Comment != "")
+            if (zf.Verbose && !string.IsNullOrEmpty(zf.Comment))
             {
                 zf.StatusMessageTextWriter.WriteLine("Zip file Comment: {0}", zf.Comment);
             }
@@ -1289,7 +1289,7 @@ namespace Argus.IO.Compression
                                                            e.CompressionRatio,
                                                            e.CompressedSize);
 
-                    if (e.Comment != null && e.Comment != "")
+                    if (!string.IsNullOrEmpty(e.Comment))
                     {
                         this.StatusMessageTextWriter.WriteLine("  Comment: {0}", e.Comment);
                     }

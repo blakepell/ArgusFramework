@@ -12,7 +12,6 @@ using Cysharp.Text;
 using System.ComponentModel;
 using System.Globalization;
 using System.Security;
-using System.Security.Cryptography;
 
 namespace Argus.Extensions
 {
@@ -776,7 +775,7 @@ namespace Argus.Extensions
 
             try
             {
-                Regex.Match("", pattern);
+                _ = Regex.Match("", pattern);
             }
             catch
             {
@@ -796,7 +795,7 @@ namespace Argus.Extensions
         {
             try
             {
-                Regex.Match("", pattern);
+                _ = Regex.Match("", pattern);
             }
             catch (Exception ex)
             {

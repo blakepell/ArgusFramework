@@ -8,7 +8,6 @@
  */
 
 using System.Buffers;
-using System.Collections;
 using System.Threading;
 
 namespace Argus.Collections

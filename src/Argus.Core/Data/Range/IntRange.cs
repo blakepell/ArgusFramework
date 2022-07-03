@@ -7,8 +7,6 @@
  * @license           : MIT
  */
 
-using Argus.Extensions;
-
 namespace Argus.Data.Range
 {
     /// <summary>

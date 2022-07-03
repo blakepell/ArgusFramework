@@ -8,7 +8,6 @@
  */
 
 using Argus.Extensions;
-using System.Data;
 using System.Data.Common;
 
 namespace Argus.Data

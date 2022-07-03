@@ -113,7 +113,7 @@ namespace Argus.Network
 
             // Simple implementation of http://en.wikipedia.org/wiki/SOCKS#SOCKS4
             // Similar to http://biko.codeplex.com/
-            var hostAddress = Dns.GetHostAddresses(_host).First().GetAddressBytes();
+            var hostAddress = (await Dns.GetHostAddressesAsync(_host)).First().GetAddressBytes();
             var hostPort = new byte[2]; // 16-bit number
             hostPort[0] = Convert.ToByte(_port / 256);
             hostPort[1] = Convert.ToByte(_port % 256);
@@ -319,7 +319,7 @@ namespace Argus.Network
 
         private void OnConnectionClosed()
         {
-            ConnectionClosed?.Invoke(this, new EventArgs());
+            ConnectionClosed?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

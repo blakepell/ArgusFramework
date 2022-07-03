@@ -89,7 +89,11 @@ namespace Argus.Extensions
                 case ConnectionState.Broken:
                 case ConnectionState.Fetching:
                 case ConnectionState.Executing:
+#if NETSTANDARD2_1 || NET6_0_OR_GREATER
                     await conn.CloseAsync();
+#else
+                    conn.Close();
+#endif
                     break;
             }
 

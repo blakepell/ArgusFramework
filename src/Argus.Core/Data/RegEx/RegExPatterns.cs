@@ -7,8 +7,6 @@
  * @license           : MIT
  */
 
-using System.Text.RegularExpressions;
-
 namespace Argus.Data.RegEx
 {
     /// <summary>

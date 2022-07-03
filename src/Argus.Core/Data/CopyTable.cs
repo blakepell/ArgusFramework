@@ -7,8 +7,6 @@
  * @website           : http://www.blakepell.com
  */
 
-using System.Data;
-
 namespace Argus.Data
 {
     /// <summary>
