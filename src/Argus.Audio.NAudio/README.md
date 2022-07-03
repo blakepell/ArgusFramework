@@ -63,13 +63,11 @@ foreach (var item in recorder.Devices.EnumerateAudioEndPoints(DataFlow.Render, D
 
 ### .Net Framework Support
 
-- .NET Standard 2.1
-- .NET Standard 2.0
+- .NET 6
 - .NET Core App 3.1
-- .NET Core App 3.0
-- .NET Framework 4.6.1
-- .NET Framework 4.5
-- .NET Framework 3.5
+- .NET Framework 4.7.2
+
+* Previous releases may have additional targets for older frameworks.
 
 ### Historical Note
 
