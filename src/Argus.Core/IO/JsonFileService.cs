@@ -1,14 +1,19 @@
 ﻿/*
  * @author            : Microsoft, Blake Pell
  * @initial date      : 2021-10-03
- * @last updated      : 2022-07-01
+ * @last updated      : 2022-07-05
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  */
 
 #if NET5_0_OR_GREATER
 
+using Argus.IO.Json;
+using System;
+using System.IO;
+using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Argus.IO
@@ -25,13 +30,18 @@ namespace Argus.IO
         public string FolderPath { get; set; }
 
         /// <summary>
+        /// Options that are passed to the <see cref="JsonSerializer"/>
+        /// </summary>
+        public JsonSerializerOptions JsonSerializerOptions { get; set; } = new();
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="folderPath">The full path of the folder to save the JSON files in.</param>
         public JsonFileService(string folderPath)
         {
             this.FolderPath = folderPath;
-            FileSystemUtilities.CreateDirectory(this.FolderPath);
+            this.Initialize();
         }
 
         /// <summary>
@@ -42,7 +52,7 @@ namespace Argus.IO
         {
             string assemblyName = Assembly.GetEntryAssembly()?.GetName().Name ?? "";
             this.FolderPath = Path.Join(Environment.GetFolderPath(knownFolder), assemblyName);
-            FileSystemUtilities.CreateDirectory(this.FolderPath);
+            this.Initialize();
         }
 
         /// <summary>
@@ -53,9 +63,27 @@ namespace Argus.IO
         public JsonFileService(Environment.SpecialFolder knownFolder, string folderName)
         {
             this.FolderPath = Path.Join(Environment.GetFolderPath(knownFolder), folderName);
-            FileSystemUtilities.CreateDirectory(this.FolderPath);
+            this.Initialize();
         }
-         
+
+        /// <summary>
+        /// Initializes default settings.
+        /// </summary>
+        private void Initialize()
+        {
+            FileSystemUtilities.CreateDirectory(this.FolderPath);
+
+            this.JsonSerializerOptions = new()
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                WriteIndented = false,
+                IgnoreReadOnlyFields = true,
+                IgnoreReadOnlyProperties = true
+            };
+
+            this.JsonSerializerOptions.Converters.Add(new TypeJsonConverter());
+        }
+
         /// <summary>
         /// Reads and deserializes a JSON file into the specified generic object.
         /// </summary>
@@ -68,9 +96,8 @@ namespace Argus.IO
             if (File.Exists(fullPath))
             {
                 using var json = File.OpenRead(fullPath);
-                return JsonSerializer.Deserialize<T>(json);
+                return JsonSerializer.Deserialize<T>(json, this.JsonSerializerOptions);
             }
-
             return default;
         }
 
@@ -82,11 +109,11 @@ namespace Argus.IO
         public async Task<T> ReadAsync<T>(string filename)
         {
             string fullPath = Path.Combine(this.FolderPath, filename);
-        
+
             if (File.Exists(fullPath))
             {
                 await using var json = File.OpenRead(fullPath);
-                return await JsonSerializer.DeserializeAsync<T>(json);
+                return await JsonSerializer.DeserializeAsync<T>(json, this.JsonSerializerOptions);
             }
 
             return default;
@@ -101,7 +128,7 @@ namespace Argus.IO
         public void Save<T>(T content, string filename)
         {
             using var stream = File.Create(Path.Combine(this.FolderPath, filename));
-            JsonSerializer.Serialize(stream, content);
+            JsonSerializer.Serialize(stream, content, this.JsonSerializerOptions);
         }
 
         /// <summary>
@@ -113,7 +140,7 @@ namespace Argus.IO
         public async Task SaveAsync<T>(T content, string filename)
         {
             await using var stream = File.Create(Path.Combine(this.FolderPath, filename));
-            await JsonSerializer.SerializeAsync(stream, content);
+            await JsonSerializer.SerializeAsync(stream, content, this.JsonSerializerOptions);
         }
 
         /// <summary>
