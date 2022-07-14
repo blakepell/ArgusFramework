@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2014-01-02
- * @last updated      : 2022-04-17
+ * @last updated      : 2022-07-14
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -222,6 +222,20 @@ namespace Argus.Extensions
 
             return lines
                 .Aggregate((p, c) => p + Environment.NewLine + c);
+        }
+
+        /// <summary>
+        /// Get's an attribute from a generic object.
+        /// </summary>
+        /// <typeparam name="TAttribute"></typeparam>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        public static TAttribute GetAttribute<T, TAttribute>(this T value) where TAttribute : Attribute
+        {
+            return value.GetType()
+                        .GetCustomAttributes(false)
+                        .OfType<TAttribute>()
+                        .SingleOrDefault();
         }
     }
 }
