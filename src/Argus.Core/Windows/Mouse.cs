@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2007-06-09
- * @last updated      : 2022-07-03
+ * @last updated      : 2022-07-18
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -197,5 +197,39 @@ namespace Argus.Windows
         /// This will un-hide/show the mouse over a window you own, not over Windows as a whole.
         /// </summary>
         public static void MouseShow() => ShowCursor(true);
+
+        /// <summary>
+        /// Scrolls up one click.
+        /// </summary>
+        public static void ScrollUp()
+        {
+            mouse_event(MOUSEEVENTF_WHEEL, 0, 0, 120, 0);
+        }
+
+        /// <summary>
+        /// Scrolls up a specified number of clicks.
+        /// </summary>
+        /// <param name="clicks">The number of clicks to scroll up.</param>
+        public static void ScrollUp(int clicks)
+        {
+            mouse_event(MOUSEEVENTF_WHEEL, 0, 0, 120 * clicks, 0);
+        }
+
+        /// <summary>
+        /// Scrolls down one click.
+        /// </summary>
+        public static void ScrollDown()
+        {
+            mouse_event(MOUSEEVENTF_WHEEL, 0, 0, -120, 0);
+        }
+
+        /// <summary>
+        /// Scrolls down a specified number of clicks.
+        /// </summary>
+        /// <param name="clicks">The number of clicks to scroll down.</param>
+        public static void ScrollDown(int clicks)
+        {
+            mouse_event(MOUSEEVENTF_WHEEL, 0, 0, (120 * clicks) * -1, 0);
+        }
     }
 }
