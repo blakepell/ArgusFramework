@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2016-01-17
- * @last updated      : 2022-04-01
+ * @last updated      : 2022-07-26
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -40,6 +40,21 @@ namespace Argus.Extensions
 
             // Reference types are always nullable
             return true;
+        }
+
+        /// <summary>
+        /// Returns a value indicating if this <paramref name="type"/> has the Attribute
+        /// given in the <typeparamref name="TAttribute"/> type argument.
+        /// </summary>
+        /// <typeparam name="TAttribute">The Attribute type for which to make the determination.</typeparam>
+        /// <param name="type">The type for which to make the determination.</param>
+        /// <returns>
+        /// True if this <paramref name="type"/> has the given <typeparamref name="TAttribute"/>,
+        /// otherwise false.
+        /// </returns>
+        public static bool HasAttribute<TAttribute>(this Type type) where TAttribute : Attribute
+        {
+            return type.GetTypeInfo().GetCustomAttribute<TAttribute>(inherit: false) != null;
         }
     }
 }

@@ -183,11 +183,11 @@ namespace Argus.Extensions
                          .GetRuntimeFields()
                          .Where(f => f.IsPublic);
 
-            var gettables = properties.Select(p => new {p.Name, GetValue = (Func<object, object>) p.GetValue, Type = p.PropertyType}).Union(fields.Select(p => new {p.Name, GetValue = (Func<object, object>) p.GetValue, Type = p.FieldType}));
+            var gettables = properties.Select(p => new { p.Name, GetValue = (Func<object, object>)p.GetValue, Type = p.PropertyType }).Union(fields.Select(p => new { p.Name, GetValue = (Func<object, object>)p.GetValue, Type = p.FieldType }));
 
             var maxColumnValues = source
                                   .Select(x => gettables.Select(p => p.GetValue(x)?.ToString()?.Length ?? 0))
-                                  .Union(new[] {gettables.Select(p => p.Name.Length)}) // Include header in column sizes
+                                  .Union(new[] { gettables.Select(p => p.Name.Length) }) // Include header in column sizes
                                   .Aggregate(
                                       new int[gettables.Count()].AsEnumerable(),
                                       (accumulate, x) => accumulate.Zip(x, System.Math.Max))
