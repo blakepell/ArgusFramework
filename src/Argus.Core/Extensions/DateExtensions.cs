@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2021-09-17
+ * @last updated      : 2022-08-18
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -364,5 +364,18 @@ namespace Argus.Extensions
         {
             return d >= startDate && d <= endDate;
         }
+
+        /// <summary>
+        /// Returns the hour of the datetime in 1-12
+        /// </summary>
+        /// <param name="d"></param>
+        public static int MeridiemHour(this DateTime d) => ((d.Hour + 11) % 12) + 1;
+
+        /// <summary>
+        /// Returns whether hour of the <see cref="DateTime"/> is AM or PM.
+        /// </summary>
+        /// <param name="d"></param>
+        public static string MeridiemNotation(this DateTime d) => d.Hour >= 12 ? "PM" : "AM";
+
     }
 }
