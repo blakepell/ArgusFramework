@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2012-11-19
- * @last updated      : 2021-02-07
+ * @last updated      : 2022-08-23
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -257,6 +257,29 @@ namespace Argus.Extensions
             }
 
             return c;
+        }
+
+        /// <summary>
+        /// Returns the element from a list with support for wrapping to an index position
+        /// outside of the list (in a list of 100, 125 would loop around to 25).
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="index"></param>
+        /// <remarks>
+        /// https://khalidabuhakmeh.com/loop-around-index-with-csharp-collections
+        /// </remarks>
+        public static T? IndexAtLooped<T>(this IList<T>? collection, int index)
+        {
+            if (!collection?.Any() ?? true)
+            {
+                return default;
+            }
+
+            var count = collection.Count;
+            var indexWrap = (int)(index - count * System.Math.Floor((double)index / count));
+
+            return collection.ElementAt(indexWrap);
         }
     }
 }
