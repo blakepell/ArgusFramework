@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2011-09-29
- * @last updated      : 2021-09-24
+ * @last updated      : 2022-08-25
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -37,12 +37,27 @@ namespace Argus.Extensions
                     return false;
                 }
 
-                if (client.Client.Poll(0, SelectMode.SelectRead))
-                {
-                    var buf = new byte[1];
+                return IsConnected(client.Client);
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
-                    if (client.Client.Receive(buf, SocketFlags.Peek) == 0)
+        /// <summary>
+        /// A hard check of whether the TCP/IP connection is still open by peeking.
+        /// </summary>
+        public static bool IsConnected(this Socket socket)
+        {
+            try
+            {
+                if (socket.Poll(0, SelectMode.SelectRead))
+                {
+                    byte[] buff = new byte[1];
+                    if (socket.Receive(buff, SocketFlags.Peek) == 0)
                     {
+                        // Client disconnected
                         return false;
                     }
                 }
@@ -59,7 +74,7 @@ namespace Argus.Extensions
         /// Returns the IP Address from the <see cref="EndPoint"/>.
         /// </summary>
         /// <param name="endPoint"></param>
-        public static string ToIpAddressString(this EndPoint endPoint)
+        public static string ToIpAddressAsString(this EndPoint endPoint)
         {
             if (endPoint is IPEndPoint ipEndPoint)
             {
@@ -67,6 +82,27 @@ namespace Argus.Extensions
             }
 
             return "N/A";
+        }
+
+        /// <summary>
+        /// Returns the IP address from the provided <see cref="Socket"/>.
+        /// </summary>
+        /// <param name="socket"></param>
+        public static string IpAddressAsString(this Socket? socket)
+        {
+            try
+            {
+                if (socket?.Connected == false)
+                {
+                    return "N/A";
+                }
+
+                return socket?.RemoteEndPoint?.ToString() ?? "N/A";
+            }
+            catch
+            {
+                return "N/A";
+            }
         }
     }
 }
