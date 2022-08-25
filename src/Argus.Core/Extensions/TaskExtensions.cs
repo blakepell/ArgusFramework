@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2022-04-01
- * @last updated      : 2022-04-01
+ * @last updated      : 2022-08-25
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -89,6 +89,37 @@ namespace Argus.Extensions
             => string.IsNullOrEmpty(filePath)
             ? $"The operation timed out after reaching the limit of {timeout.TotalMilliseconds}ms."
             : $"The operation at {filePath}:{lineNumber} timed out after reaching the limit of {timeout.TotalMilliseconds}ms.";
+
+        /// <summary>
+        /// Fire's and forgets a <see cref="Task"/>.
+        /// </summary>
+        /// <param name="task"></param>
+        /// <remarks>
+        /// This is mainly for use with async void events in UI applications and not for ASP.NET Core web sites.
+        /// </remarks>
+        public static async void FireAndForget(this Task task)
+        {
+            await task;
+        }
+
+        /// <summary>
+        /// Fire's and forgets a <see cref="Task"/> that ignores suppresses any exceptions that are thrown.
+        /// </summary>
+        /// <param name="task"></param>
+        /// <remarks>
+        /// This is mainly for use with async void events in UI applications and not for ASP.NET Core web sites.
+        /// </remarks>
+        public static async void SafeFireAndForget(this Task task)
+        {
+            try
+            {
+                await task;
+            }
+            catch
+            {
+                // Eat exception
+            }
+        }
     }
     
 }
