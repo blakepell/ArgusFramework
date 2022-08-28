@@ -2,13 +2,14 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2020-02-12
- * @last updated      : 2022-05-24
+ * @last updated      : 2022-08-28
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
 #if NETSTANDARD2_1 || NET5_0_OR_GREATER
 using System;
+using System.Globalization;
 
 namespace Argus.Extensions
 {
@@ -146,6 +147,24 @@ namespace Argus.Extensions
         }
 
         /// <summary>
+        /// Returns the zero based index of the first occurrence of a matching char or the end length of the span.
+        /// </summary>
+        /// <param name="span"></param>
+        /// <param name="value"></param>
+        /// <param name="startIndex"></param>
+        public static int IndexOfOrLength(this ReadOnlySpan<char> span, char value, int startIndex)
+        {
+            int indexInSlice = span.Slice(startIndex).IndexOf(value);
+
+            if (indexInSlice == -1)
+            {
+                return span.Length;
+            }
+
+            return startIndex + indexInSlice;
+        }
+
+        /// <summary>
         /// If the ReadOnlySpan starts with a specified <see cref="char" />.  0 length strings return false.
         /// </summary>
         /// <param name="value"></param>
@@ -271,6 +290,8 @@ namespace Argus.Extensions
                 if (!c.IsLetterOrDigit())
                 {
                     return false;
+
+
                 }
             }
 
@@ -292,6 +313,38 @@ namespace Argus.Extensions
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Returns the first argument on a string which is either the first word of the first
+        /// phrase that is surrounded by double quotes.  The original span is modified to exist
+        /// afterwards without the first argument.
+        /// </summary>
+        /// <param name="span"></param>
+        public static ReadOnlySpan<char> FirstArgument(this ref ReadOnlySpan<char> span)
+        {
+            if (span.IsEmpty)
+            {
+                return span;
+            }
+
+            int index;
+            ReadOnlySpan<char> part;
+
+            // Is it a double quoted argument?
+            if (span[0] == '"')
+            {
+                index = span.IndexOfOrLength('"', 1);
+                part = span.Slice(1, index - 1).TrimStart();
+                span = span.Slice(index + 1).TrimStart();
+                return part;
+            }
+
+            // It's not double quoted, so use space as the next delimiter.
+            index = span.IndexOfOrLength(' ', 0);
+            part = span.Slice(0, index).TrimStart();
+            span = span.Slice(index + 1).TrimStart();
+            return part;
         }
     }
 }
