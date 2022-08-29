@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2022-04-01
+ * @last updated      : 2022-08-29
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -11,7 +11,9 @@ using Argus.Cryptography;
 using Cysharp.Text;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO.Compression;
 using System.Security;
+using System.Threading.Tasks;
 
 namespace Argus.Extensions
 {
@@ -1650,7 +1652,7 @@ namespace Argus.Extensions
         /// </summary>
         public static string RemoveWord(this string value, int wordNumber)
         {
-            var strArray = value.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var strArray = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             string newString = string.Empty;
             int count = 1;
@@ -2085,7 +2087,7 @@ namespace Argus.Extensions
         {
             return As<Decimal>(value);
         }
-        
+
         /// <summary>
         /// Returns a <see cref="decimal"/> for the specified string.
         /// </summary>
@@ -2182,17 +2184,17 @@ namespace Argus.Extensions
                 {
                     return (TValue)converter.ConvertFrom(value);
                 }
-                
+
                 // Try the other direction
                 converter = TypeDescriptor.GetConverter(typeof(string));
-                
+
                 if (converter.CanConvertTo(typeof(TValue)))
                 {
                     return (TValue)converter.ConvertTo(value, typeof(TValue));
                 }
             }
             catch { }
-            
+
             return defaultValue;
         }
 
@@ -2249,7 +2251,7 @@ namespace Argus.Extensions
         public static bool Is<TValue>(this string value)
         {
             var converter = TypeDescriptor.GetConverter(typeof(TValue));
-            
+
             if (converter != null)
             {
                 try
@@ -2262,8 +2264,50 @@ namespace Argus.Extensions
                 }
                 catch { }
             }
-            
+
             return false;
         }
+
+#if NET6_0_OR_GREATER || NETSTANDARD2_1
+
+        /// <summary>
+        /// Compresses a string with Brotli and encodes it as Base64.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="level"></param>
+        /// <remarks>Based on: https://khalidabuhakmeh.com/compress-strings-with-dotnet-and-csharp</remarks>
+        public static async Task<string> ToBrotliAsync(this string value, CompressionLevel level = CompressionLevel.Fastest)
+        {
+            var bytes = Encoding.Unicode.GetBytes(value);
+            await using var input = new MemoryStream(bytes);
+            await using var output = new MemoryStream();
+            await using var stream = new BrotliStream(output, level);
+
+            await input.CopyToAsync(stream);
+            await stream.FlushAsync();
+
+            var result = output.ToArray();
+
+            return Convert.ToBase64String(result);
+        }
+
+        /// <summary>
+        /// Decompresses a Base64 encoded Brotli compressed string.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <remarks>Based on: https://khalidabuhakmeh.com/compress-strings-with-dotnet-and-csharp</remarks>
+        public static async Task<string> FromBrotliAsync(this string value)
+        {
+            var bytes = Convert.FromBase64String(value);
+            await using var input = new MemoryStream(bytes);
+            await using var output = new MemoryStream();
+            await using var stream = new BrotliStream(input, CompressionMode.Decompress);
+
+            await stream.CopyToAsync(output);
+
+            return Encoding.Unicode.GetString(output.ToArray());
+        }
+#endif
+
     }
 }
