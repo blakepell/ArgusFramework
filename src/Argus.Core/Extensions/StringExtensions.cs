@@ -2292,6 +2292,26 @@ namespace Argus.Extensions
         }
 
         /// <summary>
+        /// Compresses a string with Brotli and encodes it as Base64.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="level"></param>
+        public static string ToBrotli(this string value, CompressionLevel level = CompressionLevel.Fastest)
+        {
+            var bytes = Encoding.Unicode.GetBytes(value);
+            using var input = new MemoryStream(bytes);
+            using var output = new MemoryStream();
+            using var stream = new BrotliStream(output, level);
+
+            input.CopyTo(stream);
+            stream.Flush();
+
+            var result = output.ToArray();
+
+            return Convert.ToBase64String(result);
+        }
+
+        /// <summary>
         /// Decompresses a Base64 encoded Brotli compressed string.
         /// </summary>
         /// <param name="value"></param>
@@ -2307,6 +2327,23 @@ namespace Argus.Extensions
 
             return Encoding.Unicode.GetString(output.ToArray());
         }
+
+        /// <summary>
+        /// Decompresses a Base64 encoded Brotli compressed string.
+        /// </summary>
+        /// <param name="value"></param>
+        public static string FromBrotli(this string value)
+        {
+            var bytes = Convert.FromBase64String(value);
+            using var input = new MemoryStream(bytes);
+            using var output = new MemoryStream();
+            using var stream = new BrotliStream(input, CompressionMode.Decompress);
+
+            stream.CopyTo(output);
+
+            return Encoding.Unicode.GetString(output.ToArray());
+        }
+
 #endif
 
     }
