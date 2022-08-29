@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2014-01-02
- * @last updated      : 2022-07-14
+ * @last updated      : 2022-08-29
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -33,6 +33,14 @@ namespace Argus.Extensions
         {
             return !obj.HasValue;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        public static bool ReferenceEquals<T>(this T first, T second) where T : class => (object)first == (object)second;
 
 #if NETSTANDARD2_0
         /// <summary>

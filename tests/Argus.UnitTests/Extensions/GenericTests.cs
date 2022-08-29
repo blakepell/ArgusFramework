@@ -9,6 +9,7 @@
 
 using Argus.Extensions;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Xunit;
 
@@ -137,6 +138,14 @@ namespace Argus.UnitTests
             Assert.Equal("Five", array[3]);
         }
 
+        [Fact]
+        public void HasAttribute()
+        {
+            var p = new Person();
+            var pEx = new PersonEx();
+
+        }
+
         private class Person
         {
             public string FirstName { get; set; }
@@ -144,5 +153,10 @@ namespace Argus.UnitTests
             public string LastName { get; set; }
         }
 
+        [Description("A person class.")]
+        private class PersonEx : Person
+        {
+
+        }
     }
 }
