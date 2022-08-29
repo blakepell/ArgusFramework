@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2021-02-08
- * @last updated      : 2022-07-03
+ * @last updated      : 2022-08-29
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -14,6 +14,38 @@ namespace Argus.UnitTests
 {
     public class ObjectTests
     {
+        [Fact]
+        public void IsNull()
+        {
+            object o = null;
+            Assert.True(o.IsNull());
+
+            o = new();
+            Assert.False(o.IsNull());
+        }
+
+        [Fact]
+        public void ReferenceEqualsTest()
+        {
+            object a = new();
+            object b = new();
+            Assert.False(a.ReferenceEquals(b));
+
+            a = b;
+            Assert.True(a.ReferenceEquals(b));
+
+            a = "This is a test";
+            b = "This is a testx";
+            Assert.False(a.ReferenceEquals(b));
+
+            // Because these strings (jammed into object) are the same the reference
+            // should match because the framework will point the same reference to the
+            // single immutable copy.
+            a = "This is a test";
+            b = "This is a test";
+            Assert.True(a.ReferenceEquals(b));
+        }
+
         [Fact]
         public void ToJson()
         {
