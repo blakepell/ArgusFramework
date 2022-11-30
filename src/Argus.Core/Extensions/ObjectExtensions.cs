@@ -2,12 +2,12 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-03-08
- * @last updated      : 2022-07-01
+ * @last updated      : 2022-11-30
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
-#if NET6_0
+#if NET6_0_OR_GREATER
 using System.Text.Json;
 #endif
 
@@ -68,7 +68,7 @@ namespace Argus.Extensions
         }
 
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         /// <summary>
         /// Serializes an object into it's JSON representation.
         /// </summary>
@@ -100,7 +100,7 @@ namespace Argus.Extensions
         }
 #endif
 
-#if NET6_0
+#if NET6_0_OR_GREATER
         /// <summary>
         /// Serializes an object into it's JSON representation.
         /// </summary>

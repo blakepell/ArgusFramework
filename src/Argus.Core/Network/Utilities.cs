@@ -1,12 +1,13 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2009-04-07
- * @last updated      : 2020-10-23
+ * @last updated      : 2022-11-30
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
 
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Argus.Network
@@ -16,6 +17,17 @@ namespace Argus.Network
     /// </summary>
     public static class Utilities
     {
+        [DllImport("wininet.dll")]
+        private static extern bool InternetGetConnectedState(out int description, int reservedValue);
+
+        /// <summary>
+        /// If the Internet is currently available.  Not available on non-windows workstations.
+        /// </summary>
+        public static bool IsInternetAvailable()
+        {
+            return InternetGetConnectedState(out int _, 0);
+        }
+
         /// <summary>
         /// Returns multiple IPs if they exist.  This is for the workstation/server that this is being run from.
         /// </summary>
