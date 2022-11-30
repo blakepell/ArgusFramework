@@ -1491,16 +1491,16 @@ namespace Argus.Extensions
             return string.IsNullOrWhiteSpace(value);
         }
 
-        /// <summary>
-        /// Pick off one argument from a string and return a tuple
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns>Tuple where Item1 is the first word and Item2 is the remainder</returns>
-        /// <remarks>Was formerly known as one_argument</remarks>
-        public static Tuple<string, string> FirstArgument(this string value)
-        {
-            return new Tuple<string, string>(value.FirstWord(), value.RemoveWord(1));
-        }
+        ///// <summary>
+        ///// Pick off one argument from a string and return a tuple
+        ///// </summary>
+        ///// <param name="value"></param>
+        ///// <returns>Tuple where Item1 is the first word and Item2 is the remainder</returns>
+        ///// <remarks>Was formerly known as one_argument</remarks>
+        //public static Tuple<string, string> FirstArgument(this string value)
+        //{
+        //    return new Tuple<string, string>(value.FirstWord(), value.RemoveWord(1));
+        //}
 
         /// <summary>
         /// Returns a list of words as defined by splitting on a space char.
@@ -1593,14 +1593,6 @@ namespace Argus.Extensions
         /// </summary>
         public static string ParseWord(this string value, int wordNumber, char delimiter = ' ')
         {
-            return ParseWordAsSpan(value, wordNumber, delimiter).ToString();
-        }
-
-        /// <summary>
-        /// Parses the given word from the string
-        /// </summary>
-        public static ReadOnlySpan<char> ParseWordAsSpan(this string value, int wordNumber, char delimiter = ' ')
-        {
             var span = value.AsSpan();
             int count = 1;
 
@@ -1616,14 +1608,14 @@ namespace Argus.Extensions
 
                 if (count == wordNumber)
                 {
-                    return word;
+                    return word.ToString();
                 }
 
                 count++;
             }
 
             // Length was zero, return an empty string.
-            return ReadOnlySpan<char>.Empty;
+            return string.Empty;
         }
 
         /// <summary>
