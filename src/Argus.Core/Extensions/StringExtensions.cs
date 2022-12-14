@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2022-08-29
+ * @last updated      : 2022-12-14
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -1618,6 +1618,77 @@ namespace Argus.Extensions
             return string.Empty;
         }
 
+        /// <summary>
+        /// Returns a word at the given index (0 index).  A null is returned if the index exceeds the number of words.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="index"></param>
+        /// <param name="delimiter"></param>
+        public static string? Word(this ReadOnlySpan<char> s, int index, char delimiter = ' ')
+        {
+            for (int i = 0, word = 0; i < s.Length; i++)
+            {
+                if (s[i] == delimiter)
+                {
+                    word++;
+                }
+                else if (word == index)
+                {
+                    int start = i;
+                
+                    while (i < s.Length && s[i] != delimiter)
+                    {
+                        i++;
+                    }
+
+                    return s.Slice(start, i - start).ToString();
+                }
+            }
+        
+            return null;
+        }
+
+        /// <summary>
+        /// Returns a word at the given index (0 index).  A null is returned if the index exceeds the number of words.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="index"></param>
+        /// <param name="delimiter"></param>
+        public static string? Word(this string s, int index, char delimiter = ' ')
+        {
+            return Word(s.AsSpan(), index, delimiter);
+        }
+        
+        /// <summary>
+        /// Returns a word at the given index (0 index).  A null is returned if the index exceeds the number of words.fs
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="index"></param>
+        /// <param name="delimiter"></param>
+        public static ReadOnlySpan<char> WordAsSpan(this ReadOnlySpan<char> s, int index, char delimiter = ' ')
+        {
+            for (int i = 0, word = 0; i < s.Length; i++)
+            {
+                if (s[i] == delimiter)
+                {
+                    word++;
+                }
+                else if (word == index)
+                {
+                    int start = i;
+                
+                    while (i < s.Length && s[i] != delimiter)
+                    {
+                        i++;
+                    }
+
+                    return s.Slice(start, i - start);
+                }
+            }
+        
+            return null;
+        }        
+        
         /// <summary>
         /// Whether an entire string is alphanumeric.
         /// </summary>
