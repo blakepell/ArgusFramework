@@ -132,6 +132,24 @@ namespace Argus.IO
         }
 
         /// <summary>
+        /// Replaces the name of the file while preserving the extension of the original
+        /// filepath.
+        /// </summary>
+        /// <param name="filepath">The file path.  Can include the entire path including directory.</param>
+        /// <param name="newFilename">A new file name.  Should not include a directory path or extension.  This is the part of the file before the extension.</param>
+        public static string ReplaceFilename(string filepath, string newFilename)
+        {
+            // Get the original file extension
+            string extension = Path.GetExtension(filepath);
+
+            // Get the directory path
+            string? directory = Path.GetDirectoryName(filepath);
+
+            // Build the new file path using the directory, new filename, and original extension
+            return directory != null ? Path.Combine(directory, $"{newFilename}{extension}") : $"{newFilename}{extension}";
+        }
+
+        /// <summary>
         /// Checks to see if a file exists before deleting it.  This will catch and eat any exceptions for cases when you want
         /// a silent delete.
         /// </summary>

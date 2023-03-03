@@ -1621,9 +1621,9 @@ namespace Argus.Extensions
         /// <summary>
         /// Returns a word at the given index (0 index).  A null is returned if the index exceeds the number of words.
         /// </summary>
-        /// <param name="s"></param>
-        /// <param name="index"></param>
-        /// <param name="delimiter"></param>
+        /// <param name="s">The input string.</param>
+        /// <param name="index">The 0 based index of the requested word.</param>
+        /// <param name="delimiter">The delimiter to split the input on.  The default value is ' '</param>
         public static string? Word(this ReadOnlySpan<char> s, int index, char delimiter = ' ')
         {
             for (int i = 0, word = 0; i < s.Length; i++)
@@ -1687,7 +1687,7 @@ namespace Argus.Extensions
             }
         
             return null;
-        }        
+        }
         
         /// <summary>
         /// Whether an entire string is alphanumeric.
