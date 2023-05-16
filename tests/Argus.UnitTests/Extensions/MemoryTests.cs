@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2021-02-07
- * @last updated      : 2021-02-07
+ * @last updated      : 2022-08-26
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -10,11 +10,19 @@
 using Argus.Extensions;
 using System;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Argus.UnitTests
 {
     public class MemoryTests
     {
+        private readonly ITestOutputHelper output;
+
+        public MemoryTests(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
+
         [Fact]
         public void Left()
         {
@@ -153,6 +161,51 @@ namespace Argus.UnitTests
             Assert.False("lucy pell".AsSpan().IsAlphaNumeric());
             Assert.False("lucy-pell".AsSpan().IsAlphaNumeric());
             Assert.False("@LucyPell19".AsSpan().IsAlphaNumeric());
+        }
+
+        [Fact]
+        public void FirstArgument()
+        {
+            // Test 1
+            var span = "load obj 1000".AsSpan();
+            var firstArg = span.FirstArgument();
+            output.WriteLine(firstArg.ToString());
+
+            Assert.True(firstArg.Equals("load", StringComparison.Ordinal));
+            Assert.True(span.Equals("obj 1000", StringComparison.Ordinal));
+
+            var secondArg = span.FirstArgument();
+
+            Assert.True(secondArg.Equals("obj", StringComparison.Ordinal));
+            Assert.True(span.Equals("1000", StringComparison.Ordinal));
+
+            // Test 2
+            span = "\"Blake Pell\" \"is cool\"".AsSpan();
+            firstArg = span.FirstArgument();
+
+            Assert.True(firstArg.Equals("Blake Pell", StringComparison.Ordinal));
+            Assert.True(span.Equals("\"is cool\"", StringComparison.Ordinal));
+
+            secondArg = span.FirstArgument();
+
+            Assert.True(secondArg.Equals("is cool", StringComparison.Ordinal));
+
+            // Test 3
+            span = "string obj sword short \"a mithril broadsword\"".AsSpan();
+
+            var arg1 = span.FirstArgument();
+            var arg2 = span.FirstArgument();
+            var arg3 = span.FirstArgument();
+            var arg4 = span.FirstArgument();
+            var arg5 = span.FirstArgument();
+            var arg6 = span.FirstArgument();
+
+            Assert.True(arg1.Equals("string", StringComparison.Ordinal));
+            Assert.True(arg2.Equals("obj", StringComparison.Ordinal));
+            Assert.True(arg3.Equals("sword", StringComparison.Ordinal));
+            Assert.True(arg4.Equals("short", StringComparison.Ordinal));
+            Assert.True(arg5.Equals("a mithril broadsword", StringComparison.Ordinal));
+            Assert.True(arg6.IsEmpty);
         }
     }
 }

@@ -6,20 +6,27 @@
         xmlns:local="clr-namespace:WpfAppTestApp"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <TextBox x:Name="TextChord" Text="[E#m7]  [A]  [Cm]  [C7dim] [Db]" Grid.Row="0" FontFamily="Consolas" FontSize="12" />
-        <Button x:Name="ButtonHigher" Content="+" Grid.Row="1" Click="ButtonHigher_Click">
-            
-        </Button>
-        <Button x:Name="ButtonLower" Content="-" Grid.Row="2" Click="ButtonLower_Click">
-            
-        </Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBox x:Name="TextLeft" Text="" AcceptsReturn="True" Grid.Row="0" Grid.Column="0" FontFamily="Consolas" FontSize="14" />
+
+        <TextBox x:Name="TextRight" Text="" AcceptsReturn="True" Grid.Row="0" Grid.Column="1" FontFamily="Consolas" FontSize="14" />
+
+        <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+            <Button x:Name="ButtonExecute" Content="Execute" Click="ButtonExecute_Click" DockPanel.Dock="Right">
+
+            </Button>
+        </DockPanel>
     </Grid>
 
 </Window>

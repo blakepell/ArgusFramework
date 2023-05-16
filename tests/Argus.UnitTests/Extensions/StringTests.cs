@@ -7,6 +7,7 @@
  * @license           : MIT
  */
 
+using System;
 using Argus.Extensions;
 using Xunit;
 
@@ -216,5 +217,17 @@ namespace Argus.UnitTests
             Assert.True("name".CamelToSnakeCase().Equals("name"));
         }
 
+        [Fact]
+        public void Word()
+        {
+            ReadOnlySpan<char> span = "blake lucy isaac chelsea".AsSpan();
+            Assert.True(span.Word(0).Equals("blake"));
+            Assert.True(span.Word(1).Equals("lucy"));
+            Assert.True(span.Word(2).Equals("isaac"));
+            Assert.True(span.Word(3).Equals("chelsea"));
+            Assert.False(span.Word(4)?.Equals("chelsea") ?? false);
+            
+        }
+        
     }
 }
