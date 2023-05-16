@@ -2,6 +2,9 @@
 
 namespace Argus.Data.Mustache
 {
+    /// <summary>
+    /// Format compiler for use with HTML templates.
+    /// </summary>
     public sealed class HtmlFormatCompiler
     {
         private readonly FormatCompiler _compiler = new();
