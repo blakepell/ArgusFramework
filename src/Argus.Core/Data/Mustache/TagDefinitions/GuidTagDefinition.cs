@@ -1,15 +1,15 @@
 ﻿namespace Argus.Data.Mustache.TagDefinitions
 {
     /// <summary>
-    /// A newline / line break.
+    /// Creates a new <see cref="Guid"/>.
     /// </summary>
-    internal sealed class LineBreakTagDefinition : InlineTagDefinition
+    internal sealed class GuidTagDefinition : InlineTagDefinition
     {
         /// <summary>
-        /// Initializes a new instance of an NewlineTagDefinition.
+        /// Initializes a new instance of the <see cref="GuidTagDefinition"/>.
         /// </summary>
-        public LineBreakTagDefinition()
-            : base("br")
+        public GuidTagDefinition()
+            : base("guid")
         {
         }
 
@@ -21,7 +21,7 @@
         /// <param name="context">Extra data passed along with the context.</param>
         public override void GetText(TextWriter writer, Dictionary<string, object> arguments, Scope context)
         {
-            writer.Write(Environment.NewLine);
+            writer.Write(Guid.NewGuid().ToString());
         }
     }
 }

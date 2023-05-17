@@ -1,15 +1,15 @@
 ﻿namespace Argus.Data.Mustache.TagDefinitions
 {
     /// <summary>
-    /// A newline / line break.
+    /// DateTime.Now
     /// </summary>
-    internal sealed class LineBreakTagDefinition : InlineTagDefinition
+    internal sealed class NowTagDefinition : InlineTagDefinition
     {
         /// <summary>
-        /// Initializes a new instance of an NewlineTagDefinition.
+        /// Initializes a new instance of a <see cref="NowTagDefinition"/>.
         /// </summary>
-        public LineBreakTagDefinition()
-            : base("br")
+        public NowTagDefinition()
+            : base("now")
         {
         }
 
@@ -21,7 +21,7 @@
         /// <param name="context">Extra data passed along with the context.</param>
         public override void GetText(TextWriter writer, Dictionary<string, object> arguments, Scope context)
         {
-            writer.Write(Environment.NewLine);
+            writer.Write(DateTime.Now);
         }
     }
 }
