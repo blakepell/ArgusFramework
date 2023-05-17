@@ -872,7 +872,7 @@ namespace Argus.Extensions
                 firstDelim = delimiter[0];
             }
 
-            // Convert all delimter characters into the same character
+            // Convert all delimiter characters into the same character
             foreach (string delim in delimiter)
             {
                 buf = buf.Replace(delim, firstDelim);
