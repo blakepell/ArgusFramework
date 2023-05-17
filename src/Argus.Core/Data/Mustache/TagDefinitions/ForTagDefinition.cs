@@ -11,7 +11,8 @@
         private static readonly TagParameter Start = new(StartParameter) { IsRequired = true };
         private static readonly TagParameter End = new(EndParameter) { IsRequired = true };
         private static readonly TagParameter Step = new(StepParameter) { IsRequired = true };
-        private const int LOOP_GAURD = 2_147_483_647;
+        private const int LOOP_GUARD_UPPER = 2_147_483_647;
+        private const int LOOP_GUARD_LOWER = -2_147_483_647;
 
         public ForTagDefinition()
             : base("for", true)
@@ -39,7 +40,7 @@
             int step = int.Parse(arguments[StepParameter].ToString());
             int counter = 0;
 
-            if (end > start)
+            if (end > start && step > 0)
             {
                 // Forwards
                 for (int i = start; i <= end; i += step)
@@ -56,7 +57,7 @@
                     // Accessed with @index
                     childContext.ContextScope.Set("index", i);
 
-                    if (counter >= LOOP_GAURD)
+                    if (counter >= LOOP_GUARD_UPPER)
                     {
                         break;
                     }
@@ -78,7 +79,7 @@
                         ContextScope = contextScope.CreateChildScope(),
                     };
 
-                    if (counter >= LOOP_GAURD)
+                    if (counter <= LOOP_GUARD_LOWER)
                     {
                         break;
                     }
