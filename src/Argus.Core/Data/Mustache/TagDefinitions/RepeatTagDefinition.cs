@@ -56,9 +56,7 @@
                 {
                     return;
                 }
-
-                string text = valueObj.ToString();
-
+                
                 for (int i = 0; i < length; i++)
                 {
                     writer.Write(valueObj);
