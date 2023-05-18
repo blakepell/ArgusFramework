@@ -26,7 +26,11 @@ namespace Argus.Data.Mustache
             foreach (var t in types)
             {
                 var tag = (ITagDefinition)Activator.CreateInstance(t, true);
-                _tagLookup.Add(tag.Name, (TagDefinition)tag);
+
+                if (!string.IsNullOrWhiteSpace(tag?.Name))
+                {
+                    _tagLookup.Add(tag.Name, (TagDefinition)tag);
+                }
             }
         }
 
