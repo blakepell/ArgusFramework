@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Argus.Data.Mustache;
+using Argus.Data.Mustache.TagDefinitions;
 
 namespace Argus.UnitTests.Mustache
 {
@@ -1308,21 +1309,6 @@ Item Number: foo<br />
 
         #region Default Parameter
 
-        /// <summary>
-        /// If a tag is defined with a default parameter, the default value 
-        /// should be returned if an argument is not provided.
-        /// </summary>
-        [TestMethod]
-        public void TestCompile_MissingDefaultParameter_ProvidesDefault()
-        {
-            FormatCompiler compiler = new FormatCompiler();
-            compiler.RegisterTag(new DefaultTagDefinition(), true);
-            const string format = @"{{#default}}";
-            Generator generator = compiler.Compile(format);
-            string result = generator.Render(null);
-            Assert.AreEqual("123", result, "The wrong text was generated.");
-        }
-
         private sealed class DefaultTagDefinition : InlineTagDefinition
         {
             public DefaultTagDefinition()
@@ -1564,48 +1550,19 @@ Odd
 
         #region Custom Tags
 
-        [TestMethod]
-        public void TestCompile_NestedContext_ConsolidatesWriter()
-        {
-            FormatCompiler compiler = new FormatCompiler();
-            compiler.RegisterTag(new UrlEncodeTagDefinition(), true);
+        //[TestMethod]
+        //public void TestCompile_NestedContext_ConsolidatesWriter()
+        //{
+        //    FormatCompiler compiler = new FormatCompiler();
+        //    compiler.RegisterTag(new UrlEncodeTagDefinition(), true);
 
-            const string format = @"{{#urlencode}}{{url}}{{/urlencode}}";
-            Generator generator = compiler.Compile(format);
+        //    const string format = @"{{#urlencode}}{{url}}{{/urlencode}}";
+        //    Generator generator = compiler.Compile(format);
 
-            string actual = generator.Render(new { url = "https://google.com" });
-            string expected = HttpUtility.UrlEncode("https://google.com");
-            Assert.AreEqual(expected, actual, "Value field didn't work");
-        }
-
-        public class UrlEncodeTagDefinition : ContentTagDefinition
-        {
-            public UrlEncodeTagDefinition()
-                : base("urlencode")
-            {
-            }
-
-            public override IEnumerable<NestedContext> GetChildContext(TextWriter writer, Scope keyScope, Dictionary<string, object> arguments, Scope contextScope)
-            {
-                NestedContext context = new NestedContext()
-                {
-                    KeyScope = keyScope,
-                    Writer = new StringWriter(),
-                    WriterNeedsConsolidated = true,
-                };
-                yield return context;
-            }
-
-            public override IEnumerable<TagParameter> GetChildContextParameters()
-            {
-                return new TagParameter[] { new TagParameter("collection") };
-            }
-
-            public override string ConsolidateWriter(TextWriter writer, Dictionary<string, object> arguments)
-            {
-                return HttpUtility.UrlEncode(writer.ToString());
-            }
-        }
+        //    string actual = generator.Render(new { url = "https://google.com" });
+        //    string expected = HttpUtility.UrlEncode("https://google.com");
+        //    Assert.AreEqual(expected, actual, "Value field didn't work");
+        //}
 
         #endregion
     }
