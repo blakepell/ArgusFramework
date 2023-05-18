@@ -14,9 +14,9 @@ namespace Argus.Data.Mustache
         public const string CompoundKey = "@?" + Key + @"(?:\." + Key + ")*";
         public const string Argument = @"(?:(?<arg_key>" + CompoundKey + @")|(?<arg_string>" + String +
                                        @")|(?<arg_number>" + Number + @"))";
-        private static readonly Regex IsValidIdentifierRegex = new Regex("^" + Key + "$");
-        private static readonly Regex IsStringRegex = new Regex("^" + String + "$");
-        private static readonly Regex IsNumberRegex = new Regex("^" + Number + "$");
+        private static readonly Regex IsValidIdentifierRegex = new("^" + Key + "$");
+        private static readonly Regex IsStringRegex = new("^" + String + "$");
+        private static readonly Regex IsNumberRegex = new("^" + Number + "$");
         
         /// <summary>
         /// Determines whether the given name is a legal identifier.

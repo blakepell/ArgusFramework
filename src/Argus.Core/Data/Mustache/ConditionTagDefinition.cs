@@ -64,14 +64,17 @@
             {
                 return false;
             }
+
             if (condition is IEnumerable enumerable)
             {
                 return enumerable.Cast<object>().Any();
             }
-            if (condition is char)
+
+            if (condition is char c)
             {
-                return (char)condition != '\0';
+                return c != '\0';
             }
+
             try
             {
                 decimal number = (decimal)Convert.ChangeType(condition, typeof(decimal));

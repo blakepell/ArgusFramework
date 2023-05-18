@@ -18,9 +18,9 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TextBox x:Name="TextLeft" Text="" AcceptsReturn="True" Grid.Row="0" Grid.Column="0" FontFamily="Consolas" FontSize="14" />
+        <TextBox x:Name="TextLeft" Text="" AcceptsReturn="True" Grid.Row="0" Grid.Column="0" FontFamily="Consolas" FontSize="14" VerticalScrollBarVisibility="Visible" />
 
-        <TextBox x:Name="TextRight" Text="" AcceptsReturn="True" Grid.Row="0" Grid.Column="1" FontFamily="Consolas" FontSize="14" />
+        <TextBox x:Name="TextRight" Text="" AcceptsReturn="True" Grid.Row="0" Grid.Column="1" FontFamily="Consolas" FontSize="14" VerticalScrollBarVisibility="Visible" />
 
         <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
             <Button x:Name="ButtonExecute" Content="Execute" Click="ButtonExecute_Click" DockPanel.Dock="Right">
