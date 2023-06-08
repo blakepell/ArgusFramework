@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2013-05-20
- * @last updated      : 2019-11-17
+ * @last updated      : 2023-06-08
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -96,15 +96,9 @@ namespace Argus.Data
 
             string originalCheckDigit = val.SafeRight(1);
             string originalWithoutCheckDigit = val.SafeLeft(val.Length - 1);
-
             string calculatedCheckDigit = Calculate(originalWithoutCheckDigit).ToString();
 
-            if (calculatedCheckDigit == originalCheckDigit)
-            {
-                return true;
-            }
-
-            return false;
+            return calculatedCheckDigit == originalCheckDigit;
         }
 
         /// <summary>
@@ -117,89 +111,49 @@ namespace Argus.Data
                 throw new Exception("Value has a length of greater than 1");
             }
 
-            switch (val)
+            return val switch
             {
-                case "0":
-                    return "00";
-                case "1":
-                    return "01";
-                case "2":
-                    return "02";
-                case "3":
-                    return "03";
-                case "4":
-                    return "04";
-                case "5":
-                    return "05";
-                case "6":
-                    return "06";
-                case "7":
-                    return "07";
-                case "8":
-                    return "08";
-                case "9":
-                    return "09";
-                case "A":
-                    return "10";
-                case "B":
-                    return "11";
-                case "C":
-                    return "12";
-                case "D":
-                    return "13";
-                case "E":
-                    return "14";
-                case "F":
-                    return "15";
-                case "G":
-                    return "16";
-                case "H":
-                    return "17";
-                case "I":
-                    return "18";
-                case "J":
-                    return "19";
-                case "K":
-                    return "20";
-                case "L":
-                    return "21";
-                case "M":
-                    return "22";
-                case "N":
-                    return "23";
-                case "O":
-                    return "24";
-                case "P":
-                    return "25";
-                case "Q":
-                    return "26";
-                case "R":
-                    return "27";
-                case "S":
-                    return "28";
-                case "T":
-                    return "29";
-                case "U":
-                    return "30";
-                case "V":
-                    return "31";
-                case "W":
-                    return "32";
-                case "X":
-                    return "33";
-                case "Y":
-                    return "34";
-                case "Z":
-                    return "35";
-                case "*":
-                    return "36";
-                case "@":
-                    return "37";
-                case "#":
-                    return "38";
-                default:
-                    throw new Exception($"Invalid input. '{val}' is an unsupported character.");
-            }
+                "0" => "00",
+                "1" => "01",
+                "2" => "02",
+                "3" => "03",
+                "4" => "04",
+                "5" => "05",
+                "6" => "06",
+                "7" => "07",
+                "8" => "08",
+                "9" => "09",
+                "A" => "10",
+                "B" => "11",
+                "C" => "12",
+                "D" => "13",
+                "E" => "14",
+                "F" => "15",
+                "G" => "16",
+                "H" => "17",
+                "I" => "18",
+                "J" => "19",
+                "K" => "20",
+                "L" => "21",
+                "M" => "22",
+                "N" => "23",
+                "O" => "24",
+                "P" => "25",
+                "Q" => "26",
+                "R" => "27",
+                "S" => "28",
+                "T" => "29",
+                "U" => "30",
+                "V" => "31",
+                "W" => "32",
+                "X" => "33",
+                "Y" => "34",
+                "Z" => "35",
+                "*" => "36",
+                "@" => "37",
+                "#" => "38",
+                _ => throw new Exception($"Invalid input. '{val}' is an unsupported character.")
+            };
         }
     }
 }
