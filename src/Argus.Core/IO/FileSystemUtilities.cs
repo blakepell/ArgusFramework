@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2010-07-07
- * @last updated      : 2022-04-01
+ * @last updated      : 2023-06-08
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -510,6 +510,37 @@ namespace Argus.IO
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Calculates the different in two long parameters representing file sizes and
+        /// returns the english representation with KB, MB and GB listed.
+        /// </summary>
+        /// <param name="originalSize"></param>
+        /// <param name="newSize"></param>
+        public static string CalculateFileSizeDifference(long originalSize, long newSize)
+        {
+            long diffSize = originalSize - newSize;
+
+            // Convert to KB
+            double sizeInKb = (double)diffSize / 1024;
+
+            if (sizeInKb < 1024)
+            {
+                return $"{sizeInKb:N2} KB";
+            }
+
+            // Convert to MB
+            double sizeInMb = sizeInKb / 1024;
+
+            if (sizeInMb < 1024)
+            {
+                return $"{sizeInMb:N2} MB";
+            }
+
+            // Convert to GB
+            double sizeInGb = sizeInMb / 1024;
+            return $"{sizeInGb:N2} GB";
         }
     }
 }
