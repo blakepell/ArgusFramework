@@ -2,12 +2,11 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2020-02-12
- * @last updated      : 2022-08-28
+ * @last updated      : 2023-06-08
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
-#if NETSTANDARD2_1 || NET5_0_OR_GREATER
 using System;
 using System.Globalization;
 
@@ -181,7 +180,7 @@ namespace Argus.Extensions
         /// <param name="c"></param>
         public static bool EndsWith(this ReadOnlySpan<char> value, char c)
         {
-            return value.Length > 0 && value[^1].Equals(c);
+            return value.Length > 0 && value[value.Length - 1].Equals(c);
         }
 
         /// <summary>
@@ -348,4 +347,3 @@ namespace Argus.Extensions
         }
     }
 }
-#endif

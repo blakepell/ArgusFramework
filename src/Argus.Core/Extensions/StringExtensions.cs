@@ -217,22 +217,6 @@ namespace Argus.Extensions
             return !string.IsNullOrEmpty(str) && str.StartsWith(c);
         }
 
-#if NETSTANDARD2_1 || NET5_0_OR_GREATER
-        /// <summary>
-        ///     Returns true if the specified <see cref="char"/> is found at the end of the string.
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="c"></param>
-        public static bool SafeEndsWith(this string str, char c)
-        {
-            if (string.IsNullOrEmpty(str))
-            {
-                return false;
-            }
-
-            return str.Length > 0 && str[^1].Equals(c);
-        }
-#else
         /// <summary>
         /// Returns true if the specified <see cref="char" /> is found at the end of the string.
         /// </summary>
@@ -247,7 +231,6 @@ namespace Argus.Extensions
 
             return str.Length > 0 && str[str.Length - 1].Equals(c);
         }
-#endif
 
         /// <summary>
         /// Simulates the same functionality provide by the traditional 1 based index Mid function.
@@ -1543,46 +1526,6 @@ namespace Argus.Extensions
             return value.Split(' ').ToList();
         }
 
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Gets the first word in the string
-        /// </summary>
-        /// <param name="value"></param>
-        public static string FirstWord(this string value)
-        {
-            return value.ParseWord(1, " ");
-        }
-
-        /// <summary>
-        /// Gets the second word in the string
-        /// </summary>
-        /// <param name="value"></param>
-        public static string SecondWord(this string value)
-        {
-            return value.ParseWord(2, " ");
-        }
-
-        /// <summary>
-        /// Gets the third word in the string
-        /// </summary>
-        /// <param name="value"></param>
-        public static string ThirdWord(this string value)
-        {
-            return value.ParseWord(3, " ");
-        }
-
-        /// <summary>
-        /// Parses the given word from the string
-        /// </summary>
-        public static string ParseWord(this string value, int wordNumber, string delimiter)
-        {
-            var strArray = value.Split(delimiter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-            return strArray.Length >= wordNumber ? strArray[wordNumber - 1] : string.Empty;
-        }
-#endif
-
-#if !NETSTANDARD2_0
         /// <summary>
         /// Gets the first word in the string
         /// </summary>
@@ -1739,43 +1682,7 @@ namespace Argus.Extensions
 
             return true;
         }
-#endif
 
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Removes the word from the string at the given index
-        /// </summary>
-        public static string RemoveWord(this string value, int wordNumber)
-        {
-            var strArray = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            string newString = string.Empty;
-            int count = 1;
-
-            foreach (string str in strArray)
-            {
-                if (count == wordNumber)
-                {
-                    count++;
-
-                    continue;
-                }
-
-                newString += str + " ";
-                count++;
-            }
-
-            // strip the last space off the end
-            if (!string.IsNullOrEmpty(newString))
-            {
-                newString = newString.Substring(0, newString.Length - 1);
-            }
-
-            return newString;
-        }
-#endif
-
-#if !NETSTANDARD2_0
         /// <summary>
         /// Removes the word from the string at the given index
         /// </summary>
@@ -1863,7 +1770,6 @@ namespace Argus.Extensions
                 return ReadOnlySpan<char>.Empty;
             }
         }
-#endif
 
         /// <summary>
         /// Returns the word count in the current string accounting for whitespace.
@@ -1929,7 +1835,6 @@ namespace Argus.Extensions
             return value.Length > 0 && value[0].Equals(c);
         }
 
-#if NETSTANDARD2_0
         /// <summary>
         /// If the current string ends with a specific <see cref="char" />.  0 length strings return false.
         /// </summary>
@@ -1939,40 +1844,8 @@ namespace Argus.Extensions
         {
             return value.Length > 0 && value[value.Length - 1].Equals(c);
         }
-#else
-        /// <summary>
-        ///     If the current string ends with a specific <see cref="char"/>.  0 length strings return false.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="c"></param>
-        public static bool EndsWith(this string value, char c)
-        {
-            return value.Length > 0 && value[^1].Equals(c);
-        }
-#endif
-#if NETSTANDARD2_0
-        /// <summary>
-        /// Returns a string between the first occurrence of two markers with assumption that the end marker
-        /// falls after the begin marker.
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="beginMarker"></param>
-        /// <param name="endMarker"></param>
-        public static string Between(this string str, string beginMarker, string endMarker)
-        {
-            int pos1 = str.IndexOf(beginMarker, StringComparison.Ordinal) + beginMarker.Length;
-            int pos2 = str.Substring(pos1).IndexOf(endMarker, StringComparison.Ordinal);
 
-            // Nope, we got nothing.
-            if (pos2 <= pos1)
-            {
-                return "";
-            }
 
-            return str.Substring(pos1, pos2);
-        }
-#endif
-#if NETSTANDARD2_1 || NET5_0_OR_GREATER
         /// <summary>
         /// Returns a string between the first occurrence of two markers.
         /// </summary>
@@ -2004,7 +1877,6 @@ namespace Argus.Extensions
 
             return span.Slice(pos1, pos2).ToString();
         }
-#endif
 
         /// <summary>
         /// Encrypts a string with AES encryption.
