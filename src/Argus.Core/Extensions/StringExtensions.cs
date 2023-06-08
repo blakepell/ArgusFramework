@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2022-12-14
+ * @last updated      : 2023-06-08
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -23,23 +23,33 @@ namespace Argus.Extensions
     public static class StringExtensions
     {
         /// <summary>
-        /// This function will return the specified amount of characters from the left hand side of the string.  This is the equivalent of the Visual Basic Left function.
+        /// This function will return the specified amount of characters from the left hand side of the string. This is the equivalent of the Visual Basic Left function.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
         public static string Left(this string str, int length)
         {
-            return str.Substring(0, length);
+            if (length >= str.Length)
+            {
+                return str;
+            }
+
+            return str.AsSpan(0, length).ToString();
         }
 
         /// <summary>
-        /// This function will return the specified amount of characters from the right hand side of the string.  This is the equivalent of the Visual Basic Right function.
+        /// This function will return the specified amount of characters from the right hand side of the string. This is the equivalent of the Visual Basic Right function.
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
         public static string Right(this string str, int length)
         {
-            return str.Substring(str.Length - length, length);
+            if (length >= str.Length)
+            {
+                return str;
+            }
+
+            return str.AsSpan(str.Length - length, length).ToString();
         }
 
         /// <summary>
@@ -60,7 +70,7 @@ namespace Argus.Extensions
                 return str;
             }
 
-
+            // Left uses spans
             return Left(str, length);
         }
 
@@ -82,6 +92,7 @@ namespace Argus.Extensions
                 return str;
             }
 
+            // Right uses spans
             return Right(str, length);
         }
 
@@ -257,12 +268,14 @@ namespace Argus.Extensions
         /// <param name="length"></param>
         public static string DeleteLeft(this string str, int length)
         {
-            if (string.IsNullOrEmpty(str) || length > str.Length)
+            if (string.IsNullOrEmpty(str) || length >= str.Length)
             {
-                return "";
+                return string.Empty;
             }
 
-            return str.Right(str.Length - length);
+            var span = str.AsSpan();
+            var resultSpan = span.Slice(length);
+            return resultSpan.ToString();
         }
 
         /// <summary>
@@ -273,14 +286,16 @@ namespace Argus.Extensions
         /// <param name="length"></param>
         public static string DeleteRight(this string str, int length)
         {
-            if (string.IsNullOrEmpty(str) || length > str.Length)
+            if (string.IsNullOrEmpty(str) || length >= str.Length)
             {
-                return "";
+                return string.Empty;
             }
 
-            return str.Left(str.Length - length);
+            var span = str.AsSpan();
+            var resultSpan = span.Slice(0, span.Length - length);
+            return resultSpan.ToString();
         }
-
+        
         /// <summary>
         /// Removes all line endings from a string.
         /// </summary>
@@ -327,14 +342,21 @@ namespace Argus.Extensions
         /// <param name="trimStr"></param>
         public static string TrimEnd(this string str, string trimStr)
         {
-            if (str.EndsWith(trimStr))
+            if (string.IsNullOrEmpty(str) || string.IsNullOrEmpty(trimStr))
             {
-                return str.DeleteRight(trimStr.Length);
+                return str;
             }
 
-            return str;
-        }
+            var span = str.AsSpan();
 
+            while (span.Length >= trimStr.Length && span.Slice(span.Length - trimStr.Length).SequenceEqual(trimStr.AsSpan()))
+            {
+                span = span.Slice(0, span.Length - trimStr.Length);
+            }
+
+            return span.ToString();
+        }
+        
         /// <summary>
         /// Removes all leading occurrences of the specified string.
         /// </summary>
@@ -342,12 +364,19 @@ namespace Argus.Extensions
         /// <param name="trimStr"></param>
         public static string TrimStart(this string str, string trimStr)
         {
-            if (str.StartsWith(trimStr))
+            if (string.IsNullOrEmpty(str) || string.IsNullOrEmpty(trimStr))
             {
-                return str.DeleteLeft(trimStr.Length);
+                return str;
             }
 
-            return str;
+            var span = str.AsSpan();
+
+            while (span.StartsWith(trimStr.AsSpan()))
+            {
+                span = span.Slice(trimStr.Length);
+            }
+
+            return span.ToString();
         }
 
         /// <summary>
@@ -357,17 +386,20 @@ namespace Argus.Extensions
         /// <param name="trimStr"></param>
         public static string Trim(this string str, string trimStr)
         {
-            if (str.StartsWith(trimStr))
+            var strSpan = str.AsSpan();
+            var trimSpan = trimStr.AsSpan();
+
+            while (strSpan.StartsWith(trimSpan))
             {
-                str = str.DeleteLeft(trimStr.Length);
+                strSpan = strSpan.Slice(trimSpan.Length);
             }
 
-            if (str.EndsWith(trimStr))
+            while (strSpan.EndsWith(trimSpan))
             {
-                str = str.DeleteRight(trimStr.Length);
+                strSpan = strSpan.Slice(0, strSpan.Length - trimSpan.Length);
             }
 
-            return str;
+            return strSpan.ToString();
         }
 
         /// <summary>
@@ -721,7 +753,7 @@ namespace Argus.Extensions
         /// <param name="str"></param>
         public static string DefaultIfNull(this string str)
         {
-            return str != null ? str : string.Empty;
+            return str ?? string.Empty;
         }
 
         /// <summary>
@@ -736,7 +768,7 @@ namespace Argus.Extensions
                 return str;
             }
 
-            return defaultValue != null ? defaultValue : string.Empty;
+            return defaultValue ?? string.Empty;
         }
 
         /// <summary>
