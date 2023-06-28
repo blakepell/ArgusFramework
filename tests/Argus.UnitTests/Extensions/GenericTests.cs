@@ -139,6 +139,25 @@ namespace Argus.UnitTests
         }
 
         [Fact]
+        public void GetValue()
+        {
+            var p = new Person
+            {
+                FirstName = "Blake"
+            };
+
+            Assert.Equal(p.GetValue("FirstName"), "Blake");
+        }
+
+        [Fact]
+        public void SetValue()
+        {
+            var p = new Person();
+            p.SetValue("FirstName", "Blake");
+            Assert.Equal(p.GetValue("FirstName"), "Blake");
+        }
+
+        [Fact]
         public void HasAttribute()
         {
             var p = new Person();
