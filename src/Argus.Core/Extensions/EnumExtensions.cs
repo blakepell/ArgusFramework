@@ -2,11 +2,12 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2016-03-01
- * @last updated      : 2021-10-04
+ * @last updated      : 2023-06-27
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
 
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Argus.Extensions
@@ -279,6 +280,35 @@ namespace Argus.Extensions
                        .GetCustomAttributes(false)
                        .OfType<TAttribute>()
                        .SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Returns the description attribute's value or a null if it is not found.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumValue"></param>
+        public static string? GetDescription<T>(this T enumValue) where T : struct, IConvertible
+        {
+            if (!typeof(T).IsEnum)
+            {
+                return null;
+            }
+
+            var description = enumValue.ToString();
+            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+
+            if (fieldInfo == null)
+            {
+                return description;
+            }
+
+            var attrs = fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), true);
+            if (attrs is { Length: > 0 })
+            {
+                description = ((DescriptionAttribute)attrs[0]).Description;
+            }
+
+            return description;
         }
     }
 }

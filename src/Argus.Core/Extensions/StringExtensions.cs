@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2023-06-08
+ * @last updated      : 2023-06-27
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -2233,6 +2233,25 @@ namespace Argus.Extensions
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Returns the string back or a blank string if the provided string was null.
+        /// </summary>
+        /// <param name="text"></param>
+        public static string ToSafeString(this string? text)
+        {
+            return text ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Returns the string back or the required default value if the provided string was null.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="defaultValue"></param>
+        public static string ToSafeStringOrDefault(this string? text, string defaultValue)
+        {
+            return text ?? defaultValue;
         }
 
 #if NET6_0_OR_GREATER || NETSTANDARD2_1

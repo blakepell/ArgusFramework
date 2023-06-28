@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2022-08-18
+ * @last updated      : 2023-06-27
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -377,5 +377,99 @@ namespace Argus.Extensions
         /// <param name="d"></param>
         public static string MeridiemNotation(this DateTime d) => d.Hour >= 12 ? "PM" : "AM";
 
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Converts a <see cref="DateOnly"/> to a <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="date"></param>
+        public static DateTime? ToDateTime(this DateOnly? date)
+        {
+            if (date.HasValue)
+            {
+                return new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="DateOnly"/> to a <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="date"></param>
+        public static DateTime? ToDateTime(this DateOnly date)
+        {
+            return new DateTime(date.Year, date.Month, date.Day);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="DateTime"/> to a <see cref="DateOnly"/>.
+        /// </summary>
+        /// <param name="dateTime"></param>
+        public static DateOnly? ToDateOnly(this DateTime? dateTime)
+        {
+            if (dateTime.HasValue)
+            {
+                return new DateOnly(dateTime.Value.Year, dateTime.Value.Month, dateTime.Value.Day);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="DateTime"/> to a <see cref="DateOnly"/>.
+        /// </summary>
+        /// <param name="dateTime"></param>
+        public static DateOnly ToDateOnly(this DateTime dateTime)
+        {
+            return new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="DateTime"/> in YYYY-MM-DD format.
+        /// </summary>
+        /// <param name="dt"></param>
+        public static string ToHtmlFormDate(this DateTime dt)
+        {
+            return $"{dt.Year.ToString()}-{dt.Month.ToString().PadLeft(2, '0')}-{dt.Day.ToString().PadLeft(2, '0')}";
+        }
+
+
+        /// <summary>
+        /// Returns the <see cref="DateOnly"/> in YYYY-MM-DD format.
+        /// </summary>
+        /// <param name="dt"></param>
+        public static string ToHtmlFormDate(this DateTime? dt)
+        {
+            if (dt.HasValue)
+            {
+                return ToHtmlFormDate(dt.Value);
+            }
+
+            return "";
+        }
+
+        /// <summary>
+        /// Returns the <see cref="DateOnly"/> in YYYY-MM-DD format.
+        /// </summary>
+        /// <param name="d"></param>
+        public static string ToHtmlFormDate(this DateOnly d)
+        {
+            return $"{d.Year.ToString()}-{d.Month.ToString().PadLeft(2, '0')}-{d.Day.ToString().PadLeft(2, '0')}";
+        }
+
+        /// <summary>
+        /// Returns the <see cref="DateOnly"/> in YYYY-MM-DD format.
+        /// </summary>
+        /// <param name="d"></param>
+        public static string ToHtmlFormDate(this DateOnly? d)
+        {
+            if (d.HasValue)
+            {
+                return ToHtmlFormDate(d.Value);
+            }
+
+            return "";
+        }
+#endif
     }
 }
