@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2014-01-02
- * @last updated      : 2022-08-29
+ * @last updated      : 2023-06-27
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -32,6 +32,34 @@ namespace Argus.Extensions
         public static bool IsNull<T>(this T? obj) where T : struct
         {
             return !obj.HasValue;
+        }
+
+
+        /// <summary>
+        /// Sets a property's value via reflection.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <remarks>Not efficient but very handy.</remarks>
+        public static void SetValue<T>(this T @this, string propertyName, object value)
+        {
+            var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            prop?.SetValue(@this, value, null);
+        }
+
+        /// <summary>
+        /// Get's a property value via reflection as an object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="propertyName"></param>
+        /// <remarks>Not efficient but very handy.</remarks>
+        public static object GetValue<T>(this T @this, string propertyName)
+        {
+            var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            return prop?.GetValue(@this, null);
         }
 
         /// <summary>
