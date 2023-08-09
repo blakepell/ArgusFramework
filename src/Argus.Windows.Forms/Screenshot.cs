@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2007-09-16
- * @last updated      : 2016-0607
+ * @last updated      : 2016-06-07
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -60,16 +60,16 @@ namespace Argus.Windows.Forms
         private const int SRCCOPY = 0xcc0020;
 
         [DllImport("gdi32")]
-        public static extern bool BitBlt(IntPtr hDestDC, int X, int Y, int nWidth, int nHeight, IntPtr hSrcDC, int SrcX, int SrcY, int Rop);
+        private static extern bool BitBlt(IntPtr hDestDC, int X, int Y, int nWidth, int nHeight, IntPtr hSrcDC, int SrcX, int SrcY, int Rop);
 
         [DllImport("user32.dll")]
         private static extern int GetWindowDC(IntPtr hwnd);
 
         [DllImport("user32.dll")]
-        public static extern IntPtr GetDesktopWindow();
+        private static extern IntPtr GetDesktopWindow();
 
         [DllImport("user32.dll")]
-        public static extern IntPtr GetForegroundWindow();
+        private static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
         private static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDc);
@@ -78,28 +78,37 @@ namespace Argus.Windows.Forms
         private static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
 
         /// <summary>
-        /// Takes a screenshot of the primary screen and returns it as a Sysem.Drawing.Bitmap.
+        /// Rectangle structure to pass to the Windows APIs
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        /// <summary>
+        /// Takes a screenshot of the primary screen and returns it as a System.Drawing.Bitmap.
         /// This function uses the BitBlt Windows API to take the screenshot.
         /// </summary>
         public static Bitmap GetScreenshotPrimaryScreen()
         {
-            GraphicsFx g = default;
             var hdcDest = IntPtr.Zero;
             var desktopHandleDC = IntPtr.Zero;
             var desktopHandle = GetDesktopWindow();
             var bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 
-            bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            g = GraphicsFx.FromImage(bmp);
-            desktopHandleDC = (IntPtr) GetWindowDC(desktopHandle);
-            hdcDest = g.GetHdc();
-            BitBlt(hdcDest, 0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height, desktopHandleDC, 0, 0, SRCCOPY);
+            using (var g = GraphicsFx.FromImage(bmp))
+            {
+                desktopHandleDC = (IntPtr)GetWindowDC(desktopHandle);
+                hdcDest = g.GetHdc();
+                BitBlt(hdcDest, 0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height, desktopHandleDC, 0, 0, SRCCOPY);
 
-            g.ReleaseHdc(hdcDest);
-            ReleaseDC(desktopHandle, desktopHandleDC);
-
-            g.Dispose();
-            g = null;
+                g.ReleaseHdc(hdcDest);
+                ReleaseDC(desktopHandle, desktopHandleDC);
+            }
 
             return bmp;
         }
@@ -114,15 +123,13 @@ namespace Argus.Windows.Forms
 
             foreach (var sc in Screen.AllScreens)
             {
-                var g = default(GraphicsFx);
                 var bmp = new Bitmap(sc.Bounds.Width, sc.Bounds.Height);
 
-                g = GraphicsFx.FromImage(bmp);
-                g.CopyFromScreen(sc.Bounds.Left, sc.Bounds.Top, 0, 0, new Size(sc.Bounds.Width, sc.Bounds.Height));
-
-                bmpList.Add(bmp);
-                g.Dispose();
-                g = null;
+                using (var g = GraphicsFx.FromImage(bmp))
+                {
+                    g.CopyFromScreen(sc.Bounds.Left, sc.Bounds.Top, 0, 0, new Size(sc.Bounds.Width, sc.Bounds.Height));
+                    bmpList.Add(bmp);
+                }
             }
 
             return bmpList;
@@ -132,15 +139,13 @@ namespace Argus.Windows.Forms
         /// Takes a screenshot of the current window and return it as a System.Drawing.Bitmap.
         /// This function uses the BitBlt Windows API to take the screenshot.
         /// </summary>
-        public static Bitmap GetScreenshotCurrentWindow()
+        public static Bitmap? GetScreenshotCurrentWindow()
         {
-            var g = default(GraphicsFx);
             var hdcDest = IntPtr.Zero;
             var windowHandleDC = IntPtr.Zero;
             var windowHandle = GetForegroundWindow();
-
             var windowRect = default(RECT);
-            var bmp = default(Bitmap);
+            Bitmap bmp;
 
             if (GetWindowRect(windowHandle, out windowRect))
             {
@@ -151,16 +156,15 @@ namespace Argus.Windows.Forms
                 return null;
             }
 
-            g = GraphicsFx.FromImage(bmp);
-            windowHandleDC = (IntPtr) GetWindowDC(windowHandle);
-            hdcDest = g.GetHdc();
-            BitBlt(hdcDest, 0, 0, bmp.Width, bmp.Height, windowHandleDC, 0, 0, SRCCOPY);
+            using (var g = GraphicsFx.FromImage(bmp))
+            {
+                windowHandleDC = (IntPtr)GetWindowDC(windowHandle);
+                hdcDest = g.GetHdc();
+                BitBlt(hdcDest, 0, 0, bmp.Width, bmp.Height, windowHandleDC, 0, 0, SRCCOPY);
 
-            g.ReleaseHdc(hdcDest);
-            ReleaseDC(windowHandle, windowHandleDC);
-
-            g.Dispose();
-            g = null;
+                g.ReleaseHdc(hdcDest);
+                ReleaseDC(windowHandle, windowHandleDC);
+            }
 
             return bmp;
         }
@@ -171,14 +175,12 @@ namespace Argus.Windows.Forms
         /// This function uses the BitBlt Windows API to take the screenshot.
         /// </summary>
         /// <param name="handle"></param>
-        public static Bitmap GetScreenshotByHandle(IntPtr handle)
+        public static Bitmap? GetScreenshotByHandle(IntPtr handle)
         {
-            var g = default(GraphicsFx);
             var hdcDest = IntPtr.Zero;
             var windowHandleDC = IntPtr.Zero;
-
             var windowRect = default(RECT);
-            var bmp = default(Bitmap);
+            Bitmap bmp;
 
             if (GetWindowRect(handle, out windowRect))
             {
@@ -189,16 +191,15 @@ namespace Argus.Windows.Forms
                 return null;
             }
 
-            g = GraphicsFx.FromImage(bmp);
-            windowHandleDC = (IntPtr) GetWindowDC(handle);
-            hdcDest = g.GetHdc();
-            BitBlt(hdcDest, 0, 0, bmp.Width, bmp.Height, windowHandleDC, 0, 0, SRCCOPY);
+            using (var g = GraphicsFx.FromImage(bmp))
+            {
+                windowHandleDC = (IntPtr)GetWindowDC(handle);
+                hdcDest = g.GetHdc();
+                BitBlt(hdcDest, 0, 0, bmp.Width, bmp.Height, windowHandleDC, 0, 0, SRCCOPY);
 
-            g.ReleaseHdc(hdcDest);
-            ReleaseDC(handle, windowHandleDC);
-
-            g.Dispose();
-            g = null;
+                g.ReleaseHdc(hdcDest);
+                ReleaseDC(handle, windowHandleDC);
+            }
 
             return bmp;
         }
@@ -210,10 +211,8 @@ namespace Argus.Windows.Forms
         /// <param name="rectLoc"></param>
         public static Bitmap GetScreenshotByLocation(Rectangle rectLoc)
         {
-            var g = default(GraphicsFx);
             var hdcDest = IntPtr.Zero;
             var windowHandleDC = IntPtr.Zero;
-
             var windowRect = default(RECT);
 
             windowRect.Left = rectLoc.Left;
@@ -223,30 +222,17 @@ namespace Argus.Windows.Forms
 
             var bmp = new Bitmap(windowRect.Right - windowRect.Left, windowRect.Bottom - windowRect.Top);
 
-            g = GraphicsFx.FromImage(bmp);
-            windowHandleDC = GetDesktopWindow();
-            hdcDest = g.GetHdc();
-            BitBlt(hdcDest, 0, 0, bmp.Width, bmp.Height, windowHandleDC, windowRect.Left, windowRect.Top, SRCCOPY);
+            using (var g = GraphicsFx.FromImage(bmp))
+            {
+                windowHandleDC = GetDesktopWindow();
+                hdcDest = g.GetHdc();
+                BitBlt(hdcDest, 0, 0, bmp.Width, bmp.Height, windowHandleDC, windowRect.Left, windowRect.Top, SRCCOPY);
 
-            g.ReleaseHdc(hdcDest);
-            ReleaseDC(GetDesktopWindow(), windowHandleDC);
-
-            g.Dispose();
-            g = null;
+                g.ReleaseHdc(hdcDest);
+                ReleaseDC(GetDesktopWindow(), windowHandleDC);
+            }
 
             return bmp;
-        }
-
-        /// <summary>
-        /// Rectangle structure to pass to the Windows APIs
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential)]
-        private struct RECT
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
         }
     }
 }
