@@ -11,6 +11,9 @@ using System.Windows.Media.Animation;
 
 namespace Argus.Windows.Wpf.Animations
 {
+    /// <summary>
+    /// This is an abstract class derived from AnimationTimeline. It defines basic behavior for animating a GridLength property.
+    /// </summary>
     public abstract class GridLengthAnimationBase : AnimationTimeline
     {
         public override Type TargetPropertyType => typeof(GridLength);
@@ -20,22 +23,22 @@ namespace Argus.Windows.Wpf.Animations
             GridLength origin;
             GridLength destination;
 
-            if (defaultOriginValue is GridLength)
+            if (defaultOriginValue is GridLength value)
             {
-                origin = (GridLength) defaultOriginValue;
+                origin = value;
             }
             else
             {
-                throw new ArgumentException("Wrong argument type in GetCurrentValue", "OriginValue");
+                throw new ArgumentException("Wrong argument type in GetCurrentValue", nameof(defaultOriginValue));
             }
 
-            if (defaultDestinationValue is GridLength)
+            if (defaultDestinationValue is GridLength length)
             {
-                destination = (GridLength) defaultDestinationValue;
+                destination = length;
             }
             else
             {
-                throw new ArgumentException("Wrong argument type in GetCurrentValue", "DestinationValue");
+                throw new ArgumentException("Wrong argument type in GetCurrentValue", nameof(defaultDestinationValue));
             }
 
             return this.GetCurrentValueCore(origin, destination, animationClock);

@@ -11,6 +11,23 @@ using System.Windows.Media.Animation;
 
 namespace Argus.Windows.Wpf.Animations
 {
+    /// <summary>
+    /// This class inherits from GridLengthAnimationBase and implements the specifics of the animation.
+    /// </summary>
+    /// <remarks>
+    /// <code>
+    /// Grid grid = new Grid();
+    /// grid.RowDefinitions.Add(new RowDefinition());
+    /// GridLengthAnimation gla = new GridLengthAnimation();
+    /// gla.From = new GridLength(100);  // Starting from 100 units height
+    /// gla.To = new GridLength(200);    // Animate to 200 units height
+    /// gla.Duration = new Duration(TimeSpan.FromSeconds(2)); // Over 2 seconds
+    /// // Optionally, add an easing function
+    /// gla.EasingFunction = new BounceEase();
+    /// // Apply the animation to the grid's first row height
+    /// grid.RowDefinitions[0].BeginAnimation(RowDefinition.HeightProperty, gla);
+    /// </code>
+    /// </remarks>
     public class GridLengthAnimation : GridLengthAnimationBase
     {
         public static readonly DependencyProperty FromProperty =
@@ -56,12 +73,18 @@ namespace Argus.Windows.Wpf.Animations
 
         public override bool IsDestinationDefault => false;
 
+        /// <summary>
+        /// The starting value of the animation.
+        /// </summary>
         public GridLength? From
         {
             get => (GridLength?) this.GetValue(FromProperty);
             set => this.SetValue(FromProperty, value);
         }
 
+        /// <summary>
+        /// The ending value of the animation.
+        /// </summary>
         public GridLength? To
         {
             get => (GridLength?) this.GetValue(ToProperty);
@@ -74,6 +97,9 @@ namespace Argus.Windows.Wpf.Animations
             set => this.SetValue(ByProperty, value);
         }
 
+        /// <summary>
+        /// Provides a way to customize the speed progression of the animation, making it non-linear if desired.
+        /// </summary>
         public IEasingFunction EasingFunction
         {
             get => (IEasingFunction) this.GetValue(EasingFunctionProperty);
@@ -105,14 +131,7 @@ namespace Argus.Windows.Wpf.Animations
 
             if (this.To == null && this.By != null)
             {
-                if (this.From == null)
-                {
-                    this.To = new GridLength(defaultOriginValue.Value + (double) this.By);
-                }
-                else
-                {
-                    this.To = new GridLength(this.From.Value.Value + (double) this.By);
-                }
+                this.To = this.From == null ? new GridLength(defaultOriginValue.Value + (double) this.By) : new GridLength(this.From.Value.Value + (double) this.By);
             }
 
             if (from.GridUnitType != to.GridUnitType)
