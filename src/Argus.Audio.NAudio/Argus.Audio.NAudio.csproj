@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net472;net6.0;net7.0</TargetFrameworks>
-		<Version>2022.11.30.1</Version>
-		<AssemblyVersion>2022.11.30.1</AssemblyVersion>
+		<Version>2023.10.22.1</Version>
+		<AssemblyVersion>2023.10.22.1</AssemblyVersion>
 		<Authors>Blake Pell</Authors>
 		<Company>https://www.blakepell.com</Company>
 		<Product>Argus Framework - NAudio Utilities</Product>
@@ -18,12 +18,12 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<RootNamespace>Argus.Audio.NAudio</RootNamespace>
 		<AssemblyName>Argus.Audio.NAudio</AssemblyName>
-		<PackageReleaseNotes></PackageReleaseNotes>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NAudio" Version="2.1.0" />
+		<PackageReference Include="NAudio" Version="2.2.1" />
+		<PackageReference Include="NAudio.Lame" Version="2.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
