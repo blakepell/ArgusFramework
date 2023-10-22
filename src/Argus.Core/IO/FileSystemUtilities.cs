@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2010-07-07
- * @last updated      : 2023-06-08
+ * @last updated      : 2023-10-22
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -14,6 +14,44 @@ namespace Argus.IO
     /// </summary>
     public static class FileSystemUtilities
     {
+        /// <summary>
+        /// Changes the modified date of a destination file to be the same as a source file.
+        /// </summary>
+        /// <param name="sourceFile"></param>
+        /// <param name="destinationFile"></param>
+        public static void SyncModifiedDate(string sourceFile, string destinationFile)
+        {
+            if (!File.Exists(sourceFile) || !File.Exists(destinationFile))
+            {
+                return;
+            }
+
+            // Get the last modified date of the source file
+            var lastModified = File.GetLastWriteTime(sourceFile);
+
+            // Set the last modified date for the destination file
+            File.SetLastWriteTime(destinationFile, lastModified);
+        }
+
+        /// <summary>
+        /// Changes the created date of a destination file to be the same as a source file.
+        /// </summary>
+        /// <param name="sourceFile"></param>
+        /// <param name="destinationFile"></param>
+        public static void SyncCreatedDate(string sourceFile, string destinationFile)
+        {
+            if (!File.Exists(sourceFile) || !File.Exists(destinationFile))
+            {
+                return;
+            }
+
+            // Get the last modified date of the source file
+            var lastModified = File.GetCreationTime(sourceFile);
+
+            // Set the last modified date for the destination file
+            File.SetCreationTime(destinationFile, lastModified);
+        }
+
         /// <summary>
         /// Date types supported for the SafeFileType extension method.
         /// </summary>
