@@ -10,6 +10,7 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using NAudio.Lame;
 using NAudio.Wave;
 
@@ -20,6 +21,72 @@ namespace Argus.Audio.NAudio
     /// </summary>
     public static class Utilities
     {
+        /// <summary>
+        /// Convert a WAV to an MP3 file.
+        /// </summary>
+        /// <param name="waveFileName"></param>
+        /// <param name="mp3FileName"></param>
+        /// <param name="bitRate"></param>
+        public static void WaveToMp3(string waveFileName, string mp3FileName, int bitRate = 128)
+        {
+            using (var reader = new AudioFileReader(waveFileName))
+            {
+                using (var writer = new LameMP3FileWriter(mp3FileName, reader.WaveFormat, bitRate))
+                {
+                    reader.CopyTo(writer);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Convert a WAV to an MP3 file.
+        /// </summary>
+        /// <param name="waveFileName"></param>
+        /// <param name="mp3FileName"></param>
+        /// <param name="bitRate"></param>
+        public static async Task WaveToMp3Async(string waveFileName, string mp3FileName, int bitRate = 128)
+        {
+            using (var reader = new AudioFileReader(waveFileName))
+            {
+                using (var writer = new LameMP3FileWriter(mp3FileName, reader.WaveFormat, bitRate))
+                {
+                    await reader.CopyToAsync(writer);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Convert an MP3 to a WAV file.
+        /// </summary>
+        /// <param name="mp3FileName"></param>
+        /// <param name="waveFileName"></param>
+        public static void Mp3ToWave(string mp3FileName, string waveFileName)
+        {
+            using (var reader = new Mp3FileReader(mp3FileName))
+            {
+                using (var writer = new WaveFileWriter(waveFileName, reader.WaveFormat))
+                {
+                    reader.CopyTo(writer);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Convert an MP3 to a WAV file.
+        /// </summary>
+        /// <param name="mp3FileName"></param>
+        /// <param name="waveFileName"></param>
+        public static async void Mp3ToWaveAsync(string mp3FileName, string waveFileName)
+        {
+            using (var reader = new Mp3FileReader(mp3FileName))
+            {
+                using (var writer = new WaveFileWriter(waveFileName, reader.WaveFormat))
+                {
+                    await reader.CopyToAsync(writer);
+                }
+            }
+        }
+        
         /// <summary>
         /// Extracts a wave file from the supported MediaFoundationReader source.
         /// </summary>
@@ -157,7 +224,7 @@ namespace Argus.Audio.NAudio
         /// <param name="wavFilePath">The full path to the .wav source file.</param>
         /// <param name="mp3FilePath">The full path to the .mp3 output file.</param>
         /// <param name="bitRate">The constant bitrate of the MP3.  128 kbps is the default.</param>
-        public static void ConvertWavToMp3(string wavFilePath, string mp3FilePath, int bitRate = 128)
+        public static void ConvertWaveToMp3(string wavFilePath, string mp3FilePath, int bitRate = 128)
         {
             using (var reader = new WaveFileReader(wavFilePath))
             {
