@@ -2,8 +2,8 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2022-04-09
- * @copyright         : Copyright (c) 2003-2022, All rights reserved.
+ * @last updated      : 2023-11-30
+ * @copyright         : Copyright (c) 2003-2023, All rights reserved.
  * @license           : MIT
  */
 
@@ -143,6 +143,20 @@ namespace Argus.Extensions
             return sb;
         }
 
+        /// <summary>
+        /// Appends a string if the check value is not null or white space.
+        /// </summary>
+        /// <param name="sb">The StringBuilder to append to.</param>
+        /// <param name="checkValue">The value to check to see if the append takes place.</param>
+        /// <param name="appendValue">The value to append.</param>
+        public static void AppendIfNotNullOrEmpty(this StringBuilder sb, string? checkValue, string appendValue)
+        {
+            if (!string.IsNullOrWhiteSpace(checkValue))
+            {
+                sb.Append(appendValue);
+            }
+        }
+        
         /// <summary>
         /// Converts a StringBuilder to uppercase.
         /// </summary>

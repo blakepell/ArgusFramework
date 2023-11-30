@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-07-01
- * @last updated      : 2022-07-26
+ * @last updated      : 2023-11-30
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -16,6 +16,16 @@ namespace Argus.Extensions
     /// </summary>
     public static class ReflectionExtensions
     {
+        /// <summary>
+        /// Checks if an object has a specified property.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="propertyName"></param>
+        private static bool HasProperty(object obj, string propertyName)
+        {
+            return obj.GetType().GetProperty(propertyName) != null;
+        }
+        
         /// <summary>
         /// Determines whether a property of a specific type is Browsable.
         /// </summary>

@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2021-07-01
- * @last updated      : 2022-07-01
+ * @last updated      : 2023-11-30
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -19,6 +19,33 @@ namespace Argus.Memory
     public class AppServices
     {
         /// <summary>
+        /// Mechanism for retrieving a service object.
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; set; }
+
+        /// <summary>
+        /// Returns the instance of <see cref="AppServices"/>.  If the instance has not yet
+        /// been created it will be created on this call.
+        /// </summary>
+        private static AppServices Instance => _instance ?? GetInstance();
+
+        /// <summary>
+        /// Internal reference for the <see cref="AppServices"/> instance.
+        /// </summary>
+        private static AppServices _instance;
+
+        /// <summary>
+        /// Lock object used by <see cref="GetInstance"/>.
+        /// </summary>
+        private static readonly object InstanceLock = new();
+
+        /// <summary>
+        /// A reference to the service collection so that services can be added at a time
+        /// later than the initial registration of objects.
+        /// </summary>
+        public static ServiceCollection ServiceCollection;
+
+        /// <summary>
         /// Initializes the dependencies via action which allows the caller to register classes
         /// and interfaces.  Init can only be called once but it allows the caller to pass in
         /// an <see cref="Action"/> to handle registering the DI so that the DI can handle both
@@ -31,7 +58,7 @@ namespace Argus.Memory
             var services = new ServiceCollection();
             action.Invoke(services);
             Instance.ServiceProvider = services.BuildServiceProvider();
-            _serviceCollection = services;
+            ServiceCollection = services;
         }
 
         /// <summary>
@@ -40,9 +67,9 @@ namespace Argus.Memory
         /// <typeparam name="T"></typeparam>
         public static void AddSingleton<T>() where T : class
         {
-            _serviceCollection ??= new ServiceCollection();
-            _serviceCollection.AddSingleton<T>();
-            Instance.ServiceProvider = _serviceCollection.BuildServiceProvider();
+            ServiceCollection ??= new ServiceCollection();
+            ServiceCollection.AddSingleton<T>();
+            Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
         }
 
         /// <summary>
@@ -53,9 +80,9 @@ namespace Argus.Memory
         /// <param name="instance">The specific instance that should be added as a singleton.</param>
         public static void AddSingleton<T>(T instance) where T : class
         {
-            _serviceCollection ??= new ServiceCollection();
-            _serviceCollection.AddSingleton(instance);
-            Instance.ServiceProvider = _serviceCollection.BuildServiceProvider();
+            ServiceCollection ??= new ServiceCollection();
+            ServiceCollection.AddSingleton(instance);
+            Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
         }
 
         /// <summary>
@@ -64,9 +91,9 @@ namespace Argus.Memory
         /// <param name="action"></param>
         public static void AddService(Action<ServiceCollection> action)
         {
-            _serviceCollection ??= new ServiceCollection();
-            action.Invoke(_serviceCollection);
-            Instance.ServiceProvider = _serviceCollection.BuildServiceProvider();
+            ServiceCollection ??= new ServiceCollection();
+            action.Invoke(ServiceCollection);
+            Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
         }
 
         /// <summary>
@@ -98,28 +125,7 @@ namespace Argus.Memory
         {
             return ActivatorUtilities.CreateInstance<T>(Instance.ServiceProvider);
         }
-
-        /// <summary>
-        /// Mechanism for retrieving a service object.
-        /// </summary>
-        public IServiceProvider ServiceProvider { get; set; }
-
-        /// <summary>
-        /// Returns the instance of <see cref="AppServices"/>.  If the instance has not yet
-        /// been created it will be created on this call.
-        /// </summary>
-        private static AppServices Instance => _instance ?? GetInstance();
-
-        /// <summary>
-        /// Internal reference for the <see cref="AppServices"/> instance.
-        /// </summary>
-        private static AppServices _instance;
-
-        /// <summary>
-        /// Lock object used by <see cref="GetInstance"/>.
-        /// </summary>
-        private static readonly object InstanceLock = new();
-
+        
         /// <summary>
         /// Gets the current instance or creates a new one.
         /// </summary>
@@ -132,10 +138,15 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        /// A reference to the service collection so that services can be added at a time
-        /// later than the initial registration of objects.
+        /// Updates the <see cref="ServiceProvider"/> with the contents of the services registered
+        /// in the <see cref="ServiceCollection"/>.
         /// </summary>
-        private static ServiceCollection _serviceCollection;
-
+        public static void BuildServiceProvider()
+        {
+            lock (InstanceLock)
+            {
+                Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+            }
+        }
     }
 }
