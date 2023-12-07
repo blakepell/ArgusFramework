@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2023-10-22
- * @last updated      : 2023-10-22
+ * @last updated      : 2023-12-07
  * @copyright         : Copyright (c) 2003-2023, All rights reserved.
  * @license           : MIT
  */
@@ -28,7 +28,24 @@ namespace Argus.Extensions
             }
 
             var elapsed = stopwatch.Elapsed;
+
             return $"{elapsed.Minutes + elapsed.Hours * 60:D2}m {elapsed.Seconds:D2}s";
+        }
+
+        /// <summary>
+        /// Converts the Stopwatch elapsed time to 1h 3m 24s format.
+        /// </summary>
+        /// <param name="sw"></param>
+        public static string ToHoursMinutesSecondsFormat(this Stopwatch sw)
+        {
+            if (sw == null)
+            {
+                return "0h 0m 0s";
+            }
+
+            var elapsed = sw.Elapsed;
+
+            return $"{elapsed.Hours:D1}h {elapsed.Minutes:D2}m {elapsed.Seconds:D2}s";
         }
     }
 }
