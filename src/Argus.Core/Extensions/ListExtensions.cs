@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2012-11-19
- * @last updated      : 2022-08-23
+ * @last updated      : 2023-12-09
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT
  */
@@ -281,5 +281,46 @@ namespace Argus.Extensions
 
             return collection.ElementAt(indexWrap);
         }
+        
+        /// <summary>
+        /// Converts a generic <see cref="List"/> into a <see cref="DataTable"/>.
+        /// </summary>
+        /// <param name="items"></param>
+        /// <typeparam name="T"></typeparam>
+        public static DataTable ToDataTable<T>(this List<T> items)
+        {
+            // Create the result table, and gather all properties of a T object
+            var dataTable = new DataTable(typeof(T).Name);
+            var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var prop in props)
+            {
+                // Define the type of data in the DataColumn
+                var propType = prop.PropertyType;
+
+                // Handle Nullable columns
+                if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    propType = new NullableConverter(propType).UnderlyingType;
+                }
+
+                // Add the DataColumn to the DataTable
+                dataTable.Columns.Add(prop.Name, propType);
+            }
+
+            foreach (var item in items)
+            {
+                var values = new object?[props.Length];
+                for (int i = 0; i < props.Length; i++)
+                {
+                    // Populate the array with the property values of the item
+                    values[i] = props[i].GetValue(item, null);
+                }
+
+                dataTable.Rows.Add(values);
+            }
+
+            return dataTable;
+        }        
     }
 }
