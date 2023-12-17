@@ -2,8 +2,8 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2005-09-28
- * @last updated      : 2020-04-29
- * @copyright         : Copyright (c) 2003-2022, All rights reserved.
+ * @last updated      : 2023-12-17
+ * @copyright         : Copyright (c) 2003-2023, All rights reserved.
  * @license           : MIT
  */
 
@@ -224,9 +224,7 @@ namespace Argus.Cryptography
             var vectorBytes = Encoding.ASCII.GetBytes(this.Vector);
             var saltBytes = Encoding.ASCII.GetBytes(this.Salt);
             byte[] decrypted;
-
-            int decryptedByteCount;
-
+            
             using (var cipher = new T())
             {
                 var passwordBytes = new PasswordDeriveBytes(password, saltBytes, "SHA512", 2);
@@ -243,8 +241,15 @@ namespace Argus.Cryptography
                         {
                             using (var reader = new CryptoStream(from, decryptor, CryptoStreamMode.Read))
                             {
-                                decrypted = new byte[value.Length];
-                                decryptedByteCount = reader.Read(decrypted, 0, decrypted.Length);
+                                List<byte> decryptedBytes = new List<byte>();
+                                int bytesRead;
+                                do
+                                {
+                                    byte[] buffer = new byte[1024]; // Choose a suitable buffer size
+                                    bytesRead = reader.Read(buffer, 0, buffer.Length);
+                                    decryptedBytes.AddRange(buffer.Take(bytesRead));
+                                } while (bytesRead > 0);
+                                decrypted = decryptedBytes.ToArray();
                             }
                         }
                     }
@@ -257,7 +262,7 @@ namespace Argus.Cryptography
                 cipher.Clear();
             }
 
-            return Encoding.UTF8.GetString(decrypted, 0, decryptedByteCount);
+            return Encoding.UTF8.GetString(decrypted);
         }
 
         /// <summary>
@@ -309,10 +314,19 @@ namespace Argus.Cryptography
                         {
                             using (var reader = new CryptoStream(from, decryptor, CryptoStreamMode.Read))
                             {
-                                decrypted = new byte[value.Length];
-                                _ = reader.Read(decrypted, 0, decrypted.Length);
+                                List<byte> decryptedBytes = new List<byte>();
+                                int bytesRead;
+                                do
+                                {
+                                    byte[] buffer = new byte[1024]; // Choose a suitable buffer size
+                                    bytesRead = reader.Read(buffer, 0, buffer.Length);
+                                    decryptedBytes.AddRange(buffer.Take(bytesRead));
+                                } while (bytesRead > 0);
+                                
+                                decrypted = decryptedBytes.ToArray();
                             }
                         }
+
                     }
                 }
                 catch
