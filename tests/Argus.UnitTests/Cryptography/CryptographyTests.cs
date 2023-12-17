@@ -7,6 +7,7 @@
  * @license           : MIT
  */
 
+using System;
 using Argus.Cryptography;
 using System.Security.Cryptography;
 using Xunit;
@@ -58,6 +59,17 @@ namespace Argus.UnitTests
             Assert.Equal("sRhsHpicn6Q8LFR0YOMdE3YsKBiHUKtmRt0yUCsibPw=", value);
         }
 
+        [Fact]
+        public void EncryptToLongStringAesBase64()
+        {
+            var crypt = new Encryption();
+            string key = Guid.NewGuid().ToString();
+            string input = "This is a test string that should end up being longer than 16 characters.";
+            string encryptedValue = crypt.EncryptToString(input, key);
+            string decryptedValue = crypt.DecryptToString(encryptedValue, key);
+            Assert.Equal(input, decryptedValue);
+        }
+        
         [Fact]
         public void EncryptToStringRijndaelBase64()
         {
