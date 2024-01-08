@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Microsoft, Blake Pell
  * @initial date      : 2021-10-03
- * @last updated      : 2022-07-05
+ * @last updated      : 2024-01-07
  * @copyright         : Copyright (c) 2003-2022, All rights reserved.
  * @license           : MIT 
  */
@@ -9,9 +9,6 @@
 #if NET5_0_OR_GREATER
 
 using Argus.IO.Json;
-using System;
-using System.IO;
-using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -98,6 +95,7 @@ namespace Argus.IO
                 using var json = File.OpenRead(fullPath);
                 return JsonSerializer.Deserialize<T>(json, this.JsonSerializerOptions);
             }
+            
             return default;
         }
 
@@ -157,6 +155,67 @@ namespace Argus.IO
                 File.Delete(Path.Combine(folderPath, fileName));
             }
         }
+
+        /// <summary>
+        /// Deletes the file inside of the <see cref="FolderPath"/>.
+        /// </summary>
+        /// <param name="fileName"></param>
+        public void Delete(string fileName)
+        {
+            if (File.Exists(Path.Combine(this.FolderPath, fileName)))
+            {
+                File.Delete(Path.Combine(this.FolderPath, fileName));
+            }
+        }
+        
+        /// <summary>
+        /// Deserializes a JSON string into an object of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of object to deserialize to.</typeparam>
+        /// <param name="json">The JSON string to deserialize from.</param>
+        /// <returns>The deserialized object of type T.</returns>
+        public T Deserialize<T>(string json)
+        {
+            return JsonSerializer.Deserialize<T>(json, this.JsonSerializerOptions);
+        }
+
+        /// <summary>
+        /// Asynchronously deserializes a JSON string into an object of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of object to deserialize to.</typeparam>
+        /// <param name="json">The JSON string to deserialize from.</param>
+        /// <returns>The deserialized object of type T.</returns>
+        public async Task<T> DeserializeAsync<T>(string json)
+        {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
+            return await JsonSerializer.DeserializeAsync<T>(stream, this.JsonSerializerOptions);
+        }
+
+        /// <summary>
+        /// Serializes an object to a JSON string.
+        /// </summary>
+        /// <typeparam name="T">The type of object to serialize.</typeparam>
+        /// <param name="obj">The object to serialize.</param>
+        /// <returns>The serialized JSON string.</returns>
+        public string Serialize<T>(T obj)
+        {
+            return JsonSerializer.Serialize(obj, this.JsonSerializerOptions);
+        }
+
+        /// <summary>
+        /// Asynchronously serializes an object to a JSON string.
+        /// </summary>
+        /// <typeparam name="T">The type of object to serialize.</typeparam>
+        /// <param name="obj">The object to serialize.</param>
+        /// <returns>The serialized JSON string.</returns>
+        public async Task<string> SerializeAsync<T>(T obj)
+        {
+            using var stream = new MemoryStream();
+            await JsonSerializer.SerializeAsync(stream, obj, this.JsonSerializerOptions);
+            stream.Position = 0;
+            using var reader = new StreamReader(stream);
+            return await reader.ReadToEndAsync();
+        }        
     }
 }
 #endif
