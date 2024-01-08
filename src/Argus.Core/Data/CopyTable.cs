@@ -76,6 +76,7 @@ namespace Argus.Data
         /// </summary>
         public double TimeElapsed { get; private set; }
 
+#if NET5_0_OR_GREATER
         /// <summary>
         /// Copies the data from a source table to a destination table with the same schema.
         /// </summary>
@@ -233,6 +234,7 @@ namespace Argus.Data
             sw.Stop();
             this.TimeElapsed = sw.ElapsedMilliseconds;
         }
+#endif
 
         /// <summary>
         /// Copies the data from a source table to a destination table with the same schema.
