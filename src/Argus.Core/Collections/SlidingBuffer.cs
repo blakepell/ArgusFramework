@@ -1,4 +1,13 @@
-﻿namespace Argus.Collections
+﻿/*
+ * @author            : Blake Pell
+ * @website           : http://www.blakepell.com
+ * @initial date      : 2024-02-27
+ * @last updated      : 2024-02-27
+ * @copyright         : Copyright (c) 2003-2024, All rights reserved.
+ * @license           : MIT
+ */
+
+namespace Argus.Collections
 {
     /// <summary>
     /// Represents a fixed-size buffer that operates on a first-in, first-out (FIFO) basis.
