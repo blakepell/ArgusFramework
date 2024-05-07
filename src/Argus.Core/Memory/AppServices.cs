@@ -1,8 +1,8 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2021-07-01
- * @last updated      : 2023-11-30
- * @copyright         : Copyright (c) 2003-2022, All rights reserved.
+ * @last updated      : 2024-05-05
+ * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
@@ -147,6 +147,28 @@ namespace Argus.Memory
             {
                 Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
             }
+        }
+
+        /// <summary>
+        /// If a type has been registered with the DI container.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public static bool IsRegistered<T>()
+        {
+            ServiceCollection ??= new ServiceCollection();
+            var serviceDescriptor = ServiceCollection.FirstOrDefault(sd => sd.ServiceType == typeof(T));
+            return serviceDescriptor != null;
+        }
+
+        /// <summary>
+        /// If a singleton instance / type has been registered with the DI container.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public static bool IsSingletonRegistered<T>()
+        {
+            ServiceCollection ??= new ServiceCollection();
+            var serviceDescriptor = ServiceCollection.FirstOrDefault(sd => sd.ServiceType == typeof(T) && sd.Lifetime == ServiceLifetime.Singleton);
+            return serviceDescriptor != null;
         }
     }
 }
