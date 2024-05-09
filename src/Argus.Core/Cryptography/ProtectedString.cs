@@ -2,16 +2,19 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2024-05-07
- * @last updated      : 2024-05-07
+ * @last updated      : 2024-05-09
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
+
+using System.ComponentModel;
 
 namespace Argus.Cryptography
 {
     /// <summary>
     /// Represents a string value protected with using System.Security.Cryptography.ProtectedData.
     /// </summary>
+    [TypeConverter(typeof(ProtectedStringTypeConverter))]
     public class ProtectedString
     {
         /// <summary>
@@ -35,7 +38,7 @@ namespace Argus.Cryptography
         /// Implicit conversion from ProtectedString to string
         /// </summary>
         /// <param name="ps"></param>
-        public static implicit operator string?(ProtectedString ps)
+        public static implicit operator string?(ProtectedString? ps)
         {
             if (ps.Value == null)
             {
