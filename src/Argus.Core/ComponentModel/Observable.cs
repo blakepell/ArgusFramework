@@ -27,6 +27,7 @@ namespace Argus.ComponentModel
     ///         }
     ///     </code>
     /// </example>
+    [Obsolete("Use MVVM Community Toolkit")]
     public class Observable : INotifyPropertyChanged
     {
         /// <summary>
