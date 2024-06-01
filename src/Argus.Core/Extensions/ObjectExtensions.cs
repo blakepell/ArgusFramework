@@ -3,7 +3,7 @@
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-03-08
  * @last updated      : 2022-11-30
- * @copyright         : Copyright (c) 2003-2022, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
 
@@ -28,8 +28,13 @@ namespace Argus.Extensions
         /// <param name="obj"></param>
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
-        public static void Set<T>(this T obj, string propertyName, object value)
+        public static void Set<T>(this T? obj, string propertyName, object value)
         {
+            if (obj == null)
+            {
+                return;
+            }
+
             var prop = obj.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             prop?.SetValue(obj, value, null);
         }
@@ -41,10 +46,10 @@ namespace Argus.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <param name="propertyName"></param>
-        public static T Get<T>(this object obj, string propertyName)
+        public static T? Get<T>(this object obj, string propertyName)
         {
             var prop = obj.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-            return (T)Convert.ChangeType(prop?.GetValue(obj, null), typeof(T));
+            return (T?)Convert.ChangeType(prop?.GetValue(obj, null), typeof(T));
         }
 
         /// <summary>
@@ -157,7 +162,7 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="xml"></param>
-        public static T FromXml<T>(this T obj, string xml)
+        public static T? FromXml<T>(this T obj, string xml)
         {
             if (string.IsNullOrEmpty(xml))
             {
@@ -167,7 +172,7 @@ namespace Argus.Extensions
             using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(xml)))
             {
                 var serializer = new XmlSerializer(typeof(T));
-                return (T) serializer.Deserialize(stream);
+                return (T?) serializer.Deserialize(stream);
             }
         }
     }
