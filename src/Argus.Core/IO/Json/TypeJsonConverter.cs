@@ -2,7 +2,7 @@
  * @author            : Microsoft, Blake Pell
  * @initial date      : 2022-07-05
  * @last updated      : 2022-07-05
- * @copyright         : Copyright (c) 2003-2022, All rights reserved.
+ * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT 
  */
 
