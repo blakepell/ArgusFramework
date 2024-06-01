@@ -32,7 +32,7 @@ namespace Argus.Extensions
                 return default;
             }
 
-            var local = lst[lst.Count - 1];
+            var local = lst[^1];
             lst.RemoveAt(lst.Count - 1);
 
             return local;
@@ -44,7 +44,7 @@ namespace Argus.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="lst"></param>
         /// <returns>The first item in the list, if there are no items in the list then a null value is returned.</returns>
-        public static T PopFirst<T>(this List<T> lst)
+        public static T? PopFirst<T>(this List<T> lst)
         {
             if (lst.Count > 0)
             {
@@ -58,13 +58,13 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns the first non null value in the list.  If no non null values are found default(T) is returned.
+        /// Returns the first non-null value in the list.  If no non-null values are found default(T) is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="lst"></param>
-        public static T Coalesce<T>(this List<T> lst)
+        public static T? Coalesce<T>(this List<T?> lst)
         {
-            foreach (T obj in lst)
+            foreach (T? obj in lst)
             {
                 if (obj != null)
                 {
@@ -76,7 +76,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Returns the first non null value in the list.  If no non null values are found the default value
+        /// Returns the first non-null value in the list.  If no non-null values are found the default value
         /// specified is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -261,7 +261,7 @@ namespace Argus.Extensions
 
         /// <summary>
         /// Returns the element from a list with support for wrapping to an index position
-        /// outside of the list (in a list of 100, 125 would loop around to 25).
+        /// outside the list (in a list of 100, 125 would loop around to 25).
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
