@@ -8,6 +8,7 @@
  */
 
 using System;
+using System.IO;
 using Argus.Data;
 using Argus.IO;
 using Xunit;
@@ -57,6 +58,25 @@ namespace Argus.UnitTests.IO
 
             Assert.Equal(p.FirstName, p2.FirstName);
             Assert.Equal(p.LastName, p2.LastName);
+        }
+
+        [Fact]
+        public async void Backup()
+        {
+            var p = new Person()
+            {
+                FirstName = "Blake",
+                LastName = "Pell"
+            };
+
+            var file = new JsonFileService(Environment.SpecialFolder.LocalApplicationData, "Tests");
+            await file.SaveAsync(p, "Person.json");
+
+            string backupFile = file.BackupFile(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Tests", "Person.json"));
+
+            Assert.True(File.Exists(backupFile));
+
+            file.Delete(backupFile);
         }
 
     }

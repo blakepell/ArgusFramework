@@ -1,8 +1,8 @@
 ﻿/*
  * @author            : Microsoft, Blake Pell
  * @initial date      : 2021-10-03
- * @last updated      : 2024-01-07
- * @copyright         : Copyright (c) 2003-2022, All rights reserved.
+ * @last updated      : 2024-06-01
+ * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT 
  */
 
@@ -29,7 +29,7 @@ namespace Argus.IO
         /// <summary>
         /// Options that are passed to the <see cref="JsonSerializer"/>
         /// </summary>
-        public JsonSerializerOptions JsonSerializerOptions { get; set; } = new();
+        public JsonSerializerOptions? JsonSerializerOptions { get; set; } = new();
 
         /// <summary>
         /// Constructor
@@ -95,7 +95,7 @@ namespace Argus.IO
                 using var json = File.OpenRead(fullPath);
                 return JsonSerializer.Deserialize<T>(json, this.JsonSerializerOptions);
             }
-            
+
             return default;
         }
 
@@ -104,7 +104,7 @@ namespace Argus.IO
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="filename"></param>
-        public async Task<T> ReadAsync<T>(string filename)
+        public async Task<T?> ReadAsync<T>(string filename)
         {
             string fullPath = Path.Combine(this.FolderPath, filename);
 
@@ -157,7 +157,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Deletes the file inside of the <see cref="FolderPath"/>.
+        /// Deletes the file inside the <see cref="FolderPath"/>.
         /// </summary>
         /// <param name="fileName"></param>
         public void Delete(string fileName)
@@ -167,14 +167,14 @@ namespace Argus.IO
                 File.Delete(Path.Combine(this.FolderPath, fileName));
             }
         }
-        
+
         /// <summary>
         /// Deserializes a JSON string into an object of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of object to deserialize to.</typeparam>
         /// <param name="json">The JSON string to deserialize from.</param>
         /// <returns>The deserialized object of type T.</returns>
-        public T Deserialize<T>(string json)
+        public T? Deserialize<T>(string json)
         {
             return JsonSerializer.Deserialize<T>(json, this.JsonSerializerOptions);
         }
@@ -185,7 +185,7 @@ namespace Argus.IO
         /// <typeparam name="T">The type of object to deserialize to.</typeparam>
         /// <param name="json">The JSON string to deserialize from.</param>
         /// <returns>The deserialized object of type T.</returns>
-        public async Task<T> DeserializeAsync<T>(string json)
+        public async Task<T?> DeserializeAsync<T>(string json)
         {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
             return await JsonSerializer.DeserializeAsync<T>(stream, this.JsonSerializerOptions);
@@ -215,7 +215,52 @@ namespace Argus.IO
             stream.Position = 0;
             using var reader = new StreamReader(stream);
             return await reader.ReadToEndAsync();
-        }        
+        }
+
+        /// <summary>
+        /// Backs up the specified file into the same folder with a date stamped and sequenced
+        /// filename to avoid collisions.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns>The file path to the backed up file.</returns>
+        public string BackupFile(string filePath)
+        {
+            string backupPath = BackupFilePath(filePath);
+            File.Copy(filePath, BackupFilePath(filePath), true);
+            return backupPath;
+        }
+
+        /// <summary>
+        /// Returns the path of a backup file path.  This will be the settings file prefixed with the
+        /// current date in yyyy-MM-dd format so it sorts in the folder.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static string BackupFilePath(string filePath)
+        {
+            // Get the current date in the format YYYY-MM-DD
+            string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+
+            // Get the directory and file name from the provided path
+            string? directory = Path.GetDirectoryName(filePath);
+            string fileName = Path.GetFileName(filePath);
+            string fileExtension = Path.GetExtension(fileName);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+
+            // Construct the initial backup file name with the date prefixed
+            string backupFileName = $"{currentDate}_{fileName}";
+            string backupFilePath = Path.Combine(directory ?? "", backupFileName);
+
+            // Check if the file already exists and number them sequentially if needed
+            int counter = 1;
+            while (File.Exists(backupFilePath))
+            {
+                backupFileName = $"{currentDate}_{fileNameWithoutExtension}_{counter}{fileExtension}";
+                backupFilePath = Path.Combine(directory ?? "", backupFileName);
+                counter++;
+            }
+
+            return backupFilePath;
+        }
     }
 }
 #endif
