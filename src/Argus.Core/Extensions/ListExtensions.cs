@@ -19,6 +19,8 @@ namespace Argus.Extensions
     {
         private static readonly Random _shuffleRng = new Random();
 
+
+#if NET6_0_OR_GREATER
         /// <summary>
         /// Removes an item from the end of the list and returns it.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Argus.Extensions
 
             return default;
         }
-
+#endif
         /// <summary>
         /// Returns the first non-null value in the list.  If no non-null values are found default(T) is returned.
         /// </summary>
