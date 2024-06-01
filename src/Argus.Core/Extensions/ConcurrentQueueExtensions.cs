@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2021-01-31
- * @last updated      : 2021-01-31
+ * @last updated      : 2024-06-01
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -29,8 +29,8 @@ namespace Argus.Extensions
             }
 
             // We need to dequeue the entire queue, we will do that but not do anything
-            // inside of the loop.
-            while (queue.TryDequeue(out T item))
+            // inside the loop.
+            while (queue.TryDequeue(out _))
             {
             }
         }

@@ -8,6 +8,7 @@
  */
 
 using Argus.Cryptography;
+// ReSharper disable InconsistentNaming
 
 namespace Argus.Extensions
 {

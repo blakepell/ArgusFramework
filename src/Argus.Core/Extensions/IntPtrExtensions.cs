@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2022-06-14
- * @last updated      : 2022-06-14
+ * @last updated      : 2024-06-01
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -22,7 +22,7 @@ namespace Argus.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="ptr"></param>
         /// <remarks>https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.ptrtostructure</remarks>
-        public static T MarshalAs<T>(this IntPtr ptr) => (T)Marshal.PtrToStructure(ptr, typeof(T));
+        public static T? MarshalAs<T>(this IntPtr ptr) => (T?)Marshal.PtrToStructure(ptr, typeof(T));
 
         /// <summary>
         /// Marshals data from a managed object to an unmanaged block of memory.

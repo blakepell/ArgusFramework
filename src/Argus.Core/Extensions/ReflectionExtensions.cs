@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-07-01
- * @last updated      : 2023-11-30
+ * @last updated      : 2024-06-01
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -80,14 +80,14 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="property">The property for which to make the determination.</param>
         /// <returns>True if this <paramref name="property"/> is readable, otherwise false.</returns>
-        public static bool IsReadable(this PropertyInfo property) => property.GetGetter() != null;
+        public static bool IsReadable(this PropertyInfo property) => property?.GetGetter() != null;
 
         /// <summary>
         /// Returns a value indicating whether this <paramref name="property"/> is writable.
         /// </summary>
         /// <param name="property">The property for which to make the determination.</param>
         /// <returns>True if this <paramref name="property"/> is writable, otherwise false.</returns>
-        public static bool IsWritable(this PropertyInfo property) => property.GetSetter() != null;
+        public static bool IsWritable(this PropertyInfo property) => property?.GetSetter() != null;
 
         /// <summary>
         /// Returns the public or non-public get accessor for this <paramref name="property"/>.
@@ -102,9 +102,9 @@ namespace Argus.Extensions
         /// <paramref name="nonPublic"/> is true. Returns null if <paramref name="nonPublic"/> is false and 
         /// the get accessor is non-public, or if <paramref name="nonPublic"/> is true but no get accessors exist.
         /// </returns>
-        public static MethodInfo GetGetter(this PropertyInfo property, bool nonPublic = false)
+        public static MethodInfo? GetGetter(this PropertyInfo property, bool nonPublic = false)
         {
-            return property.GetGetMethod(nonPublic);
+            return property?.GetGetMethod(nonPublic);
         }
 
         /// <summary>
@@ -120,9 +120,9 @@ namespace Argus.Extensions
         /// <paramref name="nonPublic"/> is true. Returns null if <paramref name="nonPublic"/> is false and 
         /// the set accessor is non-public, or if <paramref name="nonPublic"/> is true but no set accessors exist.
         /// </returns>
-        public static MethodInfo GetSetter(this PropertyInfo property, bool nonPublic = false)
+        public static MethodInfo? GetSetter(this PropertyInfo property, bool nonPublic = false)
         {
-            return property.GetSetMethod(nonPublic);
+            return property?.GetSetMethod(nonPublic);
         }
     }
 }

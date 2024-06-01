@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2010-07-03
- * @last updated      : 2020-06-25
+ * @last updated      : 2024-06-01
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -97,7 +97,7 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Whether or not a number is prime or not.
+        /// Whether a number is prime or not.
         /// </summary>
         /// <param name="x"></param>
         public static bool IsPrime(this int x)

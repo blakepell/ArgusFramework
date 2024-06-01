@@ -16,7 +16,7 @@ namespace Argus.Extensions
     {
         /// <summary>
         /// Displays a formatted vertical string with line breaks that contains the contents of the current TimeSpan
-        /// in a human readable form.
+        /// in a human-readable form.
         /// </summary>
         /// <param name="ts"></param>
         public static string ToVerticalString(this TimeSpan ts)

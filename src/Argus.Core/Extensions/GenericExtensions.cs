@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2014-01-02
- * @last updated      : 2023-06-27
+ * @last updated      : 2024-06-01
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -19,7 +19,7 @@ namespace Argus.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
-        public static bool IsNull<T>(this T obj) where T : class
+        public static bool IsNull<T>(this T? obj) where T : class
         {
             return obj == null;
         }
@@ -43,20 +43,25 @@ namespace Argus.Extensions
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
         /// <remarks>Not efficient but very handy.</remarks>
-        public static void SetValue<T>(this T @this, string propertyName, object value)
+        public static void SetValue<T>(this T? @this, string propertyName, object value)
         {
+            if (@this == null)
+            {
+                return;
+            }
+
             var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             prop?.SetValue(@this, value, null);
         }
 
         /// <summary>
-        /// Get's a property value via reflection as an object.
+        /// Gets a property value via reflection as an object.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="this"></param>
         /// <param name="propertyName"></param>
         /// <remarks>Not efficient but very handy.</remarks>
-        public static object GetValue<T>(this T @this, string propertyName)
+        public static object? GetValue<T>(this T @this, string propertyName)
         {
             var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             return prop?.GetValue(@this, null);
@@ -261,13 +266,18 @@ namespace Argus.Extensions
         }
 
         /// <summary>
-        /// Get's an attribute from a generic object.
+        /// Gets an attribute from a generic object.
         /// </summary>
         /// <typeparam name="TAttribute"></typeparam>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
-        public static TAttribute GetAttribute<T, TAttribute>(this T value) where TAttribute : Attribute
+        public static TAttribute? GetAttribute<T, TAttribute>(this T? value) where TAttribute : Attribute
         {
+            if (value == null)
+            {
+                return null;
+            }
+
             return value.GetType()
                         .GetCustomAttributes(false)
                         .OfType<TAttribute>()

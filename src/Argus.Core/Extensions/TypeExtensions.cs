@@ -22,8 +22,7 @@ namespace Argus.Extensions
         public static bool IsNullableEnum(this Type t)
         {
             var u = Nullable.GetUnderlyingType(t);
-
-            return u != null && u.IsEnum;
+            return u is { IsEnum: true };
         }
 
         /// <summary>

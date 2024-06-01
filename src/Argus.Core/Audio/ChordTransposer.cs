@@ -2,11 +2,12 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2021-12-12
- * @last updated      : 2021-12-12
+ * @last updated      : 2024-06-01
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
 
+// ReSharper disable InconsistentNaming
 namespace Argus.Audio
 {
     /// <summary>
@@ -17,12 +18,12 @@ namespace Argus.Audio
         /// <summary>
         /// A list of the chords (with sharps)
         /// </summary>
-        private static readonly string[] _baseChords = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+        private static readonly string[] _baseChords = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
         /// <summary>
         /// A list of the chords (with flats)
         /// </summary>
-        private static readonly string[] _baseChordsFlat = { "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" };
+        private static readonly string[] _baseChordsFlat = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
 
         /// <summary>
         /// Transposes the chord into another chord.
@@ -89,7 +90,7 @@ namespace Argus.Audio
         }
 
         /// <summary>
-        /// Transposes all of the chords in brackets in a set of text.
+        /// Transposes all the chords in brackets in a set of text.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="increment"></param>
