@@ -47,6 +47,65 @@ namespace Argus.Network
         }
         #endif
         
+        /// <summary>
+        /// Loops over the 255 addresses in the same segment as the provided IP Address (192.168.1.x)
+        /// </summary>
+        /// <param name="ip"></param>
+        public static IEnumerable<IPAddress> IPv4Segments(string ip)
+        {
+            return IPv4Segments(IPAddress.Parse(ip));
+        }
+        
+        /// <summary>
+        /// Loops over the 255 addresses in the same segment as the provided IP Address (192.168.1.x)
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        public static IEnumerable<IPAddress> IPv4Segments(IPAddress ip)
+        {
+            byte[] bytes = ip.GetAddressBytes();
+            if (bytes.Length == 4)
+            {
+                for (int i = 1; i <= 255; i++)
+                {
+                    bytes[3] = (byte)i;
+                    yield return new IPAddress(bytes);
+                }
+            }
+        }        
+
+        /// <summary>
+        /// Loops over the 255 addresses in the same segment as the provided IP Address (192.168.x.x)
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        public static IEnumerable<IPAddress> IPv4SegmentsSubnets(string ip)
+        {
+            return IPv4SegmentsSubnets(IPAddress.Parse(ip));
+        }
+
+        /// <summary>
+        /// Loops over the 255 addresses in the same segment as the provided IP Address (192.168.x.x)
+        /// </summary>
+        /// <param name="ip"></param>
+        public static IEnumerable<IPAddress> IPv4SegmentsSubnets(IPAddress ip)
+        {
+            byte[] bytes = ip.GetAddressBytes();
+            if (bytes.Length == 4)
+            {
+                for (int subnet = 1; subnet <= 255; subnet++)
+                {
+                    bytes[2] = (byte)subnet;
+                    
+                    for (int i = 1; i <= 255; i++)
+                    {
+                        bytes[3] = (byte)i;
+                        yield return new IPAddress(bytes);
+                    }
+                }
+            }
+        }        
+
         [DllImport("wininet.dll")]
         private static extern bool InternetGetConnectedState(out int description, int reservedValue);
 
