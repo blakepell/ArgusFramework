@@ -1,13 +1,15 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2009-04-07
- * @last updated      : 2022-11-30
+ * @last updated      : 2024-06-29
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
 
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Argus.Network
@@ -17,6 +19,34 @@ namespace Argus.Network
     /// </summary>
     public static class Utilities
     {
+        #if NET5_0_OR_GREATER
+
+        /// <summary>
+        /// Checks an IP Address to see if a port is open.
+        /// </summary>
+        /// <param name="ipAddress">The IP Address</param>
+        /// <param name="port">The port number.</param>
+        /// <param name="timeout">The timeout in milliseconds.</param>
+        public static async Task<bool> IsPortOpen(string ipAddress, int port, int timeout = 100)
+        {
+            using (var client = new TcpClient())
+            {
+                using (var cts = new CancellationTokenSource(timeout))
+                {
+                    try
+                    {
+                        await client.ConnectAsync(ipAddress, port, cts.Token);
+                        return true;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        #endif
+        
         [DllImport("wininet.dll")]
         private static extern bool InternetGetConnectedState(out int description, int reservedValue);
 
