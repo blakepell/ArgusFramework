@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2009-04-07
- * @last updated      : 2024-06-29
+ * @last updated      : 2024-07-28
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -12,6 +12,8 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+// ReSharper disable InconsistentNaming
+
 namespace Argus.Network
 {
     /// <summary>
@@ -20,7 +22,6 @@ namespace Argus.Network
     public static class Utilities
     {
         #if NET5_0_OR_GREATER
-
         /// <summary>
         /// Checks an IP Address to see if a port is open.
         /// </summary>
@@ -171,7 +172,6 @@ namespace Argus.Network
             try
             {
                 using var wc = new System.Net.WebClient();
-
                 return await wc.DownloadDataTaskAsync(remoteUrl);
             }
             catch
@@ -305,6 +305,81 @@ namespace Argus.Network
                 wc.BaseAddress = remoteUrl;
                 wc.Credentials = new NetworkCredential(username, password);
                 await wc.DownloadFileTaskAsync(remoteUrl, localFileName);
+            }
+        }
+
+        /// <summary>
+        /// Downloads a file from the Internet with provided authentication credentials (http, https, ftp) and HTTP request headers.
+        /// </summary>
+        /// <param name="remoteUrl">The URL of the remote file to download.</param>
+        /// <param name="localFileName">The local path where the file should be saved.</param>
+        /// <param name="username">The username for authentication. Can be null if no authentication is needed.</param>
+        /// <param name="password">The password for authentication. Can be null if no authentication is needed.</param>
+        /// <param name="timeout">The timeout in seconds for the request. Can be null for the default timeout.</param>
+        /// <param name="headers">A collection of HTTP headers to send with the request. Can be null if no additional headers are needed.</param>
+        public static void DownloadFile(string remoteUrl, string localFileName, string? username, string? password, int? timeout, NameValueCollection? headers)
+        {
+            using (var wc = new WebClient())
+            {
+                if (timeout != null)
+                {
+                    wc.Timeout = timeout.Value;
+                }
+                
+                wc.BaseAddress = remoteUrl;
+
+                if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+                {
+                    wc.Credentials = new NetworkCredential(username, password);
+                }
+
+                if (headers != null)
+                {
+                    foreach (string key in headers.AllKeys)
+                    {
+                        wc.Headers.Add(key, headers[key]);
+                    }
+                }
+                
+                wc.DownloadFile(remoteUrl, localFileName);
+            }
+        }
+
+        /// <summary>
+        /// Async downloads a file from the Internet with provided authentication credentials (http, https, ftp) and HTTP request headers.
+        /// </summary>
+        /// <param name="remoteUrl">The URL of the remote file to download.</param>
+        /// <param name="localFileName">The local path where the file should be saved.</param>
+        /// <param name="username">The username for authentication. Can be null if no authentication is needed.</param>
+        /// <param name="password">The password for authentication. Can be null if no authentication is needed.</param>
+        /// <param name="timeout">The timeout in seconds for the request. Can be null for the default timeout.</param>
+        /// <param name="headers">A collection of HTTP headers to send with the request. Can be null if no additional headers are needed.</param>
+        /// <returns>A Task representing the asynchronous download operation.</returns>
+        public static async Task DownloadFileAsync(string remoteUrl, string localFileName, string? username, string? password, int? timeout, NameValueCollection? headers)
+        {
+            using (var wc = new WebClient())
+            {
+                if (timeout != null)
+                {
+                    wc.Timeout = timeout.Value;
+                }
+                
+                wc.BaseAddress = remoteUrl;
+
+                if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+                {
+                    wc.Credentials = new NetworkCredential(username, password);
+                }
+
+                if (headers != null)
+                {
+                    foreach (string key in headers.AllKeys)
+                    {
+                        wc.Headers.Add(key, headers[key]);
+                    }
+                }
+                
+                await wc.DownloadFileTaskAsync(remoteUrl, localFileName);                
             }
         }
     }
