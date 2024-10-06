@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Argus.Core\Argus.Core.csproj" />
     <ProjectReference Include="..\..\src\Argus.Graphics\Argus.Graphics.csproj" />
-    <ProjectReference Include="..\..\src\Argus.Windows.Wpf\Argus.Windows.Wpf.csproj" />
   </ItemGroup>
 
   <ItemGroup>
