@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2023-06-27
+ * @last updated      : 2024-08-27
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -308,8 +308,13 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="value"></param>
         /// <param name="length"></param>
-        public static string TrimLengthWithEllipses(this string value, int length)
+        public static string? TrimLengthWithEllipses(this string? value, int length)
         {
+            if (value == null)
+            {
+                return value;
+            }
+            
             if (value.Length > length)
             {
                 value = $"{Left(value, length)}...";
