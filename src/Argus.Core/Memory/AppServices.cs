@@ -100,7 +100,7 @@ namespace Argus.Memory
         /// Gets a service of type <see cref="T"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public static T GetService<T>()
+        public static T? GetService<T>()
         {
             return Instance.ServiceProvider.GetService<T>();
         }
