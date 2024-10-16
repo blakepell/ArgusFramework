@@ -51,8 +51,34 @@ namespace Argus.Windows
                 int versionMajor = Environment.OSVersion.Version.Major;
                 int versionMinor = Environment.OSVersion.Version.Minor;
                 double version = versionMajor + (double)versionMinor / 10;
+
                 return version <= 6.1;
             }
         }
+
+        /// <summary>
+        /// If the OS is Windows 8 or higher.
+        /// </summary>
+        private bool IsWindows8OrHigher
+        {
+            get
+            {
+                int versionMajor = Environment.OSVersion.Version.Major;
+                int versionMinor = Environment.OSVersion.Version.Minor;
+                double version = versionMajor + (double)versionMinor / 10;
+
+                return version >= 6.2;
+            }
+        }
+
+        /// <summary>
+        /// If the OS is Windows 10 or higher.  Windows 10 or higher has Major version 10.
+        /// </summary>
+        private bool IsWindows10OrHigher => Environment.OSVersion.Version.Major >= 10;
+
+        /// <summary>
+        /// If the OS is Windows 11 or higher.  Windows 11 starts with build 22000.
+        /// </summary>
+        private bool IsWindows11OrHigher => Environment.OSVersion.Version.Major == 10 && Environment.OSVersion.Version.Build >= 22000;
     }
 }
