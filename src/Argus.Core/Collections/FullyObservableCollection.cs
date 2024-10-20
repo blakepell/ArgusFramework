@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2018-02-22
- * @last updated      : 2024-04-30
+ * @last updated      : 2024-10-20
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -47,6 +47,11 @@ namespace Argus.Collections
             this.CollectionChanged += this.OnCollectionChanged;
         }
 
+        /// <summary>
+        /// Gets or sets the element at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index of the element to get or set.</param>
+        /// <returns>The element at the specified index.</returns>
         public new T this[int index]
         {
             get
@@ -109,16 +114,15 @@ namespace Argus.Collections
         }
 
         /// <summary>
-        /// Adds an item to the collection.
+        /// <inheritdoc cref="InsertItem"/>
         /// </summary>
-        /// <param name="item"></param>
-        public new void Add(T item)
+        protected override void InsertItem(int index, T item)
         {
             Lock.EnterWriteLock();
 
             try
             {
-                base.Add(item);
+                base.InsertItem(index, item);
             }
             finally
             {
@@ -127,15 +131,33 @@ namespace Argus.Collections
         }
 
         /// <summary>
-        /// Clears the collection.
+        /// <inheritdoc cref="RemoveItem"/>
         /// </summary>
-        public new void Clear()
+        protected override void RemoveItem(int index)
         {
             Lock.EnterWriteLock();
 
             try
             {
-                base.Clear();
+                var item = this[index];
+                base.RemoveItem(index);
+            }
+            finally
+            {
+                Lock.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
+        /// <inheritdoc cref="ClearItems"/>
+        /// </summary>
+        protected override void ClearItems()
+        {
+            Lock.EnterWriteLock();
+
+            try
+            {
+                base.ClearItems();
             }
             finally
             {
@@ -249,12 +271,13 @@ namespace Argus.Collections
         /// offer performance improvements over FirstOrDefault when searching in memory objects.
         /// </summary>
         /// <param name="match"></param>
-        public T Find(Predicate<T> match)
+        public T? Find(Predicate<T> match)
         {
-            if (match == null)
-            {
-                throw new ArgumentNullException("Predicate cannot be null.");
-            }
+            #if NETSTANDARD2_0 || NETSTANDARD2_1
+                throw new ArgumentNullException("Predicate cannot be null", nameof(match));
+            #else
+                ArgumentNullException.ThrowIfNull(match, nameof(match));
+            #endif
 
             for (int i = 0; i < this.Count; i++)
             {
@@ -278,7 +301,7 @@ namespace Argus.Collections
         }
 
         /// <summary>
-        /// Disposes of resources for the SpecialObservableCollection including the removal of
+        /// Disposes of resources for the FullyObservableCollection including the removal of
         /// event handlers.
         /// </summary>
         public void Dispose()

@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2021-03-04
- * @last updated      : 2021-03-09
+ * @last updated      : 2024-10-20
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -204,10 +204,11 @@ namespace Argus.Collections
         /// <param name="match"></param>
         public T Find(Predicate<T> match)
         {
-            if (match == null)
-            {
-                throw new ArgumentNullException("Predicate cannot be null.");
-            }
+            #if NETSTANDARD2_0 || NETSTANDARD2_1
+                throw new ArgumentNullException("Predicate cannot be null", nameof(match));
+            #else
+                ArgumentNullException.ThrowIfNull(match, nameof(match));
+            #endif
 
             _lock.EnterReadLock();
 
