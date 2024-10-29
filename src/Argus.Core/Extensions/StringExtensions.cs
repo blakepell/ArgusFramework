@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2024-08-27
+ * @last updated      : 2024-10-29
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -58,7 +58,7 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
-        public static string SafeLeft(this string str, int length)
+        public static string SafeLeft(this string? str, int length)
         {
             if (string.IsNullOrEmpty(str) || length <= 0)
             {
@@ -80,7 +80,7 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
-        public static string SafeRight(this string str, int length)
+        public static string SafeRight(this string? str, int length)
         {
             if (string.IsNullOrEmpty(str) || length <= 0)
             {
@@ -101,7 +101,7 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <param name="startIndex"></param>
-        public static string SafeSubstring(this string str, int startIndex)
+        public static string SafeSubstring(this string? str, int startIndex)
         {
             if (string.IsNullOrEmpty(str) || startIndex > str.Length)
             {
@@ -117,7 +117,7 @@ namespace Argus.Extensions
         /// <param name="str"></param>
         /// <param name="startIndex"></param>
         /// <param name="length"></param>
-        public static string SafeSubstring(this string str, int startIndex, int length)
+        public static string SafeSubstring(this string? str, int startIndex, int length)
         {
             if (string.IsNullOrEmpty(str) || startIndex > str.Length || length <= 0)
             {
@@ -148,7 +148,7 @@ namespace Argus.Extensions
         /// <returns>
         /// Returns the zero based index or a -1 if the string isn't found or the startIndex is greater than the length of the string.
         /// </returns>
-        public static int SafeIndexOf(this string str, string value, int startIndex)
+        public static int SafeIndexOf(this string? str, string value, int startIndex)
         {
             if (str == null)
             {
@@ -173,7 +173,7 @@ namespace Argus.Extensions
         /// <returns>
         /// Returns the zero based index or a -1 if the string isn't found or the startIndex is greater than the length of the string.
         /// </returns>
-        public static int SafeIndexOf(this string str, string value, int startIndex, int length)
+        public static int SafeIndexOf(this string? str, string value, int startIndex, int length)
         {
             if (str == null)
             {
@@ -197,7 +197,7 @@ namespace Argus.Extensions
         /// <returns>
         /// Returns the zero based index or a -1 if the char isn't found or the startIndex is greater than the length of the string.
         /// </returns>
-        public static int SafeIndexOf(this string str, char c, int startIndex)
+        public static int SafeIndexOf(this string? str, char c, int startIndex)
         {
             if (str == null || startIndex > str.Length - 1)
             {
@@ -212,7 +212,7 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <param name="c"></param>
-        public static bool SafeStartsWith(this string str, char c)
+        public static bool SafeStartsWith(this string? str, char c)
         {
             return !string.IsNullOrEmpty(str) && str.StartsWith(c);
         }
@@ -222,7 +222,7 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <param name="c"></param>
-        public static bool SafeEndsWith(this string str, char c)
+        public static bool SafeEndsWith(this string? str, char c)
         {
             if (string.IsNullOrEmpty(str))
             {
