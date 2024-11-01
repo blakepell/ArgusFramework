@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2024-10-29
+ * @last updated      : 2024-11-01
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -278,7 +278,7 @@ namespace Argus.Extensions
             var resultSpan = span.Slice(0, span.Length - length);
             return resultSpan.ToString();
         }
-        
+
         /// <summary>
         /// Removes all line endings from a string.
         /// </summary>
@@ -314,7 +314,7 @@ namespace Argus.Extensions
             {
                 return value;
             }
-            
+
             if (value.Length > length)
             {
                 value = $"{Left(value, length)}...";
@@ -344,7 +344,7 @@ namespace Argus.Extensions
 
             return span.ToString();
         }
-        
+
         /// <summary>
         /// Removes all leading occurrences of the specified string.
         /// </summary>
@@ -1615,7 +1615,7 @@ namespace Argus.Extensions
                 else if (word == index)
                 {
                     int start = i;
-                
+
                     while (i < s.Length && s[i] != delimiter)
                     {
                         i++;
@@ -1624,7 +1624,7 @@ namespace Argus.Extensions
                     return s.Slice(start, i - start).ToString();
                 }
             }
-        
+
             return null;
         }
 
@@ -1638,7 +1638,7 @@ namespace Argus.Extensions
         {
             return Word(s.AsSpan(), index, delimiter);
         }
-        
+
         /// <summary>
         /// Returns a word at the given index (0 index).  A null is returned if the index exceeds the number of words.fs
         /// </summary>
@@ -1656,7 +1656,7 @@ namespace Argus.Extensions
                 else if (word == index)
                 {
                     int start = i;
-                
+
                     while (i < s.Length && s[i] != delimiter)
                     {
                         i++;
@@ -1665,10 +1665,27 @@ namespace Argus.Extensions
                     return s.Slice(start, i - start);
                 }
             }
-        
+
             return null;
         }
-        
+
+        /// <summary>
+        /// Determines whether the specified string consists only of alphabetic characters (not unicode aware).
+        /// </summary>
+        /// <param name="str">The string to check.</param>
+        /// <returns>true if the string consists only of alphabetic characters; otherwise, false.</returns>
+        public static bool IsAlpha(this string str)
+        {
+            if (str == null)
+            {
+                return false;
+            }
+
+            string buf = str.ToUpper();
+
+            return str.All(c => c >= 'A' && c <= 'Z');
+        }
+
         /// <summary>
         /// Whether an entire string is alphanumeric.
         /// </summary>
