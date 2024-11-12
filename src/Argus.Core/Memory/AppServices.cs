@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2021-07-01
- * @last updated      : 2024-05-05
+ * @last updated      : 2024-11-10
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -43,7 +43,7 @@ namespace Argus.Memory
         /// A reference to the service collection so that services can be added at a time
         /// later than the initial registration of objects.
         /// </summary>
-        public static ServiceCollection ServiceCollection;
+        public static ServiceCollection? ServiceCollection;
 
         /// <summary>
         /// Initializes the dependencies via action which allows the caller to register classes
@@ -53,7 +53,7 @@ namespace Argus.Memory
         /// to other platforms.
         /// </summary>
         /// <param name="action"></param>
-        public static void Init(Action<ServiceCollection> action)
+        public static void Init(Action<ServiceCollection?> action)
         {
             var services = new ServiceCollection();
             action.Invoke(services);
@@ -89,7 +89,7 @@ namespace Argus.Memory
         /// Allows for the registration of dependency injected services via an <see cref="Action"/>.
         /// </summary>
         /// <param name="action"></param>
-        public static void AddService(Action<ServiceCollection> action)
+        public static void AddService(Action<ServiceCollection?> action)
         {
             ServiceCollection ??= new ServiceCollection();
             action.Invoke(ServiceCollection);
@@ -106,15 +106,34 @@ namespace Argus.Memory
         }
 
         /// <summary>
+        /// Gets a service of the provided type.
+        /// </summary>
+        /// <param name="type"></param>
+        public static object? GetService(Type type)
+        {
+            return Instance.ServiceProvider.GetService(type);
+        }
+        
+        /// <summary>
         /// Gets a service of type <see cref="T"/>.  If the service doesn't exist an exception
         /// will be thrown.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public static T GetRequiredService<T>()
+        public static T GetRequiredService<T>() where T : notnull
         {
             return Instance.ServiceProvider.GetRequiredService<T>();
         }
 
+        /// <summary>
+        /// Gets a service of the provided type.  If the service doesn't exist an exception
+        /// will be thrown.
+        /// </summary>
+        /// <param name="type"></param>
+        public static object GetRequiredService(Type type)
+        {
+            return Instance.ServiceProvider.GetRequiredService(type);
+        }
+        
         /// <summary>
         /// Creates an instance of an object and injects any dependencies into it that
         /// are required via the constructor of that object.
@@ -124,6 +143,15 @@ namespace Argus.Memory
         public static T CreateInstance<T>()
         {
             return ActivatorUtilities.CreateInstance<T>(Instance.ServiceProvider);
+        }
+        
+        /// <summary>
+        /// Creates an instance of an object and injects any dependencies into it that
+        /// </summary>
+        /// <param name="type"></param>
+        public static object CreateInstance(Type type)
+        {
+            return ActivatorUtilities.CreateInstance(Instance.ServiceProvider, type);
         }
         
         /// <summary>
@@ -147,6 +175,17 @@ namespace Argus.Memory
             {
                 Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
             }
+        }
+        
+        /// <summary>
+        /// If a type has been registered with the DI container.
+        /// </summary>
+        /// <param name="type"></param>
+        public static bool IsRegistered(Type type)
+        {
+            ServiceCollection ??= new ServiceCollection();
+            var serviceDescriptor = ServiceCollection.FirstOrDefault(sd => sd.ServiceType == type);
+            return serviceDescriptor != null;
         }
 
         /// <summary>
