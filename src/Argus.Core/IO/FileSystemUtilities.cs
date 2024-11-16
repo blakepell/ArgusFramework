@@ -7,6 +7,8 @@
  * @website           : http://www.blakepell.com
  */
 
+using Cysharp.Text;
+
 namespace Argus.IO
 {
     /// <summary>
@@ -168,7 +170,28 @@ namespace Argus.IO
 
             return lastSlash == -1 ? fullPath : fullPath.Substring(lastSlash + 1);
         }
+        
+        /// <summary>
+        /// Extracts the directory path from a full path.
+        /// </summary>
+        /// <param name="fullPath"></param>
+        public static string ExtractDirectoryPath(string fullPath)
+        {
+            fullPath = fullPath.TrimEnd('\\', '/');
 
+            int lastSlash = fullPath.LastIndexOf('\\');
+
+            if (lastSlash == -1)
+            {
+                lastSlash = fullPath.LastIndexOf('/');
+            }
+
+            string directoryPath = lastSlash == -1 ? fullPath : fullPath.Substring(0, lastSlash);
+
+            // Ensure the directory path ends with a single slash
+            return directoryPath.EndsWith("\\") ? directoryPath : directoryPath + "\\";
+        }
+        
         /// <summary>
         /// Replaces the name of the file while preserving the extension of the original
         /// filepath.
