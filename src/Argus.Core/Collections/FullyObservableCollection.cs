@@ -25,7 +25,7 @@ namespace Argus.Collections
         /// The lock mechanism with support for recursion which allows <see cref="GetEnumerator"/> to be called without
         /// a <see cref="LockRecursionException"/> being thrown.
         /// </summary>
-        private readonly ReaderWriterLockSlim _lock = new(LockRecursionPolicy.SupportsRecursion);
+        public readonly ReaderWriterLockSlim Lock = new(LockRecursionPolicy.SupportsRecursion);
 
         /// <summary>
         /// Delegate for when a list item changes.
@@ -56,7 +56,7 @@ namespace Argus.Collections
         {
             get
             {
-                _lock.EnterReadLock();
+                Lock.EnterReadLock();
 
                 try
                 {
@@ -64,12 +64,12 @@ namespace Argus.Collections
                 }
                 finally
                 {
-                    _lock.ExitReadLock();
+                    Lock.ExitReadLock();
                 }
             }
             set
             {
-                _lock.EnterWriteLock();
+                Lock.EnterWriteLock();
 
                 try
                 {
@@ -95,7 +95,7 @@ namespace Argus.Collections
                 }
                 finally
                 {
-                    _lock.ExitWriteLock();
+                    Lock.ExitWriteLock();
                 }
             }
         }
@@ -109,7 +109,7 @@ namespace Argus.Collections
             // We only need the lock while we're creating the temporary snapshot, once
             // that's done we can release and then allow the enumeration to continue.  We
             // will get the count after the lock and then use it.
-            _lock.EnterReadLock();
+            Lock.EnterReadLock();
 
             try
             {
@@ -123,7 +123,7 @@ namespace Argus.Collections
             }
             finally
             {
-                _lock.ExitReadLock();
+                Lock.ExitReadLock();
             }
 
             // Since the array returned from the pool could be larger than we requested
@@ -148,7 +148,7 @@ namespace Argus.Collections
         /// </summary>
         protected override void InsertItem(int index, T item)
         {
-            _lock.EnterWriteLock();
+            Lock.EnterWriteLock();
 
             try
             {
@@ -156,7 +156,7 @@ namespace Argus.Collections
             }
             finally
             {
-                _lock.ExitWriteLock();
+                Lock.ExitWriteLock();
             }
         }
 
@@ -165,7 +165,7 @@ namespace Argus.Collections
         /// </summary>
         protected override void RemoveItem(int index)
         {
-            _lock.EnterWriteLock();
+            Lock.EnterWriteLock();
 
             try
             {
@@ -182,7 +182,7 @@ namespace Argus.Collections
             }
             finally
             {
-                _lock.ExitWriteLock();
+                Lock.ExitWriteLock();
             }
         }
 
@@ -191,7 +191,7 @@ namespace Argus.Collections
         /// </summary>
         protected override void ClearItems()
         {
-            _lock.EnterWriteLock();
+            Lock.EnterWriteLock();
 
             try
             {
@@ -199,7 +199,7 @@ namespace Argus.Collections
             }
             finally
             {
-                _lock.ExitWriteLock();
+                Lock.ExitWriteLock();
             }
         }
 
@@ -210,7 +210,7 @@ namespace Argus.Collections
         {
             get
             {
-                _lock.EnterReadLock();
+                Lock.EnterReadLock();
 
                 try
                 {
@@ -218,7 +218,7 @@ namespace Argus.Collections
                 }
                 finally
                 {
-                    _lock.ExitReadLock();
+                    Lock.ExitReadLock();
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace Argus.Collections
         /// <param name="item"></param>
         public new bool Contains(T item)
         {
-            _lock.EnterReadLock();
+            Lock.EnterReadLock();
 
             try
             {
@@ -237,7 +237,7 @@ namespace Argus.Collections
             }
             finally
             {
-                _lock.ExitReadLock();
+                Lock.ExitReadLock();
             }
         }
 
@@ -248,7 +248,7 @@ namespace Argus.Collections
         /// <param name="arrayIndex"></param>
         public new void CopyTo(T[] array, int arrayIndex)
         {
-            _lock.EnterWriteLock();
+            Lock.EnterWriteLock();
 
             try
             {
@@ -256,7 +256,7 @@ namespace Argus.Collections
             }
             finally
             {
-                _lock.ExitWriteLock();
+                Lock.ExitWriteLock();
             }
         }
 
@@ -320,7 +320,7 @@ namespace Argus.Collections
                 ArgumentNullException.ThrowIfNull(match, nameof(match));
             #endif
 
-            _lock.EnterReadLock();
+            Lock.EnterReadLock();
             try
             {
                 for (int i = 0; i < base.Count; i++)
@@ -333,7 +333,7 @@ namespace Argus.Collections
             }
             finally
             {
-                _lock.ExitReadLock();
+                Lock.ExitReadLock();
             }
 
             return default;
@@ -365,7 +365,7 @@ namespace Argus.Collections
                 }
             }
 
-            _lock.Dispose();
+            Lock.Dispose();
         }
     }
 }
