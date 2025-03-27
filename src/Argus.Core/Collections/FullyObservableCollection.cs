@@ -2,8 +2,8 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2018-02-22
- * @last updated      : 2024-10-20
- * @copyright         : Copyright (c) 2003-2024, All rights reserved.
+ * @last updated      : 2025-03-27
+ * @copyright         : Copyright (c) 2003-2025, All rights reserved.
  * @license           : MIT
  */
 
@@ -25,7 +25,7 @@ namespace Argus.Collections
         /// The lock mechanism with support for recursion which allows <see cref="GetEnumerator"/> to be called without
         /// a <see cref="LockRecursionException"/> being thrown.
         /// </summary>
-        public ReaderWriterLockSlim Lock = new(LockRecursionPolicy.SupportsRecursion);
+        private readonly ReaderWriterLockSlim _lock = new(LockRecursionPolicy.SupportsRecursion);
 
         /// <summary>
         /// Delegate for when a list item changes.
@@ -56,7 +56,7 @@ namespace Argus.Collections
         {
             get
             {
-                Lock.EnterReadLock();
+                _lock.EnterReadLock();
 
                 try
                 {
@@ -64,10 +64,40 @@ namespace Argus.Collections
                 }
                 finally
                 {
-                    Lock.ExitReadLock();
+                    _lock.ExitReadLock();
                 }
             }
-            set => this.Add(value);
+            set
+            {
+                _lock.EnterWriteLock();
+
+                try
+                {
+                    // Remove event handler from existing item if it implements INotifyPropertyChanged
+                    if (index < base.Count)
+                    {
+                        var oldItem = base[index];
+
+                        if (oldItem is INotifyPropertyChanged oldNpc)
+                        {
+                            oldNpc.PropertyChanged -= ListItemPropertyChanged;
+                        }
+                    }
+
+                    // Set the new item
+                    base[index] = value;
+
+                    // Add event handler to new item if it implements INotifyPropertyChanged
+                    if (value is INotifyPropertyChanged newNpc)
+                    {
+                        newNpc.PropertyChanged += ListItemPropertyChanged;
+                    }
+                }
+                finally
+                {
+                    _lock.ExitWriteLock();
+                }
+            }
         }
 
         public new IEnumerator<T> GetEnumerator()
@@ -79,21 +109,21 @@ namespace Argus.Collections
             // We only need the lock while we're creating the temporary snapshot, once
             // that's done we can release and then allow the enumeration to continue.  We
             // will get the count after the lock and then use it.
+            _lock.EnterReadLock();
+
             try
             {
-                Lock.EnterReadLock();
-
-                count = this.Count;
+                count = base.Count;
                 snapshot = pool.Rent(count);
 
                 for (int i = 0; i < count; i++)
                 {
-                    snapshot[i] = this[i];
+                    snapshot[i] = base[i];
                 }
             }
             finally
             {
-                Lock.ExitReadLock();
+                _lock.ExitReadLock();
             }
 
             // Since the array returned from the pool could be larger than we requested
@@ -118,7 +148,7 @@ namespace Argus.Collections
         /// </summary>
         protected override void InsertItem(int index, T item)
         {
-            Lock.EnterWriteLock();
+            _lock.EnterWriteLock();
 
             try
             {
@@ -126,7 +156,7 @@ namespace Argus.Collections
             }
             finally
             {
-                Lock.ExitWriteLock();
+                _lock.ExitWriteLock();
             }
         }
 
@@ -135,16 +165,24 @@ namespace Argus.Collections
         /// </summary>
         protected override void RemoveItem(int index)
         {
-            Lock.EnterWriteLock();
+            _lock.EnterWriteLock();
 
             try
             {
-                var item = this[index];
+                // Access base collection directly to avoid recursive locking
+                var item = base[index];
+
+                // Remove the handler if the item implements INotifyPropertyChanged
+                if (item is INotifyPropertyChanged npc)
+                {
+                    npc.PropertyChanged -= ListItemPropertyChanged;
+                }
+
                 base.RemoveItem(index);
             }
             finally
             {
-                Lock.ExitWriteLock();
+                _lock.ExitWriteLock();
             }
         }
 
@@ -153,7 +191,7 @@ namespace Argus.Collections
         /// </summary>
         protected override void ClearItems()
         {
-            Lock.EnterWriteLock();
+            _lock.EnterWriteLock();
 
             try
             {
@@ -161,7 +199,7 @@ namespace Argus.Collections
             }
             finally
             {
-                Lock.ExitWriteLock();
+                _lock.ExitWriteLock();
             }
         }
 
@@ -172,7 +210,7 @@ namespace Argus.Collections
         {
             get
             {
-                Lock.EnterReadLock();
+                _lock.EnterReadLock();
 
                 try
                 {
@@ -180,7 +218,7 @@ namespace Argus.Collections
                 }
                 finally
                 {
-                    Lock.ExitReadLock();
+                    _lock.ExitReadLock();
                 }
             }
         }
@@ -191,7 +229,7 @@ namespace Argus.Collections
         /// <param name="item"></param>
         public new bool Contains(T item)
         {
-            Lock.EnterReadLock();
+            _lock.EnterReadLock();
 
             try
             {
@@ -199,7 +237,7 @@ namespace Argus.Collections
             }
             finally
             {
-                Lock.ExitReadLock();
+                _lock.ExitReadLock();
             }
         }
 
@@ -210,7 +248,7 @@ namespace Argus.Collections
         /// <param name="arrayIndex"></param>
         public new void CopyTo(T[] array, int arrayIndex)
         {
-            Lock.EnterWriteLock();
+            _lock.EnterWriteLock();
 
             try
             {
@@ -218,7 +256,7 @@ namespace Argus.Collections
             }
             finally
             {
-                Lock.ExitWriteLock();
+                _lock.ExitWriteLock();
             }
         }
 
@@ -274,17 +312,28 @@ namespace Argus.Collections
         public T? Find(Predicate<T> match)
         {
             #if NETSTANDARD2_0 || NETSTANDARD2_1
-                throw new ArgumentNullException("Predicate cannot be null", nameof(match));
+                if (match == null)
+                {
+                    throw new ArgumentNullException("Predicate cannot be null", nameof(match));
+                }
             #else
                 ArgumentNullException.ThrowIfNull(match, nameof(match));
             #endif
 
-            for (int i = 0; i < this.Count; i++)
+            _lock.EnterReadLock();
+            try
             {
-                if (match(this[i]))
+                for (int i = 0; i < base.Count; i++)
                 {
-                    return this[i];
+                    if (match(base[i]))
+                    {
+                        return base[i];
+                    }
                 }
+            }
+            finally
+            {
+                _lock.ExitReadLock();
             }
 
             return default;
@@ -315,6 +364,8 @@ namespace Argus.Collections
                     o.PropertyChanged -= this.ListItemPropertyChanged;
                 }
             }
+
+            _lock.Dispose();
         }
     }
 }
