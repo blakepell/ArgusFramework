@@ -1303,7 +1303,7 @@ namespace Argus.Extensions
         /// Url Encodes a string.
         /// </summary>
         /// <param name="text"></param>
-        public static string UrlEncode(this string text)
+        public static string? UrlEncode(this string text)
         {
             return WebUtility.UrlEncode(text);
         }
@@ -1312,7 +1312,7 @@ namespace Argus.Extensions
         /// Url Decodes a string.
         /// </summary>
         /// <param name="text"></param>
-        public static string UrlDecode(this string text)
+        public static string? UrlDecode(this string text)
         {
             return WebUtility.UrlDecode(text);
         }

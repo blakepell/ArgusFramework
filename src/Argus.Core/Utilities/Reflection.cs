@@ -1,13 +1,15 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2010-07-01
- * @last updated      : 2019-11-16
+ * @last updated      : 2025-04-16
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
 
 using System.ComponentModel;
+using System.Threading.Tasks;
+using Cysharp.Text;
 
 namespace Argus.Utilities
 {
@@ -271,6 +273,38 @@ namespace Argus.Utilities
         }
 
         /// <summary>
+        /// Returns a string containing the contents of the specified embedded resource from the executing assembly.
+        /// </summary>
+        /// <param name="name">The name of the file of the embedded resource.  This should include the root namespace preceding the file name.</param>
+        /// <returns>A string with the contents of the embedded resource.</returns>
+        public static async Task<string> GetEmbeddedResourceAsync(string name)
+        {
+            return await GetEmbeddedResourceAsync(Assembly.GetExecutingAssembly(), name);
+        }
+
+        /// <summary>
+        /// Returns a string containing the contents of the specified embedded resource from the provided assembly.
+        /// </summary>
+        /// <param name="assembly">The System.Reflection.Assembly object you want to get the embedded resource from.</param>
+        /// <param name="name">The name of the file of the embedded resource.  This should include the root namespace preceding the file name.</param>
+        /// <returns>A string with the contents of the embedded resource.</returns>
+        public static async Task<string> GetEmbeddedResourceAsync(Assembly assembly, string name)
+        {
+            using (var s = assembly.GetManifestResourceStream(name))
+            {
+                if (s == null)
+                {
+                    return string.Empty;
+                }
+                
+                using (var sr = new StreamReader(s))
+                {
+                    return await sr.ReadToEndAsync();
+                }
+            }
+        }
+
+        /// <summary>
         /// Returns a CacheKey that is comprised off of the calling methods reflected namespace, class and
         /// method name plus the arguments that are passed in.
         /// </summary>
@@ -280,29 +314,31 @@ namespace Argus.Utilities
         {
             var stack = new StackTrace();
             var method = stack.GetFrame(1).GetMethod();
-            var cacheKey = new StringBuilder();
 
-            // Append the calling namespace, class and method
-            cacheKey.AppendFormat("{0}.{1}", method.ReflectedType?.FullName, method.Name);
-
-            // Append the args, handle incoming types and clean them up
-            foreach (var item in args)
+            using (var sb = ZString.CreateStringBuilder())
             {
-                if (item is string)
+                // Append the calling namespace, class and method
+                sb.AppendFormat("{0}.{1}", method.ReflectedType?.FullName, method.Name);
+             
+                // Append the args, handle incoming types and clean them up
+                foreach (var item in args)
                 {
-                    cacheKey.AppendFormat("-{0}", item);
+                    switch (item)
+                    {
+                        case string:
+                            sb.AppendFormat("-{0}", item);
+                            break;
+                        case DateTime dt:
+                            sb.AppendFormat("-{0}", dt.ToShortDateString());
+                            break;
+                        default:
+                            sb.AppendFormat("-{0}", item);
+                            break;
+                    }
                 }
-                else if (item is DateTime)
-                {
-                    cacheKey.AppendFormat("-{0}", ((DateTime) item).ToShortDateString());
-                }
-                else
-                {
-                    cacheKey.AppendFormat("-{0}", item);
-                }
-            }
 
-            return cacheKey.ToString();
+                return sb.ToString();
+            }
         }
     }
 }

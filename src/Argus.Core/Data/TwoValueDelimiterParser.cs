@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2005-09-01
- * @last updated      : 2022-07-02
+ * @last updated      : 2025-04-16
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
@@ -21,7 +21,15 @@ namespace Argus.Data
     /// </remarks>
     public class TwoValueDelimiterParser
     {
-        private string _queryValue;
+        /// <summary>
+        /// Internal value to hold the original string.
+        /// </summary>
+        private string? _queryValue;
+
+        /// <summary>
+        /// The deliminator to split the value on.  The default value is ','
+        /// </summary>
+        public char Delimiter { get; set; } = ',';
 
         /// <summary>
         /// Constructor
@@ -33,11 +41,11 @@ namespace Argus.Data
         }
 
         /// <summary>
-        /// Returns the date's short date value.
+        /// Returns a string
         /// </summary>
         public override string ToString()
         {
-            return _queryValue;
+            return _queryValue ?? string.Empty;
         }
 
         /// <summary>
@@ -69,12 +77,7 @@ namespace Argus.Data
         {
             _queryValue = delimitedText;
         }
-
-        /// <summary>
-        /// The deliminator to split the value on.  The default value is ','
-        /// </summary>
-        public char Delimiter { get; set; } = ',';
-
+        
         /// <summary>
         /// The left hand value.
         /// </summary>

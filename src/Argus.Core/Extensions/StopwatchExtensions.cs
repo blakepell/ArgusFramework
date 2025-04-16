@@ -2,8 +2,8 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2023-10-22
- * @last updated      : 2024-07-28
- * @copyright         : Copyright (c) 2003-2024, All rights reserved.
+ * @last updated      : 2024-04-16
+ * @copyright         : Copyright (c) 2003-2025, All rights reserved.
  * @license           : MIT
  */
 
@@ -80,6 +80,22 @@ namespace Argus.Extensions
             var elapsed = sw.Elapsed;
 
             return $"{elapsed.Hours:D2}h {elapsed.Minutes:D2}m {elapsed.Seconds:D2}s {elapsed.Milliseconds:D3}ms";
+        }
+
+        /// <summary>
+        /// Converts the Stopwatch elapsed time to 2d 1h 3m 24s 5ms format.
+        /// </summary>
+        /// <param name="sw"></param>
+        public static string ToDaysHoursMinutesSecondsMillisecondsFormat(this Stopwatch? sw)
+        {
+            if (sw == null)
+            {
+                return "0h 0m 0s 0ms";
+            }
+
+            var elapsed = sw.Elapsed;
+
+            return $"{elapsed.Days:D2}d {elapsed.Hours:D2}h {elapsed.Minutes:D2}m {elapsed.Seconds:D2}s {elapsed.Milliseconds:D3}ms";
         }
     }
 }

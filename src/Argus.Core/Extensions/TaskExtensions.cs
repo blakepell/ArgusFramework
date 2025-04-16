@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2022-04-01
- * @last updated      : 2022-08-25
+ * @last updated      : 2024-04-16
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -43,10 +43,8 @@ namespace Argus.Extensions
                 cts.Cancel();
                 return await task;
             }
-            else
-            {
-                throw new TimeoutException(CreateMessage(timeout, filePath, lineNumber));
-            }
+
+            throw new TimeoutException(CreateMessage(timeout, filePath, lineNumber));
         }
 
         /// <summary>
