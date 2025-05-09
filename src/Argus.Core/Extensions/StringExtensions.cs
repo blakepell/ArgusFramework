@@ -2,7 +2,7 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2008-01-12
- * @last updated      : 2024-11-01
+ * @last updated      : 2025-05-09
  * @copyright         : Copyright (c) 2003-2024, All rights reserved.
  * @license           : MIT
  */
@@ -285,21 +285,45 @@ namespace Argus.Extensions
         /// <param name="s"></param>
         public static string RemoveLineEndings(this string s)
         {
-            int len = s.Length;
-            var output = new char[len];
-            int i2 = 0;
-
-            for (int i = 0; i < len; i++)
+            if (string.IsNullOrEmpty(s))
             {
-                char c = s[i];
-
-                if (c != '\r' && c != '\n')
-                {
-                    output[i2++] = c;
-                }
+                return s;
             }
 
-            return new string(output, 0, i2);
+            #if NETSTANDARD2_1 || NET5_0_OR_GREATER
+                // stackalloc with small strings helps to avoid heap allocation
+                Span<char> buffer = s.Length <= 1024 
+                    ? stackalloc char[s.Length] 
+                    : new char[s.Length];
+                
+                int length = 0;
+                
+                foreach (char c in s)
+                {
+                    if (c != '\r' && c != '\n')
+                    {
+                        buffer[length++] = c;
+                    }
+                }
+                
+                return new string(buffer.Slice(0, length));
+            #else
+                int len = s.Length;
+                var output = new char[len];
+                int i2 = 0;
+
+                for (int i = 0; i < len; i++)
+                {
+                    char c = s[i];
+
+                    if (c != '\r' && c != '\n')
+                    {
+                        output[i2++] = c;
+                    }
+                }
+
+                return new string(output, 0, i2);
+            #endif
         }
 
         /// <summary>
@@ -1674,16 +1698,14 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="str">The string to check.</param>
         /// <returns>true if the string consists only of alphabetic characters; otherwise, false.</returns>
-        public static bool IsAlpha(this string str)
+        public static bool IsAlpha(this string? str)
         {
-            if (str == null)
+            if (string.IsNullOrEmpty(str))
             {
                 return false;
             }
-
-            string buf = str.ToUpper();
-
-            return str.All(c => c >= 'A' && c <= 'Z');
+        
+            return str.All(char.IsLetter);
         }
 
         /// <summary>
