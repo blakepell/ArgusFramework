@@ -1,11 +1,13 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2006-12-10
- * @last updated      : 2021-09-19
- * @copyright         : Copyright (c) 2003-2024, All rights reserved.
- * @license           : MIT 
+ * @last updated      : 2025-05-10
+ * @copyright         : Copyright (c) 2003-2025, All rights reserved.
+ * @license           : MIT
  * @website           : http://www.blakepell.com
  */
+
+using System.Collections.Concurrent;
 
 namespace Argus.IO
 {
@@ -23,7 +25,7 @@ namespace Argus.IO
         /// <summary>
         /// The <see cref="DirectoryInfo"/> of the root directory to search.
         /// </summary>
-        private readonly DirectoryInfo _root;
+        private readonly DirectoryInfo? _root;
 
         /// <summary>
         /// A list of the search patterns that should be searched if multiple patterns exist.
@@ -35,6 +37,11 @@ namespace Argus.IO
         /// all of the folders in the tree.
         /// </summary>
         private readonly SearchOption _option;
+
+        /// <summary>
+        /// Cache for compiled Regex objects by pattern.
+        /// </summary>
+        private static readonly ConcurrentDictionary<string, Regex> _regexCache = new();
 
         /// <summary>
         /// Constructor: All files in a directory or directory tree.
@@ -70,7 +77,7 @@ namespace Argus.IO
         public FileSystemSearch(DirectoryInfo root, string pattern, SearchOption option)
         {
             _root = root;
-            _patterns = new [] { pattern };
+            _patterns = new[] { pattern };
             _option = option;
         }
 
@@ -93,21 +100,32 @@ namespace Argus.IO
         /// <returns></returns>
         public IEnumerator<FileSystemInfo> GetEnumerator()
         {
-            if (_root == null || !_root.Exists)
+            if (_root == null || !_root.Exists || _patterns.Length == 0)
             {
                 yield break;
             }
 
-            IEnumerable<FileSystemInfo> matches = new List<FileSystemInfo>();
+            foreach (var item in EnumerateFileSystem(_root, _patterns, _option))
+            {
+                yield return item;
+            }
+        }
+
+        /// <summary>
+        /// Recursively enumerates the file system starting at the root directory.  Note that starting
+        /// at the root directory of a drive will cause the enumerator to loop through every file on the
+        /// drive if you're checking a False pattern.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="patterns"></param>
+        /// <param name="option"></param>
+        private IEnumerable<FileSystemInfo> EnumerateFileSystem(DirectoryInfo root, string[] patterns, SearchOption option)
+        {
+            IEnumerable<DirectoryInfo> directories = Enumerable.Empty<DirectoryInfo>();
 
             try
             {
-                foreach (var pattern in _patterns)
-                {
-                    // All directories but filter the files.
-                    matches = matches.Concat(_root.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
-                                     .Concat(_root.EnumerateFiles(pattern, SearchOption.TopDirectoryOnly));
-                }
+                directories = root.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
             }
             catch (UnauthorizedAccessException)
             {
@@ -119,47 +137,122 @@ namespace Argus.IO
             }
             catch (IOException)
             {
-                // "The symbolic link cannot be followed because its type is disabled."
-                // "The specified network name is no longer available."
                 yield break;
             }
 
-            foreach (var file in matches)
+            // Yield directories if needed
+            if (IncludeDirectories)
             {
-                // Skip reparse points and optionally directories.
-                if (file.Attributes.HasFlag(FileAttributes.ReparsePoint)
-                    || (!this.IncludeDirectories && file.Attributes.HasFlag(FileAttributes.Directory)))
+                foreach (var dir in directories)
                 {
-                    continue;
+                    if (!dir.Attributes.HasFlag(FileAttributes.ReparsePoint))
+                    {
+                        yield return dir;
+                    }
                 }
-
-                yield return file;
             }
 
-            if (_option == SearchOption.AllDirectories)
+            if (patterns.Length > 1)
             {
-                foreach (var dir in _root.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+                // Get all files in directory once
+                IEnumerable<FileInfo> allFiles = Enumerable.Empty<FileInfo>();
+
+                try
                 {
-                    var fileSystemInfos = new FileSystemSearch(dir, _patterns, _option);
+                    allFiles = root.EnumerateFiles("*", SearchOption.TopDirectoryOnly);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+                catch (PathTooLongException)
+                {
+                }
+                catch (IOException)
+                {
+                }
 
-                    foreach (var match in fileSystemInfos)
+                foreach (var file in allFiles)
+                {
+                    if (file.Attributes.HasFlag(FileAttributes.ReparsePoint))
                     {
-                        // Skip reparse points and optionally directories.
-                        if (match.Attributes.HasFlag(FileAttributes.ReparsePoint)
-                            || (!this.IncludeDirectories && match.Attributes.HasFlag(FileAttributes.Directory)))
-                        {
-                            continue;
-                        }
+                        continue;
+                    }
 
-                        yield return match;
+                    // Check if file matches any pattern
+                    if (patterns.Any(pattern => PatternMatches(file.Name, pattern)))
+                    {
+                        yield return file;
+                    }
+                }
+            }
+
+            string pattern = patterns[0];
+
+            // Yield files for each pattern: (Length can never be 0 here and greater than 1 is handled
+            // above).  The below handles a pattern entry.
+            IEnumerable<FileInfo> files = Enumerable.Empty<FileInfo>();
+
+            try
+            {
+                files = root.EnumerateFiles(pattern, SearchOption.TopDirectoryOnly);
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
+            catch (PathTooLongException)
+            {
+            }
+            catch (IOException)
+            {
+            }
+
+            foreach (var file in files)
+            {
+                if (!file.Attributes.HasFlag(FileAttributes.ReparsePoint))
+                {
+                    yield return file;
+                }
+            }
+
+            // Recurse into subdirectories if needed
+            if (option == SearchOption.AllDirectories)
+            {
+                foreach (var dir in directories)
+                {
+                    if (dir.Attributes.HasFlag(FileAttributes.ReparsePoint))
+                    {
+                        continue;
+                    }
+
+                    foreach (var item in EnumerateFileSystem(dir, patterns, option))
+                    {
+                        yield return item;
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Simple wildcard pattern matching with Regex caching.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="pattern"></param>
+        public static bool PatternMatches(string filename, string pattern)
+        {
+            var regex = _regexCache.GetOrAdd(pattern, pat =>
+                new Regex("^" + Regex.Escape(pat)
+                                    .Replace(@"\*", ".*")
+                                    .Replace(@"\?", ".") + "$",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled));
+            return regex.IsMatch(filename);
         }
     }
 }

@@ -7,9 +7,6 @@
  * @license           : MIT
  */
 
-using System;
-using System.IO;
-using Argus.Data;
 using Argus.IO;
 using Xunit;
 
