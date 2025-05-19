@@ -1,9 +1,9 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2010-03-01
- * @last updated      : 2022-07-01
- * @copyright         : Copyright (c) 2003-2024, All rights reserved.
- * @license           : MIT 
+ * @last updated      : 2025-05-18
+ * @copyright         : Copyright (c) 2003-2025, All rights reserved.
+ * @license           : MIT
  * @website           : http://www.blakepell.com
  */
 
@@ -30,9 +30,9 @@ namespace Argus.IO
 
             return Path.GetExtension(filePath).Trim('.').ToLower();
         }
-        
+
         /// <summary>
-        /// Whether or not the path points to a valid image file determined by the extension.
+        /// Whether the path points to a valid image file determined by the extension.
         /// </summary>
         /// <param name="filePath"></param>
         public static bool IsImage(string filePath)
@@ -61,7 +61,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Whether or not the path points to a valid video file determined by the extension.
+        /// Whether the path points to a valid video file determined by the extension.
         /// </summary>
         /// <param name="filepath"></param>
         public static bool IsVideo(string filepath)
@@ -87,6 +87,11 @@ namespace Argus.IO
                 case "rm":
                 case "vob":
                 case "wmv":
+                case "mkv":
+                case "avchd":
+                case "hevc":
+                case "avc":
+                case "webm":
                     return true;
                 default:
                     return false;
@@ -94,7 +99,7 @@ namespace Argus.IO
         }
 
         /// <summary>
-        /// Whether or not the path points to a valid audio file as determined by the extension.
+        /// Whether the path points to a valid audio file as determined by the extension.
         /// </summary>
         /// <param name="filePath"></param>
         public static bool IsAudio(string filePath)
@@ -117,6 +122,12 @@ namespace Argus.IO
                 case "wma":
                 case "m4p":
                 case "ogg":
+                case "alac":
+                case "flac":
+                case "m4a":
+                case "mp4":
+                case "dsd":
+                case "aiff":
                     return true;
                 default:
                     return false;
