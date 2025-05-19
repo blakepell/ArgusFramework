@@ -1,8 +1,8 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2016-11-01
- * @last updated      : 2019-11-17
- * @copyright         : Copyright (c) 2003-2024, All rights reserved.
+ * @last updated      : 2025-05-18
+ * @copyright         : Copyright (c) 2003-2025, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
@@ -38,17 +38,17 @@ namespace Argus.Network
         /// <summary>
         /// The path to the last file that was processed.
         /// </summary>
-        public string LastProcessedFile { get; set; }
+        public string? LastProcessedFile { get; set; }
 
         /// <summary>
         /// The directory where cached content should be saved.
         /// </summary>
-        public string SaveLocation { get; set; }
+        public string? SaveLocation { get; set; }
 
         /// <summary>
         /// If set, the name of the file to use in replace of the filename specified in the URL.
         /// </summary>
-        public string OverrideFilename { get; set; }
+        public string? OverrideFilename { get; set; }
 
         /// <summary>
         /// Downloads a copy of the file if the file on the file system is older than the threshold.
@@ -62,14 +62,18 @@ namespace Argus.Network
                 throw new Exception("The directory in SaveLocation has not been set.");
             }
 
+            if (string.IsNullOrWhiteSpace(this.OverrideFilename))
+            {
+                throw new Exception("The OverrideFilename has not been set.");
+            }
+            
             // Force it to always be negative
             hoursThreshold = System.Math.Abs(hoursThreshold) * -1;
 
             string fileName = string.IsNullOrWhiteSpace(this.OverrideFilename) ? $"{this.SaveLocation}{FileSystemUtilities.ExtractFileName(uri)}" : $"{this.SaveLocation}{this.OverrideFilename}";
             var fileInfo = new FileInfo(fileName);
 
-            if (File.Exists(fileName)
-                || File.Exists(fileName) && fileInfo.LastWriteTime < DateTime.Now.AddHours(hoursThreshold))
+            if (File.Exists(fileName) || File.Exists(fileName) && fileInfo.LastWriteTime < DateTime.Now.AddHours(hoursThreshold))
             {
                 using (var hc = new HttpClient())
                 {
@@ -83,13 +87,12 @@ namespace Argus.Network
                             using (var fs = File.Open(fileName, FileMode.Create))
                             {
                                 await s.CopyToAsync(fs);
+                                this.LastProcessedFile = fileName;
                             }
                         }
                     }
                 }
             }
-
-            this.LastProcessedFile = fileName;
         }
     }
 }
