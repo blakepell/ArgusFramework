@@ -1,8 +1,8 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2010-07-07
- * @last updated      : 2023-10-22
- * @copyright         : Copyright (c) 2003-2024, All rights reserved.
+ * @last updated      : 2025-05-18
+ * @copyright         : Copyright (c) 2003-2025, All rights reserved.
  * @license           : MIT 
  * @website           : http://www.blakepell.com
  */
@@ -16,6 +16,35 @@ namespace Argus.IO
     /// </summary>
     public static class FileSystemUtilities
     {
+        /// <summary>
+        /// Checks if any of the segments in the folder path match any of the search directory names.
+        /// </summary>
+        /// <param name="folderPath"></param>
+        /// <param name="comparer"></param>
+        /// <param name="searchDirectoryNames"></param>
+        public static bool AnySegmentEquals(string folderPath, StringComparison comparer = StringComparison.OrdinalIgnoreCase, params string[]? searchDirectoryNames)
+        {
+            if (string.IsNullOrEmpty(folderPath) || searchDirectoryNames == null || searchDirectoryNames.Length == 0)
+            {
+                return false;
+            }
+
+            var segments = folderPath.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var segment in segments)
+            {
+                foreach (var searchDirectoryName in searchDirectoryNames)
+                {
+                    if (!string.IsNullOrEmpty(searchDirectoryName) &&  string.Equals(segment, searchDirectoryName, comparer))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        
         /// <summary>
         /// Changes the modified date of a destination file to be the same as a source file.
         /// </summary>
