@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
     <RootNamespace>Argus</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -14,9 +14,8 @@
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Version>2025.3.31.2</Version>
-    <AssemblyVersion>2025.3.31.2</AssemblyVersion>
-    <FileVersion>2025.3.31.2</FileVersion>
-    <PackageIconUrl></PackageIconUrl>
+    <AssemblyVersion>2025.5.18.1</AssemblyVersion>
+    <FileVersion>2025.5.18.1</FileVersion>
     <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
     <PackageTags>argus</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
