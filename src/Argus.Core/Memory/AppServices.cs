@@ -1,9 +1,9 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2021-07-01
- * @last updated      : 2024-11-10
- * @copyright         : Copyright (c) 2003-2024, All rights reserved.
- * @license           : MIT 
+ * @last updated      : 2025-06-13
+ * @copyright         : Copyright (c) 2003-2025, All rights reserved.
+ * @license           : MIT
  * @website           : http://www.blakepell.com
  */
 
@@ -86,6 +86,18 @@ namespace Argus.Memory
         }
 
         /// <summary>
+        /// Registers a type and its instance as an object.
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <param name="implementationInstance"></param>
+        public static void AddSingleton(Type serviceType, object implementationInstance)
+        {
+            ServiceCollection ??= new ServiceCollection();
+            ServiceCollection.AddSingleton(serviceType, implementationInstance);
+            Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+        }
+        
+        /// <summary>
         /// Allows for the registration of dependency injected services via an <see cref="Action"/>.
         /// </summary>
         /// <param name="action"></param>
@@ -113,7 +125,7 @@ namespace Argus.Memory
         {
             return Instance.ServiceProvider.GetService(type);
         }
-        
+
         /// <summary>
         /// Gets a service of type <see cref="T"/>.  If the service doesn't exist an exception
         /// will be thrown.
@@ -133,7 +145,7 @@ namespace Argus.Memory
         {
             return Instance.ServiceProvider.GetRequiredService(type);
         }
-        
+
         /// <summary>
         /// Creates an instance of an object and injects any dependencies into it that
         /// are required via the constructor of that object.
@@ -144,7 +156,7 @@ namespace Argus.Memory
         {
             return ActivatorUtilities.CreateInstance<T>(Instance.ServiceProvider);
         }
-        
+
         /// <summary>
         /// Creates an instance of an object and injects any dependencies into it that
         /// </summary>
@@ -153,7 +165,7 @@ namespace Argus.Memory
         {
             return ActivatorUtilities.CreateInstance(Instance.ServiceProvider, type);
         }
-        
+
         /// <summary>
         /// Gets the current instance or creates a new one.
         /// </summary>
@@ -176,7 +188,7 @@ namespace Argus.Memory
                 Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
             }
         }
-        
+
         /// <summary>
         /// If a type has been registered with the DI container.
         /// </summary>
@@ -185,6 +197,7 @@ namespace Argus.Memory
         {
             ServiceCollection ??= new ServiceCollection();
             var serviceDescriptor = ServiceCollection.FirstOrDefault(sd => sd.ServiceType == type);
+
             return serviceDescriptor != null;
         }
 
@@ -196,6 +209,7 @@ namespace Argus.Memory
         {
             ServiceCollection ??= new ServiceCollection();
             var serviceDescriptor = ServiceCollection.FirstOrDefault(sd => sd.ServiceType == typeof(T));
+
             return serviceDescriptor != null;
         }
 
@@ -207,6 +221,7 @@ namespace Argus.Memory
         {
             ServiceCollection ??= new ServiceCollection();
             var serviceDescriptor = ServiceCollection.FirstOrDefault(sd => sd.ServiceType == typeof(T) && sd.Lifetime == ServiceLifetime.Singleton);
+
             return serviceDescriptor != null;
         }
     }
