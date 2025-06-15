@@ -14,7 +14,6 @@ Argus.AspNetCore|ASP.Net Core Shared Components and Infrastructure.
 Argus.Core|Common Shared Code Library for this repository.
 Argus.Graphics|Imaging code that builds off of System.Drawing.Common
 Argus.Office|Code used with building and manipulating various Office file formats.
-Argus.SocialMedia|Code used to interact with social media sites via their APIs.
 Argus.Windows|Code used soley on Windows operating systems.
 Argus.Windows.Forms|Code and controls used in conjunction with WinForms applications.
 Argus.Windows.Wpf|Code and controls used in conjuction with WPF applications.  This will target Windows Presentation Framework (WPF) apps running on .NET Core 3+.

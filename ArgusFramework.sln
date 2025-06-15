@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.Audio.NAudio", "src\A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Argus.UnitTests", "tests\Argus.UnitTests\Argus.UnitTests.csproj", "{234B10D8-3250-4339-A693-71B27927A139}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{BA9A0FF4-6AE1-4056-BDD4-3EBAAA4DEFC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "src\ConsoleTest\ConsoleTest.csproj", "{BA9A0FF4-6AE1-4056-BDD4-3EBAAA4DEFC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
