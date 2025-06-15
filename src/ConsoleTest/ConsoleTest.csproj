@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Argus.Core\Argus.Core.csproj" />
+    <ProjectReference Include="..\Argus.Core\Argus.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
