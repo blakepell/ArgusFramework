@@ -13,9 +13,9 @@
     <PackageProjectUrl>https://github.com/blakepell/ArgusFramework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/blakepell/ArgusFramework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>2025.6.13.1</Version>
-    <AssemblyVersion>2025.6.13.1</AssemblyVersion>
-    <FileVersion>2025.6.13.1</FileVersion>
+    <Version>2025.8.23.1</Version>
+    <AssemblyVersion>2025.8.23.1</AssemblyVersion>
+    <FileVersion>2025.8.23.1</FileVersion>
     <PackageIcon>Argus-Logo-Purple-64.png</PackageIcon>
     <PackageTags>argus</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
