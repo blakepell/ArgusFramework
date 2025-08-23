@@ -20,7 +20,7 @@ namespace Argus.Utilities
         /// triggered
         /// </summary>
         /// <param name="operation">lambda that performs an operation that might throw</param>
-        public static bool IgnoreErrors(Action operation)
+        public static bool IgnoreErrors(Action? operation)
         {
             if (operation == null)
             {
@@ -46,14 +46,14 @@ namespace Argus.Utilities
         /// </summary>
         /// <param name="operation">parameter-less lambda that returns a value of T</param>
         /// <param name="defaultValue">Default value returned if operation fails</param>
-        public static T IgnoreErrors<T>(Func<T> operation, T defaultValue = default)
+        public static T? IgnoreErrors<T>(Func<T>? operation, T? defaultValue = default)
         {
             if (operation == null)
             {
                 return defaultValue;
             }
 
-            T result;
+            T? result;
 
             try
             {
