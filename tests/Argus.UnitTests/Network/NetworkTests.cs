@@ -44,7 +44,7 @@ namespace Argus.UnitTests.Network
         [Fact]
         public void IPv4Segments_PreservesFirstThreeOctets()
         {
-            var result = Argus.Network.Utilities.IPv4Segments("127.0.0.1").ToList();
+            var result = Argus.Network.Utilities.IPv4Segments("192.168.1.1").ToList();
 
             foreach (var address in result)
             {
