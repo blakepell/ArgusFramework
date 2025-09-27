@@ -2,10 +2,12 @@
  * @author            : Blake Pell
  * @website           : http://www.blakepell.com
  * @initial date      : 2014-01-02
- * @last updated      : 2024-06-01
- * @copyright         : Copyright (c) 2003-2024, All rights reserved.
+ * @last updated      : 2025-09-27
+ * @copyright         : Copyright (c) 2003-2025, All rights reserved.
  * @license           : MIT
  */
+
+using System.ComponentModel;
 
 namespace Argus.Extensions
 {
@@ -33,7 +35,6 @@ namespace Argus.Extensions
         {
             return !obj.HasValue;
         }
-
 
         /// <summary>
         /// Sets a property's value via reflection.
@@ -64,6 +65,7 @@ namespace Argus.Extensions
         public static object? GetValue<T>(this T @this, string propertyName)
         {
             var prop = @this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
             return prop?.GetValue(@this, null);
         }
 
@@ -75,7 +77,7 @@ namespace Argus.Extensions
         /// <param name="second"></param>
         public static bool ReferenceEquals<T>(this T first, T second) where T : class => (object)first == (object)second;
 
-#if NETSTANDARD2_0
+        #if NETSTANDARD2_0
         /// <summary>
         /// Returns a set of items off of the end of the IEnumerable.
         /// </summary>
@@ -86,7 +88,7 @@ namespace Argus.Extensions
         {
             return source.Skip(System.Math.Max(0, source.Count() - itemCount));
         }
-#endif
+        #endif
 
         /// <summary>
         /// Executes an action for each item in the IEnumerable.
@@ -271,6 +273,23 @@ namespace Argus.Extensions
         /// <typeparam name="TAttribute"></typeparam>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
+        /// <remarks>
+        /// <![CDATA[
+        /// ```csharp
+        /// // Example usage:
+        /// [MyAttribute("example")]
+        /// public class Sample { }
+        ///
+        /// var sample = new Sample();
+        /// // Retrieve the attribute applied to the Sample type
+        /// var attr = sample.GetAttribute<Sample, MyAttribute>();
+        /// if (attr != null)
+        /// {
+        ///     Console.WriteLine("Attribute found");
+        /// }
+        /// ```
+        /// ]]>
+        /// </remarks>
         public static TAttribute? GetAttribute<T, TAttribute>(this T? value) where TAttribute : Attribute
         {
             if (value == null)
@@ -282,6 +301,22 @@ namespace Argus.Extensions
                         .GetCustomAttributes(false)
                         .OfType<TAttribute>()
                         .SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Gets an attribute from a PropertyDescriptor if it exists.
+        /// </summary>
+        /// <typeparam name="T">The type of the attribute to retrieve</typeparam>
+        /// <param name="value">The PropertyDescriptor to check for the attribute</param>
+        /// <returns>The attribute if found; otherwise, null</returns>
+        public static T? GetAttribute<T>(this PropertyDescriptor? value) where T : Attribute
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return value.Attributes[typeof(T)] as T;
         }
     }
 }
