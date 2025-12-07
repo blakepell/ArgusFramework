@@ -249,7 +249,7 @@ namespace Argus.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <param name="length"></param>
-        public static string DeleteLeft(this string str, int length)
+        public static string DeleteLeft(this string? str, int length)
         {
             if (string.IsNullOrEmpty(str) || length >= str.Length)
             {
