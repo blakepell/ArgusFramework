@@ -255,14 +255,19 @@ namespace Argus.UnitTests.Memory
         [Fact]
         public void AppServices_AddSingleton_TypeAndInstance()
         {
+            // The first call registers our singleton.
             AppServices.AddSingleton<TestService>();
             var service1 = AppServices.GetService<TestService>();
             Assert.NotNull(service1);
 
+            // Attempting to register a second singleton of the same type should throw.
             var instance = new TestService { Value = 123 };
-            AppServices.AddSingleton<TestService>(instance);
+            Assert.Throws<InvalidOperationException>(() => AppServices.AddSingleton<TestService>(instance));
+
+            // Ensure the originally registered singleton instance remains unchanged.
             var service2 = AppServices.GetService<TestService>();
-            Assert.Equal(123, service2.Value);
+            Assert.NotEqual(123, service2.Value);
+
         }
         
         [Fact]

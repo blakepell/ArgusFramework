@@ -1,7 +1,7 @@
 ﻿/*
  * @author            : Blake Pell
  * @initial date      : 2021-07-01
- * @last updated      : 2025-06-13
+ * @last updated      : 2025-12-07
  * @copyright         : Copyright (c) 2003-2025, All rights reserved.
  * @license           : MIT
  * @website           : http://www.blakepell.com
@@ -13,7 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Argus.Memory
 {
     /// <summary>
-    /// Dependency Injection.
+    /// Dependency Injection wrapper for applications allowing for late-binding/mutable container behavior.
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class AppServices
@@ -21,10 +21,27 @@ namespace Argus.Memory
         /// <summary>
         /// Mechanism for retrieving a service object.
         /// </summary>
-        public IServiceProvider ServiceProvider { get; set; }
+        public IServiceProvider ServiceProvider
+        {
+            get
+            {
+                lock (_syncLock)
+                {
+                    // Ensure we never return null to avoid crashes in ActivatorUtilities
+                    return field ??= new ServiceCollection().BuildServiceProvider();
+                }
+            }
+            private set
+            {
+                lock (_syncLock)
+                {
+                    field = value;
+                }
+            }
+        }
 
         /// <summary>
-        /// Returns the instance of <see cref="AppServices"/>.  If the instance has not yet
+        /// Returns the instance of <see cref="AppServices"/>. If the instance has not yet
         /// been created it will be created on this call.
         /// </summary>
         private static AppServices Instance => _instance ?? GetInstance();
@@ -32,33 +49,62 @@ namespace Argus.Memory
         /// <summary>
         /// Internal reference for the <see cref="AppServices"/> instance.
         /// </summary>
-        private static AppServices _instance;
+        private static volatile AppServices? _instance;
 
         /// <summary>
-        /// Lock object used by <see cref="GetInstance"/>.
+        /// Global lock object used to protect access to both the Collection and the Provider.
+        /// Unified locking prevents race conditions during the Rebuild phase.
         /// </summary>
-        private static readonly object InstanceLock = new();
+        private static readonly object _syncLock = new();
 
         /// <summary>
         /// A reference to the service collection so that services can be added at a time
         /// later than the initial registration of objects.
         /// </summary>
-        public static ServiceCollection? ServiceCollection;
+        public static ServiceCollection ServiceCollection
+        {
+            get
+            {
+                lock (_syncLock)
+                {
+                    return field ??= new ServiceCollection();
+                }
+            }
+            set
+            {
+                lock (_syncLock)
+                {
+                    field = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Static constructor.
+        /// </summary>
+        static AppServices()
+        {
+            // Initialize immediately to prevent null scenarios.
+            ServiceCollection = new ServiceCollection();
+        }
 
         /// <summary>
         /// Initializes the dependencies via action which allows the caller to register classes
-        /// and interfaces.  Init can only be called once but it allows the caller to pass in
-        /// an <see cref="Action"/> to handle registering the DI so that the DI can handle both
-        /// Common library classes or client/environment specific classes if this is ever ported
-        /// to other platforms.
+        /// and interfaces. Init can only be called once but it allows the caller to pass in
+        /// an <see cref="Action"/> to handle registering the DI.
         /// </summary>
         /// <param name="action"></param>
-        public static void Init(Action<ServiceCollection?> action)
+        public static void Init(Action<ServiceCollection> action)
         {
-            var services = new ServiceCollection();
-            action.Invoke(services);
-            Instance.ServiceProvider = services.BuildServiceProvider();
-            ServiceCollection = services;
+            lock (_syncLock)
+            {
+                var services = new ServiceCollection();
+                action.Invoke(services);
+
+                // Replace the static collection and rebuild the provider
+                ServiceCollection = services;
+                Instance.ServiceProvider = services.BuildServiceProvider();
+            }
         }
 
         /// <summary>
@@ -67,22 +113,36 @@ namespace Argus.Memory
         /// <typeparam name="T"></typeparam>
         public static void AddSingleton<T>() where T : class
         {
-            ServiceCollection ??= new ServiceCollection();
-            ServiceCollection.AddSingleton<T>();
-            Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+            lock (_syncLock)
+            {
+                // Prevent duplicates, because this isn't an instance we'll not throw
+                // an exception here on duplicates.
+                if (ServiceCollection.Any(x => x.ServiceType == typeof(T)))
+                {
+                    return;
+                }
+
+                ServiceCollection.AddSingleton<T>();
+                Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+            }
         }
 
         /// <summary>
-        /// Registers a type singleton with the copy of the object that should be presented on
-        /// dependency injection.
+        /// Registers a type singleton with the specific instance provided.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance">The specific instance that should be added as a singleton.</param>
         public static void AddSingleton<T>(T instance) where T : class
         {
-            ServiceCollection ??= new ServiceCollection();
-            ServiceCollection.AddSingleton(instance);
-            Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+            lock (_syncLock)
+            {
+                // Prevent duplicates which can confuse the provider
+                if (ServiceCollection.Any(x => x.ServiceType == typeof(T)))
+                {
+                    throw new InvalidOperationException($"{typeof(T).Name} already has a singleton instance registered.");
+                }
+
+                ServiceCollection.AddSingleton(instance);
+                Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+            }
         }
 
         /// <summary>
@@ -92,20 +152,29 @@ namespace Argus.Memory
         /// <param name="implementationInstance"></param>
         public static void AddSingleton(Type serviceType, object implementationInstance)
         {
-            ServiceCollection ??= new ServiceCollection();
-            ServiceCollection.AddSingleton(serviceType, implementationInstance);
-            Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+            lock (_syncLock)
+            {
+                if (ServiceCollection.Any(x => x.ServiceType == serviceType))
+                {
+                    throw new InvalidOperationException($"{serviceType.GetType().Name} already has a singleton instance registered.");
+                }
+
+                ServiceCollection.AddSingleton(serviceType, implementationInstance);
+                Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+            }
         }
-        
+
         /// <summary>
         /// Allows for the registration of dependency injected services via an <see cref="Action"/>.
         /// </summary>
         /// <param name="action"></param>
-        public static void AddService(Action<ServiceCollection?> action)
+        public static void AddService(Action<ServiceCollection> action)
         {
-            ServiceCollection ??= new ServiceCollection();
-            action.Invoke(ServiceCollection);
-            Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+            lock (_syncLock)
+            {
+                action.Invoke(ServiceCollection);
+                Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
+            }
         }
 
         /// <summary>
@@ -127,7 +196,7 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        /// Gets a service of type <see cref="T"/>.  If the service doesn't exist an exception
+        /// Gets a service of type <see cref="T"/>. If the service doesn't exist an exception
         /// will be thrown.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -137,7 +206,7 @@ namespace Argus.Memory
         }
 
         /// <summary>
-        /// Gets a service of the provided type.  If the service doesn't exist an exception
+        /// Gets a service of the provided type. If the service doesn't exist an exception
         /// will be thrown.
         /// </summary>
         /// <param name="type"></param>
@@ -159,6 +228,7 @@ namespace Argus.Memory
 
         /// <summary>
         /// Creates an instance of an object and injects any dependencies into it that
+        /// are required via the constructor of that object.
         /// </summary>
         /// <param name="type"></param>
         public static object CreateInstance(Type type)
@@ -171,7 +241,13 @@ namespace Argus.Memory
         /// </summary>
         private static AppServices GetInstance()
         {
-            lock (InstanceLock)
+            // Double-check locking for performance and thread safety
+            if (_instance != null)
+            {
+                return _instance;
+            }
+
+            lock (_syncLock)
             {
                 return _instance ??= new AppServices();
             }
@@ -183,8 +259,10 @@ namespace Argus.Memory
         /// </summary>
         public static void BuildServiceProvider()
         {
-            lock (InstanceLock)
+            lock (_syncLock)
             {
+                // We access the backing field directly or via the property, 
+                // but since we are inside the lock, we ensure atomicity.
                 Instance.ServiceProvider = ServiceCollection.BuildServiceProvider();
             }
         }
@@ -195,10 +273,10 @@ namespace Argus.Memory
         /// <param name="type"></param>
         public static bool IsRegistered(Type type)
         {
-            ServiceCollection ??= new ServiceCollection();
-            var serviceDescriptor = ServiceCollection.FirstOrDefault(sd => sd.ServiceType == type);
-
-            return serviceDescriptor != null;
+            lock (_syncLock)
+            {
+                return ServiceCollection.Any(sd => sd.ServiceType == type);
+            }
         }
 
         /// <summary>
@@ -207,10 +285,10 @@ namespace Argus.Memory
         /// <typeparam name="T"></typeparam>
         public static bool IsRegistered<T>()
         {
-            ServiceCollection ??= new ServiceCollection();
-            var serviceDescriptor = ServiceCollection.FirstOrDefault(sd => sd.ServiceType == typeof(T));
-
-            return serviceDescriptor != null;
+            lock (_syncLock)
+            {
+                return ServiceCollection.Any(sd => sd.ServiceType == typeof(T));
+            }
         }
 
         /// <summary>
@@ -219,10 +297,10 @@ namespace Argus.Memory
         /// <typeparam name="T"></typeparam>
         public static bool IsSingletonRegistered<T>()
         {
-            ServiceCollection ??= new ServiceCollection();
-            var serviceDescriptor = ServiceCollection.FirstOrDefault(sd => sd.ServiceType == typeof(T) && sd.Lifetime == ServiceLifetime.Singleton);
-
-            return serviceDescriptor != null;
+            lock (_syncLock)
+            {
+                return ServiceCollection.Any(sd => sd.ServiceType == typeof(T) && sd.Lifetime == ServiceLifetime.Singleton);
+            }
         }
     }
 }
